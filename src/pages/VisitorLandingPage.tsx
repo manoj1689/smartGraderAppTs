@@ -1,9 +1,9 @@
 import React from "react";
 // @ts-ignore
-import VisitorLanding from "../components/Visitor/VisitorLanding";
+import Visitor_landing from "../components/Visitor/Visitor_landing"
 
 const VisitorLandingPage = () => {
-  return <VisitorLanding />;
+  return <Visitor_landing />;
 };
 
 export default VisitorLandingPage;

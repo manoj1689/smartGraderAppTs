@@ -1,6 +1,6 @@
 import React, { useState, ChangeEvent } from "react";
 import { MdOutlineCreditScore } from "react-icons/md";
-import CircleScore from "../../../assets/images/individual/circleScore.png";
+import CircleScore from "../../../assets/images/Individual/circleScore.png";
 import { Scores } from "../../../types/interfaces/interface";
 // Define the type for the scores state
 

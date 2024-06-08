@@ -1,6 +1,6 @@
 import axiosInstance from "../axios/axiosInstance";
-import { HEADERS } from "../../constants/constants";
-import { ENDPOINTS } from "../../constants/endpoints";
+import { HEADERS } from "../../constants/Constants";
+import { ENDPOINTS } from "../../constants/Endpoints";
 
 class InterviewService {
   async fetchQuestions(setId: string, token: string) {

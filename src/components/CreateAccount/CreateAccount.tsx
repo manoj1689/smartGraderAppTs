@@ -8,7 +8,7 @@ import educationalPerson from "../../assets/images/Account/educational-person.pn
 import educationSticker from "../../assets/stickers/persons/education-sticker.png";
 import organisationSticker from "../../assets/stickers/persons/organisation-sticker.png";
 import individualSticker from "../../assets/stickers/persons/individul-sticker.png";
-import { handleMouseDown, handleMouseUp } from "../common/Mouse/handleMouse";
+import { handleMouseDown, handleMouseUp } from "../common/Mouse/HandleMouse";
 
 type Tab = "individual" | "organization" | "educational";
 

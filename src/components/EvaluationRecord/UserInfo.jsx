@@ -2,7 +2,7 @@ import React from "react";
 
 function UserInfo(props) {
   return (
-    <div className="flex flex-col self-stretch my-5 max-md:my-2 w-full">
+    <div className="flex flex-col my-5 max-md:my-2 w-full">
       <div className="flex gap-5 justify-between max-md:flex-wrap w-full">
         <div className="flex flex-col">
           <div className="text-lg font-medium leading-4 text-slate-800">

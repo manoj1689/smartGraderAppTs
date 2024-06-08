@@ -14,7 +14,7 @@ import ErrorBoundary from "../components/common/Error/ErrorBoundary";
 import { GiSoundWaves } from "react-icons/gi";
 import { CiMicrophoneOn } from "react-icons/ci";
 import InterviewService from "../services/api/InterviewService";
-import { MESSAGES } from "../constants/constants";
+import { MESSAGES } from "../constants/Constants.ts";
 
 const InterviewScreen = () => {
   const [questionsData, setQuestionsData] = useState([]);

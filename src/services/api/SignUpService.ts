@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SignupRequest } from '../../types/interfaces/interface';
-import { API_BASE_URL } from "../../constants/constants";
+import { API_BASE_URL } from "../../constants/Constants";
 
 export const SignUpService = (setFormData: React.Dispatch<React.SetStateAction<SignupRequest>>) => {
   const navigate = useNavigate();

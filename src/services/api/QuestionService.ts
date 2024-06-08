@@ -1,7 +1,7 @@
 
 import axiosInstance from "../axios/axiosInstance";
-import { HEADERS, QUESTION_SOURCE } from "../../constants/constants";
-import { ENDPOINTS } from "../../constants/endpoints";
+import { HEADERS, QUESTION_SOURCE } from "../../constants/Constants";
+import { ENDPOINTS } from "../../constants/Endpoints";
 
 
 

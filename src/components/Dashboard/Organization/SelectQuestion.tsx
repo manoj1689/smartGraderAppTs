@@ -13,7 +13,7 @@ import { MdArrowOutward } from "react-icons/md";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import NotificationBar from "../../common/Notification/NotificationBar";
-import QuestionView from "../Organization/QuestionView";
+import QuestionView from "./QuestionView";
 import Modal from "react-modal";
 import { fetchSearchResults ,fetchCardsData,fet} from "../../../services/api/IndividaulDataService";
 Modal.setAppElement("#root"); // Bind modal to root of the app to avoid screen readers issues

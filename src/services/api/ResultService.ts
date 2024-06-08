@@ -1,7 +1,7 @@
 // services/resultService.ts
 
 import axios from "axios";
-import { RESULT_BASE_URL } from "../../constants/constants";
+import { RESULT_BASE_URL } from "../../constants/Constants";
  const fetchResultData = async () => {
   try {
     const response = await axios.get(RESULT_BASE_URL);

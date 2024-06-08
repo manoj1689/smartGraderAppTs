@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet, Navigate } from 'react-router-dom';
 import SideBar from "../../components/common/Sidebar/SideBar"
-import MobileBar from "../../components/common/Header/mobileBar";
+import MobileBar from "../../components/common/Header/MobileBar";
 import { getLogged } from '../../utils/tokenUtils';
 
 function ProtectedRoute() {

@@ -1,6 +1,6 @@
 // src/utils/rememberedCredentials.ts
 
-import { REMEMBERED_EMAIL_KEY, REMEMBERED_PASSWORD_KEY,REMEMBERED_PASSWORD_EMAIL_KEY } from '../constants/constants';
+import { REMEMBERED_EMAIL_KEY, REMEMBERED_PASSWORD_KEY,REMEMBERED_PASSWORD_EMAIL_KEY } from '../constants/Constants';
 
 export const getRememberedEmail = (): string | null => {
     return localStorage.getItem(REMEMBERED_EMAIL_KEY);

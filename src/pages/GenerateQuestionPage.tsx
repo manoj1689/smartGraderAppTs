@@ -14,7 +14,7 @@ import fileUpload from "../assets/images/GenerateQuestions/file-uploading.png";
 import maleEmployee from "../assets/images/GenerateQuestions/male-employee-tick-in-checkbox.png";
 import youngGirl from "../assets/images/GenerateQuestions/young-girl-write-report.png";
 import QuestionService, { FormData, Question } from "../services/api/QuestionService";
-import { QUESTION_SOURCE } from "../constants/constants";
+import { QUESTION_SOURCE } from "../constants/Constants";
 
 const GenerateQuestionsPage: React.FC = () => {
   const navigate = useNavigate();

@@ -1,6 +1,6 @@
 // src/utils/tokenUtils.ts
 
-import { JWT_TOKEN_KEY,EMAIL_ID_KEY,LOGGED_IN_KEY } from '../constants/constants';
+import { JWT_TOKEN_KEY,EMAIL_ID_KEY,LOGGED_IN_KEY } from '../constants/Constants';
 
 export const getToken = (): string | null => {
     return localStorage.getItem(JWT_TOKEN_KEY);

@@ -8,8 +8,8 @@ import socialIcon from "../../assets/logos/social-icon.png";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { LoginService } from "../../services/api/LoginService.ts";
-import { handleMouseDown, handleMouseUp } from "../common/Mouse/handleMouse.ts";
-import { handleChange, handleCheckboxChange } from "../common/Form/handleForm.ts";
+import { handleMouseDown, handleMouseUp } from "../common/Mouse/HandleMouse.ts";
+import { handleChange, handleCheckboxChange } from "../common/Form/HandleForm.ts";
 import { FormData } from "../../types/interfaces/interface.ts";
 import { getRememberedEmail, getRememberedPassword,  } from '../../utils/rememberedCredentials.ts';
 

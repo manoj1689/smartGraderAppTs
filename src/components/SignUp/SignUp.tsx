@@ -5,7 +5,7 @@ import { SignUpService } from "../../services/api/SignUpService";
 import {
   handleMouseDown,
   handleMouseUp,
-} from "../common/Mouse/handleMouse";
+} from "../common/Mouse/HandleMouse";
 import { SignupRequest } from "../../types/interfaces/interface";
 import smartLogo from "../../assets/logos/smart-logo.png";
 import educationSticker from "../../assets/stickers/persons/education-sticker.png";
