@@ -2,7 +2,7 @@ import React from 'react'
 
 function practice() {
   return (
-    <div>practice</div>
+    <div>Now m going to update all code.</div>
   )
 }
 
