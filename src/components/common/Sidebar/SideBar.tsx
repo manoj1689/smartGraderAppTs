@@ -52,11 +52,12 @@ function SideBar() {
         <div className="flex flex-col items-center justify-center mt-6 space-y-4">
           {/* Menu items */}
           {/* Dashboard */}
+          
           <div
             className={`flex items-center w-full p-4 text-base cursor-pointer transition duration-300 ${
               activeItem === 'Dashboard' ? 'text-[#0190C3]' : 'text-neutral-500'
             }`}
-            onClick={() => handleItemClick('Dashboard')}
+            onClick={()=>navigate("/dashboard")}
           >
             <MdOutlineDashboardCustomize className="w-6 h-6" />
             {isSidebarOpen && <span className="ml-4">Dashboard</span>}
@@ -96,7 +97,7 @@ function SideBar() {
             className={`flex items-center w-full p-4 text-base cursor-pointer transition duration-300 ${
               activeItem === 'Settings' ? 'text-[#0190C3]' : 'text-neutral-500'
             }`}
-            onClick={() => handleItemClick('Settings')}
+            onClick={()=>navigate("settings")}
           >
             <IoSettingsOutline className="w-6 h-6" />
             {isSidebarOpen && <span className="ml-4">Settings</span>}
@@ -106,7 +107,7 @@ function SideBar() {
             className={`flex items-center w-full p-4 text-base cursor-pointer transition duration-300 ${
               activeItem === 'Help & Support' ? 'text-[#0190C3]' : 'text-neutral-500'
             }`}
-            onClick={() => handleItemClick('Help & Support')}
+            onClick={()=>navigate("help&support")}
           >
             <BsQuestionCircle className="w-6 h-6" />
             {isSidebarOpen && <span className="ml-4">Help & Support</span>}
