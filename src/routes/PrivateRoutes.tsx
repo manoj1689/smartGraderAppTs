@@ -12,6 +12,8 @@ import GenerateQuestionsPage from "../pages/GenerateQuestionPage";
 import ResultPage from "../pages/ResultPage";
 import SettingPage from "../pages/SettingPage";
 import HelpSupportPage from "../pages/Help&SupportPage";
+import MockInterViewPage from "../pages/MockInterviewPage";
+import SelectQuestionPage from "../pages/SelectQuesionPage";
 // import SelectQuestion from "../components/dashboards/organizationDashBoard/SelectQuestion";
 
 
@@ -29,6 +31,8 @@ const PrivateRoutes: React.FC = () => {
         <Route path="result" element={<ResultPage />} />
         <Route path="settings" element={<SettingPage />} /> 
         <Route path="help&support" element={<HelpSupportPage />} /> 
+        <Route path="mockinterview" element={<MockInterViewPage />} /> 
+        <Route path="createjobs/selectquestion" element={<SelectQuestionPage />} />
         {/*  <Route path="result" element={<ResultPage />} />
         <Route path="interviewscreen" element={<InterviewScreen />} />
       

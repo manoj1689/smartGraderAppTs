@@ -23,7 +23,10 @@ import {
   fetchSearchResults,
 } from "../../../services/api/IndividaulDataService";
 import { Category,Card } from "../../../types/interfaces/interface";
-function IndividualDashBoard() {
+import { IndividualDashboardProps } from "../../../types/interfaces/interface";
+
+
+const IndividualDashBoard:React.FC<IndividualDashboardProps> =({ individualData })=> {
   const navigate = useNavigate();
   const [cardsData, setCardsData] = useState<Card[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -96,9 +99,9 @@ function IndividualDashBoard() {
     console.log(result);
   };
 
-  const handleOnSelect = (item:any) => {
+  const handleOnSelect = (searchList:any) => {
     // the item selected
-    console.log(item);
+    console.log(searchList);
   };
 
   const handleOnFocus = () => {
@@ -141,8 +144,9 @@ function IndividualDashBoard() {
          <div className="container mx-auto lg:w-11/12">
            <Carousel
              swipeable={true}
-             draggable={false}
+             draggable={true}
              showDots={false}
+             arrows={false}
              responsive={responsive}
              ssr={true}
              infinite={true}

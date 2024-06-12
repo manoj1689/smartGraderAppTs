@@ -11,7 +11,7 @@ const PublicRoutes: React.FC = () => {
     <>
       <Routes>
         <Route path="/"   element={
-          getToken() ?  <CreateAccountPage /> : <SignInPage /> 
+          getToken() ?   <SignInPage /> :<CreateAccountPage /> 
         } />
          <Route path="/signIn" element={<SignInPage />} />
         <Route path="/signUp" element={<SignUpPage />} />

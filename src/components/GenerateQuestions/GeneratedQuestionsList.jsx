@@ -5,6 +5,7 @@ const GeneratedQuestionsList = ({ generatedQuestions, setGeneratedQuestions }) =
   const handleEditQuestion = (index, newText) => {
     const updatedQuestions = [...generatedQuestions];
     updatedQuestions[index] = { ...updatedQuestions[index], question_text: newText };
+    console.log(updatedQuestions)
     setGeneratedQuestions(updatedQuestions);
   };
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { FiArrowUpRight } from "react-icons/fi";
 import { SignUpService } from "../../services/api/SignUpService";
@@ -11,11 +11,13 @@ import smartLogo from "../../assets/logos/smart-logo.png";
 import educationSticker from "../../assets/stickers/persons/education-sticker.png";
 import organisationSticker from "../../assets/stickers/persons/organisation-sticker.png";
 import individualSticker from "../../assets/stickers/persons/individul-sticker.png";
+import { PiSpinnerGapBold, PiSpinnerBold } from "react-icons/pi";
+import { ToastContainer } from "react-toastify";
 
 const SignUp: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { activeTab }: { activeTab: string } = location.state || {};
+  const locationState = location.state as { activeTab?: string } | undefined;
 
   const [formData, setFormData] = useState<SignupRequest>({
     name: "",
@@ -23,14 +25,30 @@ const SignUp: React.FC = () => {
     password: "",
     user_type: "",
   });
-
+  
   const [isPressed, setIsPressed] = useState(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<string>("");
 
-  const { handleSubmit, handleChange } = SignUpService(setFormData);
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    const userType = searchParams.get('userType');
+
+    if (userType) {
+      setActiveTab(userType);
+    } else if (locationState && locationState.activeTab) {
+      setActiveTab(locationState.activeTab);
+    }
+  }, [location.search, locationState]);
+
+  console.log("The active tab is", activeTab);
+
+  const { handleSubmit, handleChange } = SignUpService(setFormData, setLoading);
 
   return (
     <>
       <div className="container mx-auto min-h-screen px-4 py-4 flex flex-col lg:flex-row">
+        <ToastContainer />
         <div className="lg:hidden w-full">
           <Link to="/">
             <img width={179} height={43} src={smartLogo} alt="smart Grader" />
@@ -176,6 +194,11 @@ const SignUp: React.FC = () => {
                 type="submit"
               >
                 <div className="flex gap-2.5 font-spline">
+                {loading ? (
+                <PiSpinnerBold className="animate-spin mr-2" size={25} />
+              ) : (
+                <PiSpinnerGapBold className="mr-2" size={25} />
+              )}
                   <span>Create an Account</span>
                   <span>
                     <FiArrowUpRight size={20} />

@@ -59,9 +59,12 @@ export const LoginService = async (formData: FormData, navigate: NavigateFunctio
         toast.error("Please verify your email by your Gmail account.");
       } else {
         toast.error("Sign-in failed. Please check your credentials.");
+        
       }
     } else {
       toast.error("Sign-in failed. Please check your credentials.");
+      console.log(response)
+      
     }
   } catch (error) {
     console.error("Error signing in:", error);

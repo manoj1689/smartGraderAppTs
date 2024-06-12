@@ -1,10 +1,8 @@
 import React from 'react';
+import { EducationalDashboardProps } from '../../../types/interfaces/interface';
 
-interface EducationalDashBoardProps {
-  educationalData: any; // Replace `any` with a more specific type if available
-}
 
-const EducationalDashBoard: React.FC<EducationalDashBoardProps> = ({ educationalData }) => {
+const EducationalDashBoard: React.FC< EducationalDashboardProps> = ({ educationalData }) => {
   return (
     <div>
       {/* Render educationalData */}

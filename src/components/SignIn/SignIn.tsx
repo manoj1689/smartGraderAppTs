@@ -198,7 +198,7 @@ const SignIn: React.FC = () => {
     type="submit"
   >
     <div className="flex gap-2.5 px-3 font-spline ">
-      <span className="font-spline  text-sm sm:text-lg">Login</span>
+      <span className="font-spline  text-sm sm:text-lg"> Login</span>
     </div>
   </button>
 

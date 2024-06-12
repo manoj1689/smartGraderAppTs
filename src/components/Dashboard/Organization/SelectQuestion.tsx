@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef, ChangeEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axiosInstance from "../../../services/axios/axiosInstance";
-import codingDev from "../../../assets/individual/codingdeveloper.png";
-import star from "../../../assets/images/organisation/Star.png";
-import java from "../../../assets/individual/javaLogo.png";
+import codingDev from "../../../assets/images/Individual/codingdeveloper.png";
+import star from "../../../assets/images/Organisation/Star.png";
+import java from "../../../assets/images/Individual/javaLogo.png";
 import { HiDotsVertical, HiDotsHorizontal } from "react-icons/hi";
 import { CiClock2 } from "react-icons/ci";
 import { IoHelpCircleOutline } from "react-icons/io5";
@@ -15,7 +15,8 @@ import "react-multi-carousel/lib/styles.css";
 import NotificationBar from "../../common/Notification/NotificationBar";
 import QuestionView from "./QuestionView";
 import Modal from "react-modal";
-import { fetchSearchResults ,fetchCardsData,fet} from "../../../services/api/IndividaulDataService";
+import { fetchSearchResults, fetchCardsData } from "../../../services/api/IndividaulDataService";
+
 Modal.setAppElement("#root"); // Bind modal to root of the app to avoid screen readers issues
 
 interface Category {
@@ -106,7 +107,7 @@ const SelectQuestion: React.FC = () => {
 
   const handleCardClick = (id: string) => {
     setCardId(id);
-    setIsModalOpen(true); // Open modal when card is clicked
+   // setIsModalOpen(true); // Open modal when card is clicked
   };
 
   const handleOnSearch = (string: string) => {
@@ -218,7 +219,7 @@ const SelectQuestion: React.FC = () => {
           </Carousel>
         </div>
 
-        <div className="flex flex-wrap max-lg:justify-center max-lg:align-center gap-2 px-10 py-10 mt-10">
+        <div className="flex flex-wrap max-lg:justify-center max-lg:align-center gap-2 px-5 py-10 mt-10">
           {cardsData.map((card) => (
             <div
               key={card.id}
@@ -226,10 +227,12 @@ const SelectQuestion: React.FC = () => {
                 e.stopPropagation();
                 handleCardClick(card.id);
               }}
-              className="flex flex-row h-2/5 bg-white rounded-md border border-solid border-black border-opacity-10 shadow-md hover:shadow-lg hover:border-slate-800 transition duration-300 ease-in-out font-light text-neutral-500 cursor-pointer"
+              className={`flex flex-row rounded-md border border-solid border-black border-opacity-10 shadow-md hover:shadow-lg hover:border-slate-800 transition duration-300 ease-in-out font-light text-neutral-500 cursor-pointer ${
+                cardId === card.id ? "bg-sky-200" : "bg-sky-50"
+              }`}
             >
-              <div className="flex gap-5 justify-between px-6 py-6 font-light bg-sky-50 rounded-md border border-sky-500 border-solid max-w-[561px] text-neutral-500 max-md:flex-wrap max-md:pr-5">
-                <div className="flex flex-col lg:flex-row gap-4">
+              <div className="flex justify-between px-3 py-6 font-light rounded-md border border-sky-500 border-solid text-neutral-500 ">
+                <div className="flex flex-col lg:flex-row gap-2">
                   <div className="flex justify-center">
                     <img
                       loading="lazy"
@@ -249,7 +252,7 @@ const SelectQuestion: React.FC = () => {
                       />
                       <div className="flex-auto">{card.rating}/5</div>
                     </div>
-                    <div className="mt-2.5 text-lg leading-4 text-slate-800">
+                    <div className="flex mt-2.5 w-72 text-lg leading-4  text-slate-800">
                       <div className="flex">
                         <div>{card.title}</div>
                         <img
@@ -294,7 +297,10 @@ const SelectQuestion: React.FC = () => {
       </div>
 
       <div className="flex flex-col lg:w-2/3 gap-5 lg:flex-row">
-        <button className="flex justify-center items-center self-stretch mx-auto px-4 py-5 mt-10 text-base text-white bg-sky-500 rounded-md border border-sky-500 border-solid w-full max-md:px-5">
+        <button
+          className="flex justify-center items-center self-stretch mx-auto px-4 py-5 mt-10 text-base text-white bg-sky-500 rounded-md border border-sky-500 border-solid w-full max-md:px-5"
+          onClick={() => console.log("Selected Question Set ID:", cardId)}
+        >
           <div className="flex gap-2.5">
             <div className="flex items-center gap-3">
               <span>Continue With This Question Set</span>
@@ -302,7 +308,10 @@ const SelectQuestion: React.FC = () => {
             </div>
           </div>
         </button>
-        <button className="flex justify-center items-center mx-auto self-stretch px-4 py-5 mt-10 text-red-500 bg-white rounded-md border border-gray-400 w-full max-md:px-5">
+        <button
+          className="flex justify-center items-center mx-auto self-stretch px-4 py-5 mt-10 text-red-500 bg-white rounded-md border border-gray-400 w-full max-md:px-5"
+          onClick={() => setIsModalOpen(true)}
+        >
           <div className="flex gap-2.5">
             <div className="flex items-center gap-3">
               <span>View Question Set Details</span>
