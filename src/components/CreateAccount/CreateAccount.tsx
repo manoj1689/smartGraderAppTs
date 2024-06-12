@@ -5,7 +5,6 @@ import smartLogo from "../../assets/logos/smart-logo.png";
 import individualPerson from "../../assets/images/Account/individual-person.png";
 import organizationPerson from "../../assets/images/Account/organization-person.png";
 import educationalPerson from "../../assets/images/Account/educational-person.png";
-import WorkingMen from "../../assets/images/Account/workingman.jpg"
 import educationSticker from "../../assets/stickers/persons/education-sticker.png";
 import organisationSticker from "../../assets/stickers/persons/organisation-sticker.png";
 import individualSticker from "../../assets/stickers/persons/individul-sticker.png";

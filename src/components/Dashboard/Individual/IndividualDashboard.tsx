@@ -26,7 +26,7 @@ import { Category,Card } from "../../../types/interfaces/interface";
 import { IndividualDashboardProps } from "../../../types/interfaces/interface";
 
 
-const IndividualDashBoard:React.FC<IndividualDashboardProps> =({ individualData })=> {
+const IndividualDashBoard:React.FC<IndividualDashboardProps> =()=> {
   const navigate = useNavigate();
   const [cardsData, setCardsData] = useState<Card[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -90,7 +90,7 @@ const IndividualDashBoard:React.FC<IndividualDashboardProps> =({ individualData 
   const handleCardClick = (id:number) => {
     navigate(`/dashboard/question/${id}`);
   };
-  const handleOnSearch = (string:any, results:any) => {
+  const handleOnSearch = (string:any) => {
     setQuery(string); // Set the query state with the searched string
   };
 
@@ -136,7 +136,7 @@ const IndividualDashBoard:React.FC<IndividualDashboardProps> =({ individualData 
                onFocus={handleOnFocus}
                autoFocus
                formatResult={formatResult}
-               styling={{ border: "1.5px solid #C0C0C0", borderRadius: "5px" ,zIndex:"40" }}
+               styling={{ border: "1.5px solid #C0C0C0", borderRadius: "5px"  }}
              />
            </div>
          </div>

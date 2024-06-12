@@ -8,9 +8,23 @@ import { RiDeleteBinFill } from 'react-icons/ri';
 import { IoMdAddCircle } from 'react-icons/io';
 import Select, { SingleValue } from 'react-select';
 import { useNavigate } from 'react-router-dom';
-import { Job,SearchItem,Option } from '../../../types/interfaces/interface';
+import { SearchItem,Option } from '../../../types/interfaces/interface';
 import { fetchSearchResults } from '../../../services/api/CurrentJobService';
+
 const CurrentJobs: React.FC = () => {
+  type Job = {
+    id: number;
+    title: string;
+    level: string;
+    status: string;
+    applicants: number;
+    interviews: number;
+    Experienced: string; // Assuming this is a string
+    Respond: number;     // Assuming this is a number
+    UnResponse: number;  // Assuming this is a number
+        
+  };
+  
   const navigate = useNavigate();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState<boolean>(false);
@@ -56,12 +70,48 @@ const CurrentJobs: React.FC = () => {
   useEffect(() => {
     // Simulating initial data fetch
     setJobs([
-      { id: 1, title: 'Software Engineer', level: 'Mid', status: 'Open', applicants: 20, interviews: 5 },
-      { id: 2, title: 'Data Analyst', level: 'Junior', status: 'Closed', applicants: 15, interviews: 3 },
-      { id: 3, title: 'Software Engineer 1', level: 'Mid', status: 'Open', applicants: 20, interviews: 5 },
-      { id: 4, title: 'Data Analyst 1', level: 'Junior', status: 'Closed', applicants: 15, interviews: 3 },
-      { id: 5, title: 'Software Engineer 2', level: 'Mid', status: 'Open', applicants: 20, interviews: 5 },
-      { id: 6, title: 'Data Analyst 2', level: 'Junior', status: 'Closed', applicants: 15, interviews: 3 },
+      {
+        id: 1, title: 'Software Engineer', level: 'Mid', status: 'Open', applicants: 20, interviews: 5,
+        Experienced: '',
+        Respond: 0,
+        UnResponse: 0,
+       
+      },
+      {
+        id: 2, title: 'Data Analyst', level: 'Junior', status: 'Closed', applicants: 15, interviews: 3,
+        Experienced: '',
+        Respond: 0,
+        UnResponse: 0,
+        
+      },
+      {
+        id: 3, title: 'Software Engineer 1', level: 'Mid', status: 'Open', applicants: 20, interviews: 5,
+        Experienced: '',
+        Respond: 0,
+        UnResponse: 0,
+       
+      },
+      {
+        id: 4, title: 'Data Analyst 1', level: 'Junior', status: 'Closed', applicants: 15, interviews: 3,
+        Experienced: '',
+        Respond: 0,
+        UnResponse: 0,
+       
+      },
+      {
+        id: 5, title: 'Software Engineer 2', level: 'Mid', status: 'Open', applicants: 20, interviews: 5,
+        Experienced: '',
+        Respond: 0,
+        UnResponse: 0,
+        
+      },
+      {
+        id: 6, title: 'Data Analyst 2', level: 'Junior', status: 'Closed', applicants: 15, interviews: 3,
+        Experienced: '',
+        Respond: 0,
+        UnResponse: 0,
+        
+      },
     ]);
   }, []);
 

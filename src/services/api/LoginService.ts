@@ -1,8 +1,8 @@
 import { toast } from "react-toastify";
 import { NavigateFunction } from "react-router-dom"; // Import NavigateFunction type
 import { FormData } from "../../types/interfaces/interface";
-import { getToken, setToken, removeToken, getEmail, getLogged, setLogged, setEmail, removeEmail, removeLogged, removeEmail } from '../../utils/tokenUtils';
-import { getRememberedEmail, setRememberedEmail, removeRememberedEmail, getRememberedPassword, setRememberedPassword, removeRememberedPassword } from '../../utils/rememberedCredentials';
+import {  setToken, setLogged, setEmail } from '../../utils/tokenUtils';
+import {  setRememberedEmail, removeRememberedEmail, setRememberedPassword, removeRememberedPassword } from '../../utils/rememberedCredentials';
 import { API_BASE_URL } from "../../constants/Constants";
 import { LoginResponse } from "../../types/interfaces/interface";
 

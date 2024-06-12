@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useRef, ChangeEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
 import axiosInstance from "../../../services/axios/axiosInstance";
 import codingDev from "../../../assets/images/Individual/codingdeveloper.png";
 import star from "../../../assets/images/Organisation/Star.png";
@@ -15,9 +14,9 @@ import "react-multi-carousel/lib/styles.css";
 import NotificationBar from "../../common/Notification/NotificationBar";
 import QuestionView from "./QuestionView";
 import Modal from "react-modal";
-import { fetchSearchResults, fetchCardsData } from "../../../services/api/IndividaulDataService";
 
 Modal.setAppElement("#root"); // Bind modal to root of the app to avoid screen readers issues
+type Item=any;
 
 interface Category {
   id: number;
@@ -33,7 +32,7 @@ interface Card {
 }
 
 const SelectQuestion: React.FC = () => {
-  const navigate = useNavigate();
+
   const [cardsData, setCardsData] = useState<Card[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);

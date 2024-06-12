@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { MdOutlineDashboardCustomize } from 'react-icons/md';
 import { FaLaptopMedical } from 'react-icons/fa';
 import { GiProgression } from 'react-icons/gi';

@@ -1,5 +1,4 @@
 import axiosInstance from "../axios/axiosInstance";
-import { HEADERS } from "../../constants/Constants";
 import { ENDPOINTS } from "../../constants/Endpoints";
 
 class InterviewService {

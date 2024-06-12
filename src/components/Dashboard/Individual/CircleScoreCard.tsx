@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState} from "react";
 import { MdOutlineCreditScore } from "react-icons/md";
 import CircleScore from "../../../assets/images/Individual/circleScore.png";
 import { Scores } from "../../../types/interfaces/interface";
@@ -13,13 +13,13 @@ const CircleScoreCard: React.FC = () => {
   });
 
   // Define the type for the change event
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setScores((prevScores) => ({
-      ...prevScores,
-      [name]: Number(value),
-    }));
-  };
+  // const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = e.target;
+  //   setScores((prevScores) => ({
+  //     ...prevScores,
+  //     [name]: Number(value),
+  //   }));
+  // };
 
   return (
     <div className="grow pt-7 pr-8 w-full bg-white rounded-md border border-solid border-black border-opacity-10 max-md:mt-7 max-md:max-w-full">
