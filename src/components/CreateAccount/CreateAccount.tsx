@@ -5,17 +5,18 @@ import smartLogo from "../../assets/logos/smart-logo.png";
 import individualPerson from "../../assets/images/Account/individual-person.png";
 import organizationPerson from "../../assets/images/Account/organization-person.png";
 import educationalPerson from "../../assets/images/Account/educational-person.png";
+import WorkingMen from "../../assets/images/Account/workingman.jpg"
 import educationSticker from "../../assets/stickers/persons/education-sticker.png";
 import organisationSticker from "../../assets/stickers/persons/organisation-sticker.png";
 import individualSticker from "../../assets/stickers/persons/individul-sticker.png";
 import { handleMouseDown, handleMouseUp } from "../common/Mouse/HandleMouse";
 
-type Tab = "individual" | "organization" | "educational";
+type Tab = "individual" | "organization" | "educational" | "";
 
 const CreateAccount: React.FC = () => {
   const navigate = useNavigate();
   const [isPressed, setIsPressed] = useState<boolean>(false);
-  const [activeTab, setActiveTab] = useState<Tab>("individual");
+  const [activeTab, setActiveTab] = useState<Tab>("");
 
   const handleTabClick = (tab: Tab) => {
     setActiveTab(tab);
@@ -155,7 +156,7 @@ const CreateAccount: React.FC = () => {
               className="w-full rounded-md lg:px-16 object-cover"
             />
           )}
-          {activeTab === "organization" && (
+          {(activeTab === "organization" || activeTab==="") && (
             <img
               src={organizationPerson}
               alt="person"
