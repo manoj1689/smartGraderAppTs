@@ -9,6 +9,8 @@ import educationSticker from "../../assets/stickers/persons/education-sticker.pn
 import organisationSticker from "../../assets/stickers/persons/organisation-sticker.png";
 import individualSticker from "../../assets/stickers/persons/individul-sticker.png";
 import { handleMouseDown, handleMouseUp } from "../common/Mouse/HandleMouse";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 type Tab = "individual" | "organization" | "educational" | "";
 
@@ -21,8 +23,17 @@ const CreateAccount: React.FC = () => {
     setActiveTab(tab);
   };
 
+  const handleButtonClick = () => {
+    if (activeTab === "") {
+      toast.error("Please select one of the fields.");
+      return;
+    }
+    navigate("/signUp", { state: { activeTab } });
+  };
+
   return (
     <div className="container mx-auto px-4 py-4 flex flex-col lg:flex-row">
+      <ToastContainer />
       <div>
         <div className="flex lg:hidden gap-4 items-start text-neutral-500 max-md:flex-wrap">
           <Link to="/">
@@ -135,7 +146,7 @@ const CreateAccount: React.FC = () => {
             }`}
             onMouseDown={() => handleMouseDown(setIsPressed)}
             onMouseUp={() => handleMouseUp(setIsPressed)}
-            onClick={() => navigate("/signUp", { state: { activeTab } })}
+            onClick={handleButtonClick}
           >
             <div className="flex gap-2.5 px-px">
               <span>Create an Account</span>
@@ -155,7 +166,7 @@ const CreateAccount: React.FC = () => {
               className="w-full rounded-md lg:px-16 object-cover"
             />
           )}
-          {(activeTab === "organization" || activeTab==="") && (
+          {(activeTab === "organization" || activeTab === "") && (
             <img
               src={organizationPerson}
               alt="person"
