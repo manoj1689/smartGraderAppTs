@@ -24,7 +24,7 @@ function SideBar() {
   const handleLogoutClick = () => {
     serviceLogout();
     //navigate('/SignIn');
-    window.location.href=("http://localhost:3000/")
+    window.location.href=("https://smart-grader-landing-web.vercel.app/")
   };
   return (
     <div

@@ -26,7 +26,8 @@ const MobileBar: React.FC = () => {
 
   const handleLogoutClick = () => {
     serviceLogout();
-    navigate('/SignIn');
+    //navigate('/SignIn');
+    window.location.href=("https://smart-grader-landing-web.vercel.app/")
   };
 
   return (
