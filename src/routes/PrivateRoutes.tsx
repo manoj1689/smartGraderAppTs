@@ -13,7 +13,13 @@ import InterviewPage from "../pages/InterviewPage";
 import GenerateQuestionsPage from "../pages/GenerateQuestionPage";
 // @ts-ignore
 import ResultPage from "../pages/ResultPage";
-
+import SettingPage from "../pages/SettingPage";
+import HelpSupportPage from "../pages/Help&SupportPage";
+import MockInterViewPage from "../pages/MockInterviewPage";
+import SelectQuestionPage from "../pages/SelectQuesionPage";
+import EditSettingsPage from "../pages/EditSettingsPage";
+import CandidateInvitationPage from "../pages/CandidateInvitationPage";
+import CandidateResultPage from "../pages/CandidateResultPage";
 // import SelectQuestion from "../components/dashboards/organizationDashBoard/SelectQuestion";
 
 
@@ -31,6 +37,14 @@ const PrivateRoutes: React.FC = () => {
         <Route path="question/exam-end" element={<InterviewEndPage />} />
         <Route path="generatequestion" element={<GenerateQuestionsPage />} />
         <Route path="result" element={<ResultPage />} />
+        <Route path="settings" element={<SettingPage />} /> 
+        <Route path="editsettings" element={<EditSettingsPage />} /> 
+        <Route path="help&support" element={<HelpSupportPage />} /> 
+        <Route path="mockinterview" element={<MockInterViewPage />} /> 
+        <Route path="createjobs/selectquestion" element={<SelectQuestionPage />} />
+        <Route path="candidateresult" element={<CandidateResultPage/>} /> 
+        <Route path="candidateinvitation" element={<CandidateInvitationPage />} /> 
+
         {/*  <Route path="result" element={<ResultPage />} />
         <Route path="interviewscreen" element={<InterviewScreen />} />
       

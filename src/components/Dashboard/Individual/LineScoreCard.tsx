@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { FaRegIdCard } from "react-icons/fa6";
-import frontendLogo from "../../../assets/images/individual/frontendLogo.png";
-import backendLogo from "../../../assets/images/individual/backend.png";
-import frontendNext from "../../../assets/images/individual/frontendNext.png";
+import frontendLogo from "../../../assets/images/Individual/frontendLogo.png";
+import backendLogo from "../../../assets/images/Individual/backend.png";
+import frontendNext from "../../../assets/images/Individual/frontendNext.png";
 import { Result } from "../../../types/interfaces/interface";
 // Define the type for the result object
 

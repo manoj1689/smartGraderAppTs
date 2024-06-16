@@ -1,7 +1,7 @@
 // handleInterest.ts
 import axiosInstance from "../axios/axiosInstance";
 import { getToken } from "../../utils/tokenUtils";
-import { API_BASE_URL } from "../../constants/constants";
+import { API_BASE_URL } from "../../constants/Constants";
 export const fetchCategories = async (setCategories: (categories: any[]) => void) => {
   try {
     const response = await axiosInstance.get('/categories/all');

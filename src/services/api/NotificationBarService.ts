@@ -1,5 +1,5 @@
 // handleNotification.ts
-import { API_BASE_URL } from "../../constants/constants";
+import { API_BASE_URL } from "../../constants/Constants";
 export const fetchUserData = async (accessToken: string): Promise<{ name: string, is_verified: number } | null> => {
     try {
       const response = await fetch(`${API_BASE_URL}/users/me?jwt=${accessToken}`, {

@@ -1,6 +1,5 @@
 import axiosInstance from "../axios/axiosInstance";
-import { HEADERS } from "../../constants/constants";
-import { ENDPOINTS } from "../../constants/endpoints";
+import { ENDPOINTS } from "../../constants/Endpoints";
 
 export const fetchSetQuestions = async (setId, token) => {
   try {

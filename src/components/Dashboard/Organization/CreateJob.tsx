@@ -5,7 +5,7 @@ import NotificationBar from '../../common/Notification/NotificationBar';
 import { FaLaptopCode } from "react-icons/fa6";
 import { MdAddBox } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
-import Coding from "../../../assets/images/organisation/coding.png";
+import Coding from "../../../assets/images/Organisation/coding.png";
 import DatePicker from "react-datepicker";
 import { MdArrowOutward } from "react-icons/md";
 import { CreateJobService } from '../../../services/api/CreateJobService';

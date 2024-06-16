@@ -1,6 +1,6 @@
 import { MyFormData } from "../../types/interfaces/interface";
 import { toast } from "react-toastify";
-import { API_BASE_URL } from "../../constants/constants";
+import { API_BASE_URL } from "../../constants/Constants";
 // handlePassword.ts
 export const handleRecoverSubmit = async (formData: MyFormData): Promise<boolean> => {
     try {

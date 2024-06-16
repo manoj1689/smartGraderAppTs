@@ -7,7 +7,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { handleRecoverSubmit, handleOtpSubmit, handleResetPassword } from '../../services/api/PasswordService';
 import { MyFormData } from "../../types/interfaces/interface";
-import { handleMouseDown, handleMouseUp } from "../common/Mouse/handleMouse";
+import { handleMouseDown, handleMouseUp } from "../common/Mouse/HandleMouse";
 import { getRememberedPasswordEmail, setRememberedPasswordEmail } from "../../utils/rememberedCredentials";
 
 const Password: React.FC = () => {

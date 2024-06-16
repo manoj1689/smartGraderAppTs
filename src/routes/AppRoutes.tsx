@@ -13,6 +13,7 @@ const AppRoutes: React.FC = () => {
   
         <Route path="/*" element={<PublicRoutes />} /> 
         <Route path="/dashboard/*" element={<PrivateRoutes />} /> 
+      
         <Route path="/visitor/*" element={<VisitorLandingPage />} /> 
 
          {/* <Route path="*" element={<NotFound />} /> */}

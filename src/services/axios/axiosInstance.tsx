@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
 import { getToken, removeToken } from '../../utils/tokenUtils';

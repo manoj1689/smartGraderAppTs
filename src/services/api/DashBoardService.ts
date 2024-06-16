@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { API_BASE_URL ,INDIVIDAUL_USER_TYPE,ORGANIZATION_USER_TYPE,EDUCATIONAL_USER_TYPE} from "../../constants/constants";
+import { API_BASE_URL ,INDIVIDAUL_USER_TYPE,ORGANIZATION_USER_TYPE,EDUCATIONAL_USER_TYPE} from "../../constants/Constants";
 import { getToken } from '../../utils/tokenUtils';
 // Define a custom hook
 

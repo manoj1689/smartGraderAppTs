@@ -5,7 +5,7 @@ import OrganizationDashboard from './Organization/OrganizationDashboard';
 import { DashboardService } from '../../services/api/DashBoardService';
 
 
-import { INDIVIDAUL_USER_TYPE,ORGANIZATION_USER_TYPE,EDUCATIONAL_USER_TYPE} from "../../constants/constants";
+import { INDIVIDAUL_USER_TYPE,ORGANIZATION_USER_TYPE,EDUCATIONAL_USER_TYPE} from "../../constants/Constants";
 const Dashboard: React.FC = () => {
   const { dashboardKey, individualData, organizationData, educationalData } = DashboardService();
 

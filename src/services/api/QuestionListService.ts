@@ -1,6 +1,6 @@
 // handleQuestion.ts
 import { Question } from "../../types/interfaces/interface";
-import { API_BASE_URL } from "../../constants/constants";
+import { API_BASE_URL } from "../../constants/Constants";
   export const fetchQuestions = async (id: string): Promise<Question[]> => {
     const token = localStorage.getItem("accessToken");
     if (!token) {

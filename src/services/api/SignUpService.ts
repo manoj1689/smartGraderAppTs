@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SignupRequest } from '../../types/interfaces/interface';
-import { API_BASE_URL } from "../../constants/constants";
+import { API_BASE_URL } from "../../constants/Constants";
+import {  toast } from "react-toastify";
 
-export const SignUpService = (setFormData: React.Dispatch<React.SetStateAction<SignupRequest>>) => {
+export const SignUpService = (setFormData: React.Dispatch<React.SetStateAction<SignupRequest>>, setLoading: React.Dispatch<React.SetStateAction<boolean>>) => {
   const navigate = useNavigate();
 
   const handleSubmit = async (
@@ -12,30 +13,44 @@ export const SignUpService = (setFormData: React.Dispatch<React.SetStateAction<S
     activeTab: any
   ) => {
     e.preventDefault();
+    setLoading(true); // Start the spinner
+  
     try {
       const queryParams = new URLSearchParams(formData as any);
       const queryString = queryParams.toString();
       const url = `${API_BASE_URL}/users/signup?${queryString}`;
-
+  
       console.log("Constructed URL:", url);
-
+  
       const response = await fetch(url, {
         method: "POST",
         headers: {
           "Accept": "application/json",
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(formData),
       });
-
+  
       if (response.ok) {
-        alert("A verification email has been sent. Please check your inbox and confirm it!");
-        navigate('/signIn', { state: { activeTab } });
+        const closeToast = () => {
+          navigate('/signIn', { state: { activeTab } });
+          setLoading(false); // Stop the spinner after navigation
+        };
+
+        toast.warn("A verification email has been sent. Please check your inbox and confirm it!", {
+          onClose: closeToast, // Handle close button click
+          autoClose:false, // 12 seconds delay
+          theme:"dark"
+        });
+        
       } else {
-        alert("Account creation failed!");
+        toast.error("Account creation failed!");
+        setLoading(false); // Stop the spinner if account creation fails
       }
     } catch (error) {
       console.error("Error creating account:", error);
-      alert("An error occurred while creating the account.");
+      toast.error("An error occurred while creating the account.");
+      setLoading(false); // Stop the spinner in case of an error
     }
   };
 
@@ -55,13 +70,13 @@ export const SignUpService = (setFormData: React.Dispatch<React.SetStateAction<S
       user_type: user_type,
     }));
   };
-  
 
   return {
     handleSubmit,
     handleChange
   };
 };
+
 
 
 

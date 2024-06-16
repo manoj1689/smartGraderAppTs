@@ -18,12 +18,14 @@ interface Job {
 }
 
 interface LocationState {
-  jobId?: number;
+  jobId?: number ;
 }
 
 const EditJobs: React.FC = () => {
-  const location = useLocation<LocationState>();
-  const { jobId } = location.state || {};
+  const location = useLocation();
+  const state = location.state as LocationState;
+  const { jobId } = state || {};
+  
 
   const [jobs] = useState<Job[]>([
     {

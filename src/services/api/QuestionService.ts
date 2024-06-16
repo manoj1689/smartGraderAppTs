@@ -1,7 +1,7 @@
 
 import axiosInstance from "../axios/axiosInstance";
-import { HEADERS, QUESTION_SOURCE } from "../../constants/constants";
-import { ENDPOINTS } from "../../constants/endpoints";
+import { HEADERS, QUESTION_SOURCE } from "../../constants/Constants";
+import { ENDPOINTS } from "../../constants/Endpoints";
 
 
 
@@ -58,7 +58,7 @@ class QuestionService {
       }
       console.log('Generated questions:', newQuestions);
       return newQuestions;
-    } catch (error) {
+    } catch (error:any) {
       console.error(`Error in generating questions: ${error.message}`);
       throw error;
     }
@@ -71,7 +71,7 @@ class QuestionService {
         questions,
         exam_timing: examTiming,
       });
-    } catch (error) {
+    } catch (error:any) {
       console.error(`Error in saving question set: ${error.message}`);
       throw error;
     }

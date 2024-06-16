@@ -159,5 +159,14 @@ export interface Job {
   Date: string;
 }
 
+export interface OrganizationDashboardProps {
+  organizationData: any; // Replace `any` with the actual type if known
+}
+export interface EducationalDashboardProps {
+  educationalData: any; // Replace `any` with the actual type if known
+}
 
+export interface IndividualDashboardProps {
+  individualData: any; // Replace `any` with the actual type if known
+}
 // Add more models as needed for other services and API requests/responses

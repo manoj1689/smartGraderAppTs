@@ -1,10 +1,16 @@
 
 import React, { useState, useEffect } from "react";
+// @ts-ignore
 import DomainQuestionsForm from "../components/GenerateQuestions/DomainQuestionsForm";
+// @ts-ignore
 import ResumeQuestionsForm from "../components/GenerateQuestions/ResumeQuestionsForm";
+// @ts-ignore
 import JDQuestionsForm from "../components/GenerateQuestions/JDQuestionsForm";
+// @ts-ignore
 import OwnQuestionsForm from "../components/GenerateQuestions/OwnQuestionsForm";
+// @ts-ignore
 import GeneratedQuestionsList from "../components/GenerateQuestions/GeneratedQuestionsList";
+// @ts-ignore
 import ExamSettings from "../components/GenerateQuestions/ExamSettings";
 import { FaSpinner, FaCheckCircle } from "react-icons/fa";
 import { MdErrorOutline } from "react-icons/md";
@@ -14,7 +20,7 @@ import fileUpload from "../assets/images/GenerateQuestions/file-uploading.png";
 import maleEmployee from "../assets/images/GenerateQuestions/male-employee-tick-in-checkbox.png";
 import youngGirl from "../assets/images/GenerateQuestions/young-girl-write-report.png";
 import QuestionService, { FormData, Question } from "../services/api/QuestionService";
-import { QUESTION_SOURCE } from "../constants/constants";
+import { QUESTION_SOURCE } from "../constants/Constants";
 
 const GenerateQuestionsPage: React.FC = () => {
   const navigate = useNavigate();
@@ -60,7 +66,7 @@ const GenerateQuestionsPage: React.FC = () => {
     navigate('/dashboard/interviewscreen');
     closeModal();
   };
-
+  console.log(isConfirm)
   const handleGenerateQuestions = async (data: FormData) => {
     setLoading(true);
     setError("");
