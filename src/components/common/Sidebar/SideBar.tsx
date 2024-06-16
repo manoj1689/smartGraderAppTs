@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { MdOutlineDashboardCustomize } from 'react-icons/md';
 import { FaLaptopMedical } from 'react-icons/fa';
 import { GiProgression } from 'react-icons/gi';
@@ -23,7 +23,8 @@ function SideBar() {
   };
   const handleLogoutClick = () => {
     serviceLogout();
-    navigate('/SignIn');
+    //navigate('/SignIn');
+    window.location.href=("https://smart-grader-landing-web.vercel.app/")
   };
   return (
     <div
@@ -57,7 +58,8 @@ function SideBar() {
             className={`flex items-center w-full p-4 text-base cursor-pointer transition duration-300 ${
               activeItem === 'Dashboard' ? 'text-[#0190C3]' : 'text-neutral-500'
             }`}
-            onClick={()=>navigate("/dashboard")}
+            onClick={() => {handleItemClick('Dashboard'),navigate("/dashboard")}}
+         
           >
             <MdOutlineDashboardCustomize className="w-6 h-6" />
             {isSidebarOpen && <span className="ml-4">Dashboard</span>}
@@ -67,7 +69,8 @@ function SideBar() {
             className={`flex items-center w-full p-4 text-base cursor-pointer transition duration-300 ${
               activeItem === 'Mock Interviews' ? 'text-[#0190C3]' : 'text-neutral-500'
             }`}
-            onClick={() => handleItemClick('Mock Interviews')}
+            onClick={() => {handleItemClick('Mock Interviews'),navigate("mockinterview")}}
+           
           >
             <FaLaptopMedical className="w-6 h-6" />
             {isSidebarOpen && <span className="ml-4">Mock Interviews</span>}
@@ -77,7 +80,7 @@ function SideBar() {
             className={`flex items-center w-full p-4 text-base cursor-pointer transition duration-300 ${
               activeItem === 'Progress Tracker' ? 'text-[#0190C3]' : 'text-neutral-500'
             }`}
-            onClick={() => handleItemClick('Progress Tracker')}
+            onClick={() => {handleItemClick('Progress Tracker'),navigate("/progresstracker")}}
           >
             <GiProgression className="w-6 h-6" />
             {isSidebarOpen && <span className="ml-4">Progress Tracker</span>}
@@ -87,7 +90,7 @@ function SideBar() {
             className={`flex items-center w-full p-4 text-base cursor-pointer transition duration-300 ${
               activeItem === 'Quick Access' ? 'text-[#0190C3]' : 'text-neutral-500'
             }`}
-            onClick={() => handleItemClick('Quick Access')}
+            onClick={() => {handleItemClick('Quick Access'),navigate("result")}}
           >
             <BsGraphUpArrow className="w-6 h-6" />
             {isSidebarOpen && <span className="ml-4">Quick Access</span>}
@@ -97,7 +100,7 @@ function SideBar() {
             className={`flex items-center w-full p-4 text-base cursor-pointer transition duration-300 ${
               activeItem === 'Settings' ? 'text-[#0190C3]' : 'text-neutral-500'
             }`}
-            onClick={()=>navigate("settings")}
+            onClick={()=>{handleItemClick('Settings'),navigate("settings")}}
           >
             <IoSettingsOutline className="w-6 h-6" />
             {isSidebarOpen && <span className="ml-4">Settings</span>}
@@ -107,7 +110,7 @@ function SideBar() {
             className={`flex items-center w-full p-4 text-base cursor-pointer transition duration-300 ${
               activeItem === 'Help & Support' ? 'text-[#0190C3]' : 'text-neutral-500'
             }`}
-            onClick={()=>navigate("help&support")}
+            onClick={()=>{handleItemClick('Help & Support'),navigate("help&support")}}
           >
             <BsQuestionCircle className="w-6 h-6" />
             {isSidebarOpen && <span className="ml-4">Help & Support</span>}

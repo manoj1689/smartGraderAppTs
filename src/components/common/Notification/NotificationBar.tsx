@@ -12,6 +12,7 @@ const NotificationBar: React.FC = () => {
       fetchUserData(accessToken).then((data) => {
         if (data && data.is_verified === 1) {
           setUsername(data.name);
+          console.log(data)
         }
       });
     } else {

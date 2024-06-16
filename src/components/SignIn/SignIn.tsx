@@ -17,7 +17,7 @@ const SignIn: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { activeTab } = location.state || {};
-  
+  console.log("the active tab",activeTab)
   const [isPressed, setIsPressed] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     email: "",
@@ -54,8 +54,8 @@ const SignIn: React.FC = () => {
             </div>
           </Link>
         </div>
-        <div className="w-full lg:w-1/2 flex flex-col justify-center items-center">
-          {activeTab !== "organization" && activeTab !== "educational" && (
+        <div className="w-full lg:w-1/2 flex flex-col justify-center items-start">
+          {(activeTab===undefined || activeTab === "individual") && (
             <div className="flex flex-col justify-center px-8 py-7 mt-5 bg-white rounded-md">
               <div className="flex flex-row gap-5 max-md:flex-wrap ">
                 <img
@@ -76,7 +76,7 @@ const SignIn: React.FC = () => {
               </div>
             </div>
           )}
-          {activeTab === "organization" && (
+          {(activeTab===undefined || activeTab === "organization" )&& (
             <div className="flex flex-col justify-center px-8 py-7 mt-5 bg-white rounded-md">
               <div className="flex gap-5 max-md:flex-wrap">
                 <img
@@ -96,7 +96,7 @@ const SignIn: React.FC = () => {
               </div>
             </div>
           )}
-          {activeTab === "educational" && (
+          {(activeTab===undefined || activeTab === "educational" )&& (
             <div className="flex flex-col justify-center px-8 py-7 mt-5 bg-white rounded-md">
               <div className="flex gap-5 max-md:flex-wrap">
                 <img
@@ -198,7 +198,7 @@ const SignIn: React.FC = () => {
     type="submit"
   >
     <div className="flex gap-2.5 px-3 font-spline ">
-      <span className="font-spline  text-sm sm:text-lg">Login</span>
+      <span className="font-spline  text-sm sm:text-lg"> Login</span>
     </div>
   </button>
 

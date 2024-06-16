@@ -11,8 +11,12 @@ import logo from "../../assets/images/Landing/logo.png";
 import banner from "../../assets/images/Landing/banner.png";
 import Testimonials from "../Visitor/Testimonials";
 import Rectangle from "../../assets/images/Landing/Rectangle 70.png";
-
+import BlueLine from "../../assets/images/Visitor/blueLine.png"
+import { CiLock } from "react-icons/ci";
+import { MdArrowOutward } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 function Visitor_landing() {
+  const navigate=useNavigate();
   const [inputValue, setInputValue] = useState("");
   const [value, setValue] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -39,8 +43,10 @@ function Visitor_landing() {
             <div>
               <img src={logo} alt="Smart Grader Logo" className="h-11" />
             </div>
-            <button className="flex gap-2.5 justify-center px-4 py-2 my-auto text-sm text-white bg-sky-500 rounded-md border border-sky-500 border-solid">
-              <div>Contact Support</div>^
+            <button className="flex gap-2.5 justify-center item-center px-4 py-2 my-auto text-sm text-white bg-sky-500 rounded-md border border-sky-500 border-solid">
+              <div onClick={()=>navigate('/dashboard/help&support')}>Contact Support</div>
+              <div> <MdArrowOutward size={20}/></div>
+
             </button>
           </div>
         <div>
@@ -53,13 +59,13 @@ function Visitor_landing() {
                 </div>
                 <img
                   loading="lazy"
-                  src="https://cdn.builder.io/api/v1/image/assets/TEMP/5639b4710a273bf194ca6afa84379561c151260a9e0a5345e84d3745a6d1ce49?apiKey=64ac1a7b85e84629af509d56edee2526&"
+                  src={BlueLine}
                   className="mt-1.5 max-w-full aspect-[14.29] w-[307px]"
                 />
                 <div className="mt-2 text-lg leading-6">
                   Your Gateway to Professional Growth
                 </div>
-                <div className="flex gap-2.5 justify-between mt-20 whitespace-nowrap rounded-md border border-solid border-neutral-500 leading-[100%] max-md:mt-10 p-[2px]">
+                <div className="flex gap-2.5 justify-between items-center mt-20 whitespace-nowrap rounded-md border border-solid border-neutral-500 leading-[100%] max-md:mt-10 p-[2px]">
                   <input
                     type="password"
                     value={inputValue}
@@ -67,23 +73,17 @@ function Visitor_landing() {
                     placeholder="Enter your password"
                     className="my-auto p-4 rounded flex-grow w-full bg-[#F2FBFF] border-transparent focus:border-transparent focus:outline-none"
                   />
-                  <img
-                    loading="lazy"
-                    src="https://cdn.builder.io/api/v1/image/assets/TEMP/e2158b0368d7dd1d329ebb86f7fcb880b9b630fce80bb5e6c32aa8052884b099?apiKey=64ac1a7b85e84629af509d56edee2526&"
-                    className="shrink-0 w-6 aspect-square"
-                  />
+                 <CiLock size={30} className="mr-8"/>
                 </div>
                 <div
                   className="flex justify-center items-center px-4 py-5 mt-3 w-full font-medium text-white bg-sky-500 rounded-md border border-sky-500 border-solid max-md:px-5 cursor-pointer"
                   onClick={handleClick}
                 >
-                  <button className="flex gap-2.5">
+                  <button className="flex items-center gap-2.5">
                     <div>Start Your Assessment</div>
-                    <img
-                      loading="lazy"
-                      src="https://cdn.builder.io/api/v1/image/assets/TEMP/b9b4506dcfad2637bb53bf541187812c239909983b58b3dd80d0ef130c2c8e41?apiKey=64ac1a7b85e84629af509d56edee2526&"
-                      className="shrink-0 my-auto border-2 border-white border-solid aspect-[0.88] stroke-[2px] stroke-white w-[7px]"
-                    />
+                   <div>
+                    <FaArrowRight size={15}/>
+                   </div>
                   </button>
                 </div>
                 {errorMessage && (

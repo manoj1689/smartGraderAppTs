@@ -8,9 +8,23 @@ import { RiDeleteBinFill } from 'react-icons/ri';
 import { IoMdAddCircle } from 'react-icons/io';
 import Select, { SingleValue } from 'react-select';
 import { useNavigate } from 'react-router-dom';
-import { Job,SearchItem,Option } from '../../../types/interfaces/interface';
+import { SearchItem,Option } from '../../../types/interfaces/interface';
 import { fetchSearchResults } from '../../../services/api/CurrentJobService';
+
 const CurrentJobs: React.FC = () => {
+  type Job = {
+    id: number;
+    title: string;
+    level: string;
+    status: string;
+    applicants: number;
+    interviews: number;
+    Experienced: string; // Assuming this is a string
+    Respond: number;     // Assuming this is a number
+    UnResponse: number;  // Assuming this is a number
+        
+  };
+  
   const navigate = useNavigate();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState<boolean>(false);
@@ -23,9 +37,9 @@ const CurrentJobs: React.FC = () => {
   const [activeJobId, setActiveJobId] = useState<number | null>(null);
 
   const options: Option[] = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' },
+    { value: 'nodeJs', label: 'nodeJs' },
+    { value: 'frontend', label: 'frontend' },
+    { value: 'backend', label: 'backend' },
   ];
 
   const customStyles = {
@@ -56,12 +70,48 @@ const CurrentJobs: React.FC = () => {
   useEffect(() => {
     // Simulating initial data fetch
     setJobs([
-      { id: 1, title: 'Software Engineer', level: 'Mid', status: 'Open', applicants: 20, interviews: 5 },
-      { id: 2, title: 'Data Analyst', level: 'Junior', status: 'Closed', applicants: 15, interviews: 3 },
-      { id: 3, title: 'Software Engineer 1', level: 'Mid', status: 'Open', applicants: 20, interviews: 5 },
-      { id: 4, title: 'Data Analyst 1', level: 'Junior', status: 'Closed', applicants: 15, interviews: 3 },
-      { id: 5, title: 'Software Engineer 2', level: 'Mid', status: 'Open', applicants: 20, interviews: 5 },
-      { id: 6, title: 'Data Analyst 2', level: 'Junior', status: 'Closed', applicants: 15, interviews: 3 },
+      {
+        id: 1, title: 'Software Engineer', level: 'Mid', status: 'Open', applicants: 20, interviews: 5,
+        Experienced: '',
+        Respond: 0,
+        UnResponse: 0,
+       
+      },
+      {
+        id: 2, title: 'Data Analyst', level: 'Junior', status: 'Closed', applicants: 15, interviews: 3,
+        Experienced: '',
+        Respond: 0,
+        UnResponse: 0,
+        
+      },
+      {
+        id: 3, title: 'Software Engineer 1', level: 'Mid', status: 'Open', applicants: 20, interviews: 5,
+        Experienced: '',
+        Respond: 0,
+        UnResponse: 0,
+       
+      },
+      {
+        id: 4, title: 'Data Analyst 1', level: 'Junior', status: 'Closed', applicants: 15, interviews: 3,
+        Experienced: '',
+        Respond: 0,
+        UnResponse: 0,
+       
+      },
+      {
+        id: 5, title: 'Software Engineer 2', level: 'Mid', status: 'Open', applicants: 20, interviews: 5,
+        Experienced: '',
+        Respond: 0,
+        UnResponse: 0,
+        
+      },
+      {
+        id: 6, title: 'Data Analyst 2', level: 'Junior', status: 'Closed', applicants: 15, interviews: 3,
+        Experienced: '',
+        Respond: 0,
+        UnResponse: 0,
+        
+      },
     ]);
   }, []);
 
@@ -200,15 +250,16 @@ const CurrentJobs: React.FC = () => {
 
           <div>
             {currentItems.map((job) => (
-              <div key={job.id} className="flex gap-5 justify-between w-full max-md:flex-wrap mb-4 border p-4 rounded">
-                <div className="flex gap-3">
-                  <div className="flex flex-col px-5 my-auto">
-                    <div className="text-lg leading-6 text-slate-800">{job.title}</div>
+              <div key={job.id} className="flex flex-col lg:flex-row gap-5 justify-between  w-full max-md:flex-wrap mb-4 border p-4 rounded">
+                <div className="flex lg:w-2/5   gap-3">
+                  <div className="flex flex-col   sm:px-5 my-auto">
+                <div className="text-lg leading-6 text-slate-800">{job.title}</div>
                     <div className="mt-1.5 text-sm font-light leading-5 text-neutral-500">{job.level}</div>
                   </div>
                 </div>
-                <div className="flex gap-5 justify-between items-start px-5 my-auto">
-                  <div className="flex flex-col whitespace-nowrap">
+                <div className=" flex flex-row lg:w-2/5 gap-5  justify-between items-start sm:px-5 my-auto">
+                 
+                  <div className="flex flex-col  whitespace-nowrap">
                     <div className="text-sm font-light leading-5 text-neutral-500">Status</div>
                     <div className="mt-2.5 text-lg leading-6 text-red-500">{job.status}</div>
                   </div>
@@ -220,9 +271,11 @@ const CurrentJobs: React.FC = () => {
                     <div className="text-sm font-light leading-5 text-neutral-500">Interview</div>
                     <div className="mt-3 text-lg leading-6 text-slate-800">{job.interviews}</div>
                   </div>
-                  <div>
+                 
+                </div>
+                <div className='flex lg:w-1/5  justify-center items-center'>
                     {activeJobId === job.id ? (
-                      <div className="flex flex-row gap-3 justify-center">
+                      <div className="flex flex-row gap-3  ">
                         <FaEdit
                           size={40}
                           className="p-2 rounded"
@@ -254,7 +307,6 @@ const CurrentJobs: React.FC = () => {
                       </div>
                     )}
                   </div>
-                </div>
               </div>
             ))}
           </div>
