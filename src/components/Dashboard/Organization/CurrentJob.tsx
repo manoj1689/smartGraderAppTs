@@ -37,9 +37,9 @@ const CurrentJobs: React.FC = () => {
   const [activeJobId, setActiveJobId] = useState<number | null>(null);
 
   const options: Option[] = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' },
+    { value: 'nodeJs', label: 'nodeJs' },
+    { value: 'frontend', label: 'frontend' },
+    { value: 'backend', label: 'backend' },
   ];
 
   const customStyles = {
@@ -250,15 +250,16 @@ const CurrentJobs: React.FC = () => {
 
           <div>
             {currentItems.map((job) => (
-              <div key={job.id} className="flex gap-5 justify-between w-full max-md:flex-wrap mb-4 border p-4 rounded">
-                <div className="flex gap-3">
-                  <div className="flex flex-col px-5 my-auto">
-                    <div className="text-lg leading-6 text-slate-800">{job.title}</div>
+              <div key={job.id} className="flex flex-col lg:flex-row gap-5 justify-between  w-full max-md:flex-wrap mb-4 border p-4 rounded">
+                <div className="flex lg:w-2/5   gap-3">
+                  <div className="flex flex-col   sm:px-5 my-auto">
+                <div className="text-lg leading-6 text-slate-800">{job.title}</div>
                     <div className="mt-1.5 text-sm font-light leading-5 text-neutral-500">{job.level}</div>
                   </div>
                 </div>
-                <div className="flex gap-5 justify-between items-start px-5 my-auto">
-                  <div className="flex flex-col whitespace-nowrap">
+                <div className=" flex flex-row lg:w-2/5 gap-5  justify-between items-start sm:px-5 my-auto">
+                 
+                  <div className="flex flex-col  whitespace-nowrap">
                     <div className="text-sm font-light leading-5 text-neutral-500">Status</div>
                     <div className="mt-2.5 text-lg leading-6 text-red-500">{job.status}</div>
                   </div>
@@ -270,9 +271,11 @@ const CurrentJobs: React.FC = () => {
                     <div className="text-sm font-light leading-5 text-neutral-500">Interview</div>
                     <div className="mt-3 text-lg leading-6 text-slate-800">{job.interviews}</div>
                   </div>
-                  <div>
+                 
+                </div>
+                <div className='flex lg:w-1/5  justify-center items-center'>
                     {activeJobId === job.id ? (
-                      <div className="flex flex-row gap-3 justify-center">
+                      <div className="flex flex-row gap-3  ">
                         <FaEdit
                           size={40}
                           className="p-2 rounded"
@@ -304,7 +307,6 @@ const CurrentJobs: React.FC = () => {
                       </div>
                     )}
                   </div>
-                </div>
               </div>
             ))}
           </div>

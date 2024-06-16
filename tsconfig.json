@@ -20,6 +20,6 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "src/react-country-state-city.d.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
