@@ -19,7 +19,7 @@ import BrowserInstructions from "../components/Interview/BrowserInstructions";
 
 import { CiMicrophoneOn } from "react-icons/ci";
 import { examEnd, examStart, fetchSetQuestions, submitAnswer } from "../services/api/InterviewService";
-import { MESSAGES } from "../constants/constants";
+import { MESSAGES } from "../constants/Constants";
 import NotificationBar from "../components/common/Notification/NotificationBar";
 import { useParams } from "react-router-dom";
 
