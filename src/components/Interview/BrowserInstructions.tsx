@@ -6,7 +6,8 @@ const BrowserInstructions = () => {
     const browser = bowser.getParser(window.navigator.userAgent);
     const browserName = browser.getBrowserName();
 
-    const instructions = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const instructions: any = {
         "Google Chrome": (
             <div className="space-y-2">
                 <h4 className="font-bold text-lg">Google Chrome</h4>
@@ -58,7 +59,7 @@ const BrowserInstructions = () => {
     const browserInstructions = instructions[browserName] || instructions['default'];
 
     return (
-        <div className="p-4 bg-white rounded shadow-lg">
+        <div className="p-4">
             {browserInstructions}
         </div>
     );

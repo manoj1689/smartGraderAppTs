@@ -3,7 +3,7 @@ import React from 'react';
 
 const Checklist = ({ items }) => {
   return (
-    <div className="bg-white p-4 shadow-lg rounded-lg">
+    <div className="p-4 ">
       <ul className="space-y-3">
         {items.map((item, index) => (
           <li

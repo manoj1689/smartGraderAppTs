@@ -34,6 +34,9 @@ export const ENDPOINTS = {
     GENERATE_BY_JD: "/generate/byjd",
     SAVE_QUESTION_SET: "/save_question_set",
     FETCH_QUESTION: "/questions/all", 
-    SUBMIT_ANSWER: "/evaluate_student_answer",
+    SUBMIT_ANSWER: "/questions/answer",
     FETCH_USER_DATA: "/users/me", 
+    EXAM_END: "/exams/end", 
+    EXAM_START: "/exams/start", 
+    MEDIA_UPLOAD: '/media/upload'
 };

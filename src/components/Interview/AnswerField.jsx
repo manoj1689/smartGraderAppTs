@@ -1,7 +1,7 @@
 // AnswerField.jsx
 import React from 'react';
 
-const AnswerField = ({ value, onChange, placeholder, charLimit }) => {
+const AnswerField = ({ value, onChange, placeholder, charLimit, disabled }) => {
   const remainingChars = charLimit - value.length;
 
   return (
@@ -15,6 +15,7 @@ const AnswerField = ({ value, onChange, placeholder, charLimit }) => {
         onCopy={(e) => e.preventDefault()} // Prevent copying
         onPaste={(e) => e.preventDefault()} // Prevent pasting
         rows={4}
+        disabled={disabled}
       />
       <div
         className={`text-sm font-medium ${

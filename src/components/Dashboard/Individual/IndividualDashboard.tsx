@@ -94,10 +94,14 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
   };
   //  console.log("categories Data top Bar",selectedCategories)
 
-  const handleCardClick = (id: number) => {
-    navigate(`/dashboard/question/${id}`);
+  // const handleCardClick = (id:number) => {
+  //   navigate(`/dashboard/question/${id}/instructions`);
+  // };
+  const handleCardClick = (interview: any) => {
+    navigate(`/dashboard/question/${interview.id}/instructions`, { state: { interview } });
   };
-  const handleOnSearch = (string: any) => {
+
+  const handleOnSearch = (string:any) => {
     setQuery(string); // Set the query state with the searched string
   };
 
@@ -196,7 +200,7 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
               key={card.id}
               onClick={(e) => {
                 e.stopPropagation();
-                handleCardClick(card.id);
+                handleCardClick(card);
               }}
               className="flex flex-col p-4 h-2/5 bg-white rounded-md border border-solid border-black border-opacity-10 shadow-md hover:shadow-lg hover:border-slate-800 transition duration-300 ease-in-out w-64 font-light text-neutral-500 cursor-pointer"
             >
