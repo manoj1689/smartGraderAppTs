@@ -6,12 +6,8 @@ import Switch from "react-switch";
 import { MdArrowOutward } from "react-icons/md";
 import Select, { SingleValue } from "react-select";
 import { LuImagePlus } from "react-icons/lu";
-import {
-  CitySelect,
-  CountrySelect,
-  StateSelect,
-  LanguageSelect,
-} from "react-country-state-city";
+// @ts-ignore
+import { CountrySelect } from "react-country-state-city";
 import "react-country-state-city/dist/react-country-state-city.css";
 
 const EditSetting: React.FC = () => {
