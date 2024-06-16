@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import * as faceapi from 'face-api.js';
 import { toast } from 'react-toastify';
+import { uploadScreenshot } from '../../services/api/InterviewService';
+import { useParams } from 'react-router-dom';
 
 const MODEL_URL = '/models';
 
@@ -28,11 +30,14 @@ const detectFaces = async (videoElement) => {
     }
 };
 
-const CameraFeed = ({ onFacesDetected }) => {
+const CameraFeed = ({ onFacesDetected, examStarted }) => {
     const videoRef = useRef(null);
     const intervalIdRef = useRef(null);
     const noFaceTimeoutRef = useRef(null);
     const multipleFaceTimeoutRef = useRef(null);
+    const token = localStorage.getItem("accessToken");
+    const { questionSetId } = useParams();
+    const screenshotIntervalRef = useRef(null);  // Reference for screenshot interval
 
     const handleVideoPlay = useCallback(() => {
         intervalIdRef.current = setInterval(async () => {
@@ -73,6 +78,31 @@ const CameraFeed = ({ onFacesDetected }) => {
         }, 500);
     }, [onFacesDetected]);
 
+    const handleUploadMedia = async (file) => {
+        try {
+          await uploadScreenshot(questionSetId, token, file);    
+        } catch (error) {
+          console.log(' error', error) //TODO handle error here
+        }
+      };
+
+      const captureScreenshot = useCallback(async () => {
+        if (videoRef.current) {
+            const canvas = document.createElement('canvas');
+            canvas.width = videoRef.current.videoWidth;
+            canvas.height = videoRef.current.videoHeight;
+            const context = canvas.getContext('2d');
+            context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+
+            canvas.toBlob(async (blob) => {
+                const formData = new FormData();
+                formData.append('file', blob, 'screenshot.png');
+
+                handleUploadMedia(formData)
+            }, 'image/png');
+        }
+        }, []);
+
     useEffect(() => {
         const startVideo = async () => {
             try {
@@ -95,6 +125,7 @@ const CameraFeed = ({ onFacesDetected }) => {
         return () => {
             if (intervalIdRef.current) clearInterval(intervalIdRef.current);
             if (noFaceTimeoutRef.current) clearTimeout(noFaceTimeoutRef.current);
+            if (screenshotIntervalRef.current) clearInterval(screenshotIntervalRef.current); // Clear screenshot interval
             if (multipleFaceTimeoutRef.current) clearTimeout(multipleFaceTimeoutRef.current);
             if (videoRef.current && videoRef.current.srcObject) {
                 videoRef.current.srcObject.getTracks().forEach(track => track.stop());
@@ -102,6 +133,17 @@ const CameraFeed = ({ onFacesDetected }) => {
             }
         };
     }, [handleVideoPlay]);
+
+    useEffect(() => {
+        if (examStarted) {
+            screenshotIntervalRef.current = setInterval(captureScreenshot, 30000); // Take screenshots every 30 seconds
+        } else {
+            if (screenshotIntervalRef.current) clearInterval(screenshotIntervalRef.current);
+        }
+        return () => {
+            if (screenshotIntervalRef.current) clearInterval(screenshotIntervalRef.current);
+        };
+    }, [examStarted, captureScreenshot]);
 
     return (
         <div>

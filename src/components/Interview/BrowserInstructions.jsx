@@ -58,7 +58,7 @@ const BrowserInstructions = () => {
     const browserInstructions = instructions[browserName] || instructions['default'];
 
     return (
-        <div className="p-4 bg-white rounded shadow-lg">
+        <div className="p-4">
             {browserInstructions}
         </div>
     );
