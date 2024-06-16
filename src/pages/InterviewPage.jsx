@@ -403,13 +403,27 @@ const InterviewScreen = () => {
                         <div className="space-y-2 text-center">
                           <BrowserInstructions />
                           <p>Please check every box on the left befire starting your interview</p>
-                          <button
-                            onClick={handleExamStart}
-                            // disabled={!areAllPermissionsGranted}
-                            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                          >
-                            Start Exams
-                          </button>
+                          {
+                            questionsData.length === 0 ?
+                            <>
+                              <p>The selected question set does not have questions in it, please contact the interviewer</p>
+                              <button
+                                  type="button"
+                                  className="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-blue-600"
+                                  onClick={() => navigate(`/dashboard`)}
+                                >
+                                  Dashboard
+                                </button>
+                            </>
+                            :
+                            <button
+                              onClick={handleExamStart}
+                              // disabled={!areAllPermissionsGranted}
+                              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                            >
+                              Start Exams
+                            </button>
+                          }
                         </div>
                       </div>
                       </div>
