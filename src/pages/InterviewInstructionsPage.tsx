@@ -4,7 +4,7 @@ import NotificationBar from "../components/common/Notification/NotificationBar";
 import {formattedCurrentDate} from '../utils/formatDate';
 import BrowserInstructions from '../components/Interview/BrowserInstructions';
 
-const InterviewInstructions = () => {
+const InterviewInstructions:React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { interview } = location.state || {};

@@ -1,7 +1,7 @@
 import axiosInstance from "../axios/axiosInstance";
 import { ENDPOINTS } from "../../constants/Endpoints";
 
-export const fetchSetQuestions = async (setId, token) => {
+export const fetchSetQuestions = async (setId: string, token: string) => {
   try {
     const response = await axiosInstance.get(`${ENDPOINTS.FETCH_QUESTION}?set_id=${setId}`, {
       headers: {
@@ -15,7 +15,7 @@ export const fetchSetQuestions = async (setId, token) => {
   }
 };
 
-export const submitAnswer = async (questionId, examId, duration, answer, token) => {
+export const submitAnswer = async (questionId: string, examId: string, duration: string, answer: string, token: string) => {
   try {
     const response = await axiosInstance.post(`${ENDPOINTS.SUBMIT_ANSWER}?question_id=${questionId}&exam_id=${examId}&duration=${duration}&answer=${answer}`, {}, {
       headers: {
@@ -29,7 +29,7 @@ export const submitAnswer = async (questionId, examId, duration, answer, token) 
   }
 };
 
-export const examStart = async (examId, token) => {
+export const examStart = async (examId: string, token: string) => {
   try {
     const response = await axiosInstance.post(`${ENDPOINTS.EXAM_START}?set_id=${examId}`, {}, {
       headers: {
@@ -43,7 +43,7 @@ export const examStart = async (examId, token) => {
   }
 };
 
-export const examEnd = async (examId, token) => {
+export const examEnd = async (examId: string, token: string) => {
   try {
     const response = await axiosInstance.post(`${ENDPOINTS.EXAM_END}?exam_id=${examId}`, {}, {
       headers: {
@@ -57,7 +57,7 @@ export const examEnd = async (examId, token) => {
   }
 };
 
-export const uploadScreenshot = async (examId, token, file) => {
+export const uploadScreenshot = async (examId: string, token: string, file: File) => {
   try {
     const response = await axiosInstance.post(`${ENDPOINTS.MEDIA_UPLOAD}?exam_id=${examId}`, file, {
       headers: {
