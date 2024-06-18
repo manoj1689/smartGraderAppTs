@@ -355,10 +355,10 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
         </div>
       </div>
       <div className="flex flex-col mb-10 lg:flex-row gap-3  max-lg:flex-col max-lg:gap-0">
-        <div className="w-full lg:w-1/2 cursor-pointer">
+        <div className="w-full lg:w-1/2 my-2 ">
           <LineScoreCard />
         </div>
-        <div className="w-full lg:w-1/2 ">
+        <div className="w-full lg:w-1/2 my-2 ">
           <CircleScoreCard />
         </div>
       </div>
