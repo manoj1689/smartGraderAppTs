@@ -13,6 +13,7 @@ export const ROUTES = {
     READ_SUBCATEGORIES: '/categories/subcat',
     SEARCH_CATEGORIES: '/categories/search',
     GET_ALL_SETS: '/sets/all',
+    GET_SETS_ATTEMPTED: '/sets/attempted',
     GET_ALL_QUESTIONS: '/questions/all',
     SUBMIT_ANSWER: '/questions/answer',
     ADD_QUESTIONS: '/questions/add',

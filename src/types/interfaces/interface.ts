@@ -159,6 +159,18 @@ export interface Job {
   Date: string;
 }
 
+export interface LineScore {
+  id: number;
+  title: string;
+  description: string;
+  level: number;
+  img_url: string;
+  duration: number;
+  questions_count: number;
+  rating: number;
+}
+
+
 export interface OrganizationDashboardProps {
   organizationData: any; // Replace `any` with the actual type if known
 }

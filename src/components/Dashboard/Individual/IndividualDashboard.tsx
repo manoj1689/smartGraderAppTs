@@ -35,6 +35,10 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [searchList, setSearchList] = useState<Category[]>([]);
   const [query, setQuery] = useState<string>("");
+  const [showPreparationTips, setShowPreparationTips] =
+    useState<boolean>(false);
+    const [showAchievementsTips, setShowAchievementsTips] =
+    useState<boolean>(false);
   const prevQueryRef = useRef<string>("");
 
   const responsive = {
@@ -98,10 +102,12 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
   //   navigate(`/dashboard/question/${id}/instructions`);
   // };
   const handleCardClick = (interview: any) => {
-    navigate(`/dashboard/question/${interview.id}/instructions`, { state: { interview } });
+    navigate(`/dashboard/question/${interview.id}/instructions`, {
+      state: { interview },
+    });
   };
 
-  const handleOnSearch = (string:any) => {
+  const handleOnSearch = (string: any) => {
     setQuery(string); // Set the query state with the searched string
   };
 
@@ -130,6 +136,12 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
         </span>
       </>
     );
+  };
+  const togglepreparationTips = () => {
+    setShowPreparationTips(!showPreparationTips);
+  };
+  const toggleAchievementsTips = () => {
+    setShowAchievementsTips(!showAchievementsTips);
   };
   return (
     <div className="container mx-auto w-full h-full px-4 md:px-10 ">
@@ -342,26 +354,25 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col mb-10 md:flex-row gap-3  max-md:flex-col max-md:gap-0">
-        <div
-          className="w-full md:w-1/2 cursor-pointer"
-          onClick={() => navigate("/dashboard/result")}
-        >
+      <div className="flex flex-col mb-10 lg:flex-row gap-3  max-lg:flex-col max-lg:gap-0">
+        <div className="w-full lg:w-1/2 cursor-pointer">
           <LineScoreCard />
         </div>
-        <div className="w-full md:w-1/2 ">
+        <div className="w-full lg:w-1/2 ">
           <CircleScoreCard />
         </div>
       </div>
       <div className="my-10 flex flex-col lg:flex-row gap-3">
-        <div className="flex flex-col md:flex-row gap-3  lg:w-1/2">
+        <div className="flex flex-col md:flex-row gap-3  w-full">
           <div className="flex flex-col  py-8 pr-7 pl-3.5 bg-white  border border-solid border-black border-opacity-10 w-full ">
             <div className="flex gap-3 self-start text-lg font-medium leading-6 whitespace-nowrap text-slate-800">
               <FaMedal size={20} color="gray" />
               <div className="flex-auto my-auto">Badges/Achievements</div>
             </div>
             <div className="shrink-0 mt-4 ml-3.5 w-full h-px  rounded-md border border-solid border-black border-opacity-10" />
-            <img
+            <div className="flex justify-between items-center">
+              <div>
+              <img
               loading="lazy"
               src={achievement}
               className="mt-2.5 max-w-full aspect-[1.33] w-[109px]"
@@ -369,33 +380,94 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
             <div className="ml-5 text-sm leading-5 text-neutral-500">
               Entry Level
             </div>
+              </div>
+              <div
+                    className=" mt-3.5 px-2 text-xs leading-4 text-sky-500 underline cursor-pointer"
+                    onClick={toggleAchievementsTips}
+                  >
+                   Start Earning Badges
+                  </div>
+            </div>
+            {showAchievementsTips && (
+               <div className="text-neutral-700 my-5">
+               Your achievements and badges will be displayed here as you progress through your interviews and challenges. 
+               Each badge represents a milestone in your journey, encouraging you to learn and excel. 
+               Begin your assessments to start collecting your badges!
+             </div>
+              )} 
+          
+           
           </div>
-          <div className="flex flex-col  justify-center font-light  rounded-md border border-solid border-black border-opacity-10 w-full ">
-            <div className="flex overflow-hidden bg-white relative flex-col items-start  lg:p-2.5 w-full aspect-[2]    md:aspect-[1.28] ">
-              <img
-                loading="lazy"
-                alt="interview"
-                src={interView}
-                className="absolute bottom-0 right-0 object-cover "
-              />
-              <div className="relative text-lg px-2 font-medium leading-6 text-slate-800">
-                <br />
-                Preparation
-                <br />
-                Tips
+          <div className="flex flex-col justify-center font-light rounded-md border border-solid border-black border-opacity-10 w-full h-full">
+            <div className="flex bg-white  flex-col items-start lg:p-2.5 w-full">
+              <div className="flex w-full py-5  ">
+                <div className=" w-full">
+                  <div className=" text-lg px-2  font-medium leading-6 text-slate-800">
+                    Preparation Tips
+                  </div>
+                  <div className="shrink-0 mt-4 ml-3.5 w-full h-px  rounded-md border border-solid border-black border-opacity-10" />
+                  <div className="mt-3 px-2 text-sm leading-5 text-neutral-500">
+                    How to prepare for the upcoming session
+                  </div>
+                  <div
+                    className=" mt-3.5 px-2 text-xs leading-4 text-sky-500 underline cursor-pointer"
+                    onClick={togglepreparationTips}
+                  >
+                    Read More
+                  </div>
+                </div>
+                <div className="flex justify-end w-full ">
+                  <img
+                    loading="lazy"
+                    alt="interview"
+                    src={interView}
+                    className=" object-cover"
+                  />
+                </div>
               </div>
-              <div className="relative mt-3  px-2  text-sm leading-5 text-neutral-500">
-                How to prepare <br />
-                for the upcoming session
-              </div>
-              <div className="relative mt-3.5  px-2  text-xs leading-4 text-sky-500 underline">
-                Read More
-              </div>
+
+              {showPreparationTips && (
+                <div className="mt-5 text-sm font-spline">
+                  <ul className="list-disc pl-5 text-neutral-700">
+                    <li className="mb-3">
+                      <span className="font-semibold">Review the Basics:</span>{" "}
+                      Before diving into advanced topics, ensure you have a
+                      solid understanding of the foundational concepts in your
+                      field.
+                    </li>
+                    <li className="mb-3">
+                      <span className="font-semibold">
+                        Practice Common Questions:
+                      </span>{" "}
+                      Familiarize yourself with frequently asked interview
+                      questions and practice your responses to gain confidence.
+                    </li>
+                    <li className="mb-3">
+                      <span className="font-semibold">Mock Interviews:</span>{" "}
+                      Take advantage of SmartGrader's mock interview feature to
+                      simulate the interview experience and receive feedback on
+                      your performance.
+                    </li>
+                    <li className="mb-3">
+                      <span className="font-semibold">Stay Informed:</span> Keep
+                      up-to-date with the latest trends and technologies
+                      relevant to your industry to showcase your knowledge
+                      during interviews.
+                    </li>
+                    <li>
+                      <span className="font-semibold">Relax and Reflect:</span>{" "}
+                      Prioritize your well-being. A calm mind will help you
+                      think clearly and communicate effectively during your
+                      interview.
+                    </li>
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
-        <div className="flex flex-col px-6 py-8 bg-white rounded-md border border-solid border-black border-opacity-10 lg:w-1/2 max-md:px-5">
+        {/* <div className="flex flex-col px-6 py-8 bg-white rounded-md border border-solid border-black border-opacity-10 lg:w-1/2 max-md:px-5">
           <div className="flex gap-5 justify-between w-full max-md:flex-wrap max-md:max-w-full">
             <div className="flex gap-5 self-start text-lg font-medium leading-6 items-center text-slate-800">
               <MdOutlineReviews size={25} color="gray" />
@@ -425,7 +497,7 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
               <li className="my-3">All other have good command on code. </li>
             </ul>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
