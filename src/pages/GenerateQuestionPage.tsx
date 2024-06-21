@@ -112,7 +112,7 @@ const GenerateQuestionsPage: React.FC = () => {
           <NotificationBar />
         </div>
         <div className="container flex flex-col lg:flex-row">
-          <div className="data_container mx-auto py-8 order-2 md:ml-10 lg:order-1 w-full lg:w-4/6">
+          <div className="data_container mx-auto px-4 py-8 order-2 md:ml-10 lg:order-1 w-full lg:w-4/6">
             <div className="flex gap-3">
             <FaLaptopCode size={20} color="gray"/>
             <span className="text-gray-80 font-spline font-bold mb-5"> Generate Question </span>
