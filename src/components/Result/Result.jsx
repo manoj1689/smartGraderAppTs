@@ -9,10 +9,13 @@ import { MESSAGES } from "../../constants/Constants";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FiArrowUpRight } from "react-icons/fi";
+import NotificationBar from "../common/Notification/NotificationBar";
+import ErrorPage from "../common/Error/ErrorDisplay";
 // @ts-ignore
 import fetchResultData from "../../services/api/ResultService";
 const Result = () => {
   const [user, setUser] = useState({});
+  const [error, setError] = useState(false);
   const printRef = useRef();
 
   useEffect(() => {
@@ -22,7 +25,8 @@ const Result = () => {
         setUser(data);
         console.log(data);
       } catch (error) {
-        // Handle the error appropriately in your UI
+        setError(true);
+        toast.error("Failed to fetch data.");
       }
     };
 
@@ -38,9 +42,12 @@ const Result = () => {
     printWindow.document.close();
     printWindow.print();
   };
-
+  if (error) {
+    return <ErrorPage />;
+  }
   return (
     <div className="container mx-auto w-full flex-col px-4 py-4 justify-center ">
+      <NotificationBar />
       <ToastContainer />
       <div className="flex my-5 flex-col rounded-md border border-solid border-black border-opacity-10 lg:flex-row">
         <div className="basis-2/3 flex flex-col md:flex-row  ">
@@ -167,40 +174,31 @@ const Result = () => {
         </div>
       </div>
       <div className="py-1.5 px-2 pr-1 mt-12 bg-sky-50 rounded-md border border-solid border-black border-opacity-10 ">
-                      <div className="flex gap-5 max-lg:flex-col max-md:gap-0 justify-center">
-                        <div className="flex flex-col   lg:w-2/3 max-md:ml-30">
-                          {user.scores?.map((skill, index) => {
-                            return <UserInfo key={index} data={skill} />;
-                          })}
-                        </div>
-                        <div>
-                          
-                        </div> 
-                        <div className=" flex justify-center items-center lg:w-1/3">
-                        {user && (
-                          <LoadingIndicator
-                            scores={user.scores}
-                          ></LoadingIndicator>
-                        )}
-                        </div>
-                      
-                      </div>
-                    </div>
-<div className="px-4  py-4 mt-12 bg-sky-50 rounded-md border border-solid border-black border-opacity-10 max-md:max-w-full">
-<EvaluationRecord user={user} /> 
-</div>
-                   
+        <div className="flex gap-5 max-lg:flex-col max-md:gap-0 justify-center">
+          <div className="flex flex-col   lg:w-2/3 max-md:ml-30">
+            {user.scores?.map((skill, index) => {
+              return <UserInfo key={index} data={skill} />;
+            })}
+          </div>
+          <div></div>
+          <div className=" flex justify-center items-center lg:w-1/3">
+            {user && <LoadingIndicator scores={user.scores}></LoadingIndicator>}
+          </div>
+        </div>
+      </div>
+      <div className="px-4  py-4 mt-12 bg-sky-50 rounded-md border border-solid border-black border-opacity-10 max-md:max-w-full">
+        <EvaluationRecord user={user} />
+      </div>
+
       <div className="gap-5 max-md:gap-0">
-        
-            {/* <div
+        {/* <div
               ref={printRef}
               className="flex flex-col px-7 pt-7 pb-20 bg-white rounded-md border border-solid border-black border-opacity-10 max-md:px-5 max-md:max-w-full mt-0"
             >
              
             </div> */}
-          </div>
-        </div>
-    
+      </div>
+    </div>
   );
 };
 

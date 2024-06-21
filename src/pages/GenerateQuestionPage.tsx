@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 // @ts-ignore
 import DomainQuestionsForm from "../components/GenerateQuestions/DomainQuestionsForm";
@@ -12,20 +11,26 @@ import OwnQuestionsForm from "../components/GenerateQuestions/OwnQuestionsForm";
 import GeneratedQuestionsList from "../components/GenerateQuestions/GeneratedQuestionsList";
 // @ts-ignore
 import ExamSettings from "../components/GenerateQuestions/ExamSettings";
-import { FaSpinner, FaCheckCircle } from "react-icons/fa";
+import { FaSpinner,FaCheck } from "react-icons/fa";
 import { MdErrorOutline } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import cheerfulMan from "../assets/images/GenerateQuestions/cheerful-man-working.png";
 import fileUpload from "../assets/images/GenerateQuestions/file-uploading.png";
 import maleEmployee from "../assets/images/GenerateQuestions/male-employee-tick-in-checkbox.png";
 import youngGirl from "../assets/images/GenerateQuestions/young-girl-write-report.png";
-import QuestionService, { FormData, Question } from "../services/api/QuestionService";
+import QuestionService, {
+  FormData,
+  Question,
+} from "../services/api/QuestionService";
 import { QUESTION_SOURCE } from "../constants/Constants";
-
+import NotificationBar from "../components/common/Notification/NotificationBar";
+import { FaLaptopCode } from "react-icons/fa6";
 const GenerateQuestionsPage: React.FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
-  const [questionSource, setQuestionSource] = useState<string>(QUESTION_SOURCE.DOMAIN);
+  const [questionSource, setQuestionSource] = useState<string>(
+    QUESTION_SOURCE.DOMAIN
+  );
   const [generatedQuestions, setGeneratedQuestions] = useState<Question[]>([]);
   const [examTiming, setExamTiming] = useState<number>(60);
   const [error, setError] = useState<string>("");
@@ -63,17 +68,23 @@ const GenerateQuestionsPage: React.FC = () => {
 
   const handleConfirm = () => {
     setConfirm(true);
-    navigate('/dashboard/interviewscreen');
+    navigate("/dashboard/interviewscreen");
     closeModal();
   };
-  console.log(isConfirm)
+  //console.log(isConfirm);
   const handleGenerateQuestions = async (data: FormData) => {
     setLoading(true);
     setError("");
 
     try {
-      const newQuestions = await QuestionService.generateQuestions(questionSource, data);
-      setGeneratedQuestions((prevQuestions) => [...prevQuestions, ...newQuestions]);
+      const newQuestions = await QuestionService.generateQuestions(
+        questionSource,
+        data
+      );
+      setGeneratedQuestions((prevQuestions) => [
+        ...prevQuestions,
+        ...newQuestions,
+      ]);
     } catch (error) {
       setError("Failed to generate questions. Please try again.");
     } finally {
@@ -95,137 +106,167 @@ const GenerateQuestionsPage: React.FC = () => {
   };
 
   return (
-    <div className="container flex flex-col mx-auto lg:flex-row">
-      <div className="data_container mx-auto py-8 px-4 order-2 md:ml-10 lg:order-1 w-full lg:w-4/6">
-        <h1 className="text-3xl font-bold mb-6">Generate Exam Question Set</h1>
-        <div className="bg-white shadow-md rounded-lg p-6">
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2">
-              Set Your Own Questions
-            </label>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="flex items-center mb-4">
-                <input
-                  type="radio"
-                  id="domain"
-                  name="questionSource"
-                  value={QUESTION_SOURCE.DOMAIN}
-                  onChange={() => setQuestionSource(QUESTION_SOURCE.DOMAIN)}
-                  className="mr-2"
-                  defaultChecked
-                />
-                <label htmlFor="domain">By Selecting Different Domain</label>
-              </div>
-              <div className="flex items-center mb-4">
-                <input
-                  type="radio"
-                  id="resume"
-                  name="questionSource"
-                  value={QUESTION_SOURCE.RESUME}
-                  onChange={() => setQuestionSource(QUESTION_SOURCE.RESUME)}
-                  className="mr-2"
-                />
-                <label htmlFor="resume">By Uploading Resume</label>
-              </div>
-              <div className="flex items-center mb-4">
-                <input
-                  type="radio"
-                  id="jobDescription"
-                  name="questionSource"
-                  value={QUESTION_SOURCE.JOB_DESCRIPTION}
-                  onChange={() => setQuestionSource(QUESTION_SOURCE.JOB_DESCRIPTION)}
-                  className="mr-2"
-                />
-                <label htmlFor="jobDescription">By Writing JD</label>
-              </div>
-              <div className="flex items-center mb-4">
-                <input
-                  type="radio"
-                  id="ownQuestions"
-                  name="questionSource"
-                  value={QUESTION_SOURCE.OWN_QUESTIONS}
-                  onChange={() => setQuestionSource(QUESTION_SOURCE.OWN_QUESTIONS)}
-                  className="mr-2"
-                />
-                <label htmlFor="ownQuestions">By Your Own Question Set</label>
-              </div>
-            </div>
-          </div>
-
-          {error && (
-            <div className="mb-4 text-red-500 flex items-center">
-              <MdErrorOutline className="mr-2" /> {error}
-            </div>
-          )}
-
-          {questionSource === QUESTION_SOURCE.DOMAIN && (
-            <DomainQuestionsForm onGenerate={handleGenerateQuestions} loading={loading} />
-          )}
-
-          {questionSource === QUESTION_SOURCE.RESUME && (
-            <ResumeQuestionsForm onGenerate={handleGenerateQuestions} loading={loading} />
-          )}
-
-          {questionSource === QUESTION_SOURCE.JOB_DESCRIPTION && (
-            <JDQuestionsForm onGenerate={handleGenerateQuestions} loading={loading} />
-          )}
-
-          {questionSource === QUESTION_SOURCE.OWN_QUESTIONS && (
-            <OwnQuestionsForm onGenerate={handleGenerateQuestions} loading={loading} />
-          )}
+    <>
+      <div className="container mx-auto">
+        <div>
+          <NotificationBar />
         </div>
-
-        {generatedQuestions.length > 0 && (
-          <>
-            <ExamSettings examTiming={examTiming} setExamTiming={setExamTiming} />
-            <GeneratedQuestionsList
-              generatedQuestions={generatedQuestions}
-              setGeneratedQuestions={setGeneratedQuestions}
-            />
-            <button
-              onClick={handleSaveQuestionSet}
-              className="mt-4 bg-green-500 text-white px-8 py-4 rounded-full transition duration-300 hover:bg-green-700 flex items-center"
-            >
-              {loading ? (
-                <FaSpinner className="animate-spin mr-2" />
-              ) : (
-                <FaCheckCircle className="mr-2" />
-              )}
-              Save Question Set
-            </button>
-          </>
-        )}
-        {isOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
-            <div className="bg-white w-96 p-6 rounded-md">
-              <div className="text-xl font-bold mb-4">
-                Question Generated Successfully
-              </div>
-              <div className="text-gray-700 mb-4">
-                Do you want to start the interview assessment?
-              </div>
-              <div className="flex justify-around">
-                <button
-                  onClick={closeModal}
-                  className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md mr-2"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleConfirm}
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md"
-                >
-                  Start
-                </button>
-              </div>
+        <div className="container flex flex-col lg:flex-row">
+          <div className="data_container mx-auto py-8 order-2 md:ml-10 lg:order-1 w-full lg:w-4/6">
+            <div className="flex gap-3">
+            <FaLaptopCode size={20} color="gray"/>
+            <span className="text-gray-80 font-spline font-bold mb-5"> Generate Question </span>
             </div>
+            <div className="bg-white shadow-md rounded-lg px-4 py-4 ">
+              <div className="mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="flex items-center font-spline mb-4">
+                    <input
+                      type="radio"
+                      id="domain"
+                      name="questionSource"
+                      value={QUESTION_SOURCE.DOMAIN}
+                      onChange={() => setQuestionSource(QUESTION_SOURCE.DOMAIN)}
+                      className="mr-2"
+                      defaultChecked
+                    />
+                    <label htmlFor="domain " >
+                      By Selecting Different Domain
+                    </label>
+                  </div>
+                  <div className="flex items-center font-spline mb-4">
+                    <input
+                      type="radio"
+                      id="resume"
+                      name="questionSource"
+                      value={QUESTION_SOURCE.RESUME}
+                      onChange={() => setQuestionSource(QUESTION_SOURCE.RESUME)}
+                      className="mr-2"
+                    />
+                    <label htmlFor="resume">By Uploading Resume</label>
+                  </div>
+                  <div className="flex items-center font-spline mb-4">
+                    <input
+                      type="radio"
+                      id="jobDescription"
+                      name="questionSource"
+                      value={QUESTION_SOURCE.JOB_DESCRIPTION}
+                      onChange={() =>
+                        setQuestionSource(QUESTION_SOURCE.JOB_DESCRIPTION)
+                      }
+                      className="mr-2"
+                    />
+                    <label htmlFor="jobDescription">By Writing JD</label>
+                  </div>
+                  <div className="flex items-center font-spline mb-4">
+                    <input
+                      type="radio"
+                      id="ownQuestions"
+                      name="questionSource"
+                      value={QUESTION_SOURCE.OWN_QUESTIONS}
+                      onChange={() =>
+                        setQuestionSource(QUESTION_SOURCE.OWN_QUESTIONS)
+                      }
+                      className="mr-2"
+                    />
+                    <label htmlFor="ownQuestions">
+                      By Your Own Question 
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              {error && (
+                <div className="mb-4 text-red-500 flex items-center font-spline">
+                  <MdErrorOutline className="mr-2" /> {error}
+                </div>
+              )}
+
+              {questionSource === QUESTION_SOURCE.DOMAIN && (
+                <DomainQuestionsForm
+                  onGenerate={handleGenerateQuestions}
+                  loading={loading}
+                />
+              )}
+
+              {questionSource === QUESTION_SOURCE.RESUME && (
+                <ResumeQuestionsForm
+                  onGenerate={handleGenerateQuestions}
+                  loading={loading}
+                />
+              )}
+
+              {questionSource === QUESTION_SOURCE.JOB_DESCRIPTION && (
+                <JDQuestionsForm
+                  onGenerate={handleGenerateQuestions}
+                  loading={loading}
+                />
+              )}
+
+              {questionSource === QUESTION_SOURCE.OWN_QUESTIONS && (
+                <OwnQuestionsForm
+                  onGenerate={handleGenerateQuestions}
+                  loading={loading}
+                />
+              )}
+            </div>
+
+            {generatedQuestions.length > 0 && (
+              <>
+                <ExamSettings
+                  examTiming={examTiming}
+                  setExamTiming={setExamTiming}
+                />
+                <GeneratedQuestionsList
+                  generatedQuestions={generatedQuestions}
+                  setGeneratedQuestions={setGeneratedQuestions}
+                />
+                <button
+                  onClick={handleSaveQuestionSet}
+                  className="mt-4 bg-blue-400 text-white px-4 py-4 font-spline rounded w-8/12 mx-auto justify-center transition duration-300 hover:bg-blue-600 flex items-center"
+                >
+                  {loading ? (
+                    <FaSpinner className="animate-spin mr-2" />
+                  ) : (
+                    <FaCheck  className="mr-2" />
+                  )}
+                  Save Question Set
+                </button>
+              </>
+            )}
+            {isOpen && (
+              <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
+                <div className="bg-white w-96 p-6 rounded-md">
+                  <div className="text-xl font-bold mb-4">
+                    Question Generated Successfully
+                  </div>
+                  <div className="text-gray-700 mb-4">
+                    Do you want to start the interview assessment?
+                  </div>
+                  <div className="flex justify-around">
+                    <button
+                      onClick={closeModal}
+                      className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md mr-2"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleConfirm}
+                      className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                    >
+                      Start
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
-        )}
+          <div className="flex image_container order-1 justify-center align-center mx-auto lg:order-2 max-lg:w-2/5 lg:w-2/6">
+            <img src={image} className="max-h-[300px]" alt="Fail to load image" />
+          </div>
+        </div>
       </div>
-      <div className="flex image_container order-1 justify-center align-center mx-auto lg:order-2 max-lg:w-2/5 lg:w-2/6">
-        <img src={image} className="h-1/2" alt="Fail to load image" />
-      </div>
-    </div>
+    </>
   );
 };
 

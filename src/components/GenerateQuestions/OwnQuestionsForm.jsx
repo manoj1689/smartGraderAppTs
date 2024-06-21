@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FaSpinner, FaCheckCircle } from "react-icons/fa";
+import { FaSpinner, FaCheck } from "react-icons/fa";
 
 const OwnQuestionsForm = ({ onGenerate, loading }) => {
   const [ownQuestions, setOwnQuestions] = useState('');
@@ -21,10 +21,10 @@ const OwnQuestionsForm = ({ onGenerate, loading }) => {
       </div>
       <button
         type="submit"
-        className={`bg-blue-500 text-white px-4 py-2 rounded-full transition duration-300 hover:bg-blue-700 flex items-center ${loading ? 'cursor-not-allowed' : ''}`}
+        className={`bg-gray-500 text-white px-4 py-4 sm:w-8/12 justify-center gap-3 mx-auto rounded transition duration-300 hover:bg-gray-700 flex items-center ${loading ? 'cursor-not-allowed' : ''}`}
         disabled={loading}
       >
-        {loading ? <FaSpinner className="animate-spin mr-2" /> : <FaCheckCircle className="mr-2" />} Add Questions
+        {loading ? <FaSpinner className="animate-spin mr-2" /> : <FaCheck className="mr-2" />} Add Questions
       </button>
     </form>
   );

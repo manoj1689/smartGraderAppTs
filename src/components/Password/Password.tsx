@@ -105,18 +105,19 @@ const Password: React.FC = () => {
             <img width={179} height={43} src={smartLogo} alt="smart Grader" />
           </Link>
         </div>
-        <div className="w-full lg:w-1/2 flex flex-row px-4 py-7 my-5 sm:my-20 justify-start items-center">
-          <div>
+        <div className="w-full lg:w-1/2 flex flex-col md:flex-row px-4 py-7 my-5 sm:my-20  ">
+          <div className=" flex sm:flex-row items-center">
             <img
               src={passwordIcon}
               alt="Click Password"
               width={102}
               height={102}
             />
+             <div className=" block md:hidden  text-2xl sm:3xl md:text-4xl text-slate-800 font-medium font-spline">Forgot Password</div>
           </div>
-          <div className="flex flex-col gap-3">
-            <div className="text-2xl sm:3xl md:text-4xl text-slate-800 font-medium font-spline">Forgot Password</div>
-            <div className="font-sans text-sm sm:text-lg font-light text-gray-600 my-1.5">
+          <div className="flex flex-col gap-3 justify-center items-start">
+            <div className="hidden md:block  text-2xl sm:3xl md:text-4xl text-slate-800 font-medium font-spline">Forgot Password</div>
+            <div className="font-sans text-sm sm:text-lg font-light text-gray-600 my-5 md:my-1.5">
               Reset your SmaratGrader Password for account access
             </div>
           </div>
@@ -146,7 +147,7 @@ const Password: React.FC = () => {
                 />
 
                 <button
-                  className={`flex justify-center items-center px-4 py-5 mt-8 text-white bg-sky-500 rounded-md border border-sky-500 border-solid w-full ${
+                  className={`flex justify-center items-center px-4 py-3 mt-8 text-white bg-sky-500 rounded border border-sky-500 border-solid w-full ${
                     isPressed ? "bg-sky-600" : "bg-sky-500"
                   }`}
                   onMouseDown={() => handleMouseDown(setIsPressed)}
@@ -200,7 +201,7 @@ const Password: React.FC = () => {
                 </div>
 
                 <button
-                  className={`flex justify-center items-center px-4 py-5 mt-8 text-white bg-sky-500 rounded-md border border-sky-500 border-solid w-full ${
+                  className={`flex justify-center items-center px-4 py-3 mt-8 text-white bg-sky-500 rounded border border-sky-500 border-solid w-full ${
                     isPressed ? "bg-sky-600" : "bg-sky-500"
                   }`}
                   onMouseDown={() => handleMouseDown(setIsPressed)}
@@ -271,7 +272,7 @@ const Password: React.FC = () => {
                 </div>
 
                 <button
-                  className={`flex justify-center items-center px-4 py-5 mt-8 text-white bg-sky-500 rounded-md border border-sky-500 border-solid w-full ${
+                  className={`flex justify-center items-center px-4 py-3 mt-8 text-white bg-sky-500 rounded border border-sky-500 border-solid w-full ${
                     isPressed ? "bg-sky-600" : "bg-sky-500"
                   }`}
                   onMouseDown={() => handleMouseDown(setIsPressed)}

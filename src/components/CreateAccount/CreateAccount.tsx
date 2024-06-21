@@ -71,23 +71,36 @@ const CreateAccount: React.FC = () => {
             } hover:bg-sky-50 hover:rounded-md cursor-pointer`}
             onClick={() => handleTabClick("individual")}
           >
-            <div className="flex gap-5 max-md:flex-wrap">
+            <div className="flex flex-row gap-5 max-md:flex-wrap ">
+              <div className="flex gap-5 justify-center items-center">
               <img
-                loading="lazy"
-                alt="individualSticker"
-                src={individualSticker}
-                className="shrink-0 self-start w-12 aspect-[0.94]"
-              />
-              <div className="flex flex-col">
-                <div className="text-2xl md:text-3xl text-slate-800">
+                  loading="lazy"
+                  alt="individual"
+                  src={individualSticker}
+                  className="shrink-0 self-start w-8 sm:w-12 aspect-[0.94]"
+                />
+                
+                <div className="block md:hidden  text-2xl md:text-4xl text-slate-800 font-medium font-spline">
+                  <div>
                   Individual User
+                  </div>
+              
+                 
                 </div>
-                <div className="font-sans text-lg font-light text-gray-600 my-1.5">
+
+                </div>
+            
+                <div className="flex-col">
+                  <div className=" hidden md:block text-2xl  md:text-3xl text-slate-800 font-medium font-spline">
+                  Individual User
+                  </div>
+                  <div className=" font-sans text-md sm:text-lg  font-light text-gray-600 sm:my-1.5 ">
                   I am a candidate and want to test my skills through mock
                   interviews.
+                  </div>
                 </div>
+              
               </div>
-            </div>
           </div>
           <div
             className={`flex flex-col justify-center px-4 py-4 mt-5 bg-white rounded-md border ${
@@ -97,22 +110,34 @@ const CreateAccount: React.FC = () => {
             } hover:bg-sky-50 hover:rounded-md cursor-pointer`}
             onClick={() => handleTabClick("organization")}
           >
-            <div className="flex gap-5 max-md:flex-wrap">
-              <img
-                loading="lazy"
-                alt="organisationSticker"
-                src={organisationSticker}
-                className="shrink-0 self-start w-12 aspect-square"
-              />
-              <div className="flex flex-col">
-                <div className="text-2xl md:text-3xl text-slate-800">
+             <div className="flex gap-5 max-md:flex-wrap">
+                <div className="flex gap-5 justify-center items-center">
+                <img
+                  loading="lazy"
+                  alt="organisation"
+                  src={organisationSticker}
+                  className="shrink-0 self-start w-8 sm:w-12 aspect-square"
+                />
+                
+                <div className="block md:hidden  text-2xl md:text-3xl text-slate-800 font-medium font-spline">
+                  <div>
                   Organization
+                  </div>
+                 
                 </div>
-                <div className="font-sans text-lg font-light text-gray-600 my-1.5">
-                  I am an organization and want to outsource my interviews.
+
+                </div>
+             
+
+                <div className=" flex-col">
+                  <div className="  hidden md:block  text-2xl  md:text-3xl text-slate-800 font-medium font-spline">
+                    Organization
+                  </div>
+                  <div className=" font-sans text-md sm:text-lg  font-light text-gray-600 sm:my-1.5 ">
+                    I am an organization and want to outsource my interviews
+                  </div>
                 </div>
               </div>
-            </div>
           </div>
           <div
             className={`flex flex-col justify-center px-4 py-4 my-5 bg-white rounded-md border ${
@@ -122,33 +147,42 @@ const CreateAccount: React.FC = () => {
             } hover:bg-sky-50 hover:rounded-md cursor-pointer`}
             onClick={() => handleTabClick("educational")}
           >
-            <div className="flex gap-5 max-md:flex-wrap">
+              <div className="flex gap-5 max-md:flex-wrap">
+            <div className="flex gap-5 justify-center items-center">
               <img
-                loading="lazy"
-                alt="educationSticker"
-                src={educationSticker}
-                className="shrink-0 self-start w-12 aspect-square"
-              />
-              <div className="flex flex-col">
-                <div className="text-2xl md:text-3xl text-slate-800">
+                  loading="lazy"
+                  alt="eductional"
+                  src={educationSticker}
+                  className="shrink-0 self-start w-8 sm:w-12 aspect-square"
+                />
+                
+                <div className="block md:hidden  text-2xl md:text-3xl text-slate-800 font-medium font-spline">
+                  <div>
                   Educational Institution
+                  </div>
                 </div>
-                <div className="font-sans text-lg font-light text-gray-600 my-1.5">
+                </div>
+                <div className="flex flex-col">
+                  <div className=" hidden md:block text-2xl sm:text-3xl md:text-3xl text-slate-800 font-medium font-spline">
+                  Educational Institution
+                  </div>
+                  <div className=" font-sans txt-md sm:text-lg  font-light text-gray-600 sm:my-1.5 ">
                   I am a candidate and want to test my skills through mock
                   interviews.
+                  </div>
                 </div>
-              </div>
-            </div>
+                </div>
+            
           </div>
           <button
-            className={`flex justify-center items-center px-4 py-5 mt-8 text-sm text-white rounded-md border border-sky-500 border-solid max-md:px-5 max-md:max-w-full focus:outline-none ${
+            className={`flex justify-center items-center px-4 py-3 mt-8 text-sm text-white rounded-md border border-sky-500 border-solid max-md:px-5 max-md:max-w-full focus:outline-none ${
               isPressed ? "bg-sky-600" : "bg-sky-500"
             }`}
             onMouseDown={() => handleMouseDown(setIsPressed)}
             onMouseUp={() => handleMouseUp(setIsPressed)}
             onClick={handleButtonClick}
           >
-            <div className="flex gap-2.5 px-px">
+              <div className="flex gap-2.5 font-spline justify-center items-center  text-sm sm:text-lg">
               <span>Create an Account</span>
               <span>
                 <FiArrowUpRight size={20} />
@@ -163,21 +197,21 @@ const CreateAccount: React.FC = () => {
             <img
               src={individualPerson}
               alt="person"
-              className="w-full rounded-md lg:px-16 object-cover"
+              className=" max-sm:w-52 w-full rounded-md lg:px-16 object-cover"
             />
           )}
           {(activeTab === "organization" || activeTab === "") && (
             <img
               src={organizationPerson}
               alt="person"
-              className="w-full rounded-md lg:px-16 object-cover"
+              className="max-sm:w-52 w-full rounded-md lg:px-16 object-cover"
             />
           )}
           {activeTab === "educational" && (
             <img
               src={educationalPerson}
               alt="person"
-              className="w-full rounded-md lg:px-16 object-cover"
+              className=" max-sm:w-52  w-full rounded-md lg:px-16 object-cover"
             />
           )}
         </div>

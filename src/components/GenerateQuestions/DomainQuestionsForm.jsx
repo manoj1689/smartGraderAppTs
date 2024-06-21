@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import CreatableSelect from 'react-select/creatable';
-import { FaSpinner, FaCheckCircle } from "react-icons/fa";
+import { FaSpinner, FaCheckCircle, FaCheck } from 'react-icons/fa';
 
 const defaultOptions = [
   { value: 'Frontend', label: 'Frontend' },
@@ -38,19 +38,25 @@ const DomainQuestionsForm = ({ onGenerate, loading }) => {
         <input
           type="number"
           value={numberOfQuestions}
-          onChange={(e) => setNumberOfQuestions(e.target.value)}
+          onChange={(e) => {
+            const value = Math.max(0, Math.min(5, parseInt(e.target.value)));
+            setNumberOfQuestions(isNaN(value) ? 0 : value);
+          }}
+          min="0"
+          max="8"
           className="w-full p-2 border border-gray-300 rounded"
         />
       </div>
       <button
         type="submit"
-        className={`bg-blue-500 text-white px-4 py-2 rounded-full transition duration-300 hover:bg-blue-700 flex items-center ${loading ? 'cursor-not-allowed' : ''}`}
+        className={`bg-gray-500 text-white px-4 py-4 sm:w-8/12 justify-center gap-3 mx-auto rounded transition duration-300 hover:bg-gray-700 flex items-center ${loading ? 'cursor-not-allowed' : ''}`}
         disabled={loading}
       >
-        {loading ? <FaSpinner className="animate-spin mr-2" /> : <FaCheckCircle className="mr-2" />} Generate Question Set
+        {loading ? <FaSpinner className="animate-spin mr-2" /> : <FaCheck className="mr-2" />} Generate Question 
       </button>
     </form>
   );
 };
 
 export default DomainQuestionsForm;
+

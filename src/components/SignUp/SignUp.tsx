@@ -54,67 +54,102 @@ const SignUp: React.FC = () => {
             <img width={179} height={43} src={smartLogo} alt="smart Grader" />
           </Link>
         </div>
-        <div className="w-full lg:w-1/2 flex flex-col justify-center items-center">
-          {activeTab === "individual" && (
-            <div className="flex flex-col justify-center px-8 py-7 mt-8 bg-white rounded-md">
-              <div className="flex gap-5 max-md:flex-wrap">
-                <img
+        <div className="w-full lg:w-1/2 flex flex-col justify-center py-5 items-start">
+          {(activeTab === undefined || activeTab === "individual") && (
+            <div className="flex flex-col justify-center sm:px-8 py-4 mt-5 sm:mt-10 bg-white rounded-md">
+              <div className="flex flex-row gap-5 max-md:flex-wrap ">
+              <div className="flex gap-5 justify-center items-center">
+              <img
                   loading="lazy"
                   alt="individual"
                   src={individualSticker}
-                  className="shrink-0 self-start w-12 aspect-[0.94]"
+                  className="shrink-0 self-start w-8 sm:w-12 aspect-[0.94]"
                 />
-                <div className="flex flex-col">
-                  <div className="text-2xl sm:text-3xl md:text-4xl text-slate-800 font-medium font-spline">
-                    Individual User
+                
+                <div className="block md:hidden  text-2xl md:text-4xl text-slate-800 font-medium font-spline">
+                  <div>
+                  Individual User
                   </div>
-                  <div className="font-sans text-lg font-light text-gray-600 my-1.5">
-                    I am a candidate and want to test my skills through mock
-                    interviews.
+              
+                 
+                </div>
+
+                </div>
+            
+                <div className="flex-col">
+                  <div className=" hidden md:block text-2xl  md:text-3xl text-slate-800 font-medium font-spline">
+                  Individual User
+                  </div>
+                  <div className=" font-sans text-md sm:text-lg  font-light text-gray-600 sm:my-1.5 ">
+                  I am a candidate and want to test my skills through mock
+                  interviews.
                   </div>
                 </div>
+              
               </div>
             </div>
           )}
-          {activeTab === "organization" && (
-            <div className="flex flex-col justify-center px-8 py-7 mt-5 bg-white rounded-md">
+          {(activeTab === undefined || activeTab === "organization") && (
+            <div className="flex flex-col justify-center sm:px-8  mt-5 bg-white rounded-md">
               <div className="flex gap-5 max-md:flex-wrap">
+                <div className="flex gap-5 justify-center items-center">
                 <img
                   loading="lazy"
                   alt="organisation"
                   src={organisationSticker}
-                  className="shrink-0 self-start w-12 aspect-square"
+                  className="shrink-0 self-start w-8 sm:w-12 aspect-square"
                 />
-                <div className="flex flex-col">
-                  <div className="text-2xl sm:text-3xl md:text-4xl text-slate-800 font-medium font-spline">
+                
+                <div className="block md:hidden  text-2xl md:text-3xl text-slate-800 font-medium font-spline">
+                  <div>
+                  Organization
+                  </div>
+                 
+                </div>
+
+                </div>
+             
+
+                <div className=" flex-col">
+                  <div className="  hidden md:block  text-2xl  md:text-3xl text-slate-800 font-medium font-spline">
                     Organization
                   </div>
-                  <div className="font-sans text-lg font-light text-gray-600 my-1.5">
+                  <div className=" font-sans text-md sm:text-lg  font-light text-gray-600 sm:my-1.5 ">
                     I am an organization and want to outsource my interviews
                   </div>
                 </div>
               </div>
             </div>
           )}
-          {activeTab === "educational" && (
-            <div className="flex flex-col justify-center px-8 py-7 mt-5 bg-white rounded-md">
-              <div className="flex gap-5 max-md:flex-wrap">
-                <img
+          {(activeTab === undefined || activeTab === "educational") && (
+
+            <div className="flex flex-col justify-center sm:px-8 py-4 mt-5 bg-white rounded-md">
+            <div className="flex gap-5 max-md:flex-wrap">
+            <div className="flex gap-5 justify-center items-center">
+              <img
                   loading="lazy"
-                  alt="educational"
+                  alt="eductional"
                   src={educationSticker}
-                  className="shrink-0 self-start w-12 aspect-square"
+                  className="shrink-0 self-start w-8 sm:w-12 aspect-square"
                 />
-                <div className="flex flex-col">
-                  <div className="text-2xl sm:text-3xl md:text-4xl text-slate-800 font-medium font-spline">
-                    Educational Institution
-                  </div>
-                  <div className="font-sans text-lg font-light text-gray-600 my-1.5">
-                    I am a candidate and want to test my skills through mock
-                    interviews.
+                
+                <div className="block md:hidden  text-2xl md:text-3xl text-slate-800 font-medium font-spline">
+                  <div>
+                  Educational Institution
                   </div>
                 </div>
-              </div>
+                </div>
+                <div className="flex flex-col">
+                  <div className=" hidden md:block text-2xl sm:text-3xl md:text-3xl text-slate-800 font-medium font-spline">
+                  Educational Institution
+                  </div>
+                  <div className=" font-sans txt-md sm:text-lg  font-light text-gray-600 sm:my-1.5 ">
+                  I am a candidate and want to test my skills through mock
+                  interviews.
+                  </div>
+                </div>
+                </div>
+            
             </div>
           )}
         </div>
@@ -186,20 +221,20 @@ const SignUp: React.FC = () => {
 
               <div className="flex gap-3 mt-6 leading-5 max-md:flex-wrap"></div>
               <button
-                className={`flex justify-center items-center px-4 py-5 mt-8 text-white bg-sky-500 rounded-md border border-sky-500 border-solid w-full ${
+                className={`flex justify-center items-center px-4 py-3 mt-8 text-white bg-sky-500 rounded border border-sky-500 border-solid w-full ${
                   isPressed ? "bg-sky-600" : "bg-sky-500"
                 }`}
                 onMouseDown={() => handleMouseDown(setIsPressed)}
                 onMouseUp={() => handleMouseUp(setIsPressed)}
                 type="submit"
               >
-                <div className="flex gap-2.5 font-spline">
+                <div className="flex gap-2.5 font-spline justify-center items-center  text-sm sm:text-lg">
                 {loading ? (
                 <PiSpinnerBold className="animate-spin mr-2" size={25} />
               ) : (
-                <PiSpinnerGapBold className="mr-2" size={25} />
+                <PiSpinnerGapBold className="mr-2 " size={25} />
               )}
-                  <span>Create an Account</span>
+                  <span>Create Account</span>
                   <span>
                     <FiArrowUpRight size={20} />
                   </span>
