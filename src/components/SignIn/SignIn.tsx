@@ -54,11 +54,10 @@ const SignIn: React.FC = () => {
     <>
       <div className="container mx-auto min-h-screen px-4  flex flex-col lg:flex-row ">
         <div className="lg:hidden w-full ">
-          <Link to="/">
-            <div className="sm:w-1/4">
-              <img src={smartLogo} alt="smart Grader" className="w-28" />
-            </div>
+        <Link to="/">
+            <img width={179} height={43} src={smartLogo} alt="smart Grader" />
           </Link>
+        </div>
         </div>
         <div className="w-full lg:w-1/2 flex flex-col justify-center bg-white items-start">
           {(activeTab === undefined || activeTab === "individual") && (
