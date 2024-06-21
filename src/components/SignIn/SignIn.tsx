@@ -23,7 +23,7 @@ const SignIn: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { activeTab } = location.state || {};
- // console.log("the active tab", activeTab);
+  // console.log("the active tab", activeTab);
   const [isPressed, setIsPressed] = useState(false);
   const [formData, setFormData] = useState<FormData>({
     email: "",
@@ -54,43 +54,36 @@ const SignIn: React.FC = () => {
     <>
       <div className="container mx-auto min-h-screen px-4  flex flex-col lg:flex-row ">
         <div className="lg:hidden w-full ">
-        <Link to="/">
+          <Link to="/">
             <img width={179} height={43} src={smartLogo} alt="smart Grader" />
           </Link>
-        </div>
         </div>
         <div className="w-full lg:w-1/2 flex flex-col justify-center bg-white items-start">
           {(activeTab === undefined || activeTab === "individual") && (
             <div className="flex flex-col justify-center sm:px-8 py-4 mt-5 sm:mt-10 bg-white rounded-md">
               <div className="flex flex-row gap-5 max-md:flex-wrap ">
-              <div className="flex gap-5 justify-center items-center">
-              <img
-                  loading="lazy"
-                  alt="individual"
-                  src={individualSticker}
-                  className="shrink-0 self-start w-8 sm:w-12 aspect-[0.94]"
-                />
-                
-                <div className="block md:hidden  text-2xl md:text-4xl text-slate-800 font-medium font-spline">
-                  <div>
-                  Individual User
+                <div className="flex gap-5 justify-center items-center">
+                  <img
+                    loading="lazy"
+                    alt="individual"
+                    src={individualSticker}
+                    className="shrink-0 self-start w-8 sm:w-12 aspect-[0.94]"
+                  />
+
+                  <div className="block md:hidden  text-2xl md:text-4xl text-slate-800 font-medium font-spline">
+                    <div>Individual User</div>
                   </div>
-              
-                 
                 </div>
 
-                </div>
-            
                 <div className="flex-col">
                   <div className=" hidden md:block text-2xl  md:text-3xl text-slate-800 font-medium font-spline">
-                  Individual User
+                    Individual User
                   </div>
                   <div className=" font-sans text-md sm:text-lg  font-light text-gray-600 sm:my-1.5 ">
-                  I am a candidate and want to test my skills through mock
-                  interviews.
+                    I am a candidate and want to test my skills through mock
+                    interviews.
                   </div>
                 </div>
-              
               </div>
             </div>
           )}
@@ -98,22 +91,17 @@ const SignIn: React.FC = () => {
             <div className="flex flex-col justify-center sm:px-8  mt-5 bg-white rounded-md">
               <div className="flex gap-5 max-md:flex-wrap">
                 <div className="flex gap-5 justify-center items-center">
-                <img
-                  loading="lazy"
-                  alt="organisation"
-                  src={organisationSticker}
-                  className="shrink-0 self-start w-8 sm:w-12 aspect-square"
-                />
-                
-                <div className="block md:hidden  text-2xl md:text-3xl text-slate-800 font-medium font-spline">
-                  <div>
-                  Organization
-                  </div>
-                 
-                </div>
+                  <img
+                    loading="lazy"
+                    alt="organisation"
+                    src={organisationSticker}
+                    className="shrink-0 self-start w-8 sm:w-12 aspect-square"
+                  />
 
+                  <div className="block md:hidden  text-2xl md:text-3xl text-slate-800 font-medium font-spline">
+                    <div>Organization</div>
+                  </div>
                 </div>
-             
 
                 <div className=" flex-col">
                   <div className="  hidden md:block  text-2xl  md:text-3xl text-slate-800 font-medium font-spline">
@@ -127,34 +115,30 @@ const SignIn: React.FC = () => {
             </div>
           )}
           {(activeTab === undefined || activeTab === "educational") && (
-
             <div className="flex flex-col justify-center sm:px-8 py-4 mt-5 bg-white rounded-md">
-            <div className="flex gap-5 max-md:flex-wrap">
-            <div className="flex gap-5 justify-center items-center">
-              <img
-                  loading="lazy"
-                  alt="eductional"
-                  src={educationSticker}
-                  className="shrink-0 self-start w-8 sm:w-12 aspect-square"
-                />
-                
-                <div className="block md:hidden  text-2xl md:text-3xl text-slate-800 font-medium font-spline">
-                  <div>
-                  Educational Institution
+              <div className="flex gap-5 max-md:flex-wrap">
+                <div className="flex gap-5 justify-center items-center">
+                  <img
+                    loading="lazy"
+                    alt="eductional"
+                    src={educationSticker}
+                    className="shrink-0 self-start w-8 sm:w-12 aspect-square"
+                  />
+
+                  <div className="block md:hidden  text-2xl md:text-3xl text-slate-800 font-medium font-spline">
+                    <div>Educational Institution</div>
                   </div>
-                </div>
                 </div>
                 <div className="flex flex-col">
                   <div className=" hidden md:block text-2xl sm:text-3xl md:text-3xl text-slate-800 font-medium font-spline">
-                  Educational Institution
+                    Educational Institution
                   </div>
                   <div className=" font-sans txt-md sm:text-lg  font-light text-gray-600 sm:my-1.5 ">
-                  I am a candidate and want to test my skills through mock
-                  interviews.
+                    I am a candidate and want to test my skills through mock
+                    interviews.
                   </div>
                 </div>
-                </div>
-            
+              </div>
             </div>
           )}
         </div>
