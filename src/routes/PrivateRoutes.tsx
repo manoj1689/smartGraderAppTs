@@ -20,6 +20,7 @@ import SelectQuestionPage from "../pages/SelectQuesionPage";
 import EditSettingsPage from "../pages/EditSettingsPage";
 import CandidateInvitationPage from "../pages/CandidateInvitationPage";
 import CandidateResultPage from "../pages/CandidateResultPage";
+import CreateSetPage from "../pages/CreateSetPage";
 // import SelectQuestion from "../components/dashboards/organizationDashBoard/SelectQuestion";
 
 
@@ -35,6 +36,7 @@ const PrivateRoutes: React.FC = () => {
         <Route path="question/:questionSetId" element={<InterviewPage />} /> 
         <Route path="question/:questionSetId/instructions" element={<InterviewInstructions />} />
         <Route path="question/exam-end" element={<InterviewEndPage />} />
+        <Route path="createset" element={<CreateSetPage />} />
         <Route path="generatequestion" element={<GenerateQuestionsPage />} />
         <Route path="result" element={<ResultPage />} />
         <Route path="settings" element={<SettingPage />} /> 

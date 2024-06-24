@@ -87,7 +87,18 @@ export interface FormData {
   export interface QuestionPageProps {
     cardId: string;
   }
-
+  export interface QuestionAdd {
+    q: string;
+    desc: string;
+    type: number;
+    duration: number;
+  }
+  
+  export interface QuestionPayload {
+    set_id: number;
+    questions: QuestionAdd[];
+  }
+  
   export interface Category {
     id: number;
     name: string;

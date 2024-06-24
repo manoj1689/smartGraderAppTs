@@ -1,0 +1,22 @@
+/* Custom styles for line navigation */
+.custom-dot-list-style {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .custom-dot-list-style .react-multi-carousel-dot {
+    display: inline-block;
+    width: 10px; /* Adjust width of each dot if needed */
+    height: 2px; /* Height of the line */
+    margin: 0 5px; /* Adjust spacing between dots */
+    cursor: pointer;
+    background-color: #571919; /* Color of the line */
+    border-radius: 1px; /* Adjust border radius for rounded effect */
+  }
+  
+  .custom-dot-list-style .react-multi-carousel-dot--active {
+    background-color: #333; /* Color of the active dot or line segment */
+  }
+  

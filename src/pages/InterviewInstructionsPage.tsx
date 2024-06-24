@@ -13,7 +13,11 @@ const InterviewInstructions:React.FC = () => {
     navigate(`/dashboard/question/${interview?.id}`);
   };
 
-
+  // const { interviewId } = location.state || {};
+  // console.log(interviewId?interviewId:)
+  // const handleStartInterviewClick = () => {
+  //   navigate(`/dashboard/question/${interviewId}`);
+  // };
   return (
     <div className="container mx-auto w-full h-full px-4 md:px-10 ">
        <NotificationBar/> 

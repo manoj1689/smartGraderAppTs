@@ -11,7 +11,7 @@ import OwnQuestionsForm from "../components/GenerateQuestions/OwnQuestionsForm";
 import GeneratedQuestionsList from "../components/GenerateQuestions/GeneratedQuestionsList";
 // @ts-ignore
 import ExamSettings from "../components/GenerateQuestions/ExamSettings";
-import { FaSpinner,FaCheck } from "react-icons/fa";
+import { FaSpinner, FaCheck } from "react-icons/fa";
 import { MdErrorOutline } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import cheerfulMan from "../assets/images/GenerateQuestions/cheerful-man-working.png";
@@ -25,6 +25,15 @@ import QuestionService, {
 import { QUESTION_SOURCE } from "../constants/Constants";
 import NotificationBar from "../components/common/Notification/NotificationBar";
 import { FaLaptopCode } from "react-icons/fa6";
+import { handleQuestionSubmit } from "../services/api/QuestionsAddService";
+
+interface QuestionAdd {
+  q: string;
+  desc: string;
+  type: number;
+  duration: number;
+}
+
 const GenerateQuestionsPage: React.FC = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState<boolean>(false);
@@ -37,6 +46,7 @@ const GenerateQuestionsPage: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isConfirm, setConfirm] = useState<boolean>(false);
   const [image, setImage] = useState<string>(maleEmployee);
+  const [questionList, setQuestionList] = useState<QuestionAdd[]>([]);
 
   useEffect(() => {
     // Update image based on question source
@@ -66,12 +76,8 @@ const GenerateQuestionsPage: React.FC = () => {
     setIsOpen(false);
   };
 
-  const handleConfirm = () => {
-    setConfirm(true);
-    navigate("/dashboard/interviewscreen");
-    closeModal();
-  };
-  //console.log(isConfirm);
+ 
+
   const handleGenerateQuestions = async (data: FormData) => {
     setLoading(true);
     setError("");
@@ -93,18 +99,37 @@ const GenerateQuestionsPage: React.FC = () => {
   };
 
   const handleSaveQuestionSet = async () => {
+    const set_id = 31;
+    const questionsToSubmit = generatedQuestions.map((data) => ({
+      q: data.question_text,
+      desc: data.expected_answer_format ?? "", // Ensure desc is a string
+      type: 0, // Assuming 0 is the default type for 'easy'
+      duration: 10, // Default duration of 10
+    }));
+
+    setQuestionList(questionsToSubmit);
+
     try {
+      await handleQuestionSubmit(set_id, questionsToSubmit,navigate);
       openModal();
-      setLoading(true);
-      await QuestionService.saveQuestionSet(generatedQuestions, examTiming);
-      alert("Question set saved successfully!");
     } catch (error) {
       setError("Failed to save question set. Please try again.");
-    } finally {
-      setLoading(false);
     }
   };
-
+  
+  const handleConfirm = () => {
+    const interview = {
+      id:31
+    } // Replace with your interview ID logic
+    setConfirm(true);
+  
+    navigate(`/dashboard/question/${interview.id}/instructions`, {
+      state: { interview },
+    });
+    closeModal();
+  };
+  
+  
   return (
     <>
       <div className="container mx-auto">
@@ -114,8 +139,10 @@ const GenerateQuestionsPage: React.FC = () => {
         <div className="container flex flex-col lg:flex-row">
           <div className="data_container mx-auto px-4 py-8 order-2 md:ml-10 lg:order-1 w-full lg:w-4/6">
             <div className="flex gap-3">
-            <FaLaptopCode size={20} color="gray"/>
-            <span className="text-gray-80 font-spline font-bold mb-5"> Generate Question </span>
+              <FaLaptopCode size={20} color="gray" />
+              <span className="text-gray-80 font-spline font-bold mb-5">
+                Generate Question
+              </span>
             </div>
             <div className="bg-white shadow-md rounded-lg px-4 py-4 ">
               <div className="mb-4">
@@ -130,9 +157,7 @@ const GenerateQuestionsPage: React.FC = () => {
                       className="mr-2"
                       defaultChecked
                     />
-                    <label htmlFor="domain " >
-                      By Selecting Different Domain
-                    </label>
+                    <label htmlFor="domain ">By Selecting Different Domain</label>
                   </div>
                   <div className="flex items-center font-spline mb-4">
                     <input
@@ -169,9 +194,7 @@ const GenerateQuestionsPage: React.FC = () => {
                       }
                       className="mr-2"
                     />
-                    <label htmlFor="ownQuestions">
-                      By Your Own Question 
-                    </label>
+                    <label htmlFor="ownQuestions">By Your Own Question</label>
                   </div>
                 </div>
               </div>
@@ -228,7 +251,7 @@ const GenerateQuestionsPage: React.FC = () => {
                   {loading ? (
                     <FaSpinner className="animate-spin mr-2" />
                   ) : (
-                    <FaCheck  className="mr-2" />
+                    <FaCheck className="mr-2" />
                   )}
                   Save Question Set
                 </button>
@@ -262,7 +285,11 @@ const GenerateQuestionsPage: React.FC = () => {
             )}
           </div>
           <div className="flex image_container order-1 justify-center align-center mx-auto lg:order-2 max-lg:w-2/5 lg:w-2/6">
-            <img src={image} className="max-h-[300px]" alt="Fail to load image" />
+            <img
+              src={image}
+              className="max-h-[300px]"
+              alt="Fail to load image"
+            />
           </div>
         </div>
       </div>
