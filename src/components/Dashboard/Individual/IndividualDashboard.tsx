@@ -109,10 +109,8 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
           <CategorySearch />
         </div>
 
-        {/* <div className="mt-5 px-8  gap-5">
-          <div>
-            <h2> Interview Questions Sets</h2>
-          </div>
+        <div className="mt-5 px-8  gap-5">
+         
 
           <Carousel
             swipeable={true}
@@ -222,7 +220,7 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
               </div>
             ))}
           </Carousel>
-        </div> */}
+        </div>
 
         {/* {cardsData.map((card) => (
             <div
