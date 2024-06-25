@@ -64,7 +64,7 @@ export const fetchQuestionSets = async (selectedItems: string[]) => {
    // console.log('Selected Items:', selectedItems);
 
     // Check if the entered path matches any result in the question sets
-    const matchingSets = questionSets.filter(set =>
+    const matchingSets = questionSets.filter((set:any) =>
       selectedItems.some(item => set.title.includes(item))
     );
 
