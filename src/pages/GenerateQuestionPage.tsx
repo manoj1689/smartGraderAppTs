@@ -99,7 +99,7 @@ const GenerateQuestionsPage: React.FC = () => {
   };
 
   const handleSaveQuestionSet = async () => {
-    const set_id = 31;
+    const set_id = 172;
     const questionsToSubmit = generatedQuestions.map((data) => ({
       q: data.question_text,
       desc: data.expected_answer_format ?? "", // Ensure desc is a string
