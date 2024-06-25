@@ -49,7 +49,8 @@ const CreateSet: React.FC = () => {
   
     console.log('Submitting set:', newSet); // Log the set being submitted
   
-    await handleSetSubmit(newSet, navigate, toast);
+    const setDetails=await handleSetSubmit(newSet, navigate, toast);
+    console.log("set details of after create set page",setDetails)
   };
 
   return (

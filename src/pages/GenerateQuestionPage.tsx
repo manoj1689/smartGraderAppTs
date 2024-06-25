@@ -13,7 +13,7 @@ import GeneratedQuestionsList from "../components/GenerateQuestions/GeneratedQue
 import ExamSettings from "../components/GenerateQuestions/ExamSettings";
 import { FaSpinner, FaCheck } from "react-icons/fa";
 import { MdErrorOutline } from "react-icons/md";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import cheerfulMan from "../assets/images/GenerateQuestions/cheerful-man-working.png";
 import fileUpload from "../assets/images/GenerateQuestions/file-uploading.png";
 import maleEmployee from "../assets/images/GenerateQuestions/male-employee-tick-in-checkbox.png";
@@ -35,7 +35,12 @@ interface QuestionAdd {
 }
 
 const GenerateQuestionsPage: React.FC = () => {
+
   const navigate = useNavigate();
+  const location = useLocation();
+  const { setId } = location.state || {};
+
+  //console.log('Set ID:', setId);
   const [loading, setLoading] = useState<boolean>(false);
   const [questionSource, setQuestionSource] = useState<string>(
     QUESTION_SOURCE.DOMAIN
@@ -99,7 +104,7 @@ const GenerateQuestionsPage: React.FC = () => {
   };
 
   const handleSaveQuestionSet = async () => {
-    const set_id = 172;
+    const set_id = setId;
     const questionsToSubmit = generatedQuestions.map((data) => ({
       q: data.question_text,
       desc: data.expected_answer_format ?? "", // Ensure desc is a string
@@ -119,7 +124,7 @@ const GenerateQuestionsPage: React.FC = () => {
   
   const handleConfirm = () => {
     const interview = {
-      id:31
+      id:setId
     } // Replace with your interview ID logic
     setConfirm(true);
   

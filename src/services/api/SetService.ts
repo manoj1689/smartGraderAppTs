@@ -9,10 +9,10 @@ interface SetData {
   set_type: number;
   set_level: number;
 }
-
+type setId=any;
 export const handleSetSubmit = async (
   selectedSets: SetData,
-  navigate: (path: string) => void,
+  navigate: (path: string,setId:any) => void,
   toast: { error: (msg: string) => void }
 ) => {
     const token = getToken();
@@ -33,12 +33,16 @@ export const handleSetSubmit = async (
         }
       );
 
-      console.log('Response from API:', response.data); // Log response from API
-
-      if (response.data.status === 1 && response.data.msg === "success") {
+      console.log('Response from API:', response.data.set_id); // Log response from API
+           if (response.data.status === 1 && response.data.msg === "success") {
+        const setId = response.data.set_id;
+        console.log("Set ID from response:", setId); // Log set_id from the response
         console.log("Proceeding with selected sets:", selectedSets);
-       navigate("/dashboard/generatequestion");
-    
+  
+        // Navigate to the dashboard and pass the setId in state
+        navigate("/dashboard/generatequestion", { state: { setId } });
+      
+    return  response.data.set_id;
       } else {
         toast.error('Failed to save selected sets.');
       }
