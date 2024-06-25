@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import codingDev from "../../../assets/images/Individual/codingdeveloper.png";
 import star from "../../../assets/images/Individual/Star.png";
@@ -26,7 +26,6 @@ import { Category, Card } from "../../../types/interfaces/interface";
 import { IndividualDashboardProps } from "../../../types/interfaces/interface";
 import CategorySearch from "./CategorySearch";
 
-
 const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
   const navigate = useNavigate();
   const [cardsData, setCardsData] = useState<Card[]>([]);
@@ -34,10 +33,10 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [searchList, setSearchList] = useState<Category[]>([]);
   const [query, setQuery] = useState<string>("");
-  const matchingQuestionSets:any=[];
+  const matchingQuestionSets: any = [];
   const [showPreparationTips, setShowPreparationTips] =
     useState<boolean>(false);
-    const [showAchievementsTips, setShowAchievementsTips] =
+  const [showAchievementsTips, setShowAchievementsTips] =
     useState<boolean>(false);
   const prevQueryRef = useRef<string>("");
   const responsive = {
@@ -69,7 +68,7 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
         selectedCategories
       );
       setCategories(categoriesData);
-      
+
       setCardsData(cardsData);
     };
 
@@ -87,21 +86,20 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
       loadSearchResults();
     }
   }, [query]);
- 
+
   const handleCardClick = (interview: any) => {
     navigate(`/dashboard/question/${interview.id}/instructions`, {
       state: { interview },
     });
   };
 
- 
   const togglepreparationTips = () => {
     setShowPreparationTips(!showPreparationTips);
   };
   const toggleAchievementsTips = () => {
     setShowAchievementsTips(!showAchievementsTips);
   };
-  
+
   return (
     <div className="container mx-auto w-full h-full px-4 md:px-10 ">
       <NotificationBar />
@@ -110,127 +108,123 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
         <div className="px-5 py-5">
           <CategorySearch />
         </div>
-       
-       
-          <div className='mt-5 px-8  gap-5' >
-            <div>
-              <h2> Interview Questions Sets</h2>
-             
-            </div>
-            
-    <Carousel
-    
-      swipeable={true}
-      draggable={true}
-      showDots={false}
-      arrows={false}
-      responsive={responsive}
-      ssr={true}
-      infinite={true}
-      autoPlaySpeed={1000}
-      keyBoardControl={true}
-      customTransition="all .5"
-      transitionDuration={500}
-      className="container py-5"
-       dotListClass="custom-dot-list-style"
-      customLeftArrow={
-        <div className="absolute z-10 left-1 bg-gray-400 bg-opacity-60 px-3 py-3 rounded-full">
-          <FaChevronLeft className="max-w-6 cursor-pointer text-primary-300" />
-        </div>
-      }
-      customRightArrow={
-        <div className="absolute z-10 right-1 bg-gray-400 bg-opacity-60 px-3 py-3 rounded-full">
-          <FaChevronRight className="max-w-6 cursor-pointer text-primary-300" />
-        </div>
-      }
-      
-      itemClass="carousel-item-padding-20-px"
-    >
-      {cardsData.map((card) => (
-        <div
-          key={card.id}
-          className="flex flex-col p-4 mx-4 rounded-md border border-solid border-black border-opacity-10 shadow-md hover:shadow-lg hover:border-slate-800 transition duration-300 ease-in-out bg-white font-light text-neutral-500 cursor-pointer"
-        >
-          <div className="flex flex-col justify-center text-xs leading-6 whitespace-nowrap bg-sky-50 rounded-md">
-            <div className="flex overflow-hidden relative flex-col pt-4 pb-1 w-full aspect-w-1 aspect-h-1">
-              <div className="flex flex-row w-full justify-around">
-                <img
-                  loading="lazy"
-                  src={java}
-                  alt={card.title}
-                  className="w-20 h-20"
-                />
-                <img
-                  loading="lazy"
-                  alt="Coding"
-                  src={codingDev}
-                  className="self-end aspect-square w-12"
-                />
-              </div>
 
-              <div className="flex relative gap-1 py-1.5 mt-3 bg-white rounded-sm shadow-sm">
-                <img
-                  loading="lazy"
-                  alt="star"
-                  src={star}
-                  className="shrink-0 aspect-[1.09] fill-amber-400 w-[17px] h-[17px]"
-                />
-                <div className="flex-auto">{card.rating}/5</div>
-              </div>
-            </div>
+        {/* <div className="mt-5 px-8  gap-5">
+          <div>
+            <h2> Interview Questions Sets</h2>
           </div>
-          <div className="flex gap-2 justify-between mt-4">
-            <div className="flex gap-1 text-sm leading-4">
-              <img
-                loading="lazy"
-                alt="grader"
-                src={graderLogo}
-                className="shrink-0 aspect-[1.27] w-[30px]"
-              />
-              <div className="my-auto">{card.title}</div>
-            </div>
-            <div className="justify-center px-2 py-1 my-auto text-xs leading-4 whitespace-nowrap bg-sky-50 rounded-md border border-solid border-neutral-500">
-              {card.level}
-            </div>
-          </div>
-          <div className="mt-2 text-sm leading-6 text-slate-800">
-            {card.description}
-          </div>
-          <div className="flex gap-2 self-start mt-2 text-xs leading-5">
-            <div className="flex gap-1">
-              <div className="flex justify-center items-center ">
-                <CiClock2 size={14} color="#01AFF4" />
+
+          <Carousel
+            swipeable={true}
+            draggable={true}
+            showDots={false}
+            arrows={false}
+            responsive={responsive}
+            ssr={true}
+            infinite={true}
+            autoPlaySpeed={1000}
+            keyBoardControl={true}
+            customTransition="all .5"
+            transitionDuration={500}
+            className="container py-5"
+            dotListClass="custom-dot-list-style"
+            customLeftArrow={
+              <div className="absolute z-10 left-1 bg-gray-400 bg-opacity-60 px-3 py-3 rounded-full">
+                <FaChevronLeft className="max-w-6 cursor-pointer text-primary-300" />
               </div>
-              <div>{card.duration} Min</div>
-            </div>
-            <div className="flex gap-1">
-              <div className="flex justify-center items-center ">
-                <IoHelpCircleOutline size={14} color="#01AFF4" />
+            }
+            customRightArrow={
+              <div className="absolute z-10 right-1 bg-gray-400 bg-opacity-60 px-3 py-3 rounded-full">
+                <FaChevronRight className="max-w-6 cursor-pointer text-primary-300" />
               </div>
-              <div>{card.questions_count} Questions</div>
-            </div>
-          </div>
-          <button className="flex items-center justify-center px-3 py-2 mt-4 text-xs text-white bg-sky-500 rounded-md border border-sky-500 border-solid hover:bg-slate-800 hover:border-slate-800">
-            <div
-              key={card.id}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleCardClick(card);
-              }}
-              className="flex flex-row items-center gap-2"
-            >
-              <div>Take a Test</div>
-              <div>
-                <FiArrowUpRight size={15} />
+            }
+            itemClass="carousel-item-padding-20-px"
+          >
+            {cardsData.map((card) => (
+              <div
+                key={card.id}
+                className="flex flex-col p-4 mx-4 rounded-md border border-solid border-black border-opacity-10 shadow-md hover:shadow-lg hover:border-slate-800 transition duration-300 ease-in-out bg-white font-light text-neutral-500 cursor-pointer"
+              >
+                <div className="flex flex-col justify-center text-xs leading-6 whitespace-nowrap bg-sky-50 rounded-md">
+                  <div className="flex overflow-hidden relative flex-col pt-4 pb-1 w-full aspect-w-1 aspect-h-1">
+                    <div className="flex flex-row w-full justify-around">
+                      <img
+                        loading="lazy"
+                        src={java}
+                        alt={card.title}
+                        className="w-20 h-20"
+                      />
+                      <img
+                        loading="lazy"
+                        alt="Coding"
+                        src={codingDev}
+                        className="self-end aspect-square w-12"
+                      />
+                    </div>
+
+                    <div className="flex relative gap-1 py-1.5 mt-3 bg-white rounded-sm shadow-sm">
+                      <img
+                        loading="lazy"
+                        alt="star"
+                        src={star}
+                        className="shrink-0 aspect-[1.09] fill-amber-400 w-[17px] h-[17px]"
+                      />
+                      <div className="flex-auto">{card.rating}/5</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex gap-2 justify-between mt-4">
+                  <div className="flex gap-1 text-sm leading-4">
+                    <img
+                      loading="lazy"
+                      alt="grader"
+                      src={graderLogo}
+                      className="shrink-0 aspect-[1.27] w-[30px]"
+                    />
+                    <div className="my-auto">{card.title}</div>
+                  </div>
+                  <div className="justify-center px-2 py-1 my-auto text-xs leading-4 whitespace-nowrap bg-sky-50 rounded-md border border-solid border-neutral-500">
+                    {card.level}
+                  </div>
+                </div>
+                <div className="mt-2 text-sm leading-6 text-slate-800">
+                  {card.description}
+                </div>
+                <div className="flex gap-2 self-start mt-2 text-xs leading-5">
+                  <div className="flex gap-1">
+                    <div className="flex justify-center items-center ">
+                      <CiClock2 size={14} color="#01AFF4" />
+                    </div>
+                    <div>{card.duration} Min</div>
+                  </div>
+                  <div className="flex gap-1">
+                    <div className="flex justify-center items-center ">
+                      <IoHelpCircleOutline size={14} color="#01AFF4" />
+                    </div>
+                    <div>{card.questions_count} Questions</div>
+                  </div>
+                </div>
+                <button className="flex items-center justify-center px-3 py-2 mt-4 text-xs text-white bg-sky-500 rounded-md border border-sky-500 border-solid hover:bg-slate-800 hover:border-slate-800">
+                  <div
+                    key={card.id}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCardClick(card);
+                    }}
+                    className="flex flex-row items-center gap-2"
+                  >
+                    <div>Take a Test</div>
+                    <div>
+                      <FiArrowUpRight size={15} />
+                    </div>
+                  </div>
+                </button>
               </div>
-            </div>
-          </button>
-        </div>
-      ))}
-    </Carousel>
-        </div>
-    
-          {/* {cardsData.map((card) => (
+            ))}
+          </Carousel>
+        </div> */}
+
+        {/* {cardsData.map((card) => (
             <div
               key={card.id}
               onClick={(e) => {
@@ -309,7 +303,6 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
               </button>
             </div>
           ))} */}
-      
       </div>
 
       <div className="pt-5 my-10  pl-8 bg-white rounded-md border border-solid border-black border-opacity-10 max-md:pl-5">
@@ -396,31 +389,31 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
             <div className="shrink-0 mt-4 ml-3.5 w-full h-px  rounded-md border border-solid border-black border-opacity-10" />
             <div className="flex justify-between items-center">
               <div>
-              <img
-              loading="lazy"
-              src={achievement}
-              className="mt-2.5 max-w-full aspect-[1.33] w-[109px]"
-            />
-            <div className="ml-5 text-sm leading-5 text-neutral-500">
-              Entry Level
-            </div>
+                <img
+                  loading="lazy"
+                  src={achievement}
+                  className="mt-2.5 max-w-full aspect-[1.33] w-[109px]"
+                />
+                <div className="ml-5 text-sm leading-5 text-neutral-500">
+                  Entry Level
+                </div>
               </div>
               <div
-                    className=" mt-3.5 px-2 text-xs leading-4 text-sky-500 underline cursor-pointer"
-                    onClick={toggleAchievementsTips}
-                  >
-                   Start Earning Badges
-                  </div>
+                className=" mt-3.5 px-2 text-xs leading-4 text-sky-500 underline cursor-pointer"
+                onClick={toggleAchievementsTips}
+              >
+                Start Earning Badges
+              </div>
             </div>
             {showAchievementsTips && (
-               <div className="text-neutral-700 my-5">
-               Your achievements and badges will be displayed here as you progress through your interviews and challenges. 
-               Each badge represents a milestone in your journey, encouraging you to learn and excel. 
-               Begin your assessments to start collecting your badges!
-             </div>
-              )} 
-          
-           
+              <div className="text-neutral-700 my-5">
+                Your achievements and badges will be displayed here as you
+                progress through your interviews and challenges. Each badge
+                represents a milestone in your journey, encouraging you to learn
+                and excel. Begin your assessments to start collecting your
+                badges!
+              </div>
+            )}
           </div>
           <div className="flex flex-col justify-center font-light rounded-md border border-solid border-black border-opacity-10 w-full h-full">
             <div className="flex bg-white  flex-col items-start lg:p-2.5 w-full">

@@ -31,6 +31,7 @@ const QuestionPage: React.FC<QuestionPageProps> = ({ cardId }) => {
 
     fetchData();
   }, [cardId]);
+  console.log("questonData on questionView",questionsData)
   return (
     <div className="overflow-y-auto">
       <h1 className="text-2xl font-bold mb-6">Questions for Set ID: {cardId}</h1>

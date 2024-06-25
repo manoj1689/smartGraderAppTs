@@ -14,7 +14,7 @@ import "react-multi-carousel/lib/styles.css";
 import NotificationBar from "../../common/Notification/NotificationBar";
 import QuestionView from "./QuestionView";
 import Modal from "react-modal";
-
+import CategorySearch from "../Individual/CategorySearch";
 Modal.setAppElement("#root"); // Bind modal to root of the app to avoid screen readers issues
 type Item=any;
 
@@ -56,7 +56,7 @@ const SelectQuestion: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axiosInstance.get("/categories/subcat?category_id=1");
+        const response = await axiosInstance.get("/categories/subcat?category_id=2");
         setCategories(response.data.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -68,7 +68,7 @@ const SelectQuestion: React.FC = () => {
     const fetchCardData = async () => {
       try {
         const token = localStorage.getItem("accessToken");
-        const response = await axiosInstance.get("/sets/all?sub_category_id=11", {
+        const response = await axiosInstance.get("/sets/all?sub_category_id=2", {
           headers: {
             Accept: "application/json",
             Token: token,
@@ -153,13 +153,16 @@ const SelectQuestion: React.FC = () => {
       items: 1,
     },
   };
-
+  console.log("card Data on organisation",cardsData)
   return (
-    <div className="container mx-auto w-full h-full px-4 md:px-10">
+    <div className="container mx-auto w-full h-full px-4 my-4 md:px-10">
       <NotificationBar />
     
       <div className="rounded-md border border-solid my-5 py-10 border-black border-opacity-10">
-        <div className="container mx-auto lg:w-11/12 relative z-10"> 
+      <div className="px-5 py-5">
+          <CategorySearch />
+        </div>
+        {/* <div className="container mx-auto lg:w-11/12 relative z-10"> 
           <div className="flex justify-end items-center">
             <div className="md:mb-0 px-4 relative sm:w-[350px] max-sm:w-full">
               <ReactSearchAutocomplete
@@ -174,9 +177,9 @@ const SelectQuestion: React.FC = () => {
               />
             </div>
           </div>
-        </div>
-
-        <div className="container mx-auto lg:w-11/12">
+        </div> */}
+    
+        {/* <div className="container mx-auto lg:w-11/12">
           <Carousel
             swipeable={true}
             draggable={false}
@@ -216,7 +219,7 @@ const SelectQuestion: React.FC = () => {
               </div>
             ))}
           </Carousel>
-        </div>
+        </div> */}
 
         <div className="flex flex-wrap max-lg:justify-center max-lg:align-center gap-2 px-5 py-10 mt-10">
           {cardsData.map((card) => (
@@ -343,7 +346,7 @@ const SelectQuestion: React.FC = () => {
             overflowY: 'auto', // Enable vertical scrolling when content exceeds the height
             transform: 'translate(-50%, -50%)',
             width: '80%', // Set width as needed
-            maxWidth: '500px', // Set maximum width if needed
+           // maxWidth: '500px', // Set maximum width if needed
           },
         }}
       >

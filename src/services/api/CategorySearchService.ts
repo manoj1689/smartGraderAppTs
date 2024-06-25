@@ -49,6 +49,8 @@ const findParent = (categories: Record<string, Category>, parentId: number): Cat
 
 export const filterQuestionList=[]
 
+
+
 export const fetchQuestionSets = async (selectedItems: string[]) => {
   try {
     const token = getToken();
@@ -58,27 +60,28 @@ export const fetchQuestionSets = async (selectedItems: string[]) => {
         Token: token,
       },
     });
+
     const questionSets = response.data.data;
 
-  //  console.log('Fetched question sets:', questionSets);
-   // console.log('Selected Items:', selectedItems);
+    console.log('Fetched question sets:', questionSets);
+    console.log('Selected Items:', selectedItems);
 
     // Check if the entered path matches any result in the question sets
-    const matchingSets = questionSets.filter((set:any) =>
-      selectedItems.some(item => set.title.includes(item))
-    );
+    // const matchingSets = questionSets.filter((set: any) =>
+    //   selectedItems.some(item => set.title.includes(item))
+    // );
 
-    if (matchingSets.length > 0) {
-      console.log('Matching sets:', matchingSets);
+    if (selectedItems.length > 0) {
+      const matchingSets = questionSets.filter((set: any) =>
+        selectedItems.some(item => set.title.includes(item))
+      );
       return matchingSets;
     } else {
       console.log('No matching sets found for the selected items');
-      return [];
+      return questionSets;
     }
-
   } catch (error) {
     console.error('Error fetching question sets', error);
     return null;
   }
-};
-
+}
