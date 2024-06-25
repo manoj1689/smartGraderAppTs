@@ -52,7 +52,7 @@ export const filterQuestionList=[]
 export const fetchQuestionSets = async (selectedItems: string[]) => {
   try {
     const token = getToken();
-    const response = await axiosInstance.get(`/sets/all?sub_category_id=1`, {
+    const response = await axiosInstance.get(`/sets/all?sub_category_id=2`, {
       headers: {
         Accept: "application/json",
         Token: token,
@@ -64,7 +64,9 @@ export const fetchQuestionSets = async (selectedItems: string[]) => {
    // console.log('Selected Items:', selectedItems);
 
     // Check if the entered path matches any result in the question sets
-    const matchingSets = questionSets.filter((set: any) => selectedItems.includes(set.title));
+    const matchingSets = questionSets.filter(set =>
+      selectedItems.some(item => set.title.includes(item))
+    );
 
     if (matchingSets.length > 0) {
       console.log('Matching sets:', matchingSets);

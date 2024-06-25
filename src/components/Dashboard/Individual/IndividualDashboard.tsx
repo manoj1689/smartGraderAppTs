@@ -64,7 +64,7 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
       const token = localStorage.getItem("accessToken") || "";
       const { categoriesData, cardsData } = await fetchData(
         1,
-        1,
+        2,
         token,
         selectedCategories
       );

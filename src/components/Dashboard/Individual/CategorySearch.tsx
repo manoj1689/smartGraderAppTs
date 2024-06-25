@@ -214,7 +214,7 @@ const CategorySearch: React.FC = () => {
   };
   console.log(matchingQuestionSets)
   return (
-    <div className="container mx-auto p-4" ref={menuRef}>
+    <div className="container mx-auto px-4" ref={menuRef}>
       <header>
         <div className="flex justify-between items-center">
           {/* <h1 className="text-3xl font-bold font-spline">Category Menu</h1> */}
@@ -230,7 +230,7 @@ const CategorySearch: React.FC = () => {
         <input
           type="text"
           placeholder="Search categories..."
-          className="justify-center items-start p-4 mt-5 sm:mt-10 leading-4 rounded-md border border-solid border-neutral-400 w-full pr-10 focus:border-neutral-500 focus:ring-neutral-500 focus:outline-none"
+          className="justify-center items-start p-4  leading-4 rounded-md border border-solid border-neutral-400 w-full pr-10 focus:border-neutral-500 focus:ring-neutral-500 focus:outline-none"
           value={searchTerm}
           onChange={handleSearchChange}
         />
@@ -284,7 +284,7 @@ const CategorySearch: React.FC = () => {
             keyBoardControl={true}
             customTransition="all .5"
             transitionDuration={500}
-            className="container  py-5"
+            className="container py-5"
             customLeftArrow={
               <div className="absolute z-10 left-1 bg-gray-400 bg-opacity-60 px-3 py-3 rounded-full">
                 <FaChevronLeft className="max-w-6 cursor-pointer text-primary-300" />
@@ -306,7 +306,7 @@ const CategorySearch: React.FC = () => {
                 e.stopPropagation();
                 handleCardClick(card);
               }}
-              className="flex flex-col p-4   rounded-md border border-solid border-black border-opacity-10 shadow-md hover:shadow-lg hover:border-slate-800 transition duration-300 ease-in-out bg-white font-light text-neutral-500 cursor-pointer"
+              className="flex flex-col p-4  mx-4  rounded-md border border-solid border-black border-opacity-10 shadow-md hover:shadow-lg hover:border-slate-800 transition duration-300 ease-in-out bg-white font-light text-neutral-500 cursor-pointer"
             >
               <div className="flex flex-col justify-center text-xs leading-6 whitespace-nowrap bg-sky-50 rounded-md">
                 <div className="flex overflow-hidden relative flex-col pt-4 pb-1 w-full aspect-w-1 aspect-h-1">
