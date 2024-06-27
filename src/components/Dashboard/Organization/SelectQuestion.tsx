@@ -14,7 +14,7 @@ import "react-multi-carousel/lib/styles.css";
 import NotificationBar from "../../common/Notification/NotificationBar";
 import QuestionView from "./QuestionView";
 import Modal from "react-modal";
-import CategorySearch from "../Individual/CategorySearch";
+import CategorySearch from "../../common/CategorySearch/CategorySearch";
 Modal.setAppElement("#root"); // Bind modal to root of the app to avoid screen readers issues
 type Item=any;
 
@@ -159,9 +159,7 @@ const SelectQuestion: React.FC = () => {
       <NotificationBar />
     
       <div className="rounded-md border border-solid my-5 py-10 border-black border-opacity-10">
-      <div className="px-5 py-5">
-          <CategorySearch />
-        </div>
+     
         {/* <div className="container mx-auto lg:w-11/12 relative z-10"> 
           <div className="flex justify-end items-center">
             <div className="md:mb-0 px-4 relative sm:w-[350px] max-sm:w-full">
@@ -177,9 +175,9 @@ const SelectQuestion: React.FC = () => {
               />
             </div>
           </div>
-        </div> */}
+        </div>
     
-        {/* <div className="container mx-auto lg:w-11/12">
+        <div className="container mx-auto lg:w-11/12">
           <Carousel
             swipeable={true}
             draggable={false}

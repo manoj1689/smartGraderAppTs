@@ -5,43 +5,29 @@ import {
   fetchSelectedItemId,
   fetchQuestionSets,
 } from "../../../services/api/CategorySearchService";
-import { FiArrowUpRight } from "react-icons/fi";
-import { CiClock2 } from "react-icons/ci";
-import { IoHelpCircleOutline } from "react-icons/io5";
-import ResponsivePagination from "react-responsive-pagination";
-import "react-responsive-pagination/themes/classic.css";
-import codingDev from "../../../assets/images/Individual/codingdeveloper.png";
-import star from "../../../assets/images/Individual/Star.png";
-import graderLogo from "../../../assets/images/Individual/graderIcon.png";
-import java from "../../../assets/images/Individual/javaLogo.png";
-import noRecordFound from "../../../assets/images/Individual/NoRecordFound.png"
 import { Card } from "../../../types/interfaces/interface";
-import {
-  dropEllipsis,
-  dropNav,
-  combine,
-  dropFirstAndLast,
-} from "react-responsive-pagination/narrowBehaviour";
+
 interface Category {
   id: number;
   name: string;
   parent_id?: number | null;
   subcategories?: Record<string, Category>;
 }
-
-const CategorySearch: React.FC = () => {
+interface CategorySearchProps {
+  setListOfAllIds: (ids: number[]) => void;
+  setMatchingQuestionSets: (cards: Card[]) => void;
+}
+const CategorySearch: React.FC<CategorySearchProps> = ({ setListOfAllIds,setMatchingQuestionSets }) => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isAllSelected, setIsAllSelected] = useState(true);
   const [categoriesData, setCategoriesData] = useState<
     Record<string, Category>
   >({});
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
-  const [listOfAllId, setListOfAllIds] = useState([]);
-  const [matchingQuestionSets, setMatchingQuestionSets] = useState<Card[]>([]);
-  const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 10;
+
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -53,7 +39,7 @@ const CategorySearch: React.FC = () => {
 
     fetchData();
   }, []);
-  console.log("matching set received on categorySearch", matchingQuestionSets);
+  
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -78,32 +64,8 @@ const CategorySearch: React.FC = () => {
     loadMatchingQuestionSetsIds();
   }, [selectedItems]);
 
-  useEffect(() => {
-    const loadMatchingQuestionSets = async () => {
-   
-        const allSets = [];
-        if(listOfAllId.length>0){
-          for (const id of listOfAllId) {
-            console.log("For loop to get data of all id", id);
-            const SetsList = await fetchQuestionSets(id, 0, 0);
-            allSets.push(...(SetsList || []));
-          }
-          setMatchingQuestionSets(allSets);
-        }else{
-          const SetsList = await fetchQuestionSets(0, 0, 0);
-          setMatchingQuestionSets(SetsList);
-        }
-       
-    };
 
-    loadMatchingQuestionSets();
-  }, [listOfAllId]);
-
-  const ShowAllCards = async () => {
-    const allCardList: any = await fetchQuestionSets(0, 0, 0);
-    setMatchingQuestionSets(allCardList);
-  };
-
+  
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const term = event.target.value.toLowerCase();
     setSearchTerm(term);
@@ -178,7 +140,16 @@ const CategorySearch: React.FC = () => {
     traverse(categories, "");
     return results;
   };
-
+  const ShowAllCards = async () => {
+    try {
+      const allCardList: any = await fetchQuestionSets(0, 0, 0);
+      setMatchingQuestionSets(allCardList);
+      setSelectedItems([]); 
+      setIsAllSelected(true);  // Clear the selection when "All" is clicked
+    } catch (error) {
+      console.error("Error fetching all cards:", error);
+    }
+  };
   const renderSubcategories = (
     subcategories: Record<string, Category>,
     level: number
@@ -228,7 +199,7 @@ const CategorySearch: React.FC = () => {
                 ? "text-blue-500"
                 : "text-gray-700 hover:text-gray-900"
             }`}
-            onClick={() => handleItemClick(mainCategory, level)}
+            onClick={() => {handleItemClick(mainCategory, level),setIsAllSelected(false)}}
           >
             {mainCategory}
           </button>
@@ -244,11 +215,7 @@ const CategorySearch: React.FC = () => {
     });
   };
 
-  const handleCardClick = (interview: any) => {
-    navigate(`/dashboard/question/${interview.id}/instructions`, {
-      state: { interview },
-    });
-  };
+
 
   const handleSuggestionClick = async (suggestion: string) => {
     const pathItems = suggestion.split(" > ");
@@ -257,14 +224,7 @@ const CategorySearch: React.FC = () => {
     setFilteredSuggestions([]);
   };
 
-  const offset = currentPage * itemsPerPage;
-  const currentItems = matchingQuestionSets.slice(
-    offset,
-    offset + itemsPerPage
-  );
-  const pageCount = Math.ceil(matchingQuestionSets.length / itemsPerPage);
 
-  console.log(matchingQuestionSets);
 
   return (
     <div className="container mx-auto px-4" ref={menuRef}>
@@ -322,112 +282,16 @@ const CategorySearch: React.FC = () => {
       >
         <span
           onClick={ShowAllCards}
-          className=" flex flex-wrap font-spline text-gray-800 text-sm cursor-pointer "
+          className={`flex flex-wrap font-spline text-sm cursor-pointer ${
+            isAllSelected ? "text-blue-400" : "text-gray-700"
+          }`}
         >
           All
         </span>
         {renderCategories(categoriesData)}
       </nav>
-      <div>
-        {currentItems.length > 0 ? (
-          <div className="mt-5 flex flex-wrap gap-5">
-            {currentItems.map((card) => (
-              <div className="flex flex-col p-4 h-2/5 bg-white rounded-md border border-solid border-black border-opacity-10 shadow-md hover:shadow-lg hover:border-slate-800 transition duration-300 ease-in-out w-96 max-sm:mx-auto sm:w-64 font-light text-neutral-500 cursor-pointer">
-                <div className="flex flex-col justify-center text-xs leading-6 whitespace-nowrap bg-sky-50 rounded-md">
-                  <div className="flex overflow-hidden relative flex-col pt-4 pb-1 w-full aspect-w-1 aspect-h-1">
-                    <div className="flex flex-row w-full justify-around">
-                      <img
-                        loading="lazy"
-                        src={java}
-                        alt={card.title}
-                        className="w-20 h-20"
-                      />
-                      <img
-                        loading="lazy"
-                        alt="Coding"
-                        src={codingDev}
-                        className="self-end aspect-square w-12"
-                      />
-                    </div>
-
-                    <div className="flex relative gap-1 py-1.5 mt-3 bg-white rounded-sm shadow-sm">
-                      <img
-                        loading="lazy"
-                        alt="star"
-                        src={star}
-                        className="shrink-0 aspect-[1.09] fill-amber-400 w-[17px] h-[17px]"
-                      />
-                      <div className="flex-auto">{card.rating}/5</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex gap-2 justify-between mt-4">
-                  <div className="flex gap-1 text-sm leading-4">
-                    <img
-                      loading="lazy"
-                      alt="grader"
-                      src={graderLogo}
-                      className="shrink-0 aspect-[1.27] w-[30px]"
-                    />
-                    <div className="my-auto">{card.title}</div>
-                  </div>
-                  <div className="justify-center px-2 py-1 my-auto text-xs leading-4 whitespace-nowrap bg-sky-50 rounded-md border border-solid border-neutral-500">
-                    {card.level}
-                  </div>
-                </div>
-                <div className="mt-2 text-sm leading-6 text-slate-800">
-                  {card.description}
-                </div>
-                <div className="flex gap-2 self-start mt-2 text-xs leading-5">
-                  <div className="flex gap-1">
-                    <div className="flex justify-center items-center ">
-                      <CiClock2 size={14} color="#01AFF4" />
-                    </div>
-
-                    <div>{card.duration} Min</div>
-                  </div>
-                  <div className="flex gap-1">
-                    <div className="flex justify-center items-center ">
-                      <IoHelpCircleOutline size={14} color="#01AFF4" />
-                    </div>
-                    <div>{card.questions_count} Questions</div>
-                  </div>
-                </div>
-                <button className="flex items-center justify-center px-3 py-2 mt-4 text-xs text-white bg-sky-500 rounded-md border border-sky-500 border-solid hover:bg-slate-800 hover:border-slate-800">
-                  <div
-                    className="flex flex-row items-center gap-2"
-                    key={card.id}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleCardClick(card);
-                    }}
-                  >
-                    <div>Take a Test</div>
-                    <div>
-                      <FiArrowUpRight size={15} />
-                    </div>
-                  </div>
-                </button>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <>
-            <div>
-              
-              <img src={noRecordFound} className=" mx-auto w-96" alt="No Matching Data" />
-               </div>
-          </>
-        )}
-        <div className="mt-5  lg:w-2/3 mx-auto">
-          <ResponsivePagination
-            narrowBehaviour={combine(dropNav, dropEllipsis)}
-            current={currentPage + 1}
-            total={pageCount}
-            onPageChange={(page) => setCurrentPage(page - 1)}
-          />
-        </div>
-      </div>
+      
+     
     </div>
   );
 };

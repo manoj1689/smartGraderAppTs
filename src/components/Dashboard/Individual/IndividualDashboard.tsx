@@ -24,7 +24,7 @@ import {
 } from "../../../services/api/IndividaulDataService";
 import { Category, Card } from "../../../types/interfaces/interface";
 import { IndividualDashboardProps } from "../../../types/interfaces/interface";
-import CategorySearch from "./CategorySearch";
+import IndividualCardsDisplay from "./IndividualCardsDisplay";
 
 const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
   const navigate = useNavigate();
@@ -106,7 +106,7 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
 
       <div className="rounded-md border border-solid my-5 py-10 border-black border-opacity-10 ">
         <div className="px-5 py-5">
-          <CategorySearch />
+          <IndividualCardsDisplay />
         </div>
 
         {/* <div className="mt-5 px-8  gap-5">

@@ -10,7 +10,6 @@ import Select, { SingleValue } from 'react-select';
 import { useNavigate } from 'react-router-dom';
 import { SearchItem,Option } from '../../../types/interfaces/interface';
 import { fetchSearchResults } from '../../../services/api/CurrentJobService';
-import CategorySearch from '../Individual/CategorySearch';
 const CurrentJobs: React.FC = () => {
   type Job = {
     id: number;
@@ -188,7 +187,7 @@ const CurrentJobs: React.FC = () => {
     <div>
       <div className="rounded-md border border-solid px-5 my-5 py-10 border-black border-opacity-10">
       <div className='mb-10'>
-            <CategorySearch/>
+          
           </div>
         <div className="flex flex-col lg:flex-row justify-between">
           <div className="flex flex-row items-center max-lg:my-5 space-x-4">
@@ -199,7 +198,7 @@ const CurrentJobs: React.FC = () => {
 
         
 
-          {/* <div className="flex flex-col justify-center md:flex-row">
+          <div className="flex flex-col justify-center md:flex-row">
             <div className="md:mb-0 md:px-5 md:w-[350px] max-md:w-full">
               <ReactSearchAutocomplete
                 items={searchList}
@@ -222,7 +221,7 @@ const CurrentJobs: React.FC = () => {
                 styles={customStyles}
               />
             </div>
-          </div> */}
+          </div>
         </div>
         <div className="container mx-auto p-4">
           <h1 className="text-2xl mb-4">Job Listings</h1>
