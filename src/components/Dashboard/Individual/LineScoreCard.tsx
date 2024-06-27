@@ -87,7 +87,7 @@ const LineScoreCard: React.FC = () => {
     setViewSample(!viewSample);
   };
   return (
-    <div className="flex flex-col grow px-7 pt-5 pb-10 w-full bg-white rounded-md border border-solid border-black border-opacity-10 max-md:px-5 max-md:mt-7 max-md:max-w-full">
+    <div className="flex flex-col grow max-h-[452px] overflow-y-auto px-7 pt-5 w-full bg-white rounded-md border border-solid border-black border-opacity-10 max-md:px-5 max-md:mt-7 max-md:max-w-full">
       <div className="flex gap-5 justify-between w-full max-md:flex-wrap max-md:max-w-full">
         <div className="flex gap-2.5 my-auto text-lg font-medium leading-6 text-slate-800">
           <FaRegIdCard size={24} color="#01AFF4" />

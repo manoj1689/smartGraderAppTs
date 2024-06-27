@@ -2,21 +2,26 @@ import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   fetchCategories,
+  fetchSelectedItemId,
   fetchQuestionSets,
 } from "../../../services/api/CategorySearchService";
-import Carousel from "react-multi-carousel";
-import "react-multi-carousel/lib/styles.css";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FiArrowUpRight } from "react-icons/fi";
+import { CiClock2 } from "react-icons/ci";
+import { IoHelpCircleOutline } from "react-icons/io5";
+import ResponsivePagination from "react-responsive-pagination";
+import "react-responsive-pagination/themes/classic.css";
 import codingDev from "../../../assets/images/Individual/codingdeveloper.png";
 import star from "../../../assets/images/Individual/Star.png";
 import graderLogo from "../../../assets/images/Individual/graderIcon.png";
 import java from "../../../assets/images/Individual/javaLogo.png";
-import { FiArrowUpRight } from "react-icons/fi";
-import { CiClock2 } from "react-icons/ci";
-import { IoHelpCircleOutline } from "react-icons/io5";
+import noRecordFound from "../../../assets/images/Individual/NoRecordFound.png"
 import { Card } from "../../../types/interfaces/interface";
-// import './index.css';
-
+import {
+  dropEllipsis,
+  dropNav,
+  combine,
+  dropFirstAndLast,
+} from "react-responsive-pagination/narrowBehaviour";
 interface Category {
   id: number;
   name: string;
@@ -33,25 +38,10 @@ const CategorySearch: React.FC = () => {
     Record<string, Category>
   >({});
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
+  const [listOfAllId, setListOfAllIds] = useState([]);
   const [matchingQuestionSets, setMatchingQuestionSets] = useState<Card[]>([]);
-  const responsive = {
-    superLargeDesktop: {
-      breakpoint: { max: 4000, min: 1500 },
-      items: 5,
-    },
-    desktop: {
-      breakpoint: { max: 1500, min: 1264 },
-      items: 4,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 2,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1,
-    },
-  };
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 10;
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -63,7 +53,7 @@ const CategorySearch: React.FC = () => {
 
     fetchData();
   }, []);
-  console.log("matching set recieved on categorySearch", matchingQuestionSets);
+  console.log("matching set received on categorySearch", matchingQuestionSets);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -77,6 +67,42 @@ const CategorySearch: React.FC = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [menuRef]);
+
+  useEffect(() => {
+    const loadMatchingQuestionSetsIds = async () => {
+      const ListOfAllIds: any = await fetchSelectedItemId(selectedItems);
+      console.log("list of all ids next to fetch data of all", ListOfAllIds);
+      setListOfAllIds(ListOfAllIds);
+    };
+
+    loadMatchingQuestionSetsIds();
+  }, [selectedItems]);
+
+  useEffect(() => {
+    const loadMatchingQuestionSets = async () => {
+   
+        const allSets = [];
+        if(listOfAllId.length>0){
+          for (const id of listOfAllId) {
+            console.log("For loop to get data of all id", id);
+            const SetsList = await fetchQuestionSets(id, 0, 0);
+            allSets.push(...(SetsList || []));
+          }
+          setMatchingQuestionSets(allSets);
+        }else{
+          const SetsList = await fetchQuestionSets(0, 0, 0);
+          setMatchingQuestionSets(SetsList);
+        }
+       
+    };
+
+    loadMatchingQuestionSets();
+  }, [listOfAllId]);
+
+  const ShowAllCards = async () => {
+    const allCardList: any = await fetchQuestionSets(0, 0, 0);
+    setMatchingQuestionSets(allCardList);
+  };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const term = event.target.value.toLowerCase();
@@ -96,7 +122,6 @@ const CategorySearch: React.FC = () => {
       categoriesData,
       selectedItems.slice(0, level + 1)
     );
-    console.log("Selected category:", selectedCategory);
 
     const itemHasChildren =
       selectedCategory &&
@@ -106,26 +131,10 @@ const CategorySearch: React.FC = () => {
 
     if (!itemHasChildren) {
       setIsMenuOpen(false);
-
-      // await fetchQuestionSets(path); // Pass the selected path to fetchQuestionSets
     }
   };
-  console.log("the suggestionlistSelect", selectedItems);
-  if (selectedItems.length > 0) {
-    fetchQuestionSets(selectedItems);
-  }
-  useEffect(() => {
-    const loadMatchingQuestionSets = async () => {
-      if (selectedItems.length >= 0) {
-        const matchingSets = await fetchQuestionSets(selectedItems);
-        setMatchingQuestionSets(matchingSets || []);
-      } else {
-        setMatchingQuestionSets([]);
-      }
-    };
 
-    loadMatchingQuestionSets();
-  }, [selectedItems]);
+  console.log("The Selected Item from searchBar", selectedItems);
 
   const findCategory = (
     categories: Record<string, Category>,
@@ -240,20 +249,29 @@ const CategorySearch: React.FC = () => {
       state: { interview },
     });
   };
+
   const handleSuggestionClick = async (suggestion: string) => {
     const pathItems = suggestion.split(" > ");
     pathItems.forEach((item, level) => handleItemClick(item, level));
     setSearchTerm("");
     setFilteredSuggestions([]);
   };
+
+  const offset = currentPage * itemsPerPage;
+  const currentItems = matchingQuestionSets.slice(
+    offset,
+    offset + itemsPerPage
+  );
+  const pageCount = Math.ceil(matchingQuestionSets.length / itemsPerPage);
+
   console.log(matchingQuestionSets);
+
   return (
     <div className="container mx-auto px-4" ref={menuRef}>
       <header>
-        <div className="flex justify-between items-center">
-          {/* <h1 className="text-3xl font-bold font-spline">Category Menu</h1> */}
+        <div className=" flex justify-end m-2 ">
           <button
-            className="block lg:hidden text-gray-500 focus:outline-none"
+            className=" block lg:hidden text-gray-500 focus:outline-none m-2 "
             onClick={() => setIsMenuOpen(!isMenuOpen)}
           >
             <svg
@@ -277,12 +295,12 @@ const CategorySearch: React.FC = () => {
         <input
           type="text"
           placeholder="Search categories..."
-          className="justify-center items-start p-4  leading-4 rounded-md border border-solid border-neutral-400 w-full pr-10 focus:border-neutral-500 focus:ring-neutral-500 focus:outline-none"
+          className="justify-center items-start p-4 leading-4 rounded-md border border-solid border-neutral-400 w-full pr-10 focus:border-neutral-500 focus:ring-neutral-500 focus:outline-none"
           value={searchTerm}
           onChange={handleSearchChange}
         />
         {filteredSuggestions.length > 0 && (
-          <div className="absolute bg-blue-100 shadow-lg max-h-[] overflow-y-scroll scroll-smooth rounded-md w-3/4 sm:w-2/3 mt-4 z-10">
+          <div className="absolute bg-blue-100 shadow-lg  overflow-y-scroll scroll-smooth rounded-md w-3/4 sm:w-2/3 mt-4 z-10">
             <ul className="p-3">
               {filteredSuggestions.map((suggestion, index) => (
                 <li
@@ -298,134 +316,117 @@ const CategorySearch: React.FC = () => {
         )}
       </header>
       <nav
-        className={`flex flex-wrap lg:flex-nowrap font-spline space-x-4 ${
+        className={`flex flex-col sm:flex-row px-4 mt-4 justify-start items-center flex-wrap lg:flex-nowrap font-spline space-x-4 ${
           isMenuOpen ? "" : "hidden lg:flex"
         }`}
       >
+        <span
+          onClick={ShowAllCards}
+          className=" flex flex-wrap font-spline text-gray-800 text-sm cursor-pointer "
+        >
+          All
+        </span>
         {renderCategories(categoriesData)}
       </nav>
-      {/* {selectedItems.length > 0 && (
-        <div className="mt-4">
-          <h2 className="text-2xl font-bold">Selected Path</h2>
-          <ul className="list-disc pl-5">
-            {selectedItems.map((item, index) => (
-              <li key={index} className="text-gray-700">{item}</li>
-            ))}
-          </ul>
-        </div>
-      )} */}
       <div>
-        {matchingQuestionSets.length > 0 && (
-          <div className="mt-5">
-           
-            <Carousel
-              swipeable={true}
-              draggable={true}
-              showDots={false}
-              arrows={false}
-              responsive={responsive}
-              ssr={true}
-              infinite={true}
-              autoPlaySpeed={1000}
-              keyBoardControl={true}
-              customTransition="all .5"
-              transitionDuration={500}
-              className="container py-5"
-              customLeftArrow={
-                <div className="absolute z-10 left-1 bg-gray-400 bg-opacity-60 px-3 py-3 rounded-full">
-                  <FaChevronLeft className="max-w-6 cursor-pointer text-primary-300" />
-                </div>
-              }
-              customRightArrow={
-                <div className="absolute z-10 right-1 bg-gray-400 bg-opacity-60 px-3 py-3 rounded-full">
-                  <FaChevronRight className="max-w-6 cursor-pointer text-primary-300" />
-                </div>
-              }
-              dotListClass="custom-dot-list-style"
-              itemClass="carousel-item-padding-20-px "
-            >
-              {matchingQuestionSets.map((card) => (
-                <div className="flex flex-col p-4  mx-4  rounded-md border border-solid border-black border-opacity-10 shadow-md hover:shadow-lg hover:border-slate-800 transition duration-300 ease-in-out bg-white font-light text-neutral-500 cursor-pointer">
-                  <div className="flex flex-col justify-center text-xs leading-6 whitespace-nowrap bg-sky-50 rounded-md">
-                    <div className="flex overflow-hidden relative flex-col pt-4 pb-1 w-full aspect-w-1 aspect-h-1">
-                      <div className="flex flex-row w-full justify-around">
-                        <img
-                          loading="lazy"
-                          src={java}
-                          alt={card.title}
-                          className="w-20 h-20"
-                        />
-                        <img
-                          loading="lazy"
-                          alt="Coding"
-                          src={codingDev}
-                          className="self-end aspect-square w-12"
-                        />
-                      </div>
-
-                      <div className="flex relative gap-1 py-1.5 mt-3 bg-white rounded-sm shadow-sm">
-                        <img
-                          loading="lazy"
-                          alt="star"
-                          src={star}
-                          className="shrink-0 aspect-[1.09] fill-amber-400 w-[17px] h-[17px]"
-                        />
-                        <div className="flex-auto">{card.rating}/5</div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex gap-2 justify-between mt-4">
-                    <div className="flex gap-1 text-sm leading-4">
+        {currentItems.length > 0 ? (
+          <div className="mt-5 flex flex-wrap gap-5">
+            {currentItems.map((card) => (
+              <div className="flex flex-col p-4 h-2/5 bg-white rounded-md border border-solid border-black border-opacity-10 shadow-md hover:shadow-lg hover:border-slate-800 transition duration-300 ease-in-out w-96 max-sm:mx-auto sm:w-64 font-light text-neutral-500 cursor-pointer">
+                <div className="flex flex-col justify-center text-xs leading-6 whitespace-nowrap bg-sky-50 rounded-md">
+                  <div className="flex overflow-hidden relative flex-col pt-4 pb-1 w-full aspect-w-1 aspect-h-1">
+                    <div className="flex flex-row w-full justify-around">
                       <img
                         loading="lazy"
-                        alt="grader"
-                        src={graderLogo}
-                        className="shrink-0 aspect-[1.27] w-[30px]"
+                        src={java}
+                        alt={card.title}
+                        className="w-20 h-20"
                       />
-                      <div className="my-auto">{card.title}</div>
+                      <img
+                        loading="lazy"
+                        alt="Coding"
+                        src={codingDev}
+                        className="self-end aspect-square w-12"
+                      />
                     </div>
-                    <div className="justify-center px-2 py-1 my-auto text-xs leading-4 whitespace-nowrap bg-sky-50 rounded-md border border-solid border-neutral-500">
-                      {card.level}
-                    </div>
-                  </div>
-                  <div className="mt-2 text-sm leading-6 text-slate-800">
-                    {card.description}
-                  </div>
-                  <div className="flex gap-2 self-start mt-2 text-xs leading-5">
-                    <div className="flex gap-1">
-                      <div className="flex justify-center items-center ">
-                        <CiClock2 size={14} color="#01AFF4" />
-                      </div>
 
-                      <div>{card.duration} Min</div>
-                    </div>
-                    <div className="flex gap-1">
-                      <div className="flex justify-center items-center ">
-                        <IoHelpCircleOutline size={14} color="#01AFF4" />
-                      </div>
-                      <div>{card.questions_count} Questions</div>
+                    <div className="flex relative gap-1 py-1.5 mt-3 bg-white rounded-sm shadow-sm">
+                      <img
+                        loading="lazy"
+                        alt="star"
+                        src={star}
+                        className="shrink-0 aspect-[1.09] fill-amber-400 w-[17px] h-[17px]"
+                      />
+                      <div className="flex-auto">{card.rating}/5</div>
                     </div>
                   </div>
-                  <button className="flex items-center justify-center px-3 py-2 mt-4 text-xs text-white bg-sky-500 rounded-md border border-sky-500 border-solid hover:bg-slate-800 hover:border-slate-800">
-                    <div
-                      className="flex flex-row items-center gap-2"
-                      key={card.id}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleCardClick(card);
-                      }}
-                    >
-                      <div>Take a Test</div>
-                      <div>
-                        <FiArrowUpRight size={15} />
-                      </div>
-                    </div>
-                  </button>
                 </div>
-              ))}
-            </Carousel>
+                <div className="flex gap-2 justify-between mt-4">
+                  <div className="flex gap-1 text-sm leading-4">
+                    <img
+                      loading="lazy"
+                      alt="grader"
+                      src={graderLogo}
+                      className="shrink-0 aspect-[1.27] w-[30px]"
+                    />
+                    <div className="my-auto">{card.title}</div>
+                  </div>
+                  <div className="justify-center px-2 py-1 my-auto text-xs leading-4 whitespace-nowrap bg-sky-50 rounded-md border border-solid border-neutral-500">
+                    {card.level}
+                  </div>
+                </div>
+                <div className="mt-2 text-sm leading-6 text-slate-800">
+                  {card.description}
+                </div>
+                <div className="flex gap-2 self-start mt-2 text-xs leading-5">
+                  <div className="flex gap-1">
+                    <div className="flex justify-center items-center ">
+                      <CiClock2 size={14} color="#01AFF4" />
+                    </div>
+
+                    <div>{card.duration} Min</div>
+                  </div>
+                  <div className="flex gap-1">
+                    <div className="flex justify-center items-center ">
+                      <IoHelpCircleOutline size={14} color="#01AFF4" />
+                    </div>
+                    <div>{card.questions_count} Questions</div>
+                  </div>
+                </div>
+                <button className="flex items-center justify-center px-3 py-2 mt-4 text-xs text-white bg-sky-500 rounded-md border border-sky-500 border-solid hover:bg-slate-800 hover:border-slate-800">
+                  <div
+                    className="flex flex-row items-center gap-2"
+                    key={card.id}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCardClick(card);
+                    }}
+                  >
+                    <div>Take a Test</div>
+                    <div>
+                      <FiArrowUpRight size={15} />
+                    </div>
+                  </div>
+                </button>
+              </div>
+            ))}
           </div>
+        ) : (
+          <>
+            <div>
+              
+              <img src={noRecordFound} className=" mx-auto w-96" alt="No Matching Data" />
+               </div>
+          </>
         )}
+        <div className="mt-5  lg:w-2/3 mx-auto">
+          <ResponsivePagination
+            narrowBehaviour={combine(dropNav, dropEllipsis)}
+            current={currentPage + 1}
+            total={pageCount}
+            onPageChange={(page) => setCurrentPage(page - 1)}
+          />
+        </div>
       </div>
     </div>
   );

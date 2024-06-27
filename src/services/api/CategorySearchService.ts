@@ -51,10 +51,10 @@ export const filterQuestionList=[]
 
 
 
-export const fetchQuestionSets = async (selectedItems: string[]) => {
+export const fetchQuestionSets = async (subCategoryId:number,limitStart:number,limitSize:number,) => {
   try {
     const token = getToken();
-    const response = await axiosInstance.get(`/sets/all?sub_category_id=2`, {
+    const response = await axiosInstance.get(`/sets/all?sub_category_id=${subCategoryId}&limit_start=${limitStart}&limit_size=${limitSize}`, {
       headers: {
         Accept: "application/json",
         Token: token,
@@ -62,24 +62,33 @@ export const fetchQuestionSets = async (selectedItems: string[]) => {
     });
 
     const questionSets = response.data.data;
-
+    
     console.log('Fetched question sets:', questionSets);
-    console.log('Selected Items:', selectedItems);
+    return questionSets;
+  } catch (error) {
+    console.error('Error fetching question sets', error);
+    return null;
+  }
+}
 
-    // Check if the entered path matches any result in the question sets
-    // const matchingSets = questionSets.filter((set: any) =>
-    //   selectedItems.some(item => set.title.includes(item))
-    // );
-
-    if (selectedItems.length > 0) {
-      const matchingSets = questionSets.filter((set: any) =>
-        selectedItems.some(item => set.title.includes(item))
-      );
-      return matchingSets;
-    } else {
-      console.log('No matching sets found for the selected items');
-      return questionSets;
-    }
+export const fetchSelectedItemId = async (selectedItems: string[]) => {
+  try {
+    const token = getToken();
+    const termToSearch=selectedItems[selectedItems.length-1];
+    console.log("we feed to find the term",termToSearch)
+    const response = await axiosInstance.get(`/categories/search?term=${termToSearch}`, {
+      headers: {
+        Accept: "application/json",
+        Token: token,
+      },
+    });
+   
+    const selectedItemsId = response.data.data;
+    let listOfSearchTermsIds:number[]=[]
+    
+    selectedItemsId.map((item:any)=>listOfSearchTermsIds.push(item.id))
+   // console.log('selected Items ids',listOfSearchTermsIds);
+    return listOfSearchTermsIds;
   } catch (error) {
     console.error('Error fetching question sets', error);
     return null;

@@ -29,6 +29,7 @@
     "react-multi-carousel": "^2.8.5",
     "react-paginate": "^8.2.0",
     "react-responsive-modal": "^6.4.2",
+    "react-responsive-pagination": "^2.6.0",
     "react-router-dom": "^6.23.1",
     "react-search-autocomplete": "^8.5.2",
     "react-select": "^5.8.0",
