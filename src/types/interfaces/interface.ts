@@ -108,6 +108,7 @@ export interface FormData {
     id: number;
     title: string;
     description: string;
+    image_url:string
     level: string;
     rating: number;
     duration: number;

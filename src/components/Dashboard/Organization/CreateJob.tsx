@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import "react-datepicker/dist/react-datepicker.css";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate,useLocation } from 'react-router-dom';
 import NotificationBar from '../../common/Notification/NotificationBar';
 import { FaLaptopCode } from "react-icons/fa6";
 import { MdAddBox } from "react-icons/md";
@@ -12,6 +12,8 @@ import { CreateJobService } from '../../../services/api/CreateJobService';
 
 const CreateJobs: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const selectedSetId = location.state?.selectedSetId || null;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
@@ -66,12 +68,12 @@ const CreateJobs: React.FC = () => {
               </div>
             </div>
 
-            <button className="flex justify-center items-center self-stretch px-4 py-5 my-5 text-base text-white bg-sky-500 rounded-md border border-sky-500 border-solid max-md:px-5" onClick={() => navigate('selectquestion')}>
+            <button className="flex justify-center items-center self-stretch px-4 py-5 my-5 text-base text-white bg-sky-500 rounded-md border border-sky-500 border-solid max-md:px-5" onClick={() => navigate('selectset')}>
               <div className="flex gap-2.5">
                 <div>Select your Question Sets</div>
               </div>
             </button>
-
+              <div>Your Selected Id Of Question Set : {selectedSetId}</div>
             <div className="flex gap-5 text-lg leading-6 max-md:flex-wrap">
               <div className="flex flex-col flex-1 grow shrink-0 px-5 basis-0 w-fit">
                 <div className="font-medium text-slate-800">Interview Start Date </div>

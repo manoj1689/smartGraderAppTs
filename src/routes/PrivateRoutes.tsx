@@ -16,7 +16,8 @@ import ResultPage from "../pages/ResultPage";
 import SettingPage from "../pages/SettingPage";
 import HelpSupportPage from "../pages/Help&SupportPage";
 import MockInterViewPage from "../pages/MockInterviewPage";
-import SelectQuestionPage from "../pages/SelectQuesionPage";
+
+import SelectSetPage from "../pages/SelectSetPage";
 import EditSettingsPage from "../pages/EditSettingsPage";
 import CandidateInvitationPage from "../pages/CandidateInvitationPage";
 import CandidateResultPage from "../pages/CandidateResultPage";
@@ -43,7 +44,7 @@ const PrivateRoutes: React.FC = () => {
         <Route path="editsettings" element={<EditSettingsPage />} /> 
         <Route path="help&support" element={<HelpSupportPage />} /> 
         <Route path="mockinterview" element={<MockInterViewPage />} /> 
-        <Route path="createjobs/selectquestion" element={<SelectQuestionPage />} />
+        <Route path="createjobs/selectset" element={<SelectSetPage />} />
         <Route path="candidateresult" element={<CandidateResultPage/>} /> 
         <Route path="candidateinvitation" element={<CandidateInvitationPage />} /> 
 

@@ -67,7 +67,7 @@ const IndividualCardsDisplay: React.FC = () => {
                   <img
                     loading="lazy"
                     src={java}
-                    alt={card.title}
+                    alt={card.image_url}
                     className="w-20 h-20"
                   />
                   <img
@@ -155,6 +155,7 @@ const IndividualCardsDisplay: React.FC = () => {
         onPageChange={(page) => setCurrentPage(page - 1)}
       />
     </div>
+    
   </div>
   );
 };
