@@ -280,7 +280,7 @@ const InterviewScreen = () => {
   }, [examStarted, currentQuestionIndex, questionsData]);
 
   return (
-    <div className="container mx-auto w-full h-full px-4 md:px-10 ">
+    <div className="container lg:w-5/6 mx-auto w-full h-full">
       <NotificationBar/> 
 
       <div className="rounded-md border border-solid my-5 border-black border-opacity-10 bg-white">

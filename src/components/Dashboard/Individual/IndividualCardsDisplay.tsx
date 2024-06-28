@@ -55,10 +55,10 @@ const IndividualCardsDisplay: React.FC = () => {
   const pageCount = Math.ceil(matchingQuestionSets.length / itemsPerPage);
  console.log("individal sent data",listOfAllId)
   return (
-    <div>
+    <div >
          <CategorySearch setListOfAllIds={setListOfAllId} setMatchingQuestionSets={setMatchingQuestionSets} />
     {currentItems.length > 0 ? (
-      <div className="mt-5 flex flex-wrap gap-5">
+      <div className="mt-5 flex  justify-center flex-wrap gap-5">
         {currentItems.map((card) => (
           <div className="flex flex-col p-4 h-2/5 bg-white rounded-md border border-solid border-black border-opacity-10 shadow-md hover:shadow-lg hover:border-slate-800 transition duration-300 ease-in-out w-96 max-sm:mx-auto sm:w-64 font-light text-neutral-500 cursor-pointer">
             <div className="flex flex-col justify-center text-xs leading-6 whitespace-nowrap bg-sky-50 rounded-md">

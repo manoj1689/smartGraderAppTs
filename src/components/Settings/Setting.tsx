@@ -27,7 +27,7 @@ const Setting: React.FC = () => {
     setChecked(checked);
   };
   return (
-    <div className="container mx-auto">
+    <div className="container lg:w-5/6 mx-auto w-full h-full">
       <div>
         <NotificationBar />
       </div>

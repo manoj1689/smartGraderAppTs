@@ -19,7 +19,7 @@ const InterviewInstructions:React.FC = () => {
   //   navigate(`/dashboard/question/${interviewId}`);
   // };
   return (
-    <div className="container mx-auto w-full h-full px-4 md:px-10 ">
+    <div className="container lg:w-5/6 mx-auto w-full h-full">
        <NotificationBar/> 
       <div className="flex items-center justify-center min-h-screen rounded-md border border-solid my-5 py-10 border-black border-opacity-10 ">
 

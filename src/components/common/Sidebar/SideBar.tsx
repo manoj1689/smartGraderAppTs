@@ -30,7 +30,7 @@ function SideBar() {
     <div
       className={`flex flex-col overflow-y-auto h-full shadow-md bg-sky-100 ${
         isSidebarOpen ? 'w-64' : 'w-20'
-      } md:hover:w-64 fixed z-50`}
+      } lg:hover:w-64 fixed z-50`}
       onMouseEnter={() => setIsSidebarOpen(true)}
       onMouseLeave={() => setIsSidebarOpen(false)}
       style={{ scrollBehavior: 'smooth' }}
@@ -80,7 +80,7 @@ function SideBar() {
             className={`flex items-center w-full p-4 text-base cursor-pointer transition duration-300 ${
               activeItem === 'Progress Tracker' ? 'text-[#0190C3]' : 'text-neutral-500'
             }`}
-            onClick={() => {handleItemClick('Progress Tracker'),navigate("/progresstracker")}}
+            onClick={() => {handleItemClick('Progress Tracker'),navigate("progresstracker")}}
           >
             <GiProgression className="w-6 h-6" />
             {isSidebarOpen && <span className="ml-4">Progress Tracker</span>}

@@ -69,7 +69,7 @@ const CreateSet: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto w-full h-full px-4 md:px-10">
+    <div className="container lg:w-5/6 mx-auto w-full h-full">
       <ToastContainer />
       <NotificationBar />
       <div className="flex items-center gap-3 px-4 py-4"> <span><IoIosCreate size={30} color='gray' /></span> <span className='text-2xl font-semibold font-spline text-gray-700'>Generate Question Set</span></div>

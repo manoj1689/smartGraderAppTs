@@ -36,7 +36,7 @@ const CreateJobs: React.FC = () => {
   const closeModal = () => setIsModalOpen(false);
 
   return (
-    <div className="container mx-auto w-full h-full px-4 md:px-10">
+    <div className="container lg:w-5/6 mx-auto w-full h-full">
       <NotificationBar />
 
       <div>
@@ -73,7 +73,7 @@ const CreateJobs: React.FC = () => {
                 <div>Select your Question Sets</div>
               </div>
             </button>
-              <div>Your Selected Id Of Question Set : {selectedSetId}</div>
+              <div className='my-5'>Your Selected Id Of Question Set : {selectedSetId}</div>
             <div className="flex gap-5 text-lg leading-6 max-md:flex-wrap">
               <div className="flex flex-col flex-1 grow shrink-0 px-5 basis-0 w-fit">
                 <div className="font-medium text-slate-800">Interview Start Date </div>

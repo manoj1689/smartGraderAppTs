@@ -9,7 +9,7 @@ import CandidateStatus from "./CandidateStatus";
 const OrganizationDashboard: React.FC<OrganizationDashboardProps> = ({ organizationData }) => {
 
   return (
-    <div className="container mx-auto w-full h-full px-4 md:px-10">
+    <div className="container lg:w-5/6 mx-auto w-full h-full ">
       <NotificationBar />
       <CurrentJobs /> 
     <div className="flex flex-col gap-5 lg:flex-row">

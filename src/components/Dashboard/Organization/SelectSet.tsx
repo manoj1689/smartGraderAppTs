@@ -66,13 +66,13 @@ const SelectSet: React.FC = () => {
   console.log("individal sent data", listOfAllId);
 
   return (
-    <div className="container mx-auto w-full h-full px-4 my-4 md:px-10">
+    <div className="container lg:w-5/6 mx-auto w-full h-full">
       <NotificationBar />
 
       <div className="rounded-md border border-solid my-5 py-10 border-black border-opacity-10">
         <CategorySearch setListOfAllIds={setListOfAllId} setMatchingQuestionSets={setMatchingQuestionSets} />
         {currentItems.length > 0 ? (
-          <div className="flex flex-wrap max-lg:justify-center max-lg:align-center gap-2 px-5 py-10 mt-10">
+          <div className="flex flex-wrap max-lg:justify-center max-lg:align-center gap-2 px-5 py-10 mt-10 cursor-pointer">
             {currentItems.map((card) => (
               <div
                 key={card.id}
@@ -129,12 +129,12 @@ const SelectSet: React.FC = () => {
                         Frontend
                       </div>
                       <div className="flex justify-center w-[25px] lg:hidden items-center">
-                        <HiDotsVertical size={40} />
+                        <HiDotsVertical size={40} color='text-gray-400 hover:text-gray-700' />
                       </div>
                     </div>
                   </div>
                   <div className="flex max-lg:hidden justify-center items-center">
-                    <HiDotsHorizontal size={40} />
+                    <HiDotsHorizontal size={40} className='text-gray-400 hover:text-gray-700' />
                   </div>
                 </div>
               </div>

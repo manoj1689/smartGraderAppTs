@@ -46,7 +46,7 @@ const Result = () => {
     return <ErrorPage />;
   }
   return (
-    <div className="container mx-auto w-full flex-col px-4 py-4 justify-center ">
+    <div className="container lg:w-5/6 mx-auto w-full h-full">
       <NotificationBar />
       <ToastContainer />
       <div className="flex my-5 flex-col rounded-md border border-solid border-black border-opacity-10 lg:flex-row">
