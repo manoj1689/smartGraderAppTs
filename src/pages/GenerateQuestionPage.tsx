@@ -142,11 +142,11 @@ const GenerateQuestionsPage: React.FC = () => {
           <NotificationBar />
         </div>
         <div className="container flex flex-col lg:flex-row">
-          <div className="data_container mx-auto px-4 py-8 order-2 md:ml-10 lg:order-1 w-full lg:w-4/6">
+          <div className="data_container mx-auto px-4 py-8 order-2 md:ml-10 lg:order-1 w-full lg:w-2/3">
             <div className="flex gap-3">
-              <FaLaptopCode size={20} color="gray" />
-              <span className="text-gray-80 font-spline font-bold mb-5">
-                Generate Question
+              <FaLaptopCode size={30} color="gray" />
+              <span className=" text-2xl font-semibold font-spline text-gray-700 mb-5">
+                Generate Questions
               </span>
             </div>
             <div className="bg-white shadow-md rounded-lg px-4 py-4 ">
@@ -289,7 +289,7 @@ const GenerateQuestionsPage: React.FC = () => {
               </div>
             )}
           </div>
-          <div className="flex image_container order-1 justify-center align-center mx-auto lg:order-2 max-lg:w-2/5 lg:w-2/6">
+          <div className="flex image_container order-1 justify-center align-center mx-auto lg:order-2 max-lg:w-2/5 lg:w-1/3">
             <img
               src={image}
               className="max-h-[300px]"

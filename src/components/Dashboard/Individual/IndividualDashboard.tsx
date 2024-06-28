@@ -377,15 +377,15 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
           <CircleScoreCard />
         </div>
       </div>
-      <div className="my-10 flex flex-col lg:flex-row gap-3">
-        <div className="flex flex-col md:flex-row gap-3  w-full">
-          <div className="flex flex-col  py-8 pr-7 pl-3.5 bg-white  border border-solid border-black border-opacity-10 w-full ">
+      <div className="my-10 flex flex-col lg:flex-row ">
+        <div className="flex flex-col md:flex-row gap-3 w-full">
+          <div className="flex flex-col   py-8  pl-3.5 bg-white  border border-solid border-black border-opacity-10 w-full ">
             <div className="flex gap-3 self-start text-lg font-medium leading-6 whitespace-nowrap text-slate-800">
               <FaMedal size={20} color="gray" />
               <div className="flex-auto my-auto">Badges/Achievements</div>
             </div>
-            <div className="shrink-0 mt-4 ml-3.5 w-full h-px  rounded-md border border-solid border-black border-opacity-10" />
-            <div className="flex justify-between items-center">
+            <div className="shrink-0 mt-4  w-full h-px  rounded-md border border-solid border-black border-opacity-10" />
+            <div className="flex justify-between px-2  items-center">
               <div>
                 <img
                   loading="lazy"
@@ -404,7 +404,7 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
               </div>
             </div>
             {showAchievementsTips && (
-              <div className="text-neutral-700 my-5">
+              <div className="text-neutral-700 my-5 px-2">
                 Your achievements and badges will be displayed here as you
                 progress through your interviews and challenges. Each badge
                 represents a milestone in your journey, encouraging you to learn

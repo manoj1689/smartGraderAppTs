@@ -21,8 +21,8 @@ const DomainQuestionsForm = ({ onGenerate, loading }) => {
 
   return (
     <form onSubmit={handleGenerate} className="mb-4">
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">Type Categories</label>
+      <div className="mt-5 sm:mt-10 mb-4">
+        <label className="block text-md font-semibold font-spline text-gray-700 mb-2">Type Categories</label>
         <CreatableSelect
           isMulti
           options={defaultOptions}
@@ -33,8 +33,8 @@ const DomainQuestionsForm = ({ onGenerate, loading }) => {
           placeholder="Select or type a category"
         />
       </div>
-      <div className="mb-4">
-        <label className="block text-gray-700 text-sm font-bold mb-2">Number of Questions</label>
+      <div className="mt-5 sm:mt-10 mb-4">
+        <label className="block text-md font-semibold font-spline text-gray-700  mb-2">Number of Questions</label>
         <input
           type="number"
           value={numberOfQuestions}
