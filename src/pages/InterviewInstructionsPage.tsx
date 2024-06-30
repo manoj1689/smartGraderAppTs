@@ -26,7 +26,7 @@ const InterviewInstructions:React.FC = () => {
         <div className="space-y-8 w-5/6 bg-white p-8 ">
           <h1 className="text-2xl font-bold text-center text-slate-800">Interview Instructions. (Please read carefully)</h1>
 
-          <div className="space-y-2 text-center">
+          <div className="space-y-2  ">
             <h2 className="text-lg font-bold text-slate-800">Interview Details</h2>
             <p className="text-base text-neutral-600"><strong>Name:</strong> {interview?.title || '-'}</p>
             <p className="text-base text-neutral-600"><strong>Date:</strong> {formattedCurrentDate}</p>
@@ -34,22 +34,22 @@ const InterviewInstructions:React.FC = () => {
             <p className="text-base text-neutral-600"><strong>Description:</strong> {interview?.description}</p>
           </div>
 
-          <div className="space-y-2 text-center">
+          <div className="space-y-2  ">
             <h4 className="text-lg font-bold text-slate-800">Interview Instructions</h4>
             <div className="space-y-2 text-base leading-5 text-neutral-500 font-spline">
               <p>You will need to put on your camera throughout this interview.</p>
               <p>Ensure your camera and microphone are working. </p>
-              <p>Before you start the interview you will need to give browser access to your camera</p>
+              <p>Before you start the interview you will need to give browser access to your camera.</p>
               <p>Make sure you are in a quiet environment.</p>
-              <p>You can listen to the questions and also record your answers</p>
+              <p>You can listen to the questions and also record your answers.</p>
               <p>Do not open any other tabs or use any external help.</p>
-              <p>Be sure to enter the full screen mode before starting the interview</p>
-              <p>Once you click Next, you cannot fo back to previous page</p>
+              <p>Be sure to enter the full screen mode before starting the interview.</p>
+              <p>Once you click Next, you cannot fo back to previous page.</p>
               <p>Click the <strong>Start Interview</strong> button to begin.</p>
             </div>
           </div>
 
-          <div className="space-y-2 text-center">
+          <div className="">
           <div className="mt-4">
                 <BrowserInstructions />
               </div>
