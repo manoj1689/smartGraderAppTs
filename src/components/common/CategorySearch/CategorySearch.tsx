@@ -64,7 +64,7 @@ const CategorySearch: React.FC<CategorySearchProps> = ({ setListOfAllIds,setMatc
     loadMatchingQuestionSetsIds();
   }, [selectedItems]);
 
-
+ console.log("the search term is",searchTerm)
   
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const term = event.target.value.toLowerCase();
@@ -225,6 +225,13 @@ const CategorySearch: React.FC<CategorySearchProps> = ({ setListOfAllIds,setMatc
   };
 
 
+  const handleKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      const ListOfAllIds:any = await fetchSelectedItemId([searchTerm]);
+      setListOfAllIds(ListOfAllIds);
+      setFilteredSuggestions([]);
+    }
+  };
 
   return (
     <div className="container mx-auto px-4" ref={menuRef}>
@@ -258,6 +265,7 @@ const CategorySearch: React.FC<CategorySearchProps> = ({ setListOfAllIds,setMatc
           className="justify-center items-start p-4 leading-4 rounded-md border border-solid border-neutral-400 w-full pr-10 focus:border-neutral-500 focus:ring-neutral-500 focus:outline-none"
           value={searchTerm}
           onChange={handleSearchChange}
+          onKeyDown={handleKeyDown}
         />
         {filteredSuggestions.length > 0 && (
           <div className="absolute bg-blue-100 shadow-lg  overflow-y-scroll scroll-smooth rounded-md w-3/4 sm:w-2/3 mt-4 z-10">

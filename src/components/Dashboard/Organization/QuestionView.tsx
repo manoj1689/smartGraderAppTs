@@ -41,8 +41,8 @@ const QuestionPage: React.FC<QuestionPageProps> = ({ cardId }) => {
         <ul className="space-y-4">
           {questionsData.map((question) => (
             <li key={question.id} className="bg-white p-4 rounded-md shadow-md">
-              <h3 className="text-lg font-semibold mb-2 "><span className='mx-1'>Question: </span>{question.title} <span className='mx-1'>?</span> </h3>
-              <h5 className="text-md font-medium mb-2 " ><span className='mx-1'>Answer:</span> {question.description}</h5>
+              <h3 className="text-lg font-semibold mb-2 "><span className='mx-1'>Question: </span>{question.title} </h3>
+              <h5 className="text-md font-medium mb-2 " ><span className='mx-1'>Description:</span> {question.description}</h5>
               {/* <p className="text-gray-600 mb-4">{question.text}</p>
               <p className="text-gray-600">Duration: {question.duration / 6} sec</p> */}
             </li>

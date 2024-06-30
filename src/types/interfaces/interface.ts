@@ -182,6 +182,18 @@ export interface LineScore {
   rating: number;
 }
 
+export interface SetData {
+  sub_category_id: number;
+  title: string;
+  description: string;
+  set_type: number;
+  set_level: number;
+}
+export interface updatedSetData {
+  title: string;
+  description: string;
+  set_id: string;
+}
 
 export interface OrganizationDashboardProps {
   organizationData: any; // Replace `any` with the actual type if known

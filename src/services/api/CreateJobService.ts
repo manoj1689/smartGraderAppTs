@@ -1,13 +1,13 @@
 // serviceCreateJob.ts
 import { useState } from 'react';
 
-export const CreateJobService = () => {
+export const CreateJobService = (selectedId:any) => {
   const [emails, setEmails] = useState<string[]>([]);
   const [currentEmail, setCurrentEmail] = useState<string>('');
   const [jobData, setJobData] = useState({ title: '', experience: '' });
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
-
+  
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentEmail(event.target.value);
   };
@@ -39,6 +39,7 @@ export const CreateJobService = () => {
       startDate,
       endDate,
       emails,
+      selectedId
     };
     console.log('Job Details:', jobDetails);
     // You can send this jobDetails to your backend here
