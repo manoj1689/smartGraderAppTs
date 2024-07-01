@@ -30,6 +30,14 @@ const detectFaces = async (videoElement) => {
     }
 };
 
+const stopCamera = (videoElement) => {
+    if (videoElement && videoElement.srcObject) {
+        videoElement.srcObject.getTracks().forEach(track => track.stop());
+        videoElement.srcObject = null; // Clear the srcObject
+        console.log('Video stream stopped');
+    }
+};
+
 const CameraFeed = ({ onFacesDetected, examStarted }) => {
     const videoRef = useRef(null);
     const intervalIdRef = useRef(null);
@@ -104,6 +112,8 @@ const CameraFeed = ({ onFacesDetected, examStarted }) => {
         }, []);
 
     useEffect(() => {
+        const currentVideoRef = videoRef.current; // Copy videoRef.current to a local variable
+
         const startVideo = async () => {
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
@@ -127,10 +137,7 @@ const CameraFeed = ({ onFacesDetected, examStarted }) => {
             if (noFaceTimeoutRef.current) clearTimeout(noFaceTimeoutRef.current);
             if (screenshotIntervalRef.current) clearInterval(screenshotIntervalRef.current); // Clear screenshot interval
             if (multipleFaceTimeoutRef.current) clearTimeout(multipleFaceTimeoutRef.current);
-            if (videoRef.current && videoRef.current.srcObject) {
-                videoRef.current.srcObject.getTracks().forEach(track => track.stop());
-                console.log('Video stream stopped');
-            }
+            stopCamera(currentVideoRef);
         };
     }, [handleVideoPlay]);
 

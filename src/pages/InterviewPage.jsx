@@ -16,6 +16,7 @@ import ErrorBoundary from "../components/common/Error/ErrorBoundary";
 import { GiSoundWaves } from "react-icons/gi";
 import QuestionDisplay from "../components/Interview/QuestionDisplay";
 import BrowserInstructions from "../components/Interview/BrowserInstructions";
+import { HiSpeakerWave } from "react-icons/hi2";
 
 import { CiMicrophoneOn } from "react-icons/ci";
 import { examEnd, examStart, fetchSetQuestions, submitAnswer } from "../services/api/InterviewService";
@@ -331,10 +332,7 @@ const InterviewScreen = () => {
                         />
                         <div className="flex items-center px-4 rounded">
                           <span onClick={() => speak(currentQuestion.title)} className="cursor-pointer">
-                            <GiSoundWaves size={35} color="01AFF4" />
-                          </span>
-                          <span onClick={() => speak(currentQuestion.title)} className="cursor-pointer">
-                            <GiSoundWaves size={35} color="01AFF4" />
+                            <HiSpeakerWave size={29}  />
                           </span>
                         </div>
                       </div>
@@ -358,7 +356,7 @@ const InterviewScreen = () => {
                           }}
                           >
                             {listening ? (
-                              <FaMicrophoneAltSlash size={25} className="mr-2" />
+                              <FaMicrophoneAlt size={25} color="green" className="mr-2" />
                             ) : (
                               <FaMicrophoneAlt size={25} className="mr-2" />
                             )}
@@ -416,13 +414,22 @@ const InterviewScreen = () => {
                                 </button>
                             </>
                             :
-                            <button
-                              onClick={handleExamStart}
-                              disabled={!areAllPermissionsGranted}
-                              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                            >
-                              Start Exams
-                            </button>
+                            <div> 
+                              <button
+                                type="button"
+                                className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 mr-3"
+                                onClick={() => navigate(`/dashboard`)}
+                              >
+                                Go back
+                              </button>
+                              <button
+                                onClick={handleExamStart}
+                                disabled={!areAllPermissionsGranted}
+                                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                              >
+                                Start Exams
+                              </button>
+                            </div>
                           }
                         </div>
                       </div>

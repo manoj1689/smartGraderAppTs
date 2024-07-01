@@ -59,7 +59,7 @@ const BrowserInstructions = () => {
     const browserInstructions = instructions[browserName] || instructions['default'];
 
     return (
-        <div className="p-4">
+        <div className="">
             {browserInstructions}
         </div>
     );
