@@ -1,5 +1,7 @@
 // Checklist.jsx
 import React from 'react';
+import { PiSquare } from "react-icons/pi";
+import { GiCheckMark } from "react-icons/gi";
 
 const Checklist = ({ items }) => {
   return (
@@ -13,11 +15,11 @@ const Checklist = ({ items }) => {
             }`}
           >
             <span
-              className={`font-bold ${
-                item.isChecked ? 'text-green-600' : 'text-red-600'
+              className={`font-bold border-2  rounded border-[#D7C67F]  ${
+                item.isChecked ? 'text-green-600 p-1.5' : 'text-red-600 p-3'
               }`}
             >
-              {item.isChecked ? '✓' : '𐄂'}
+              {item.isChecked ? <GiCheckMark  color="green" size={12} />:''}
             </span>
             <span className="text-sm font-medium">{item.label}</span>
           </li>

@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { FaMicrophoneAlt, FaMicrophoneAltSlash } from "react-icons/fa";
 
-import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
-import {  useNavigate } from "react-router-dom";
-
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import { useNavigate } from "react-router-dom";
 
 import AnswerField from "../components/Interview/AnswerField";
 import Checklist from "../components/Interview/Checklist";
 import CameraFeed from "../components/Interview/CameraFeed";
-
+import { MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
 import useFullscreen from "../components/Interview/CheatingPrevention/useFullscreen";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -17,9 +18,15 @@ import { GiSoundWaves } from "react-icons/gi";
 import QuestionDisplay from "../components/Interview/QuestionDisplay";
 import BrowserInstructions from "../components/Interview/BrowserInstructions";
 import { HiSpeakerWave } from "react-icons/hi2";
-
+import Checkbox from "react-custom-checkbox";
 import { CiMicrophoneOn } from "react-icons/ci";
-import { examEnd, examStart, fetchSetQuestions, submitAnswer } from "../services/api/InterviewService";
+import {
+  examEnd,
+  examStart,
+  fetchSetQuestions,
+  submitAnswer,
+} from "../services/api/InterviewService";
+import { GiCheckMark } from "react-icons/gi";
 import { MESSAGES } from "../constants/Constants";
 import NotificationBar from "../components/common/Notification/NotificationBar";
 import { useParams } from "react-router-dom";
@@ -41,13 +48,13 @@ const InterviewScreen = () => {
     transcript: liveTranscript,
     listening,
     browserSupportsSpeechRecognition,
-    resetTranscript
+    resetTranscript,
   } = useSpeechRecognition();
 
   const [permissions, setPermissions] = useState({
     camera: false,
     microphone: false,
-    fullscreen: false,
+    fullscreen: true,
     devToolsOpen: false,
   });
   const [faceDetectionResults, setFaceDetectionResults] = useState({
@@ -75,19 +82,17 @@ const InterviewScreen = () => {
     [synth]
   );
 
-
-  useEffect(() => { 
+  useEffect(() => {
     const fetchQuestionsData = async () => {
       try {
-        
         const questionsData = await fetchSetQuestions(questionSetId, token);
         setQuestionsData(questionsData);
-        setQuestionsLength(questionsData.length)
+        setQuestionsLength(questionsData.length);
       } catch (error) {
         setError(error.message);
       }
     };
-    fetchQuestionsData()
+    fetchQuestionsData();
   }, []);
 
   const handleSubmitAnswer = async () => {
@@ -95,14 +100,20 @@ const InterviewScreen = () => {
     const endTime = new Date();
     const duration = Math.floor((endTime - startTime) / 1000);
     try {
-      await submitAnswer(currentQuestion?.id, questionSetId, duration, answer, token);
-      if(!isTimeOut){
+      await submitAnswer(
+        currentQuestion?.id,
+        questionSetId,
+        duration,
+        answer,
+        token
+      );
+      if (!isTimeOut) {
         handleNextQuestion();
       }
-      setAnswer('')
+      setAnswer("");
     } catch (error) {
       setError(MESSAGES.SUBMIT_ANSWER_ERROR);
-    }finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -111,24 +122,29 @@ const InterviewScreen = () => {
     const endTime = new Date();
     const duration = Math.floor((endTime - startTime) / 1000);
     try {
-      await submitAnswer(currentQuestion?.id, questionSetId, duration, answer, token);
-      setAnswer('')
+      await submitAnswer(
+        currentQuestion?.id,
+        questionSetId,
+        duration,
+        answer,
+        token
+      );
+      setAnswer("");
     } catch (error) {
       setError(MESSAGES.SUBMIT_ANSWER_ERROR);
-    }finally {
+    } finally {
       setLoading(false);
     }
   };
 
-
   const handleExamStart = async () => {
     setLoading(true);
     try {
-      await examStart(questionSetId,token);
-      setExamStarted(true)
+      await examStart(questionSetId, token);
+      setExamStarted(true);
     } catch (error) {
       setError(MESSAGES.EXAM_STARTED_ERROR);
-    }finally {
+    } finally {
       setLoading(false);
     }
   };
@@ -136,18 +152,16 @@ const InterviewScreen = () => {
   const handleExamEnd = async () => {
     setLoading(true);
     try {
-      await handleSubmitAnswer()
-      await examEnd(questionSetId,token);
+      await handleSubmitAnswer();
+      await examEnd(questionSetId, token);
       navigate(`/dashboard/question/exam-end`);
-
     } catch (error) {
       setError(MESSAGES.EXAM_END_ERROR);
-    }finally {
+    } finally {
       setLoading(false);
     }
   };
 
-  
   const handleNextQuestion = useCallback(() => {
     setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
   }, []);
@@ -156,7 +170,10 @@ const InterviewScreen = () => {
 
   async function requestCameraAndMicrophone() {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
       const cameraStatus = await navigator.permissions.query({
         name: "camera",
       });
@@ -223,12 +240,15 @@ const InterviewScreen = () => {
     setFaceDetectionResults(results);
   }, []);
 
-  const handleAnswerChange = useCallback((event) => {
-    if (listening) { 
-      stopListening();
-    }
-    setAnswer(event.target.value);
-  }, [listening]);
+  const handleAnswerChange = useCallback(
+    (event) => {
+      if (listening) {
+        stopListening();
+      }
+      setAnswer(event.target.value);
+    },
+    [listening]
+  );
 
   const startListening = () => {
     SpeechRecognition.startListening({ continuous: true });
@@ -237,11 +257,11 @@ const InterviewScreen = () => {
   const stopListening = () => {
     SpeechRecognition.stopListening();
   };
-
+  const [fullscreen, setFullscreen] = useState(false);
 
   useEffect(() => {
     if (!listening) {
-      setAnswer(prev => `${prev} ${transcript}`.trim());
+      setAnswer((prev) => `${prev} ${transcript}`.trim());
       setTranscript("");
       resetTranscript();
     } else {
@@ -249,13 +269,15 @@ const InterviewScreen = () => {
     }
   }, [listening, liveTranscript]);
 
-  const areAllPermissionsGranted = permissions.camera && permissions.microphone && permissions.fullscreen && !permissions.devToolsOpen;
-
+  const areAllPermissionsGranted =
+    permissions.camera &&
+    permissions.microphone &&
+    permissions.fullscreen &&
+    !permissions.devToolsOpen;
 
   // if (!questionsData.length) {
   //   return <div>Loading...</div>;
   // }
-
 
   useEffect(() => {
     let timerInterval;
@@ -270,7 +292,7 @@ const InterviewScreen = () => {
             return prevTime - 1;
           } else {
             clearInterval(timerInterval);
-            setIsTimeOut(true)
+            setIsTimeOut(true);
             handleSubmitAnswerWithoutNext(); // Auto-submit when time runs out
             return 0;
           }
@@ -282,88 +304,131 @@ const InterviewScreen = () => {
 
   return (
     <div className="container lg:w-5/6 mx-auto w-full h-full">
-      <NotificationBar/> 
+      <NotificationBar />
 
       <div className="rounded-md border border-solid my-5 border-black border-opacity-10 bg-white">
         <ErrorBoundary>
           <div ref={fullscreenRef} className="container mx-auto flex h-screen ">
             <div className="flex flex-col basis-1/3 rounded-md border border-solid m-5 border-black border-opacity-10">
               <div className="mt-5">
-                <CameraFeed onFacesDetected={handleFacesDetected} examStarted={examStarted}/>
+                <CameraFeed
+                  onFacesDetected={handleFacesDetected}
+                  examStarted={examStarted}
+                />
               </div>
-            
+
               <div className="mt-4">
                 <Checklist
                   items={[
                     { label: "Camera Access", isChecked: permissions.camera },
-                    { label: "Microphone Access", isChecked: permissions.microphone },
-                    { label: "Fullscreen Mode", isChecked: permissions.fullscreen },
-                    { label: "DevTools Closed", isChecked: !permissions.devToolsOpen },
+                    {
+                      label: "Microphone Access",
+                      isChecked: permissions.microphone,
+                    },
+                    // { label: "Fullscreen Mode", isChecked: permissions.fullscreen },
+                    {
+                      label: "DevTools Closed",
+                      isChecked: !permissions.devToolsOpen,
+                    },
                   ]}
                 />
+                <div
+                  className={`flex  items-center space-x-2 mx-4 p-2 border rounded-md ${
+                    fullscreen ? 'bg-green-100 border-green-300' : 'bg-red-100 border-red-300'
+                  } `}
+                >
+                  <Checkbox
+                    icon={ fullscreen ? <MdOutlineCheckBoxOutlineBlank  color="red" size={14}/>:<GiCheckMark  color="green" size={12} />}
+                    checked={fullscreen}
+                    onChange={toggleFullscreen}
+                    borderRadius={3}
+                    size={24}
+                    style={{ marginLeft: "auto" }}
+                  />
+                  <div className=" text-sm font-medium ">
+                    {fullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+                  </div>
+                </div>
                 <div className=" p-4 border-t border-solid border-black border-opacity-10">
-                  <button
-                      onClick={toggleFullscreen}
-                      className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                    >
-                      {permissions.fullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
-                    </button>
+                  {/* Custom styled checkbox */}
 
+                  {/* Display status based on checkbox state */}
                 </div>
               </div>
             </div>
             <div className="flex flex-col basis-2/3 rounded-md border border-solid my-5 mr-5 border-black border-opacity-10">
-                  {
-                    examStarted && 
-                    <div className="p-8 space-y-4">
-                      <div className="flex items-center justify-between p-4 border-b border-solid border-black border-opacity-10 my-5 mr-5">
-                        <h2 className="text-base text-neutral-600">Frontend Developer Interview</h2>
-                          <div className="text-right">
-                            <p className="text-base text-neutral-600">Time left: <span className="font-bold">{remainingTime}</span> seconds</p>
-                          </div>
-                      </div>
-                      <div className="w-full text-xl font-semibold leading-6 text-neutral-700">
-                        Question {currentQuestion?.id}
-                        <span className="text-xs text-neutral-600"> (Click the waves icon to listen to question)</span>
-                      </div>
-                      <div className="flex flex-col md:flex-row text-base leading-5 text-neutral-600 gap-2.5 justify-between px-4 py-4 mt-2.5 w-full rounded-md border border-solid border-neutral-500">
-                        <QuestionDisplay
-                          questionText={currentQuestion ? currentQuestion.title : "Loading question..."}
+              {examStarted && (
+                <div className="p-8 space-y-4">
+                  <div className="flex items-center justify-between p-4 border-b border-solid border-black border-opacity-10 my-5 mr-5">
+                    <h2 className="text-base text-neutral-600">
+                      Frontend Developer Interview
+                    </h2>
+                    <div className="text-right">
+                      <p className="text-base text-neutral-600">
+                        Time left:{" "}
+                        <span className="font-bold">{remainingTime}</span>{" "}
+                        seconds
+                      </p>
+                    </div>
+                  </div>
+                  <div className="w-full text-xl font-semibold leading-6 text-neutral-700">
+                    Question {currentQuestion?.id}
+                    <span className="text-xs text-neutral-600">
+                      {" "}
+                      (Click the waves icon to listen to question)
+                    </span>
+                  </div>
+                  <div className="flex flex-col md:flex-row text-base leading-5 text-neutral-600 gap-2.5 justify-between px-4 py-4 mt-2.5 w-full rounded-md border border-solid border-neutral-500">
+                    <QuestionDisplay
+                      questionText={
+                        currentQuestion
+                          ? currentQuestion.title
+                          : "Loading question..."
+                      }
+                    />
+                    <div className="flex items-center px-4 rounded">
+                      <span
+                        onClick={() => speak(currentQuestion.title)}
+                        className="cursor-pointer"
+                      >
+                        <HiSpeakerWave size={29} />
+                      </span>
+                    </div>
+                  </div>
+                  <div className="relative">
+                    <AnswerField
+                      value={answer + (listening ? ` ${transcript}` : "")}
+                      onChange={handleAnswerChange}
+                      placeholder="Type your answer here..."
+                      charLimit={500}
+                      className="w-full p-3 border border-gray-300 rounded-lg"
+                      disabled={isTimeOut}
+                    />
+                    <div
+                      className={`absolute bottom-10 left-2 p-1 text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer ${
+                        listening
+                          ? "text-red-500 hover:text-gray-700"
+                          : "text-gray-500 hover:text-gray-700"
+                      }`}
+                      onClick={() => {
+                        if (!isTimeOut) {
+                          listening ? stopListening() : startListening();
+                        }
+                      }}
+                    >
+                      {listening ? (
+                        <FaMicrophoneAlt
+                          size={25}
+                          color="green"
+                          className="mr-2"
                         />
-                        <div className="flex items-center px-4 rounded">
-                          <span onClick={() => speak(currentQuestion.title)} className="cursor-pointer">
-                            <HiSpeakerWave size={29}  />
-                          </span>
-                        </div>
-                      </div>
-                      <div className="relative">
-                        <AnswerField
-                          value={answer + (listening ? ` ${transcript}` : '')}
-                          onChange={handleAnswerChange}
-                          placeholder="Type your answer here..."
-                          charLimit={500}
-                          className="w-full p-3 border border-gray-300 rounded-lg"
-                          disabled={isTimeOut}
-                        />
-                        <div 
-                          className={`absolute bottom-10 left-2 p-1 text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer ${
-                            listening ? 'text-red-500 hover:text-gray-700' : 'text-gray-500 hover:text-gray-700'
-                          }`}
-                          onClick={() => {
-                            if (!isTimeOut) {
-                              listening ? stopListening() : startListening();
-                            }
-                          }}
-                          >
-                            {listening ? (
-                              <FaMicrophoneAlt size={25} color="green" className="mr-2" />
-                            ) : (
-                              <FaMicrophoneAlt size={25} className="mr-2" />
-                            )}
-                        </div>
-                      </div>
-                      <div className="flex flex-wrap justify-center items-center gap-3 mt-4">
-                        {/* <button
+                      ) : (
+                        <FaMicrophoneAlt size={25} className="mr-2" />
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap justify-center items-center gap-3 mt-4">
+                    {/* <button
                           onClick={handleExamStart}
                           // disabled={!areAllPermissionsGranted}
                           className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
@@ -371,70 +436,81 @@ const InterviewScreen = () => {
                           Start Exams
                         </button> */}
 
-                        {currentQuestionIndex < questionsLength - 1 ? (
+                    {currentQuestionIndex < questionsLength - 1 ? (
+                      <button
+                        onClick={
+                          isTimeOut ? handleNextQuestion : handleSubmitAnswer
+                        }
+                        className="flex-1 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+                      >
+                        Next
+                      </button>
+                    ) : (
+                      <button
+                        onClick={handleExamEnd}
+                        className="flex-1 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+                      >
+                        Finish
+                      </button>
+                    )}
+                  </div>
+                  {loading && (
+                    <div
+                      className="progress-bar mt-4"
+                      style={{ width: `${progress}%` }}
+                    />
+                  )}
+                  {error && (
+                    <div className="error mt-4 text-red-500">{error}</div>
+                  )}
+                  <ToastContainer />
+                </div>
+              )}
+              {!examStarted && (
+                <div className="flex items-center justify-center my-5 py-10 ">
+                  <div className="space-y-8 w-5/6 bg-white p-8 ">
+                    <div className="space-y-2 text-center">
+                      <BrowserInstructions />
+                      <p>
+                        Please check every box on the left befire starting your
+                        interview
+                      </p>
+                      {questionsData.length === 0 ? (
+                        <>
+                          <p>
+                            The selected question set does not have questions in
+                            it, please contact the interviewer
+                          </p>
                           <button
-                            onClick={ isTimeOut ? handleNextQuestion : handleSubmitAnswer}
-                            className="flex-1 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+                            type="button"
+                            className="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-blue-600"
+                            onClick={() => navigate(`/dashboard`)}
                           >
-                            Next
+                            Dashboard
                           </button>
-                        ) : (
+                        </>
+                      ) : (
+                        <div>
                           <button
-                            onClick={handleExamEnd}
-                            className="flex-1 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+                            type="button"
+                            className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 mr-3"
+                            onClick={() => navigate(`/dashboard`)}
                           >
-                            Finish
+                            Go back
                           </button>
-                        )}
-                        
-                      
-                      </div>
-                      {loading && <div className="progress-bar mt-4" style={{ width: `${progress}%` }} />}
-                      {error && <div className="error mt-4 text-red-500">{error}</div>}
-                      <ToastContainer />
-                    </div>
-                  }
-                  {
-                    !examStarted && 
-                    <div className="flex items-center justify-center my-5 py-10 ">
-                      <div className="space-y-8 w-5/6 bg-white p-8 ">
-                        <div className="space-y-2 text-center">
-                          <BrowserInstructions />
-                          <p>Please check every box on the left befire starting your interview</p>
-                          {
-                            questionsData.length === 0 ?
-                            <>
-                              <p>The selected question set does not have questions in it, please contact the interviewer</p>
-                              <button
-                                  type="button"
-                                  className="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-blue-600"
-                                  onClick={() => navigate(`/dashboard`)}
-                                >
-                                  Dashboard
-                                </button>
-                            </>
-                            :
-                            <div> 
-                              <button
-                                type="button"
-                                className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 mr-3"
-                                onClick={() => navigate(`/dashboard`)}
-                              >
-                                Go back
-                              </button>
-                              <button
-                                onClick={handleExamStart}
-                                disabled={!areAllPermissionsGranted}
-                                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                              >
-                                Start Exams
-                              </button>
-                            </div>
-                          }
+                          <button
+                            onClick={handleExamStart}
+                            disabled={!areAllPermissionsGranted}
+                            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                          >
+                            Start Exams
+                          </button>
                         </div>
-                      </div>
-                      </div>
-                  }
+                      )}
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </ErrorBoundary>

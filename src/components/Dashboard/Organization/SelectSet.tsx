@@ -111,7 +111,7 @@ const SelectSet: React.FC = () => {
                         />
                       </div>
                     </div>
-                    <div className="flex gap-5 mt-3 items-center px-0.5 text-sm leading-5">
+                    <div className="flex justify-around mt-3 items-center px-0.5 text-sm leading-5">
                       <div className="flex flex-col gap-1 lg:flex-row">
                         <div className="flex gap-1">
                           <div className="flex justify-center items-center">
@@ -126,7 +126,7 @@ const SelectSet: React.FC = () => {
                           <div>{card.questions_count} Questions</div>
                         </div>
                       </div>
-                      <div className="flex justify-center items-center self-stretch px-2.5 py-1 text-xs leading-4 whitespace-nowrap bg-sky-50 rounded-md border border-solid border-neutral-500">
+                      <div className="flex justify-around items-center self-stretch px-2.5 py-1 text-xs leading-4 whitespace-nowrap bg-sky-50 rounded-md border border-solid border-neutral-500">
                         Frontend
                       </div>
                       {/* <div className="flex justify-center w-[25px] lg:hidden items-center">

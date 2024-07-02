@@ -121,14 +121,14 @@ const IndividualCardsDisplay: React.FC = () => {
                 <div>{card.questions_count} Questions</div>
               </div>
             </div>
-            <button className="flex items-center justify-center px-3 py-2 mt-4 text-xs text-white bg-sky-500 rounded-md border border-sky-500 border-solid hover:bg-slate-800 hover:border-slate-800">
-              <div
-                className="flex flex-row items-center gap-2"
-                key={card.id}
+            <button className="flex items-center justify-center px-3 py-2 mt-4 text-xs text-white bg-sky-500 rounded-md border border-sky-500 border-solid hover:bg-slate-800 hover:border-slate-800"  key={card.id}
                 onClick={(e) => {
                   e.stopPropagation();
                   handleCardClick(card);
-                }}
+                }}>
+              <div
+                className="flex flex-row items-center gap-2"
+               
               >
                 <div>Take a Test</div>
                 <div>
