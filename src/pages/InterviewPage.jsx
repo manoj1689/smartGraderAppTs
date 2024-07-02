@@ -54,7 +54,7 @@ const InterviewScreen = () => {
   const [permissions, setPermissions] = useState({
     camera: false,
     microphone: false,
-    fullscreen: true,
+    fullscreen: false,
     devToolsOpen: false,
   });
   const [faceDetectionResults, setFaceDetectionResults] = useState({
@@ -257,7 +257,6 @@ const InterviewScreen = () => {
   const stopListening = () => {
     SpeechRecognition.stopListening();
   };
-  const [fullscreen, setFullscreen] = useState(false);
 
   useEffect(() => {
     if (!listening) {
@@ -334,19 +333,19 @@ const InterviewScreen = () => {
                 />
                 <div
                   className={`flex  items-center space-x-2 mx-4 p-2 border rounded-md ${
-                    fullscreen ? 'bg-green-100 border-green-300' : 'bg-red-100 border-red-300'
+                    permissions.fullscreen ? 'bg-green-100 border-green-300' : 'bg-red-100 border-red-300'
                   } `}
                 >
                   <Checkbox
-                    icon={ fullscreen ? <MdOutlineCheckBoxOutlineBlank  color="red" size={14}/>:<GiCheckMark  color="green" size={12} />}
-                    checked={fullscreen}
+                    icon={ permissions.fullscreen ? <GiCheckMark  color="green" size={12} />:''}
+                    checked={permissions.fullscreen}
                     onChange={toggleFullscreen}
                     borderRadius={3}
                     size={24}
                     style={{ marginLeft: "auto" }}
                   />
                   <div className=" text-sm font-medium ">
-                    {fullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
+                    {permissions.fullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
                   </div>
                 </div>
                 <div className=" p-4 border-t border-solid border-black border-opacity-10">
