@@ -19,11 +19,11 @@ const InterviewInstructions:React.FC = () => {
   //   navigate(`/dashboard/question/${interviewId}`);
   // };
   return (
-    <div className="container lg:w-5/6 mx-auto w-full h-full">
+    <div className="container lg:w-5/6 mx-auto w-full ">
        <NotificationBar/> 
-      <div className="flex items-center justify-center min-h-screen rounded-md border border-solid my-5 py-10 border-black border-opacity-10 ">
+      <div className="flex  rounded-md border border-solid my-5  border-black border-opacity-10 p-4 ">
 
-        <div className="space-y-8 w-5/6 bg-white p-8 ">
+        <div className="w-full bg-white p-8 ">
           <h1 className="text-2xl font-bold text-center text-slate-800">Interview Instructions. (Please read carefully)</h1>
 
           <div className="space-y-2  ">
@@ -57,17 +57,17 @@ const InterviewInstructions:React.FC = () => {
 
         
 
-          <div className="flex justify-center mt-4 space-x-4">
+          <div className="flex w-full my-10 lg:w-5/6 mx-auto justify-center  space-x-4">
             <button
               type="button"
-              className="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-blue-600"
+              className="px-6 py-4 lg:w-1/2 bg-gray-500 text-white rounded hover:bg-gray-600"
               onClick={() => navigate(`/dashboard`)}
             >
               Go back
             </button>
             <button
               type="button"
-              className="px-6 py-3 bg-sky-500 text-white rounded-lg hover:bg-blue-600"
+              className="px-6 py-4 bg-sky-500 lg:w-1/2 text-white rounded hover:bg-blue-600"
               onClick={(handleStartInterviewClick)}
             >
               Start Interview

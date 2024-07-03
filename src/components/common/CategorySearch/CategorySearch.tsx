@@ -234,7 +234,7 @@ const CategorySearch: React.FC<CategorySearchProps> = ({ setListOfAllIds,setMatc
   };
 
   return (
-    <div className="container mx-auto px-4" ref={menuRef}>
+    <div className="container mx-auto" ref={menuRef}>
       <header>
         <div className=" flex justify-end m-2 ">
           <button
@@ -284,7 +284,7 @@ const CategorySearch: React.FC<CategorySearchProps> = ({ setListOfAllIds,setMatc
         )}
       </header>
       <nav
-        className={`flex flex-col sm:flex-row px-4 mt-4 justify-start items-center flex-wrap lg:flex-nowrap font-spline space-x-4 ${
+        className={`flex flex-col sm:flex-row px-4 mt-2 justify-start items-center flex-wrap lg:flex-nowrap font-spline space-x-4 ${
           isMenuOpen ? "" : "hidden lg:flex"
         }`}
       >

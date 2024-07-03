@@ -26,7 +26,7 @@ const MySets: React.FC = () => {
   const navigate = useNavigate();
   const [mySets, setMySets] = useState<Card[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 6;
+  const itemsPerPage = 5;
   const [selectedSetId, setSelectedSetId] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
@@ -111,7 +111,7 @@ const MySets: React.FC = () => {
         </div>
         <div className="shrink-0 mt-3.5 h-px border border-solid bg-black bg-opacity-10 border-black border-opacity-10 max-md:max-w-full" />
         {currentItems.length > 0 ? (
-          <div className="flex flex-wrap max-lg:justify-center max-lg:align-center gap-2 px-5 py-10 mt-10 cursor-pointer">
+          <div className="flex flex-wrap max-lg:justify-start max-lg:align-center gap-5 px-5 py-10 mt-10 cursor-pointer">
             {currentItems.map((card) => (
               <div
                 key={card.id}
@@ -119,7 +119,7 @@ const MySets: React.FC = () => {
                   selectedSetId === card.id.toString() ? "bg-blue-200" : ""
                 }`}
               >
-                <div className="flex flex-col lg:flex-row gap-2">
+                <div className="flex flex-col gap-2">
                   <div className="flex justify-center">
                     <img
                       loading="lazy"
@@ -149,15 +149,15 @@ const MySets: React.FC = () => {
                         />
                       </div>
                     </div>
-                    <div className="flex gap-5 mt-3 justify-around items-center px-0.5 text-sm leading-5">
-                      <div className="flex flex-col gap-1 lg:flex-row">
+                    <div className="flex flex-row  mt-3 justify-around items-center px-0.5 text-sm leading-2">
+                      <div className="flex flex-col  ">
                         <div className="flex gap-1">
                           <div className="flex justify-center items-center">
                             <CiClock2 size={14} color="#01AFF4" />
                           </div>
                           <div>{card.duration} Min</div>
                         </div>
-                        <div className="flex gap-1">
+                        <div className="flex gap-1 ">
                           <div className="flex justify-center items-center">
                             <IoHelpCircleOutline size={14} color="#01AFF4" />
                           </div>
@@ -167,7 +167,7 @@ const MySets: React.FC = () => {
                       <div className="flex justify-center items-center self-stretch px-2.5 py-1 text-xs leading-4 whitespace-nowrap bg-sky-50 rounded-md border border-solid border-neutral-500">
                         Frontend
                       </div>
-                      <div className="block lg:hidden justify-center items-center">
+                      <div className=" justify-center items-center">
                         <Popup
                           trigger={<button className="text-gray-500 hover:text-gray-600"><HiDotsVertical size={25} /></button>}
                           z-Index={1000}
@@ -202,7 +202,7 @@ const MySets: React.FC = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="hidden lg:block my-auto justify-center items-center">
+                  {/* <div className="hidden lg:block my-auto justify-center items-center">
                     <Popup
                       trigger={<button className="text-gray-500 hover:text-gray-600"><HiDotsVertical size={25} /></button>}
                       z-Index={1000}
@@ -235,7 +235,7 @@ const MySets: React.FC = () => {
                         </button>
                       </div>
                     </Popup>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             ))}

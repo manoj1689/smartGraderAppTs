@@ -302,7 +302,7 @@ const InterviewScreen = () => {
   }, [examStarted, currentQuestionIndex, questionsData]);
 
   return (
-    <div className="container lg:w-5/6 mx-auto w-full h-full">
+    <div className="container lg:w-5/6 mx-auto w-full ">
       <NotificationBar />
 
       <div className="rounded-md border border-solid my-5 border-black border-opacity-10 bg-white">
@@ -489,10 +489,10 @@ const InterviewScreen = () => {
                           </button>
                         </>
                       ) : (
-                        <div>
+                        <div className="flex w-10/12 mx-auto py-10">
                           <button
                             type="button"
-                            className="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 mr-3"
+                            className="px-4 py-4 w-full  lg:w-1/2 bg-gray-500 text-white rounded hover:bg-gray-600 mr-3"
                             onClick={() => navigate(`/dashboard`)}
                           >
                             Go back
@@ -500,7 +500,7 @@ const InterviewScreen = () => {
                           <button
                             onClick={handleExamStart}
                             disabled={!areAllPermissionsGranted}
-                            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                            className="px-4 py-4 bg-blue-500 w-full lg:w-1/2 text-white rounded hover:bg-blue-600"
                           >
                             Start Exams
                           </button>

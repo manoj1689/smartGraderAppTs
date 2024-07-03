@@ -15,21 +15,21 @@ const PublicRoutes: React.FC = () => {
   return (
     <>
       <Routes>
-        <Route
+        {/* <Route
           path="/"
           element={
             getToken() ? <SignInPage /> : <CreateAccountPage />
            //  getToken() ?   <Practise/> :<CreateAccountPage />
           }
-        />
+        /> */}
+        <Route path="/" element={<SignInPage />} />
         <Route path="/signIn" element={<SignInPage />} />
         <Route path="/signUp" element={<SignUpPage />} />
-        
 
         {/* To run this route run from terminal : 
         cd src
         node server.js  */}
-        <Route path='/visitorlanding' element={<VisitorLandingPage />} />
+        <Route path="/visitorlanding" element={<VisitorLandingPage />} />
 
         <Route path="/createAccount" element={<CreateAccountPage />} />
         <Route path="/signIn/password" element={<PasswordPage />} />
