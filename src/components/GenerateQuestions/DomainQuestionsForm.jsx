@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import CreatableSelect from 'react-select/creatable';
-import { FaSpinner, FaCheckCircle, FaCheck } from 'react-icons/fa';
+import React, { useEffect, useState } from "react";
+import CreatableSelect from "react-select/creatable";
+import { FaSpinner, FaCheck } from "react-icons/fa";
+import { fetchSubCategories } from "../../services/api/CategorySearchService";
 
 const defaultOptions = [
   { value: 'Frontend', label: 'Frontend' },
@@ -10,31 +11,55 @@ const defaultOptions = [
   { value: 'Data Science', label: 'Data Science' },
 ];
 
-const DomainQuestionsForm = ({ onGenerate, loading }) => {
+const DomainQuestionsForm = ({ onGenerate, loading, subCatId }) => {
   const [selectedTopics, setSelectedTopics] = useState([]);
   const [numberOfQuestions, setNumberOfQuestions] = useState(1);
+  const [subCategoryOptions, setSubCategoryOptions] = useState([]);
+
+  useEffect(() => {
+    const fetchSubCat = async () => {
+      const subCategories = await fetchSubCategories(subCatId);
+      console.log('Fetched Subcategories:', subCategories);
+      setSubCategoryOptions(subCategories);
+    };
+
+    if (subCatId) {
+      fetchSubCat();
+    }
+  }, [subCatId]);
 
   const handleGenerate = (e) => {
     e.preventDefault();
-    onGenerate({ topic: selectedTopics.join(','), number_of_questions: numberOfQuestions });
+    onGenerate({
+      topic: selectedTopics.join(","),
+      number_of_questions: numberOfQuestions,
+    });
   };
 
   return (
     <form onSubmit={handleGenerate} className="mb-4">
       <div className="mt-5 sm:mt-10 mb-4">
-        <label className="block text-md font-semibold font-spline text-gray-700 mb-2">Type Categories</label>
+        <label className="block text-md font-semibold font-spline text-gray-700 mb-2">
+          Type Categories
+        </label>
         <CreatableSelect
           isMulti
-          options={defaultOptions}
-          onChange={(selectedOptions) => setSelectedTopics(selectedOptions.map(option => option.value))}
-          value={defaultOptions.filter(option => selectedTopics.includes(option.value))}
+          options={[ ...subCategoryOptions]}
+          onChange={(selectedOptions) =>
+            setSelectedTopics(selectedOptions.map((option) => option.value))
+          }
+          value={[...defaultOptions, ...subCategoryOptions].filter((option) =>
+            selectedTopics.includes(option.value)
+          )}
           className="basic-multi-select"
           classNamePrefix="select"
           placeholder="Select or type a category"
         />
       </div>
       <div className="mt-5 sm:mt-10 mb-4">
-        <label className="block text-md font-semibold font-spline text-gray-700  mb-2">Number of Questions</label>
+        <label className="block text-md font-semibold font-spline text-gray-700  mb-2">
+          Number of Questions
+        </label>
         <input
           type="number"
           value={numberOfQuestions}
@@ -49,10 +74,17 @@ const DomainQuestionsForm = ({ onGenerate, loading }) => {
       </div>
       <button
         type="submit"
-        className={`bg-gray-500 text-white px-4 py-4 sm:w-8/12 justify-center gap-3 mx-auto rounded transition duration-300 hover:bg-gray-700 flex items-center ${loading ? 'cursor-not-allowed' : ''}`}
+        className={`bg-gray-500 text-white px-4 py-4 sm:w-8/12 justify-center gap-3 mx-auto rounded transition duration-300 hover:bg-gray-700 flex items-center ${
+          loading ? "cursor-not-allowed" : ""
+        }`}
         disabled={loading}
       >
-        {loading ? <FaSpinner className="animate-spin mr-2" /> : <FaCheck className="mr-2" />} Generate Question 
+        {loading ? (
+          <FaSpinner className="animate-spin mr-2" />
+        ) : (
+          <FaCheck className="mr-2" />
+        )}{" "}
+        Generate Question
       </button>
     </form>
   );

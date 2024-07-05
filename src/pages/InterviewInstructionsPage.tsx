@@ -1,16 +1,44 @@
-import React from 'react';
+import React,{useState} from 'react';
 import {  useNavigate, useLocation } from "react-router-dom";
 import NotificationBar from "../components/common/Notification/NotificationBar";
 import {formattedCurrentDate} from '../utils/formatDate';
 import BrowserInstructions from '../components/Interview/BrowserInstructions';
+import { ToastContainer, toast, ToastOptions } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const InterviewInstructions:React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { interview } = location.state || {};
+  const [isChecked, setIsChecked] = useState(false);
 
+  const handleCheckboxChange = () => {
+    setIsChecked(!isChecked);
+  };
   const handleStartInterviewClick = () => {
-    navigate(`/dashboard/question/${interview?.id}`);
+    if (isChecked) {
+      navigate(`/dashboard/question/${interview?.id}`);
+
+    // Request fullscreen for the document element (html)
+    document.documentElement.requestFullscreen().catch((err) => {
+      console.error(`Failed to enter fullscreen mode: ${err.message}`);
+    });
+    } else {
+      toast.error("Please accept the terms and conditions before proceeding.", {
+        className: 'rounded-full bg-grey-500 text-black p-4 text-center',
+        bodyClassName: 'text-black',
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      } as ToastOptions);
+    }
+    // Navigate to the interview question page
+   
   };
 
   // const { interviewId } = location.state || {};
@@ -23,10 +51,10 @@ const InterviewInstructions:React.FC = () => {
        <NotificationBar/> 
       <div className="flex  rounded-md border border-solid my-5  border-black border-opacity-10 p-4 ">
 
-        <div className="w-full bg-white p-8 ">
+        <div className="w-full bg-white p-8  ">
           <h1 className="text-2xl font-bold text-center text-slate-800">Interview Instructions. (Please read carefully)</h1>
-
-          <div className="space-y-2  ">
+        <div className='flex w-full flex-col md:flex-row gap-5 mt-5 '>
+        <div className="space-y-2  w-full md:w-1/2   rounded-md border border-solid my-5  border-black border-opacity-10 p-4 ">
             <h2 className="text-lg font-bold text-slate-800">Interview Details</h2>
             <p className="text-base text-neutral-600"><strong>Name:</strong> {interview?.title || '-'}</p>
             <p className="text-base text-neutral-600"><strong>Date:</strong> {formattedCurrentDate}</p>
@@ -34,7 +62,7 @@ const InterviewInstructions:React.FC = () => {
             <p className="text-base text-neutral-600"><strong>Description:</strong> {interview?.description}</p>
           </div>
 
-          <div className="space-y-2  ">
+          <div className="space-y-2 w-full md:w-1/2 rounded-md border border-solid my-5  border-black border-opacity-10 p-4 ">
             <h4 className="text-lg font-bold text-slate-800">Interview Instructions</h4>
             <div className="space-y-2 text-base leading-5 text-neutral-500 font-spline">
               <p>You will need to put on your camera throughout this interview.</p>
@@ -48,14 +76,26 @@ const InterviewInstructions:React.FC = () => {
               <p>Click the <strong>Start Interview</strong> button to begin.</p>
             </div>
           </div>
+        </div>
+         
 
-          <div className="">
+          <div className="rounded-md border border-solid my-5  border-black border-opacity-10 p-4">
           <div className="mt-4">
                 <BrowserInstructions />
               </div>
           </div>
 
-        
+          <span className='highlightext flex mt-5 text-red-500 gap-2'>
+            <div className='checkboxDiv'>
+              <input
+                type="checkbox"
+                id='disclaimer'
+                checked={isChecked}
+                onChange={handleCheckboxChange}
+              />
+            </div>
+            I have read and understood the instructions. All Computer Hardwares allotted to me are in proper working condition. I agree that in case of not adhering to the instructions, I will be disqualified from taking the exam.
+          </span>
 
           <div className="flex w-full my-10 lg:w-5/6 mx-auto justify-center  space-x-4">
             <button
@@ -80,3 +120,4 @@ const InterviewInstructions:React.FC = () => {
 };
 
 export default InterviewInstructions;
+

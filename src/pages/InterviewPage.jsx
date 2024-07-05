@@ -5,7 +5,7 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import { useNavigate } from "react-router-dom";
-
+import { BiSolidError } from "react-icons/bi";
 import AnswerField from "../components/Interview/AnswerField";
 import Checklist from "../components/Interview/Checklist";
 import CameraFeed from "../components/Interview/CameraFeed";
@@ -19,7 +19,8 @@ import QuestionDisplay from "../components/Interview/QuestionDisplay";
 import BrowserInstructions from "../components/Interview/BrowserInstructions";
 import { HiSpeakerWave } from "react-icons/hi2";
 import Checkbox from "react-custom-checkbox";
-import { CiMicrophoneOn } from "react-icons/ci";
+import { AiOutlineClose } from "react-icons/ai";
+import Modal from "react-modal";
 import {
   examEnd,
   examStart,
@@ -30,7 +31,7 @@ import { GiCheckMark } from "react-icons/gi";
 import { MESSAGES } from "../constants/Constants";
 import NotificationBar from "../components/common/Notification/NotificationBar";
 import { useParams } from "react-router-dom";
-
+import Sticky from "react-sticky-el";
 const InterviewScreen = () => {
   const [questionsData, setQuestionsData] = useState([]);
   const [questionsLength, setQuestionsLength] = useState([]);
@@ -43,7 +44,9 @@ const InterviewScreen = () => {
   const [examStarted, setExamStarted] = useState(false);
   const [transcript, setTranscript] = useState("");
   const [isTimeOut, setIsTimeOut] = useState(false);
-
+  const [isVisible, setIsVisible] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
   const {
     transcript: liveTranscript,
     listening,
@@ -154,6 +157,7 @@ const InterviewScreen = () => {
     try {
       await handleSubmitAnswer();
       await examEnd(questionSetId, token);
+      setIsModalOpen(false);
       navigate(`/dashboard/question/exam-end`);
     } catch (error) {
       setError(MESSAGES.EXAM_END_ERROR);
@@ -189,13 +193,20 @@ const InterviewScreen = () => {
       console.error("Error requesting media permissions:", error);
     }
   }
-
   const toggleFullscreen = useCallback(() => {
     if (!document.fullscreenElement) {
-      fullscreenRef.current.requestFullscreen().catch((err) => {
+      document.documentElement.requestFullscreen().catch((err) => {
         console.error(`Failed to enter fullscreen mode: ${err.message}`);
       });
     } else {
+      document.exitFullscreen().catch((err) => {
+        console.error(`Failed to exit fullscreen mode: ${err.message}`);
+      });
+    }
+  }, []);
+
+  const fullScreenExit = useCallback(() => {
+    if (document.fullscreenElement) {
       document.exitFullscreen().catch((err) => {
         console.error(`Failed to exit fullscreen mode: ${err.message}`);
       });
@@ -301,133 +312,213 @@ const InterviewScreen = () => {
     return () => clearInterval(timerInterval);
   }, [examStarted, currentQuestionIndex, questionsData]);
 
+  const handleButtonClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const enterFullscreen = useCallback(() => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch((err) => {
+        console.error(`Failed to enter fullscreen mode: ${err.message}`);
+        setIsFullscreenOpen(false);
+        setIsVisible(false); // Show modal if fullscreen request fails
+      });
+    } else {
+      document.exitFullscreen().catch((err) => {
+        console.error(`Failed to exit fullscreen mode: ${err.message}`);
+      });
+    }
+  }, []);
+
+  const handleFullScreenClose = () => {
+    setIsFullscreenOpen(false);
+  };
+
+  const handleEnterFullscreen = () => {
+    document.documentElement.requestFullscreen().catch((err) => {
+      console.error(`Failed to enter fullscreen mode: ${err.message}`);
+    });
+    setIsFullscreenOpen(false);
+    setIsVisible(true);
+  };
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement) {
+        setIsFullscreenOpen(true);
+        setIsVisible(false);
+      }
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+  }, []);
+
   return (
-    <div className="container lg:w-5/6 mx-auto w-full ">
-      <NotificationBar />
+    <>
+      <Sticky topOffset={80} className="fixed top-10 right-10 z-50">
+        {isVisible && (
+          <button
+            className="bg-red-500 text-white rounded-full p-4 transition-transform hover:rotate-90 hover:scale-110 focus:outline-none"
+            onClick={handleButtonClick}
+          >
+            <AiOutlineClose size={30} />
+          </button>
+        )}
+      </Sticky>
+      <Sticky topOffset={80} className="fixed top-10 right-10 z-50">
+        {!isVisible && (
+          <button
+            className="bg-blue-400 text-white rounded-full p-4 transition-transform hover:rotate-90 hover:scale-110 focus:outline-none"
+            onClick={enterFullscreen}
+          >
+            <AiOutlineClose size={30} />
+          </button>
+        )}
+      </Sticky>
 
-      <div className="rounded-md border border-solid my-5 border-black border-opacity-10 bg-white">
-        <ErrorBoundary>
-          <div ref={fullscreenRef} className="container mx-auto flex h-screen ">
-            <div className="flex flex-col basis-1/3 rounded-md border border-solid m-5 border-black border-opacity-10">
-              <div className="mt-5">
-                <CameraFeed
-                  onFacesDetected={handleFacesDetected}
-                  examStarted={examStarted}
-                />
-              </div>
+      <div className="container lg:w-5/6 mx-auto w-full ">
+        <NotificationBar />
 
-              <div className="mt-4">
-                <Checklist
-                  items={[
-                    { label: "Camera Access", isChecked: permissions.camera },
-                    {
-                      label: "Microphone Access",
-                      isChecked: permissions.microphone,
-                    },
-                    // { label: "Fullscreen Mode", isChecked: permissions.fullscreen },
-                    {
-                      label: "DevTools Closed",
-                      isChecked: !permissions.devToolsOpen,
-                    },
-                  ]}
-                />
-                <div
-                  className={`flex  items-center space-x-2 mx-4 p-2 border rounded-md ${
-                    permissions.fullscreen ? 'bg-green-100 border-green-300' : 'bg-red-100 border-red-300'
-                  } `}
-                >
-                  <Checkbox
-                    icon={ permissions.fullscreen ? <GiCheckMark  color="green" size={12} />:''}
-                    checked={permissions.fullscreen}
-                    onChange={toggleFullscreen}
-                    borderRadius={3}
-                    size={24}
-                    style={{ marginLeft: "auto" }}
+        <div className="rounded-md border border-solid my-5 border-black border-opacity-10 bg-white">
+          <ErrorBoundary>
+            <div ref={fullscreenRef} className="container mx-auto flex  ">
+              <div className="flex flex-col basis-1/3 rounded-md border border-solid m-5 border-black border-opacity-10">
+                <div className="">
+                  <CameraFeed
+                    onFacesDetected={handleFacesDetected}
+                    examStarted={examStarted}
                   />
-                  <div className=" text-sm font-medium ">
-                    {permissions.fullscreen ? "Exit Fullscreen" : "Enter Fullscreen"}
-                  </div>
                 </div>
-                <div className=" p-4 border-t border-solid border-black border-opacity-10">
-                  {/* Custom styled checkbox */}
 
-                  {/* Display status based on checkbox state */}
+                <div className="mt-4">
+                  <Checklist
+                    items={[
+                      { label: "Camera Access", isChecked: permissions.camera },
+                      {
+                        label: "Microphone Access",
+                        isChecked: permissions.microphone,
+                      },
+                      {
+                        label: "Fullscreen Mode",
+                        isChecked: permissions.fullscreen,
+                      },
+                      {
+                        label: "DevTools Closed",
+                        isChecked: !permissions.devToolsOpen,
+                      },
+                    ]}
+                  />
+                  {/* <div
+                    className={`flex  items-center space-x-2 mx-4 p-2 border rounded-md ${
+                      permissions.fullscreen
+                        ? "bg-green-100 border-green-300"
+                        : "bg-red-100 border-red-300"
+                    } `}
+                  >
+                    <Checkbox
+                      icon={
+                        permissions.fullscreen ? (
+                          <GiCheckMark color="green" size={12} />
+                        ) : (
+                          ""
+                        )
+                      }
+                      checked={permissions.fullscreen}
+                      onChange={fullScreenExit}
+                      borderRadius={3}
+                      size={24}
+                      style={{ marginLeft: "auto" }}
+                    />
+                    <div className=" text-sm font-medium ">
+                      {permissions.fullscreen
+                        ? "Exit Fullscreen"
+                        : "Enter Fullscreen"}
+                    </div>
+                  </div> */}
                 </div>
               </div>
-            </div>
-            <div className="flex flex-col basis-2/3 rounded-md border border-solid my-5 mr-5 border-black border-opacity-10">
-              {examStarted && (
-                <div className="p-8 space-y-4">
-                  <div className="flex items-center justify-between p-4 border-b border-solid border-black border-opacity-10 my-5 mr-5">
-                    <h2 className="text-base text-neutral-600">
-                      Frontend Developer Interview
-                    </h2>
-                    <div className="text-right">
-                      <p className="text-base text-neutral-600">
-                        Time left:{" "}
-                        <span className="font-bold">{remainingTime}</span>{" "}
-                        seconds
-                      </p>
+
+              <div className="flex flex-col basis-2/3 rounded-md border border-solid my-5 mr-5 border-black border-opacity-10">
+                {examStarted && (
+                  <div className="p-8 space-y-4">
+                    <div className="flex items-center justify-between p-4 border-b border-solid border-black border-opacity-10 my-5 mr-5">
+                      <h2 className="text-base text-neutral-600">
+                        Frontend Developer Interview
+                      </h2>
+                      <div className="text-right">
+                        <p className="text-base text-neutral-600">
+                          Time left:{" "}
+                          <span className="font-bold">{remainingTime}</span>{" "}
+                          seconds
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                  <div className="w-full text-xl font-semibold leading-6 text-neutral-700">
-                    Question {currentQuestion?.id}
-                    <span className="text-xs text-neutral-600">
-                      {" "}
-                      (Click the waves icon to listen to question)
-                    </span>
-                  </div>
-                  <div className="flex flex-col md:flex-row text-base leading-5 text-neutral-600 gap-2.5 justify-between px-4 py-4 mt-2.5 w-full rounded-md border border-solid border-neutral-500">
-                    <QuestionDisplay
-                      questionText={
-                        currentQuestion
-                          ? currentQuestion.title
-                          : "Loading question..."
-                      }
-                    />
-                    <div className="flex items-center px-4 rounded">
-                      <span
-                        onClick={() => speak(currentQuestion.title)}
-                        className="cursor-pointer"
-                      >
-                        <HiSpeakerWave size={29} />
+                    <div className="w-full text-xl font-semibold leading-6 text-neutral-700">
+                      Question {currentQuestion?.id}
+                      <span className="text-xs text-neutral-600">
+                        {" "}
+                        (Click the waves icon to listen to question)
                       </span>
                     </div>
-                  </div>
-                  <div className="relative">
-                    <AnswerField
-                      value={answer + (listening ? ` ${transcript}` : "")}
-                      onChange={handleAnswerChange}
-                      placeholder="Type your answer here..."
-                      charLimit={500}
-                      className="w-full p-3 border border-gray-300 rounded-lg"
-                      disabled={isTimeOut}
-                    />
-                    <div
-                      className={`absolute bottom-10 left-2 p-1 text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer ${
-                        listening
-                          ? "text-red-500 hover:text-gray-700"
-                          : "text-gray-500 hover:text-gray-700"
-                      }`}
-                      onClick={() => {
-                        if (!isTimeOut) {
-                          listening ? stopListening() : startListening();
+                    <div className="flex flex-col md:flex-row text-base leading-5 text-neutral-600 gap-2.5 justify-between px-4 py-4 mt-2.5 w-full rounded-md border border-solid border-neutral-500">
+                      <QuestionDisplay
+                        questionText={
+                          currentQuestion
+                            ? currentQuestion.title
+                            : "Loading question..."
                         }
-                      }}
-                    >
-                      {listening ? (
-                        <FaMicrophoneAlt
-                          size={25}
-                          color="green"
-                          className="mr-2"
-                        />
-                      ) : (
-                        <FaMicrophoneAlt size={25} className="mr-2" />
-                      )}
+                      />
+                      <div className="flex items-center px-4 rounded">
+                        <span
+                          onClick={() => speak(currentQuestion.title)}
+                          className="cursor-pointer"
+                        >
+                          <HiSpeakerWave size={29} />
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                  <div className="flex flex-wrap justify-center items-center gap-3 mt-4">
-                    {/* <button
+                    <div className="relative">
+                      <AnswerField
+                        value={answer + (listening ? ` ${transcript}` : "")}
+                        onChange={handleAnswerChange}
+                        placeholder="Type your answer here..."
+                        charLimit={500}
+                        className="w-full p-3 border border-gray-300 rounded-lg"
+                        disabled={isTimeOut}
+                      />
+                      <div
+                        className={`absolute bottom-10 left-2 p-1 text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer ${
+                          listening
+                            ? "text-red-500 hover:text-gray-700"
+                            : "text-gray-500 hover:text-gray-700"
+                        }`}
+                        onClick={() => {
+                          if (!isTimeOut) {
+                            listening ? stopListening() : startListening();
+                          }
+                        }}
+                      >
+                        {listening ? (
+                          <FaMicrophoneAlt
+                            size={25}
+                            color="green"
+                            className="mr-2"
+                          />
+                        ) : (
+                          <FaMicrophoneAlt size={25} className="mr-2" />
+                        )}
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap justify-center items-center gap-3 mt-4">
+                      {/* <button
                           onClick={handleExamStart}
                           // disabled={!areAllPermissionsGranted}
                           className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
@@ -435,86 +526,186 @@ const InterviewScreen = () => {
                           Start Exams
                         </button> */}
 
-                    {currentQuestionIndex < questionsLength - 1 ? (
-                      <button
-                        onClick={
-                          isTimeOut ? handleNextQuestion : handleSubmitAnswer
-                        }
-                        className="flex-1 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
-                      >
-                        Next
-                      </button>
-                    ) : (
-                      <button
-                        onClick={handleExamEnd}
-                        className="flex-1 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
-                      >
-                        Finish
-                      </button>
-                    )}
-                  </div>
-                  {loading && (
-                    <div
-                      className="progress-bar mt-4"
-                      style={{ width: `${progress}%` }}
-                    />
-                  )}
-                  {error && (
-                    <div className="error mt-4 text-red-500">{error}</div>
-                  )}
-                  <ToastContainer />
-                </div>
-              )}
-              {!examStarted && (
-                <div className="flex items-center justify-center my-5 py-10 ">
-                  <div className="space-y-8 w-5/6 bg-white p-8 ">
-                    <div className="space-y-2 text-center">
-                      <BrowserInstructions />
-                      <p>
-                        Please check every box on the left befire starting your
-                        interview
-                      </p>
-                      {questionsData.length === 0 ? (
-                        <>
-                          <p>
-                            The selected question set does not have questions in
-                            it, please contact the interviewer
-                          </p>
-                          <button
-                            type="button"
-                            className="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-blue-600"
-                            onClick={() => navigate(`/dashboard`)}
-                          >
-                            Dashboard
-                          </button>
-                        </>
+                      {currentQuestionIndex < questionsLength - 1 ? (
+                        <button
+                          onClick={
+                            isTimeOut ? handleNextQuestion : handleSubmitAnswer
+                          }
+                          className="flex-1 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+                        >
+                          Next
+                        </button>
                       ) : (
-                        <div className="flex w-10/12 mx-auto py-10">
-                          <button
-                            type="button"
-                            className="px-4 py-4 w-full  lg:w-1/2 bg-gray-500 text-white rounded hover:bg-gray-600 mr-3"
-                            onClick={() => navigate(`/dashboard`)}
-                          >
-                            Go back
-                          </button>
-                          <button
-                            onClick={handleExamStart}
-                            disabled={!areAllPermissionsGranted}
-                            className="px-4 py-4 bg-blue-500 w-full lg:w-1/2 text-white rounded hover:bg-blue-600"
-                          >
-                            Start Exams
-                          </button>
-                        </div>
+                        <button
+                          onClick={handleExamEnd}
+                          className="flex-1 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+                        >
+                          Finish
+                        </button>
                       )}
                     </div>
+                    {loading && (
+                      <div
+                        className="progress-bar mt-4"
+                        style={{ width: `${progress}%` }}
+                      />
+                    )}
+                    {error && (
+                      <div className="error mt-4 text-red-500">{error}</div>
+                    )}
+                    <ToastContainer />
                   </div>
-                </div>
-              )}
+                )}
+                {!examStarted && (
+                  <div className="flex items-center justify-center my-5 py-10 ">
+                    <div className="space-y-8 w-5/6 bg-white p-8 ">
+                      <div className="space-y-2 text-center">
+                        <BrowserInstructions />
+                        <p>
+                          Please check every box on the left befire starting
+                          your interview
+                        </p>
+                        {questionsData.length === 0 ? (
+                          <>
+                            <p>
+                              The selected question set does not have questions
+                              in it, please contact the interviewer
+                            </p>
+                            <button
+                              type="button"
+                              className="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-blue-600"
+                              onClick={() => navigate(`/dashboard`)}
+                            >
+                              Dashboard
+                            </button>
+                          </>
+                        ) : (
+                          <div className="flex w-10/12 mx-auto py-10">
+                            <button
+                              type="button"
+                              className="px-4 py-4 w-full  lg:w-1/2 bg-gray-500 text-white rounded hover:bg-gray-600 mr-3"
+                              onClick={() => navigate(`/dashboard`)}
+                            >
+                              Go back
+                            </button>
+                            <button
+                              onClick={handleExamStart}
+                              disabled={!areAllPermissionsGranted}
+                              className="px-4 py-4 bg-blue-500 w-full lg:w-1/2 text-white rounded hover:bg-blue-600"
+                            >
+                              Start Exams
+                            </button>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </ErrorBoundary>
+        </div>
+      </div>
+      <Modal
+        isOpen={isModalOpen}
+        onRequestClose={handleModalClose}
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.3)",
+            zIndex: 1000,
+          },
+          content: {
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            zIndex: 21,
+            position: "absolute",
+            transform: "translate(-50%, -50%)",
+            padding: "20px",
+            borderRadius: "4px",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+          },
+        }}
+      >
+        <div className="w-80 sm:w-96">
+          <span className="text-xl text-gray-600 font-spline font-semibold py-2 ">
+            Quit Exam
+          </span>
+          <div className="shrink-0 mt-3.5 h-px border border-solid  bg-black bg-opacity-10 border-black border-opacity-10 max-md:max-w-full" />
+          <div className="gap-2 py-5">
+            <p>
+              <span className="text-lg text-gray-700 font-spline font-medium">
+                Are you sure you want to end the exam?
+              </span>
+            </p>
+
+            <div className="mt-4 flex justify-center space-x-4">
+              <button
+                onClick={() => {
+                  handleExamEnd(), fullScreenExit();
+                }}
+                className="bg-blue-500 text-white w-full px-4 py-2 rounded hover:bg-blue-600 focus:outline-none"
+              >
+                Yes
+              </button>
+              <button
+                onClick={handleModalClose}
+                className="bg-gray-500 text-white w-full px-4 py-2 rounded hover:bg-gray-600 focus:outline-none"
+              >
+                No
+              </button>
             </div>
           </div>
-        </ErrorBoundary>
-      </div>
-    </div>
+        </div>
+      </Modal>
+      <Modal
+        isOpen={isFullscreenOpen}
+        onRequestClose={handleFullScreenClose}
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.3)",
+            zIndex: 1000,
+          },
+          content: {
+            top: "50%",
+            left: "50%",
+            right: "auto",
+            bottom: "auto",
+            zIndex: 21,
+            position: "absolute",
+            transform: "translate(-50%, -50%)",
+            padding: "20px",
+            borderRadius: "8px",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+          },
+        }}
+      >
+        <div className="flex bg-blue-400 text-white justify-center items-center p-10">
+          {" "}
+          <BiSolidError size={80} color="white" />{" "}
+        </div>
+        <h2 className="my-5 font-spline text-gray-700">
+          Please enter fullscreen mode to conduct the exam
+        </h2>
+        <div className="mt-4 flex justify-center space-x-4">
+          <button
+            onClick={handleEnterFullscreen}
+            className="bg-blue-400 w-full text-white px-4 py-2 rounded hover:bg-blue-500 focus:outline-none"
+          >
+            Yes
+          </button>
+          <button
+            onClick={() => {
+              handleFullScreenClose(), navigate(`/dashboard`);
+            }}
+            className="bg-gray-400 w-full text-white px-4 py-2 rounded hover:bg-gray-500 focus:outline-none"
+          >
+            No
+          </button>
+        </div>
+      </Modal>
+    </>
   );
 };
 

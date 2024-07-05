@@ -38,9 +38,9 @@ const GenerateQuestionsPage: React.FC = () => {
 
   const navigate = useNavigate();
   const location = useLocation();
-  const { setId } = location.state || {};
+  const { setId,subCatId } = location.state || {};
 
-  //console.log('Set ID:', setId);
+console.log('Sub Cat  ID:', subCatId);
   const [loading, setLoading] = useState<boolean>(false);
   const [questionSource, setQuestionSource] = useState<string>(
     QUESTION_SOURCE.DOMAIN
@@ -214,6 +214,7 @@ const GenerateQuestionsPage: React.FC = () => {
                 <DomainQuestionsForm
                   onGenerate={handleGenerateQuestions}
                   loading={loading}
+                  subCatId={subCatId}
                 />
               )}
 

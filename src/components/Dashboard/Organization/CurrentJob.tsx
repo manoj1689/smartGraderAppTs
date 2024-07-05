@@ -180,7 +180,7 @@ const CurrentJobs: React.FC = () => {
 
   return (
     <div>
-      <div className="rounded-md border border-solid px-5 my-5 border-black border-opacity-10">
+      <div className="rounded-md border border-solid px-5 my-10 border-black border-opacity-10">
         <div className='mb-10'></div>
         <div className="flex flex-col lg:flex-row justify-between">
           <div className="flex flex-row items-center max-lg:my-5 space-x-4">
@@ -293,7 +293,7 @@ const CurrentJobs: React.FC = () => {
 
           <div>
             {currentItems.map((job) => (
-              <div key={job.id} className="flex flex-col lg:flex-row gap-5 justify-between w-full max-md:flex-wrap mb-4 border p-4 rounded">
+              <div key={job.id} className="flex flex-col  lg:flex-row gap-5 justify-between w-full max-md:flex-wrap mb-4 border p-4 rounded">
                 <div className="flex lg:w-2/5 gap-3">
                   <div className="flex flex-col sm:px-5 my-auto">
                     <div className="text-lg leading-6 text-slate-800">{job.title}</div>

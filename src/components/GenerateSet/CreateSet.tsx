@@ -1,3 +1,4 @@
+
 import React, { useState, ChangeEvent, FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
@@ -7,6 +8,7 @@ import NotificationBar from '../common/Notification/NotificationBar';
 import ThinkPerson from '../../assets/images/GenerateQuestions/CreateSet.webp';
 import { MdArrowOutward } from "react-icons/md";
 import { IoIosCreate } from "react-icons/io";
+
 interface SetData {
   sub_category_id: number;
   title: string;
@@ -82,6 +84,7 @@ const CreateSet: React.FC = () => {
                 type="text"
                 value={title}
                 onChange={handleTitleChange}
+                placeholder="Enter the title of the set"
                 className="justify-center items-start p-4 leading-4 rounded-md border border-solid border-neutral-400 w-full pr-10 focus:border-neutral-500 focus:ring-neutral-500 focus:outline-none"
                 required
               />
@@ -91,6 +94,7 @@ const CreateSet: React.FC = () => {
               <textarea
                 value={description}
                 onChange={handleDescriptionChange}
+                placeholder="Enter a brief description"
                 className="justify-center items-start p-5 leading-4 rounded-md border border-solid border-neutral-400 w-full pr-10 focus:border-neutral-500 focus:ring-neutral-500 focus:outline-none"
                 required
               />
@@ -101,6 +105,7 @@ const CreateSet: React.FC = () => {
                 options={setTypeOptions}
                 onChange={handleSetTypeChange}
                 className="w-full"
+                placeholder="Select the type of set"
                 required
               />
             </div>
@@ -110,6 +115,7 @@ const CreateSet: React.FC = () => {
                 options={setLevelOptions}
                 onChange={handleSetLevelChange}
                 className="w-full"
+                placeholder="Select the difficulty level"
                 required
               />
             </div>
@@ -127,11 +133,10 @@ const CreateSet: React.FC = () => {
           </form>
         </div>
         <div className='flex  order-1 justify-center align-center mx-auto lg:order-2  lg:w-1/3'>
-        <div >
-          <img src={ThinkPerson} alt="Thinking Man" className='w-64 md:w-80 mx-auto px-4' />
+          <div>
+            <img src={ThinkPerson} alt="Thinking Man" className='w-64 md:w-80 mx-auto px-4' />
+          </div>
         </div>
-        </div>
-       
       </div>
     </div>
   );

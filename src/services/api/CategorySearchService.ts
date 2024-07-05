@@ -1,6 +1,7 @@
 import axios from 'axios';
 import axiosInstance from '../axios/axiosInstance';
 import { getToken } from '../../utils/tokenUtils';
+
 interface Category {
   id: number;
   name: string;
@@ -12,11 +13,27 @@ export const fetchCategories = async (): Promise<Record<string, Category>> => {
   try {
     const response = await axiosInstance.get('/categories/all');
     return transformCategories(response.data.data);
+    //console.log(transformCategories(response.data.data))
   } catch (error) {
     console.error('Error fetching categories', error);
     return {};
   }
 };
+export const fetchSubCategories = async (sub_category_id: any): Promise<any> => {
+  try {
+    const response = await axiosInstance.get(`/categories/subcat?category_id=${sub_category_id}`);
+    const transformedData = response.data.data.map((subCat: any) => ({
+      value: subCat.id,
+      label: subCat.name,
+    }));
+    console.log('Transformed Subcategories:', transformedData);
+    return transformedData;
+  } catch (error) {
+    console.error('Error fetching sub categories', error);
+    return [];
+  }
+};
+
 
 const transformCategories = (categories: Category[]): Record<string, Category> => {
   const categoryMap: Record<string, Category> = {};
@@ -75,7 +92,7 @@ export const fetchSelectedItemId = async (selectedItems: string[]) => {
   try {
     const token = getToken();
     const termToSearch=selectedItems[selectedItems.length-1];
-    console.log("we feed to find the term",termToSearch)
+    console.log("we need to find the term",termToSearch)
     const response = await axiosInstance.get(`/categories/search?term=${termToSearch}`, {
       headers: {
         Accept: "application/json",
@@ -84,10 +101,12 @@ export const fetchSelectedItemId = async (selectedItems: string[]) => {
     });
    
     const selectedItemsId = response.data.data;
+   
     let listOfSearchTermsIds:number[]=[]
     
     selectedItemsId.map((item:any)=>listOfSearchTermsIds.push(item.id))
    // console.log('selected Items ids',listOfSearchTermsIds);
+   console.log(`Id of ${termToSearch} is ${listOfSearchTermsIds}`)
     return listOfSearchTermsIds;
   } catch (error) {
     console.error('Error fetching question sets', error);

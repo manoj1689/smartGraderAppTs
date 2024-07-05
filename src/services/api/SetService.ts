@@ -6,19 +6,19 @@ import { SetData, Card, updatedSetData } from "../../types/interfaces/interface"
 type setId = any;
 
 export const handleSetSubmit = async (
-  selectedSets: SetData,
+  newSet: SetData,
   navigate: (path: string, setId: any) => void,
   toast: { error: (msg: string) => void }
 ) => {
   const token = getToken();
 
   // Log selectedSets before making the POST request
-  console.log("Selected sets before POST:", selectedSets);
-
+  console.log("Selected sets before POST:", newSet.sub_category_id);
+ const subCatId=newSet.sub_category_id
   try {
     const response = await axiosInstance.post(
       `${API_BASE_URL}/sets/add`,
-      selectedSets,
+      newSet,
       {
         headers: {
           Accept: "application/json",
@@ -32,10 +32,10 @@ export const handleSetSubmit = async (
     if (response.data.status === 1 && response.data.msg === "success") {
       const setId = response.data.set_id;
       console.log("Set ID from response:", setId); // Log set_id from the response
-      console.log("Proceeding with selected sets:", selectedSets);
+      console.log("Proceeding with selected sets:", newSet);
 
       // Navigate to the dashboard and pass the setId in state
-      navigate("/dashboard/generatequestion", { state: { setId } });
+      navigate("/dashboard/generatequestion", { state: { setId,subCatId } });
 
       return response.data.set_id;
     } else {
@@ -131,3 +131,4 @@ export const fetchSetDetail = async (setId: number): Promise<Card[] | null> => {
     return null;
   }
 };
+

@@ -101,11 +101,11 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
   };
 
   return (
-    <div className="container lg:w-5/6 mx-auto w-full h-full ">
+    <div className="container px-2 lg:w-5/6 mx-auto w-full h-full ">
       <NotificationBar />
 
       <div className="rounded-md border border-solid my-5  border-black border-opacity-10 ">
-        <div className="px-5 py-5">
+        <div className=" px-2 py-5">
           <IndividualSets />
         </div>
 
@@ -379,12 +379,12 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
       </div>
       <div className="my-10 flex flex-col lg:flex-row ">
         <div className="flex flex-col md:flex-row gap-3 w-full">
-          <div className="flex flex-col   py-8  pl-3.5 bg-white  border border-solid border-black border-opacity-10 w-full ">
+          <div className="flex flex-col  px-2  py-8  pl-3.5 bg-white  border border-solid border-black border-opacity-10 w-full ">
             <div className="flex gap-3 self-start text-lg font-medium leading-6 whitespace-nowrap text-slate-800">
               <FaMedal size={20} color="gray" />
               <div className="flex-auto my-auto">Badges/Achievements</div>
             </div>
-            <div className="shrink-0 mt-4  w-full h-px  rounded-md border border-solid border-black border-opacity-10" />
+            <div className="shrink-0 mt-4  w-full   rounded-md border border-solid border-black border-opacity-10" />
             <div className="flex justify-between px-2  items-center">
               <div>
                 <img
@@ -404,7 +404,7 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
               </div>
             </div>
             {showAchievementsTips && (
-              <div className="text-neutral-700 my-5 px-2">
+              <div className="text-neutral-700 font-spline my-5 px-2">
                 Your achievements and badges will be displayed here as you
                 progress through your interviews and challenges. Each badge
                 represents a milestone in your journey, encouraging you to learn
@@ -413,72 +413,108 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
               </div>
             )}
           </div>
-          <div className="flex flex-col justify-center font-light rounded-md border border-solid border-black border-opacity-10 w-full h-full">
-            <div className="flex bg-white  flex-col items-start lg:p-2.5 w-full">
-              <div className="flex w-full py-5  ">
-                <div className=" w-full">
-                  <div className=" text-lg px-2  font-medium leading-6 text-slate-800">
+          <div className="flex flex-col  font-light rounded-md border border-solid border-black border-opacity-10 w-full relative bg-white">
+            <div className="mt-4 px-2">
+            <div className="text-lg px-2 py-4 items-center font-medium leading-6 text-slate-800">
                     Preparation Tips
                   </div>
-                  <div className="shrink-0 mt-4 ml-3.5 w-full h-px  rounded-md border border-solid border-black border-opacity-10" />
+                  <div className="shrink-0   w-full h-px rounded-md border border-solid border-black border-opacity-10" />
                   <div className="mt-3 px-2 text-sm leading-5 text-neutral-500">
                     How to prepare for the upcoming session
                   </div>
-                  <div
-                    className=" mt-3.5 px-2 text-xs leading-4 text-sky-500 underline cursor-pointer"
-                    onClick={togglepreparationTips}
-                  >
-                    Read More
+            </div>
+          <div  className="" >
+                 
+            <div className=" flex flex-col items-start lg:p-2.5 w-full mt-5">
+              <div className="flex w-full ">
+                
+                  <div className="  relative ">
+                    <img
+                      loading="lazy"
+                      alt="interview"
+                      src={interView}
+                      className="absolute bottom-0 right-0  z-0 opacity-30"
+                    />
+                    <div className="px-5 bg-transparent relative z-10">
+                      <ul className="list-disc pl-5 text-neutral-700 text-sm font-spline">
+                        <li className="mb-3">
+                          <span className="font-semibold">
+                            Review the Basics:
+                          </span>{" "}
+                          Before diving into advanced topics, ensure you have a
+                          solid understanding of the foundational concepts in
+                          your field.
+                        </li>
+                        <li className="mb-3">
+                          <span className="font-semibold">
+                            Practice Common Questions:
+                          </span>{" "}
+                          Familiarize yourself with frequently asked interview
+                          questions and practice your responses to gain
+                          confidence.{" "}
+                        </li>
+                      </ul>
+
+                      {showPreparationTips && (
+                        <>
+                          <ul className="list-disc pl-5 text-neutral-700 text-sm font-spline">
+                            <li className="mb-3">
+                              <span className="font-semibold">
+                                Mock Interviews:
+                              </span>{" "}
+                              Take advantage of SmartGrader's mock interview
+                              feature to simulate the interview experience and
+                              receive feedback on your performance.
+                            </li>
+                            <li className="mb-3">
+                              <span className="font-semibold">
+                                Stay Informed:
+                              </span>{" "}
+                              Keep up-to-date with the latest trends and
+                              technologies relevant to your industry to showcase
+                              your knowledge during interviews.
+                            </li>
+                            <li>
+                              <span className="font-semibold">
+                                Relax and Reflect:
+                              </span>{" "}
+                              Prioritize your well-being. A calm mind will help
+                              you think clearly and communicate effectively
+                              during your interview.
+                            </li>
+                          </ul>
+                        </>
+                      )}
+                      <span
+                        className="mt-3.5 px-2 text-xs leading-4 text-sky-500 underline cursor-pointer"
+                        onClick={togglepreparationTips}
+                      >
+                        {showPreparationTips ? "Read Less" : "Read More"}
+                      </span>
+                    </div>
                   </div>
                 </div>
-                <div className="flex justify-end w-full ">
+              </div>
+            </div>
+
+            {/* <div className="relative">
+              <div
+                className={`transition-all duration-300 ease-in-out ${
+                  showPreparationTips ? "h-auto" : "h-0 overflow-hidden"
+                }`}
+              >
+                <div className="flex w-full justify-end ">
                   <img
                     loading="lazy"
                     alt="interview"
                     src={interView}
-                    className=" object-cover"
+                    className="w-1/3 h-auto object-cover"
                   />
                 </div>
               </div>
 
-              {showPreparationTips && (
-                <div className="mt-5 text-sm font-spline">
-                  <ul className="list-disc pl-5 text-neutral-700">
-                    <li className="mb-3">
-                      <span className="font-semibold">Review the Basics:</span>{" "}
-                      Before diving into advanced topics, ensure you have a
-                      solid understanding of the foundational concepts in your
-                      field.
-                    </li>
-                    <li className="mb-3">
-                      <span className="font-semibold">
-                        Practice Common Questions:
-                      </span>{" "}
-                      Familiarize yourself with frequently asked interview
-                      questions and practice your responses to gain confidence.
-                    </li>
-                    <li className="mb-3">
-                      <span className="font-semibold">Mock Interviews:</span>{" "}
-                      Take advantage of SmartGrader's mock interview feature to
-                      simulate the interview experience and receive feedback on
-                      your performance.
-                    </li>
-                    <li className="mb-3">
-                      <span className="font-semibold">Stay Informed:</span> Keep
-                      up-to-date with the latest trends and technologies
-                      relevant to your industry to showcase your knowledge
-                      during interviews.
-                    </li>
-                    <li>
-                      <span className="font-semibold">Relax and Reflect:</span>{" "}
-                      Prioritize your well-being. A calm mind will help you
-                      think clearly and communicate effectively during your
-                      interview.
-                    </li>
-                  </ul>
-                </div>
-              )}
-            </div>
+            
+            </div> */}
           </div>
         </div>
 
