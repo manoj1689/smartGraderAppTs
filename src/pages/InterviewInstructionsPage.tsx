@@ -115,6 +115,11 @@ const InterviewInstructions:React.FC = () => {
           </div>
         </div>
       </div>
+      <ToastContainer
+        toastClassName="rounded-full bg-green-500 text-white p-4 text-center"
+        bodyClassName="text-white"
+        position="top-center"
+      />
     </div>
   );
 };
