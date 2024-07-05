@@ -537,7 +537,9 @@ const InterviewScreen = () => {
                         </button>
                       ) : (
                         <button
-                          onClick={handleExamEnd}
+                        onClick={() => {
+                          handleExamEnd(), fullScreenExit();
+                        }}
                           className="flex-1 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
                         >
                           Finish
