@@ -20,6 +20,7 @@ import { CreateJobService } from "../../../services/api/CreateJobService";
 import SelectSet from "../../../assets/images/Organisation/selectSet.gif";
 import { fetchSetDetail } from "../../../services/api/SetService";
 import { Card } from "../../../types/interfaces/interface";
+import { BsDatabaseAdd } from "react-icons/bs";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 import QuestionView from "./QuestionView";
@@ -77,10 +78,49 @@ const CreateJobs: React.FC = () => {
         <div className="flex flex-col lg:flex-row">
           <div className="lg:w-2/3 order-2 lg:order-1 px-4">
          
-          
+              <div className="bg-white my-5  rounded-lg">
+                <form>
+                 
+                  <div className=" p-4 w-full bg-sky-50 rounded-md border border-sky-500 border-solid max-md:flex-wrap max-md:max-w-full">
+                  <div className="flex flex-col sm:flex-row gap-3 items-center">
+                  <span className="block text-lg font-spline font-semibold  text-gray-700 whitespace-nowrap">
+                       Title
+                    </span>
+                    <input
+                      type="text"
+                      placeholder="Enter Post "
+                      value={jobData.title}
+                      onChange={(e) =>
+                        setJobData({ ...jobData, title: e.target.value })
+                      }
+                      className="justify-center items-start p-4 leading-4 rounded  w-full pr-10 focus:border-neutral-500 focus:ring-neutral-500 focus:outline-none"
+                    />
+                  </div>
+                  <div className="flex flex-col sm:flex-row gap-3 ">
+                    <span className="block mt-5 text-lg font-spline font-medium text-gray-700 whitespace-nowrap">
+                      Experience Required
+                    </span>
 
-            <div>
-              <div>
+                    <input
+                      type="text"
+                      value={jobData.experience}
+                      placeholder="Enter Experience"
+                      onChange={(e) =>
+                        setJobData({ ...jobData, experience: e.target.value })
+                      }
+                      className="justify-center items-start mt-5 p-4 leading-4 rounded  w-full pr-10 focus:border-neutral-500 focus:ring-neutral-500 focus:outline-none"
+                    />
+                  </div>
+                  </div>
+                 
+                  <div className="mt-5">
+                  
+                  </div>
+                </form>
+              </div>
+           
+
+<div>
                 {selectedSetId ? (
                   <div className="my-5">
                     <div className="text-xl font-spline font-semibold text-gray-700">Selected Question Set</div>
@@ -237,11 +277,7 @@ const CreateJobs: React.FC = () => {
                   </div>
                 ) : (
                   <div>
-                    <img
-                      src={SelectSet}
-                      alt="Select-Set"
-                      className="w-2/3 sm:w-1/3"
-                    />
+                  <BsDatabaseAdd size={100} color="gray"/>
                     <span className="my-5 text-xl text-gray-400 font-spline font-semibold ml-5">
                       Select Set Please !
                     </span>
@@ -256,94 +292,6 @@ const CreateJobs: React.FC = () => {
                   </div>
                 )}
               </div>
-            </div>
-            {isedited ? (
-              <div className="bg-white my-5  rounded-lg">
-                <form>
-                  <h2 className="text-xl font-spline font-semibold text-gray-600 mb-4">
-                    Add Job
-                  </h2>
-
-                  <div className="flex flex-col sm:flex-row gap-3 ">
-                    <span className="block mt-5 text-lg font-spline font-medium text-gray-700 whitespace-nowrap">
-                      Job Title
-                    </span>
-                    <input
-                      type="text"
-                      placeholder="Enter Post "
-                      value={jobData.title}
-                      onChange={(e) =>
-                        setJobData({ ...jobData, title: e.target.value })
-                      }
-                      className="justify-center items-start mt-5 p-4 leading-4 rounded  w-full pr-10 focus:border-neutral-500 focus:ring-neutral-500 focus:outline-none"
-                    />
-                  </div>
-                  <div className="flex flex-col sm:flex-row gap-3 ">
-                    <span className="block mt-5 text-lg font-spline font-medium text-gray-700 whitespace-nowrap">
-                      Experience Required
-                    </span>
-
-                    <input
-                      type="text"
-                      value={jobData.experience}
-                      placeholder="Enter Experience"
-                      onChange={(e) =>
-                        setJobData({ ...jobData, experience: e.target.value })
-                      }
-                      className="justify-center items-start mt-5 p-4 leading-4 rounded  w-full pr-10 focus:border-neutral-500 focus:ring-neutral-500 focus:outline-none"
-                    />
-                  </div>
-                  <div className="mt-5">
-                    <button
-                      type="submit"
-                      onClick={() => setIsedited(false)}
-                      className={`flex justify-center w-full sm:w-1/2 items-center px-4 py-3 my-5 text-base text-white bg-sky-500 rounded border border-sky-500 border-solid max-md:px-5 ${
-                        !canSave && "opacity-50 cursor-not-allowed"
-                      }`}
-                      disabled={!canSave}
-                    >
-                      <div className="flex gap-2.5">
-                        <div className="flex items-center gap-3">
-                          <span>Save</span>
-                          <span>
-                            <MdSaveAlt size={20} />
-                          </span>
-                        </div>
-                      </div>
-                    </button>
-                  </div>
-                </form>
-              </div>
-            ) : (
-              <>
-                <div className="w-full my-5 text-lg font-semibold text-gray-700 font-spline leading-6 max-md:max-w-full">
-                  Job Title
-                </div>
-                <div className="flex gap-2.5 justify-between items-start px-3.5 pt-3.5 pb-5 mt-6 w-full bg-sky-50 rounded-md border border-sky-500 border-solid max-md:flex-wrap max-md:max-w-full">
-                  <div className="flex flex-col mt-2">
-                    <div className="text-lg font-semibold font-spline text-gray-700 leading-6">
-                      Name-{" "}
-                      <span className="font-medium font-spline text-gray-700">
-                        {jobData.title}
-                      </span>
-                    </div>
-                    <div className="mt-3 text-md text-base font-spline font-semibold text-gray-700 leading-6">
-                      Experience required -
-                      <span className="font-medium font-spline text-gray-700">
-                        {jobData.experience}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex gap-3 items-center">
-                    <div className="shrink-0 aspect-square w-[30px] bg-sky-500 text-white flex items-center justify-center rounded-full">
-                      {getJobInitial(jobData.title)}
-                    </div>
-
-                    <FaEdit size={30} onClick={() => setIsedited(true)} className="cursor-pointer" />
-                  </div>
-                </div>
-              </>
-            )}
             <div className="flex gap-5 my-5 text-lg leading-6 max-md:flex-wrap">
               <div className="flex flex-col flex-1 grow shrink-0  basis-0 w-fit">
                 <div className="font-semibold text-lg font-spline text-slate-700">

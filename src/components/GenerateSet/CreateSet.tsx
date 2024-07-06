@@ -1,5 +1,4 @@
-
-import React, { useState, ChangeEvent, FormEvent } from 'react';
+import React, { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import Select from 'react-select';
@@ -8,6 +7,7 @@ import NotificationBar from '../common/Notification/NotificationBar';
 import ThinkPerson from '../../assets/images/GenerateQuestions/CreateSet.webp';
 import { MdArrowOutward } from "react-icons/md";
 import { IoIosCreate } from "react-icons/io";
+import { fetchCategories } from '../../services/api/CategorySearchService';
 
 interface SetData {
   sub_category_id: number;
@@ -35,6 +35,8 @@ const CreateSet: React.FC = () => {
   const [description, setDescription] = useState<string>('');
   const [setType, setSetType] = useState<number>(0);
   const [setLevel, setSetLevel] = useState<number>(0);
+  const [categories, setCategories] = useState<{ value: number; label: string }[]>([]);
+  const [category, setCategory] = useState<number>(0);
   const navigate = useNavigate();
 
   const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -53,28 +55,57 @@ const CreateSet: React.FC = () => {
     setSetLevel(selectedOption.value);
   };
 
+  const handleCategoryChange = (selectedOption: any) => {
+    setCategory(selectedOption.value);
+  };
+
   const handleFormSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    
+
     const newSet: SetData = {
-      sub_category_id: 0, // Assuming this needs to be dynamically generated or retrieved
+      sub_category_id: category,
       title,
       description,
       set_type: setType,
       set_level: setLevel,
     };
-  
-    console.log('Submitting set:', newSet); // Log the set being submitted
-  
+
+    console.log('Submitting set:', newSet);
+
     const setDetails = await handleSetSubmit(newSet, navigate, toast);
     console.log("set details after create set page", setDetails);
   };
+
+  useEffect(() => {
+    const fetchCategoryData = async () => {
+      const categoryData = await fetchCategories();
+      console.log("the categoryData", categoryData);
+      
+      const categoryOptions = Object.values(categoryData).map((category: any) => ({
+        value: category.id,
+        label: category.name,
+        subcategories: Object.values(category.subcategories).map((subcategory: any) => ({
+          value: subcategory.id,
+          label: subcategory.name,
+        })),
+      }));
+
+      setCategories(categoryOptions);
+    };
+
+    fetchCategoryData();
+  }, []);
+
+  console.log("the list of all categories", categories);
 
   return (
     <div className="container lg:w-5/6 mx-auto w-full h-full">
       <ToastContainer />
       <NotificationBar />
-      <div className="flex items-center gap-3 px-4 py-4"> <span><IoIosCreate size={30} color='gray' /></span> <span className='text-2xl font-semibold font-spline text-gray-700'>Generate Question Set</span></div>
+      <div className="flex items-center gap-3 px-4 py-4">
+        <span><IoIosCreate size={30} color='gray' /></span>
+        <span className='text-2xl font-semibold font-spline text-gray-700'>Generate Question Set</span>
+      </div>
       <div className='flex flex-col lg:flex-row px-4 py-4'>
         <div className='data_container mx-auto px-4 py-8 order-2 md:ml-10 lg:order-1 w-full lg:w-2/3'>
           <form onSubmit={handleFormSubmit} className='w-full sm:5/6 '>
@@ -84,7 +115,6 @@ const CreateSet: React.FC = () => {
                 type="text"
                 value={title}
                 onChange={handleTitleChange}
-                placeholder="Enter the title of the set"
                 className="justify-center items-start p-4 leading-4 rounded-md border border-solid border-neutral-400 w-full pr-10 focus:border-neutral-500 focus:ring-neutral-500 focus:outline-none"
                 required
               />
@@ -94,8 +124,16 @@ const CreateSet: React.FC = () => {
               <textarea
                 value={description}
                 onChange={handleDescriptionChange}
-                placeholder="Enter a brief description"
                 className="justify-center items-start p-5 leading-4 rounded-md border border-solid border-neutral-400 w-full pr-10 focus:border-neutral-500 focus:ring-neutral-500 focus:outline-none"
+                required
+              />
+            </div>
+            <div className="mb-4">
+              <label className="block text-md font-semibold font-spline text-gray-700 mb-2">Category</label>
+              <Select
+                options={categories}
+                onChange={handleCategoryChange}
+                className="w-full"
                 required
               />
             </div>
@@ -105,7 +143,6 @@ const CreateSet: React.FC = () => {
                 options={setTypeOptions}
                 onChange={handleSetTypeChange}
                 className="w-full"
-                placeholder="Select the type of set"
                 required
               />
             </div>
@@ -115,7 +152,6 @@ const CreateSet: React.FC = () => {
                 options={setLevelOptions}
                 onChange={handleSetLevelChange}
                 className="w-full"
-                placeholder="Select the difficulty level"
                 required
               />
             </div>
@@ -132,7 +168,7 @@ const CreateSet: React.FC = () => {
             </button>
           </form>
         </div>
-        <div className='flex  order-1 justify-center align-center mx-auto lg:order-2  lg:w-1/3'>
+        <div className='flex order-1 justify-center align-center mx-auto lg:order-2 lg:w-1/3'>
           <div>
             <img src={ThinkPerson} alt="Thinking Man" className='w-64 md:w-80 mx-auto px-4' />
           </div>
@@ -143,3 +179,4 @@ const CreateSet: React.FC = () => {
 };
 
 export default CreateSet;
+

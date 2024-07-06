@@ -18,7 +18,9 @@ const InterviewInstructions:React.FC = () => {
   };
   const handleStartInterviewClick = () => {
     if (isChecked) {
-      navigate(`/dashboard/question/${interview?.id}`);
+      navigate(`/dashboard/question/${interview?.id}`,{
+        state: { interview }
+      });
 
     // Request fullscreen for the document element (html)
     document.documentElement.requestFullscreen().catch((err) => {

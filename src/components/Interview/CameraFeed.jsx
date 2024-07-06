@@ -51,11 +51,11 @@ const CameraFeed = ({ onFacesDetected, examStarted }) => {
         intervalIdRef.current = setInterval(async () => {
             if (videoRef.current) {
                 const detections = await detectFaces(videoRef.current);
-                console.log('Detections:', detections);
+             //   console.log('Detections:', detections);
 
                 const faceVerified = detections.length > 0;
                 const multiplePeopleDetected = detections.length > 1;
-                console.log(`Face Verified: ${faceVerified}, Multiple People Detected: ${multiplePeopleDetected}`);
+               // console.log(`Face Verified: ${faceVerified}, Multiple People Detected: ${multiplePeopleDetected}`);
 
                 if (!faceVerified && !noFaceTimeoutRef.current) {
                     noFaceTimeoutRef.current = setTimeout(() => {

@@ -17,6 +17,7 @@ export const fetchSetQuestions = async (setId: string, token: string) => {
 
 export const submitAnswer = async (questionId: string, examId: string, duration: string, answer: string, token: string) => {
   try {
+   
     const response = await axiosInstance.post(`${ENDPOINTS.SUBMIT_ANSWER}?question_id=${questionId}&exam_id=${examId}&duration=${duration}&answer=${answer}`, {}, {
       headers: {
         Accept: "application/json",
@@ -24,6 +25,7 @@ export const submitAnswer = async (questionId: string, examId: string, duration:
       }
     });
     return response.data;
+    
   } catch (error) {
     throw new Error('Error evaluating the answer.');
   }

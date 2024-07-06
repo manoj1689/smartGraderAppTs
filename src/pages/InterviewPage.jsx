@@ -4,7 +4,7 @@ import { FaMicrophoneAlt, FaMicrophoneAltSlash } from "react-icons/fa";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import { BiSolidError } from "react-icons/bi";
 import AnswerField from "../components/Interview/AnswerField";
 import Checklist from "../components/Interview/Checklist";
@@ -27,13 +27,17 @@ import {
   fetchSetQuestions,
   submitAnswer,
 } from "../services/api/InterviewService";
+import {fetchSetDetail} from "../services/api/SetService"
 import { GiCheckMark } from "react-icons/gi";
 import { MESSAGES } from "../constants/Constants";
 import NotificationBar from "../components/common/Notification/NotificationBar";
 import { useParams } from "react-router-dom";
 import Sticky from "react-sticky-el";
+
+
 const InterviewScreen = () => {
   const [questionsData, setQuestionsData] = useState([]);
+  const [setDetail,setSetDetails]=useState()
   const [questionsLength, setQuestionsLength] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answer, setAnswer] = useState("");
@@ -85,6 +89,10 @@ const InterviewScreen = () => {
     [synth]
   );
 
+  const location = useLocation();
+  const { interview } = location.state || {};
+
+
   useEffect(() => {
     const fetchQuestionsData = async () => {
       try {
@@ -95,7 +103,22 @@ const InterviewScreen = () => {
         setError(error.message);
       }
     };
+
     fetchQuestionsData();
+
+    const fetchSetData = async () => {
+      try {
+        const setData = await fetchSetDetail(interview?.id);
+        setSetDetails(setData)
+      } catch (error) {
+        setError(error.message);
+      }
+    };
+
+    fetchSetData();
+
+    
+   
   }, []);
 
   const handleSubmitAnswer = async () => {
@@ -450,9 +473,9 @@ const InterviewScreen = () => {
                 {examStarted && (
                   <div className="p-8 space-y-4">
                     <div className="flex items-center justify-between p-4 border-b border-solid border-black border-opacity-10 my-5 mr-5">
-                      <h2 className="text-base text-neutral-600">
-                        Frontend Developer Interview
-                      </h2>
+                      <span className="text-xl text-neutral-700 font-spline font-semibold">
+                       {setDetail.title}
+                      </span>
                       <div className="text-right">
                         <p className="text-base text-neutral-600">
                           Time left:{" "}
@@ -461,7 +484,7 @@ const InterviewScreen = () => {
                         </p>
                       </div>
                     </div>
-                    <div className="w-full text-xl font-semibold leading-6 text-neutral-700">
+                    <div className="w-full text-lg font-semibold leading-6 text-neutral-700">
                       Question {currentQuestion?.id}
                       <span className="text-xs text-neutral-600">
                         {" "}
@@ -611,6 +634,7 @@ const InterviewScreen = () => {
       <Modal
         isOpen={isModalOpen}
         onRequestClose={handleModalClose}
+        
         style={{
           overlay: {
             backgroundColor: "rgba(0, 0, 0, 0.3)",
@@ -664,6 +688,7 @@ const InterviewScreen = () => {
       <Modal
         isOpen={isFullscreenOpen}
         onRequestClose={handleFullScreenClose}
+        shouldCloseOnOverlayClick={false} 
         style={{
           overlay: {
             backgroundColor: "rgba(0, 0, 0, 0.3)",
