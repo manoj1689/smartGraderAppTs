@@ -137,7 +137,7 @@ const CreateSet: React.FC = () => {
                 required
               />
             </div>
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <label className="block text-md font-semibold font-spline text-gray-700 mb-2">Set Type</label>
               <Select
                 options={setTypeOptions}
@@ -145,7 +145,7 @@ const CreateSet: React.FC = () => {
                 className="w-full"
                 required
               />
-            </div>
+            </div> */}
             <div className="mb-4">
               <label className="block text-md font-semibold font-spline text-gray-700 mb-2">Set Level</label>
               <Select
