@@ -180,7 +180,7 @@ const CurrentJobs: React.FC = () => {
 
   return (
     <div>
-      <div className="rounded-md border border-solid px-5 my-10 border-black border-opacity-10">
+      <div className="rounded-md bg-white border border-solid px-5 my-10 border-black border-opacity-10">
         <div className='mb-10'></div>
         <div className="flex flex-col lg:flex-row justify-between">
           <div className="flex flex-row items-center max-lg:my-5 space-x-4">

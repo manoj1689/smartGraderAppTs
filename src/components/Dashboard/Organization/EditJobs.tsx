@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { FaLaptopCode } from "react-icons/fa6";
 import NotificationBar from "../../common/Notification/NotificationBar";
 import { MdArrowOutward } from "react-icons/md";
-
+import AddEmails from "./AddEmails";
 interface Job {
   id: number;
   title: string;
@@ -22,6 +22,7 @@ interface LocationState {
 }
 
 const EditJobs: React.FC = () => {
+  const [emailsList, setEmailsList] = useState<string[]>([]);
   const location = useLocation();
   const state = location.state as LocationState;
   const { jobId } = state || {};
@@ -230,7 +231,7 @@ const EditJobs: React.FC = () => {
                 </div>
               </div>
             </div>
-            <div className="mt-6">Send Job Invites</div>
+            {/* <div className="mt-6">Send Job Invites</div>
             <div className="rounded-md border min-h-32 border-gray-500 border-solid p-4">
               <div className="mt-4">
                 <div className="flex flex-wrap gap-2">
@@ -252,8 +253,12 @@ const EditJobs: React.FC = () => {
                   className="mt-4 px-4 py-2 focus:outline-none focus:ring-0 focus:border-transparent w-full"
                 />
               </div>
-            </div>
-
+            
+            </div> */}
+            <AddEmails
+           emails={emailsList}
+           setEmails={setEmailsList}
+            />
             <button
               className="flex justify-center items-center self-stretch mx-auto px-4 py-5 mt-10 text-base text-white bg-sky-500 rounded-md border border-sky-500 border-solid w-full sm:w-2/3 max-md:px-5"
               onClick={handleSendInvites}

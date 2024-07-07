@@ -66,7 +66,7 @@ const CreateSet: React.FC = () => {
       sub_category_id: category,
       title,
       description,
-      set_type: setType,
+      set_type: 0,
       set_level: setLevel,
     };
 

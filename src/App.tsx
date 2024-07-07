@@ -3,7 +3,9 @@ import AppRoutes from './routes/AppRoutes';
 
 const App: React.FC = () => {
   return (
-    <div className="App">
+     // <div className="bg-blue-200 min-h-screen">
+   <div className="bg-[#F6F9FC] min-h-screen">
+       
       <AppRoutes />
     </div>
   );

@@ -1,10 +1,14 @@
 // serviceCreateJob.ts
 import { useState } from 'react';
+interface Option {
+  value: string;
+  label: string;
+}
 
-export const CreateJobService = (selectedId:any) => {
+export const CreateJobService = (selectedId:any,emailList:String[],experience:Option | null) => {
   const [emails, setEmails] = useState<string[]>([]);
   const [currentEmail, setCurrentEmail] = useState<string>('');
-  const [jobData, setJobData] = useState({ title: '', experience: '' });
+  const [jobData, setJobData] = useState({ title: '',emailList:''  });
   const [startDate, setStartDate] = useState<Date>(new Date());
   const [endDate, setEndDate] = useState<Date>(new Date());
   
@@ -12,22 +16,7 @@ export const CreateJobService = (selectedId:any) => {
     setCurrentEmail(event.target.value);
   };
 
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      if (isValidEmail(currentEmail)) {
-        setEmails([...emails, currentEmail]);
-        setCurrentEmail('');
-      } else {
-        alert('Please enter a valid email address.');
-      }
-    }
-  };
 
-  const isValidEmail = (email: string) => {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailPattern.test(email);
-  };
 
   const getJobInitial = (title: string) => {
     return title ? title.charAt(0) : '';
@@ -37,8 +26,9 @@ export const CreateJobService = (selectedId:any) => {
     const jobDetails = {
       ...jobData,
       startDate,
+      experience,
       endDate,
-      emails,
+      emailList,
       selectedId
     };
     console.log('Job Details:', jobDetails);
@@ -46,7 +36,7 @@ export const CreateJobService = (selectedId:any) => {
   };
 
   const handleDelete = () => {
-    setJobData({ title: '', experience: '' });
+    setJobData({ title: '',emailList:'' });
     setStartDate(new Date());
     setEndDate(new Date());
     setEmails([]);
@@ -63,7 +53,6 @@ export const CreateJobService = (selectedId:any) => {
     setStartDate,
     setEndDate,
     handleInputChange,
-    handleKeyPress,
     getJobInitial,
     handleSaveAndPublish,
     handleDelete,
