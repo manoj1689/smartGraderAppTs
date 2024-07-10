@@ -91,7 +91,7 @@ const LineScoreCard: React.FC = () => {
       <div className="flex gap-5 justify-between w-full max-md:flex-wrap max-md:max-w-full">
         <div className="flex gap-2.5 my-auto text-lg font-medium leading-6 text-slate-800">
           <FaRegIdCard size={24} color="#01AFF4" />
-          <div className="flex-auto">Recent Interview Scores</div>
+          <div className=" text-lg font-semi-bold font-spline text-slate-800">Recent Interview Scores</div>
         </div>
       </div>
       <div className="shrink-0 mt-3.5 h-px border border-solid bg-black bg-opacity-10 border-black border-opacity-10 max-md:max-w-full" />

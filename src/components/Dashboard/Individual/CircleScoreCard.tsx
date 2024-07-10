@@ -34,7 +34,7 @@ const CircleScoreCard: React.FC = () => {
           <div className="flex flex-col gap-2.5 my-auto text-lg font-medium leading-6 text-slate-800">
             <div className="flex gap-2.5">
               <MdOutlineCreditScore size={24} color="#01AFF4" />
-              <div className="flex-auto my-auto">Areas to Improve</div>
+              <div className=" text-lg font-semi-bold font-spline text-slate-800">Areas to Improve</div>
             </div>
             <div className="shrink-0 mt-1 h-px border border-solid bg-black bg-opacity-10 border-black border-opacity-10 max-md:max-w-full" />
             <div className="my-9">

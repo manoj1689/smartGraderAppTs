@@ -21,6 +21,12 @@ export default {
         "small-heading-h6": "var(--small-heading-h6-font-family)",
         "sub-heading": "var(--sub-heading-font-family)",
       },
+      fontWeight: {
+        'extra-light': 200,
+        'semi-bold': 600,
+        'extra-bold': 800,
+        'ultra-bold': 900,
+      },
       boxShadow: {
         shadow: "var(--shadow)",
       },

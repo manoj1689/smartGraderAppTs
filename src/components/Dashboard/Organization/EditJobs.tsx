@@ -155,7 +155,9 @@ const EditJobs: React.FC = () => {
 
   return (
     <div className="container flex flex-col mx-auto p-4">
+      <div className="mt-20 lg:mt-10">
       <NotificationBar />
+      </div>
 
       <div className="bg-white rounded-md border border-solid border-black border-opacity-10 px-4 py-4">
         <div className="flex items-center gap-5">

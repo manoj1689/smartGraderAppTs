@@ -33,8 +33,11 @@ const PrivateRoutes: React.FC = () => {
         <Route path="/" element={<Dashboard />} />
         <Route path="createjobs" element={<CreateJobsPage />} />
         <Route path="editjobs" element={<EditJobs />} />
-        <Route path="interviewscreen" element={<InterviewPage />} />
-        <Route path="question/:questionSetId" element={<InterviewPage />} /> 
+        {/* <Route path="interviewscreen" element={<InterviewPage />} /> */}
+        {/* <Route path="question/:questionSetId" element={<InterviewPage />} />  */}
+        <Route path="question/:questionSetId" element={<ProtectedRoute />}>
+          <Route index element={<InterviewPage />} />
+        </Route>
         <Route path="question/:questionSetId/instructions" element={<InterviewInstructions />} />
         <Route path="question/exam-end" element={<InterviewEndPage />} />
         <Route path="createset" element={<CreateSetPage />} />

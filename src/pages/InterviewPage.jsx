@@ -33,6 +33,7 @@ import { MESSAGES } from "../constants/Constants";
 import NotificationBar from "../components/common/Notification/NotificationBar";
 import { useParams } from "react-router-dom";
 import Sticky from "react-sticky-el";
+import SmartGrader from "../assets/logos/smart-logo.png";
 
 
 const InterviewScreen = () => {
@@ -406,22 +407,26 @@ const InterviewScreen = () => {
           </button>
         )}
       </Sticky>
-
-      <div className="container lg:w-5/6 mx-auto w-full ">
+      <div className="flex items-center justify-between border-b border-slate-200">
+        <div className='w-auto p-4'>
+          <img src={SmartGrader} alt="Smart Grader" width={140} />
+        </div>
+      </div>
+      <div className="container mx-auto w-full ">
         <NotificationBar />
 
         <div className="rounded-md border border-solid my-5 border-black border-opacity-10 bg-white">
           <ErrorBoundary>
-            <div ref={fullscreenRef} className="container mx-auto flex  ">
-              <div className="flex flex-col basis-1/3 rounded-md border border-solid m-5 border-black border-opacity-10">
-                <div className="">
+            <div ref={fullscreenRef} className="container mx-auto flex flex-col lg:flex-row  ">
+              <div className="flex flex-col sm:flex-row lg:flex-col   basis-1/3 rounded-md border border-solid m-5 border-black border-opacity-10">
+                <div className=" sm:w-2/3   lg:w-full">
                   <CameraFeed
                     onFacesDetected={handleFacesDetected}
                     examStarted={examStarted}
                   />
                 </div>
 
-                <div className="mt-4">
+                <div className="mt-4 sm:w-1/3  lg:w-full">
                   <Checklist
                     items={[
                       { label: "Camera Access", isChecked: permissions.camera },
@@ -583,7 +588,7 @@ const InterviewScreen = () => {
                 )}
                 {!examStarted && (
                   <div className="flex items-center justify-center my-5 py-10 ">
-                    <div className="space-y-8 w-5/6 bg-white p-8 ">
+                    <div className="space-y-8 w-full lg:w-5/6 bg-white p-8 ">
                       <div className="space-y-2 text-center">
                         <BrowserInstructions />
                         <p>
@@ -605,7 +610,7 @@ const InterviewScreen = () => {
                             </button>
                           </>
                         ) : (
-                          <div className="flex w-10/12 mx-auto py-10">
+                          <div className="flex w-full lg:w-10/12 mx-auto py-10">
                             <button
                               type="button"
                               className="px-4 py-4 w-full  lg:w-1/2 bg-gray-500 text-white rounded hover:bg-gray-600 mr-3"

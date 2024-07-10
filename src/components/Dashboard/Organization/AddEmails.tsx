@@ -60,15 +60,15 @@ interface Props {
               </span>
             </div>
           )}
-          placeholder="Enter an email"
-          className="w-10/12 p-2 border rounded"
+          placeholder="Ex: abc@gmail.com"
+          className="w-10/12 p-2 border h-24 rounded"
         />
-        <button
+        {/* <button
           onClick={handleSaveInvite}
           className="bg-blue-500 text-white p-2 my-auto text-nowrap rounded w-full"
         >
           Send Invite
-        </button>
+        </button> */}
       </div>
 
       <h3 className="text-xl font-semibold mt-6 mb-2">Previously added Emails</h3>

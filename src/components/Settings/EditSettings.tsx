@@ -62,9 +62,9 @@ const EditSetting: React.FC = () => {
   };
 
   return (
-    <div className="container lg:w-5/6 mx-auto w-full h-full">
-      <div>
-        <NotificationBar />
+    <div className="container  mx-auto w-full h-full">
+      <div className="mt-20 lg:mt-10">
+      <NotificationBar />
       </div>
       <div className="flex gap-3 px-4 py-4">
         <span>
@@ -72,8 +72,8 @@ const EditSetting: React.FC = () => {
         </span>
         <span className="text-md font-spline font-semibold">Settings</span>
       </div>
-      <form className="flex flex-col md:flex-row mt-10" onSubmit={handleSubmit}>
-        <div className="flex  md:w-1/6 justify-center align-top">
+      <form className="flex flex-col  xl:flex-row mt-10" onSubmit={handleSubmit}>
+        <div className="flex   xl:w-1/6 justify-center align-top">
         <div className="flex flex-col   ">
         <div className="flex  w-[150px] h-[150px] justify-center items-center bg-slate-200 rounded-full">
             <LuImagePlus size={40} color="#5E676B" />
@@ -86,8 +86,8 @@ const EditSetting: React.FC = () => {
         </div>
          
         </div>
-        <div className="flex flex-col md:w-5/6">
-          <div className="flex flex-col sm:flex-row">
+        <div className="flex flex-col xl:w-5/6">
+          <div className="flex flex-col md:flex-row p-4">
             <div className="flex flex-col px-5 pt-5 justify-center md:w-1/2">
               <div className="w-full text-base font-light leading-6 text-neutral-500">Name</div>
               <div className="mt-2 w-full text-sm sm:text-lg leading-6 text-slate-800">
@@ -129,21 +129,21 @@ const EditSetting: React.FC = () => {
               </div>
             </div>
           </div>
-          <div className="flex flex-col px-5 gap-3 sm:flex-row">
-            <div className="flex flex-col md:w-1/2">
+          <div className="flex flex-col  p-4  gap-3 md:flex-row">
+            <div className="flex flex-col px-5  md:w-1/2 ">
               <div className="mt-5 sm:mt-10 w-full text-base font-light leading-6 text-neutral-500">Old Password</div>
               <div className="mt-2 w-full text-sm sm:text-lg leading-6 text-slate-800">
-                <input type="password" name="oldPassword" value={formData.oldPassword} onChange={handleChange} className="justify-center items-start p-3 mt-2 leading-4 rounded-md border border-solid border-neutral-400 w-full sm:w-4/5 md:w-2/3 pr-10 focus:border-neutral-500 focus:ring-neutral-500 focus:outline-none" />
+                <input type="password" name="oldPassword" value={formData.oldPassword} onChange={handleChange} className="justify-center items-start p-3 mt-2 leading-4 rounded-md border border-solid border-neutral-400 w-full md:w-2/3 pr-10 focus:border-neutral-500 focus:ring-neutral-500 focus:outline-none" />
               </div>
             </div>
-            <div className="flex flex-col md:w-1/2">
+            <div className="flex flex-col px-5 md:w-1/2">
               <div className="mt-5 sm:mt-10 w-full text-base font-light leading-6 text-neutral-500">New Password</div>
               <div className="mt-2 w-full text-sm sm:text-lg leading-6 text-slate-800">
-                <input type="password" name="newPassword" value={formData.newPassword} onChange={handleChange} className="justify-center items-start p-3 mt-2 leading-4 rounded-md border border-solid border-neutral-400 w-full sm:w-4/5 md:w-2/3 pr-10 focus:border-neutral-500 focus:ring-neutral-500 focus:outline-none" />
+                <input type="password" name="newPassword" value={formData.newPassword} onChange={handleChange} className="justify-center items-start p-3 mt-2 leading-4 rounded-md border border-solid border-neutral-400 w-full md:w-2/3 pr-10 focus:border-neutral-500 focus:ring-neutral-500 focus:outline-none" />
               </div>
             </div>
           </div>
-          <button type="submit" className="flex justify-center sm:mx-4 my-10 max-md:mx-auto w-5/6 sm:w-2/3 items-center self-stretch px-4 py-5 text-base text-white whitespace-nowrap bg-sky-500 rounded-md border border-sky-500 border-solid max-md:px-5">
+          <button type="submit" className="flex  justify-center sm:mx-8 my-10 max-md:mx-auto w-11/12  md:w-3/5  items-center self-stretch px-4 py-5 text-base text-white whitespace-nowrap bg-sky-500 rounded-md border border-sky-500 border-solid max-md:px-5">
             <div className="flex gap-2.5">
               <span>Update</span>
               <MdArrowOutward size={20} />

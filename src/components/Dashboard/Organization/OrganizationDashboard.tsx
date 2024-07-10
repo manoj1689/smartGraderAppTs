@@ -11,9 +11,11 @@ import MySets from "./Mysets";
 const OrganizationDashboard: React.FC<OrganizationDashboardProps> = ({ organizationData }) => {
 
   return (
-    <div className="container lg:w-5/6 mx-auto w-full h-full ">
+    <div className="container  mx-auto w-full h-full ">
       
+      <div className="mt-20 lg:mt-10">
       <NotificationBar />
+      </div>
       <OrganizationSets/>
       <CurrentJobs /> 
       <MySets/>

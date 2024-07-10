@@ -66,8 +66,10 @@ const SelectSet: React.FC = () => {
   console.log("individal sent data", listOfAllId);
 
   return (
-    <div className="container lg:w-5/6 mx-auto w-full h-full">
+    <div className="container  mx-auto w-full h-full">
+      <div className="mt-20 lg:mt-10">
       <NotificationBar />
+      </div>
 
       <div className="rounded-md border border-solid my-5 py-10 border-black border-opacity-10">
         <CategorySearch setListOfAllIds={setListOfAllId} setMatchingQuestionSets={setMatchingQuestionSets} />

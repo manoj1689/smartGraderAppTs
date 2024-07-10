@@ -22,18 +22,18 @@ const NotificationBar: React.FC = () => {
 
   return (
     <div>
-      <div className="flex gap-5 my-5 sm:my-16 sm:mb-10 justify-between">
-        <div className="flex flex-col lg:flex-row gap-5 px-5">
-          <div className="flex text-gray-500">
+      <div className="flex gap-5 my-8 sm:mb-8 justify-between">
+        <div className="flex flex-col lg:flex-row gap-4 px-4">
+          <div className="flex text-sky-500">
             <span className="block text-base font-spline md:text-xl lg:text-2xl xl:text-3xl">
               Hello!
             </span>
             {"  "}
-            <span className="block text-base font-spline md:text-xl lg:text-2xl xl:text-3xl pl-1 md:pl-3 text-sky-500">
+            <span className="block text-base font-spline md:text-xl lg:text-2xl xl:text-3xl pl-2 md:pl-4 ">
               {username}
             </span>
           </div>
-          <div className="flex-auto my-auto text-sm font-spline sm:text-base md:text-lg font-light leading-4 text-neutral-600">
+          <div className="flex-auto my-auto text-sm font-spline sm:text-base md:text-lg font-light leading-4 text-neutral-500">
             Here's the current status for today!
           </div>
         </div>

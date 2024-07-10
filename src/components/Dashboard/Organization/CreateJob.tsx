@@ -89,7 +89,9 @@ const CreateJobs: React.FC = () => {
 
   return (
     <div className="container mx-auto w-full h-full">
+      <div className="mt-20 lg:mt-10">
       <NotificationBar />
+      </div>
 
       <div className="bg-white my-5 rounded-md border border-solid border-black border-opacity-10 px-4 py-4">
         <div className="flex flex-row items-center max-lg:my-5 space-x-4">
@@ -115,7 +117,7 @@ const CreateJobs: React.FC = () => {
                       onChange={(e) =>
                         setJobData({ ...jobData, title: e.target.value })
                       }
-                      className="justify-center items-start p-4 leading-4 rounded  w-full pr-10 focus:border-neutral-500 focus:ring-neutral-500 focus:outline-none"
+                      className="justify-center items-start p-4 leading-4 rounded  w-1/2  pr-10 focus:border-neutral-500 focus:ring-neutral-500 border focus:outline"
                     />
                   </div>
                   <div className="gap-3 w-full">

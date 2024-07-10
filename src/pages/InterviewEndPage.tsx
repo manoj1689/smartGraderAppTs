@@ -1,12 +1,20 @@
 import React from 'react';
 import {  useNavigate } from "react-router-dom";
 import NotificationBar from "../components/common/Notification/NotificationBar";
+import SmartGrader from "../assets/logos/smart-logo.png";
+
 
 const InterviewEndPage = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="container lg:w-5/6 mx-auto w-full h-full">
+    <>
+       <div className="flex items-center justify-between border-b border-slate-200">
+        <div className='w-auto p-4 '>
+          <img src={SmartGrader} alt="Smart Grader" width={140} />
+        </div>
+      </div>
+        <div className="container  mx-auto w-full h-full">
        <NotificationBar/> 
       <div className="flex items-center justify-center  rounded-md border border-solid my-5 py-10 border-black border-opacity-10 ">
 
@@ -34,6 +42,9 @@ const InterviewEndPage = () => {
         </div>
       </div>
     </div>
+    
+    </>
+
   );
 };
 

@@ -18,6 +18,8 @@ import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import NotificationBar from "../../common/Notification/NotificationBar";
 import { FaMedal } from "react-icons/fa";
+import { MdTipsAndUpdates } from "react-icons/md";
+import { RiAiGenerate } from "react-icons/ri";
 import {
   fetchData, // Importing the new fetchData function
   fetchSearchResults,
@@ -39,24 +41,7 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
   const [showAchievementsTips, setShowAchievementsTips] =
     useState<boolean>(false);
   const prevQueryRef = useRef<string>("");
-  const responsive = {
-    superLargeDesktop: {
-      breakpoint: { max: 4000, min: 1500 },
-      items: 5,
-    },
-    desktop: {
-      breakpoint: { max: 1500, min: 1264 },
-      items: 4,
-    },
-    tablet: {
-      breakpoint: { max: 1024, min: 464 },
-      items: 2,
-    },
-    mobile: {
-      breakpoint: { max: 464, min: 0 },
-      items: 1,
-    },
-  };
+  
 
   useEffect(() => {
     const loadDashboardData = async () => {
@@ -101,226 +86,42 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
   };
 
   return (
-    <div className="container px-2 lg:w-5/6 mx-auto w-full h-full ">
+    <div className="container    mx-auto w-full h-full ">
+      <div className="mt-20 lg:mt-10">
       <NotificationBar />
+      </div>
+     
 
-      <div className="rounded-md border border-solid my-5  border-black border-opacity-10 ">
+      <div className="rounded-md mx-4 border border-solid my-4  border-black border-opacity-10 ">
         <div className=" px-2 py-5">
           <IndividualSets />
         </div>
 
-        {/* <div className="mt-5 px-8  gap-5">
-         
-
-          <Carousel
-            swipeable={true}
-            draggable={true}
-            showDots={false}
-            arrows={false}
-            responsive={responsive}
-            ssr={true}
-            infinite={true}
-            autoPlaySpeed={1000}
-            keyBoardControl={true}
-            customTransition="all .5"
-            transitionDuration={500}
-            className="container py-5"
-            dotListClass="custom-dot-list-style"
-            customLeftArrow={
-              <div className="absolute z-10 left-1 bg-gray-400 bg-opacity-60 px-3 py-3 rounded-full">
-                <FaChevronLeft className="max-w-6 cursor-pointer text-primary-300" />
-              </div>
-            }
-            customRightArrow={
-              <div className="absolute z-10 right-1 bg-gray-400 bg-opacity-60 px-3 py-3 rounded-full">
-                <FaChevronRight className="max-w-6 cursor-pointer text-primary-300" />
-              </div>
-            }
-            itemClass="carousel-item-padding-20-px"
-          >
-            {cardsData.map((card) => (
-              <div
-                key={card.id}
-                className="flex flex-col p-4 mx-4 rounded-md border border-solid border-black border-opacity-10 shadow-md hover:shadow-lg hover:border-slate-800 transition duration-300 ease-in-out bg-white font-light text-neutral-500 cursor-pointer"
-              >
-                <div className="flex flex-col justify-center text-xs leading-6 whitespace-nowrap bg-sky-50 rounded-md">
-                  <div className="flex overflow-hidden relative flex-col pt-4 pb-1 w-full aspect-w-1 aspect-h-1">
-                    <div className="flex flex-row w-full justify-around">
-                      <img
-                        loading="lazy"
-                        src={java}
-                        alt={card.title}
-                        className="w-20 h-20"
-                      />
-                      <img
-                        loading="lazy"
-                        alt="Coding"
-                        src={codingDev}
-                        className="self-end aspect-square w-12"
-                      />
-                    </div>
-
-                    <div className="flex relative gap-1 py-1.5 mt-3 bg-white rounded-sm shadow-sm">
-                      <img
-                        loading="lazy"
-                        alt="star"
-                        src={star}
-                        className="shrink-0 aspect-[1.09] fill-amber-400 w-[17px] h-[17px]"
-                      />
-                      <div className="flex-auto">{card.rating}/5</div>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex gap-2 justify-between mt-4">
-                  <div className="flex gap-1 text-sm leading-4">
-                    <img
-                      loading="lazy"
-                      alt="grader"
-                      src={graderLogo}
-                      className="shrink-0 aspect-[1.27] w-[30px]"
-                    />
-                    <div className="my-auto">{card.title}</div>
-                  </div>
-                  <div className="justify-center px-2 py-1 my-auto text-xs leading-4 whitespace-nowrap bg-sky-50 rounded-md border border-solid border-neutral-500">
-                    {card.level}
-                  </div>
-                </div>
-                <div className="mt-2 text-sm leading-6 text-slate-800">
-                  {card.description}
-                </div>
-                <div className="flex gap-2 self-start mt-2 text-xs leading-5">
-                  <div className="flex gap-1">
-                    <div className="flex justify-center items-center ">
-                      <CiClock2 size={14} color="#01AFF4" />
-                    </div>
-                    <div>{card.duration} Min</div>
-                  </div>
-                  <div className="flex gap-1">
-                    <div className="flex justify-center items-center ">
-                      <IoHelpCircleOutline size={14} color="#01AFF4" />
-                    </div>
-                    <div>{card.questions_count} Questions</div>
-                  </div>
-                </div>
-                <button className="flex items-center justify-center px-3 py-2 mt-4 text-xs text-white bg-sky-500 rounded-md border border-sky-500 border-solid hover:bg-slate-800 hover:border-slate-800">
-                  <div
-                    key={card.id}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleCardClick(card);
-                    }}
-                    className="flex flex-row items-center gap-2"
-                  >
-                    <div>Take a Test</div>
-                    <div>
-                      <FiArrowUpRight size={15} />
-                    </div>
-                  </div>
-                </button>
-              </div>
-            ))}
-          </Carousel>
-        </div> */}
-
-        {/* {cardsData.map((card) => (
-            <div
-              key={card.id}
-              onClick={(e) => {
-                e.stopPropagation();
-                handleCardClick(card);
-              }}
-              className="flex flex-col p-4 h-2/5 bg-white rounded-md border border-solid border-black border-opacity-10 shadow-md hover:shadow-lg hover:border-slate-800 transition duration-300 ease-in-out w-64 font-light text-neutral-500 cursor-pointer"
-            >
-              <div className="flex flex-col justify-center text-xs leading-6 whitespace-nowrap bg-sky-50 rounded-md">
-                <div className="flex overflow-hidden relative flex-col pt-4 pb-1 w-full aspect-w-1 aspect-h-1">
-                  <div className="flex flex-row w-full justify-around">
-                    <img
-                      loading="lazy"
-                      src={java}
-                      alt={card.title}
-                      className="w-20 h-20"
-                    />
-                    <img
-                      loading="lazy"
-                      alt="Coding"
-                      src={codingDev}
-                      className="self-end aspect-square w-12"
-                    />
-                  </div>
-
-                  <div className="flex relative gap-1 py-1.5 mt-3 bg-white rounded-sm shadow-sm">
-                    <img
-                      loading="lazy"
-                      alt="star"
-                      src={star}
-                      className="shrink-0 aspect-[1.09] fill-amber-400 w-[17px] h-[17px]"
-                    />
-                    <div className="flex-auto">{card.rating}/5</div>
-                  </div>
-                </div>
-              </div>
-              <div className="flex gap-2 justify-between mt-4">
-                <div className="flex gap-1 text-sm leading-4">
-                  <img
-                    loading="lazy"
-                    alt="grader"
-                    src={graderLogo}
-                    className="shrink-0 aspect-[1.27] w-[30px]"
-                  />
-                  <div className="my-auto">{card.title}</div>
-                </div>
-                <div className="justify-center px-2 py-1 my-auto text-xs leading-4 whitespace-nowrap bg-sky-50 rounded-md border border-solid border-neutral-500">
-                  {card.level}
-                </div>
-              </div>
-              <div className="mt-2 text-sm leading-6 text-slate-800">
-                {card.description}
-              </div>
-              <div className="flex gap-2 self-start mt-2 text-xs leading-5">
-                <div className="flex gap-1">
-                  <div className="flex justify-center items-center ">
-                    <CiClock2 size={14} color="#01AFF4" />
-                  </div>
-
-                  <div>{card.duration} Min</div>
-                </div>
-                <div className="flex gap-1">
-                  <div className="flex justify-center items-center ">
-                    <IoHelpCircleOutline size={14} color="#01AFF4" />
-                  </div>
-                  <div>{card.questions_count} Questions</div>
-                </div>
-              </div>
-              <button className="flex items-center justify-center px-3 py-2 mt-4 text-xs text-white bg-sky-500 rounded-md border border-sky-500 border-solid hover:bg-slate-800 hover:border-slate-800">
-                <div className="flex flex-row items-center gap-2">
-                  <div>Take a Test</div>
-                  <div>
-                    <FiArrowUpRight size={15} />
-                  </div>
-                </div>
-              </button>
-            </div>
-          ))} */}
+     
       </div>
 
       <div className="pt-5 my-10  pl-8 bg-white rounded-md border border-solid border-black border-opacity-10 max-md:pl-5">
         <div className="flex flex-col md:flex-row ">
-          <div className="md:basis-2/3 justify-center items-center  flex flex-col xl:flex-row  gap-5  max-md:gap-0">
+          <div className="md:basis-2/3 justify-center   flex flex-col xl:flex-row  gap-5  max-md:gap-0">
             <div className="  flex flex-col sm:flex-row ">
-              <div>
-                <div className="font-medium  text-slate-800">
-                  Set Your Own Questions{" "}
+              <div className="mt-8">
+                <div className=" text-lg font-semi-bold font-spline text-slate-800">
+                <span className="flex gap-3">
+                <RiAiGenerate size={24} color="#01AFF4" />
+                Set Your Own Questions{" "}
+                </span>
+             
                 </div>
 
                 <div className="flex flex-col md:flex-row ">
-                  <div className=" flex flex-col self-stretch my-auto text-lg font-light leading-6 text-neutral-500 ">
-                    <div className="flex gap-2.5 mt-7">
+                  <div className=" flex flex-col self-stretch my-auto text-lg font-light leading-8 text-neutral-500 ">
+                    <div className="flex gap-2.5 mt-5 xl:mt-0 2xl:mt-8 ">
                       <IoCheckmark size={28} color="#01AFF4" />
                       <div className="flex-auto my-auto">
                         Create by Selecting Domain
                       </div>
                     </div>
-                    <div className="flex gap-2.5 mt-1.5">
+                    <div className="flex gap-2.5 mt-3">
                       <IoCheckmark size={28} color="#01AFF4" />
                       <div className="flex-auto my-auto">
                         Create by Writing JD
@@ -328,14 +129,14 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
                     </div>
                   </div>
                   <div className="flex flex-col ml-5  max-md:ml-0 max-md:w-full ">
-                    <div className="flex flex-col self-stretch my-auto text-lg font-light leading-6 text-neutral-500 ">
-                      <div className="flex gap-2.5 mt-7">
+                    <div className="flex flex-col self-stretch my-auto text-lg font-light leading-8 text-neutral-500 ">
+                      <div className="flex gap-2.5 mt-3 2xl:mt-8 ">
                         <IoCheckmark size={28} color="#01AFF4" />
                         <div className="flex-auto my-auto">
                           Create by Resume Uploading
                         </div>
                       </div>
-                      <div className="flex gap-2.5 mt-1.5">
+                      <div className="flex gap-2.5 mt-3">
                         <IoCheckmark size={28} color="#01AFF4" />
                         <div className="flex-auto my-auto">
                           Create by Your Own Questions
@@ -352,9 +153,9 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
                 //onClick={() => navigate("/dashboard/generatequestion")}
                 onClick={() => navigate("/dashboard/createset")}
                 type="button"
-                className="flex flex-row items-center justify-center bg-blue-400 w-50 md:w-60 my-5 text-white px-4 py-2 mt-4 rounded-sm hover:bg-blue-500 transition duration-300"
+                className="flex flex-row items-center justify-center bg-blue-400 w-50 md:w-60 my-5 text-sm text-white px-4 py-3 mt-4 rounded-sm hover:bg-blue-500 transition duration-300"
               >
-                <span className="mr-2">Let's Get Started</span>
+                <span className="mr-2 ">Let's Get Started</span>
                 <FiArrowUpRight size={20} />
               </button>
             </div>
@@ -381,8 +182,8 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
         <div className="flex flex-col md:flex-row gap-3 w-full">
           <div className="flex flex-col  px-2  py-8  pl-3.5 bg-white  border border-solid border-black border-opacity-10 w-full ">
             <div className="flex gap-3 self-start text-lg font-medium leading-6 whitespace-nowrap text-slate-800">
-              <FaMedal size={20} color="gray" />
-              <div className="flex-auto my-auto">Badges/Achievements</div>
+              <FaMedal size={20} color="#01AFF4" />
+              <div className=" text-lg font-semi-bold font-spline text-[#2B383D]">Badges/Achievements</div>
             </div>
             <div className="shrink-0 mt-4  w-full   rounded-md border border-solid border-black border-opacity-10" />
             <div className="flex justify-between px-2  items-center">
@@ -404,7 +205,7 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
               </div>
             </div>
             {showAchievementsTips && (
-              <div className="text-neutral-700 font-spline my-5 px-2">
+              <div className="font-spline text-sm font-light leading-5  text-neutral-700 my-5 px-2">
                 Your achievements and badges will be displayed here as you
                 progress through your interviews and challenges. Each badge
                 represents a milestone in your journey, encouraging you to learn
@@ -415,8 +216,12 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
           </div>
           <div className="flex flex-col  font-light rounded-md border border-solid border-black border-opacity-10 w-full relative bg-white">
             <div className="mt-4 px-2">
-            <div className="text-lg px-2 py-4 items-center font-medium leading-6 text-slate-800">
-                    Preparation Tips
+            <div className="text-lg px-2 py-4 font-semi-bold font-spline text-[#2B383D]">
+              <span className="flex items-center gap-3">
+              <MdTipsAndUpdates size={20} color="#01AFF4" />
+              Preparation Tips
+              </span>
+           
                   </div>
                   <div className="shrink-0   w-full h-px rounded-md border border-solid border-black border-opacity-10" />
                   <div className="mt-3 px-2 text-sm leading-5 text-neutral-500">

@@ -8,8 +8,7 @@ import SelectInterestPage from "../pages/SelectInterestPage";
 import VisitorLandingPage from "../pages/VisitorLandingPage";
 import { getToken } from "../utils/tokenUtils";
 import { getEmail } from "../utils/tokenUtils";
-import Practise from "../components/GenerateSet/CreateSet";
-import JobCreation from "../components/Dashboard/Organization/ex"
+
 const PublicRoutes: React.FC = () => {
   const userEmail = getEmail();
   const shouldRenderVisitorLanding = userEmail === getEmail();

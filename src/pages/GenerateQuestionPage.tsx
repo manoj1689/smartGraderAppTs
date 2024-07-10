@@ -137,12 +137,12 @@ console.log('Sub Cat  ID:', subCatId);
   
   return (
     <>
-      <div className="container lg:w-5/6 mx-auto w-full h-full">
+      <div className="container mx-auto w-full h-full">
         <div>
           <NotificationBar />
         </div>
         <div className="container flex flex-col lg:flex-row">
-          <div className="data_container mx-auto px-4 py-8 order-2 md:ml-10 lg:order-1 w-full lg:w-2/3">
+          <div className="flex px-4 py-8 order-2  lg:order-1 w-full lg:w-2/3">
             <div className="flex gap-3">
               <FaLaptopCode size={30} color="gray" />
               <span className=" text-2xl font-semibold font-spline text-gray-700 mb-5">

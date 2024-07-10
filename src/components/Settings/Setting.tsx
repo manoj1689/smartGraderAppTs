@@ -27,9 +27,9 @@ const Setting: React.FC = () => {
     setChecked(checked);
   };
   return (
-    <div className="container lg:w-5/6 mx-auto w-full h-full">
-      <div>
-        <NotificationBar />
+    <div className="container  mx-auto w-full h-full">
+      <div className="mt-20 lg:mt-10">
+      <NotificationBar />
       </div>
       <div className="flex gap-3 px-4 py-4">
         {" "}
@@ -38,17 +38,17 @@ const Setting: React.FC = () => {
         </span>{" "}
         <span className="text-md font-spline font-semibold">Settings</span>{" "}
       </div>
-      <div className="flex  flex-col md:flex-row mt-10 ">
-        <div className="flex md:w-1/6 justify-center align-top ">
+      <div className="flex  flex-col xl:flex-row mt-10 ">
+        <div className="flex xl:w-1/6  justify-center align-top ">
           <img
             loading="lazy"
             src={UserImg}
-            className="shrink-0 aspect-square  w-[150px] h-[150px] "
+            className="shrink-0 aspect-square   w-[150px] h-[150px] "
           />
         </div>
-        <div className="flex flex-col md:w-5/6 ">
-          <div className="flex flex-col sm:flex-row ">
-            <div className="flex flex-col  px-5  py-5  justify-center   md:w-1/2">
+        <div className="flex flex-col xl:w-5/6 ">
+          <div className="flex flex-col md:flex-row p-4 ">
+            <div className="flex flex-col  px-5  py-5 md:w-1/2">
               <div className="w-full text-base font-light leading-6 text-neutral-500">
                 Name
               </div>
@@ -77,7 +77,7 @@ const Setting: React.FC = () => {
                 Update Password
               </div>
             </div>
-            <div className="flex flex-col px-5  py-5   md:w-1/2">
+            <div className="flex flex-col px-5  py-5 md:w-1/2">
               <div className="w-full text-base font-light leading-6 text-neutral-500">
                 Specialisation Category{" "}
               </div>
@@ -104,8 +104,8 @@ const Setting: React.FC = () => {
             </div>
           </div>
 
-          <button className="flex justify-center mx-4  my-10 max-md:mx-auto w-5/6 sm:w-2/3 sm: items-center self-stretch px-4 py-5 text-base text-white whitespace-nowrap bg-sky-500 rounded-md border border-sky-500 border-solid   max-md:px-5"  onClick={() => navigate("/dashboard/editsettings")}>
-            <div className="flex gap-2.5">
+          <button className="flex justify-center  mx-4 my-10 w-full  md:w-3/5  sm: items-center self-stretch px-4 py-5 text-base text-white whitespace-nowrap bg-sky-500 rounded-md border border-sky-500 border-solid   max-md:px-5"  onClick={() => navigate("/dashboard/editsettings")}>
+            <div className="flex  gap-2.5">
               <span>Edit</span>
               <span>
                 <MdArrowOutward size={20} />

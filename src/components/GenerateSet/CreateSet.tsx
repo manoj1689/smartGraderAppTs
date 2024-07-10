@@ -99,15 +99,17 @@ const CreateSet: React.FC = () => {
   console.log("the list of all categories", categories);
 
   return (
-    <div className="container lg:w-5/6 mx-auto w-full h-full">
+    <div className="container mx-auto w-full h-full">
       <ToastContainer />
+      <div className="mt-20 lg:mt-10">
       <NotificationBar />
+      </div>
       <div className="flex items-center gap-3 px-4 py-4">
-        <span><IoIosCreate size={30} color='gray' /></span>
+        <span><IoIosCreate size={30} color="#01AFF4" /></span>
         <span className='text-2xl font-semibold font-spline text-gray-700'>Generate Question Set</span>
       </div>
       <div className='flex flex-col lg:flex-row px-4 py-4'>
-        <div className='data_container mx-auto px-4 py-8 order-2 md:ml-10 lg:order-1 w-full lg:w-2/3'>
+        <div className='data_container  py-4 order-2 lg:order-1 w-full lg:w-3/5'>
           <form onSubmit={handleFormSubmit} className='w-full sm:5/6 '>
             <div className="mb-4">
               <label className="block text-md font-semibold font-spline text-gray-700 mb-2">Title</label>
@@ -168,7 +170,7 @@ const CreateSet: React.FC = () => {
             </button>
           </form>
         </div>
-        <div className='flex order-1 justify-center align-center mx-auto lg:order-2 lg:w-1/3'>
+        <div className='flex order-1 justify-center align-center mx-auto lg:order-2 lg:w-2/5'>
           <div>
             <img src={ThinkPerson} alt="Thinking Man" className='w-64 md:w-80 mx-auto px-4' />
           </div>
