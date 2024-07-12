@@ -142,7 +142,7 @@ console.log('Sub Cat  ID:', subCatId);
           <NotificationBar />
         </div>
         <div className="container flex flex-col lg:flex-row">
-          <div className="flex px-4 py-8 order-2  lg:order-1 w-full lg:w-2/3">
+          <div className="flex flex-col px-4 py-8 order-2  lg:order-1 w-full lg:w-2/3">
             <div className="flex gap-3">
               <FaLaptopCode size={30} color="gray" />
               <span className=" text-2xl font-semibold font-spline text-gray-700 mb-5">

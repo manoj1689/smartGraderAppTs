@@ -26,6 +26,7 @@ import Select from "react-select";
 import { ReactMultiEmail, isEmail } from "react-multi-email";
 import "react-multi-email/dist/style.css";
 import { FaArrowsDownToPeople } from "react-icons/fa6";
+import { toast } from "react-toastify";
 
 interface Option {
   value: string;
@@ -62,9 +63,10 @@ const CreateJobs: React.FC = () => {
   };
   const [questionSet, setQuestionSet] = useState<Card>();
   const {
-    jobData,
-
-    setJobData, // Ensure setJobData is accessible
+    title,
+    description,
+    setTitle,
+    setDescription,
     startDate,
     setStartDate,
     endDate,
@@ -73,7 +75,7 @@ const CreateJobs: React.FC = () => {
     handleDelete,
   } = CreateJobService(selectedSetId, emailsList, experience);
 
-  const canSave = jobData.title && experience;
+  const canSave = title && experience;
   const openQuestionSetModal = () => setIsQuestionModel(true);
   const closeQuestionSetModal = () => setIsQuestionModel(false);
 
@@ -106,18 +108,28 @@ const CreateJobs: React.FC = () => {
             <div className="bg-white my-5  rounded-lg">
               <form>
                 <div className=" p-4 w-full border-solid max-md:flex-wrap max-md:max-w-full">
-                  <div className=" gap-3">
-                    <span className="block text-lg font-spline font-semibold  text-gray-700 whitespace-nowrap">
+                <div className="gap-3">
+                    <span className="block text-lg font-spline font-semibold text-gray-700 whitespace-nowrap">
                       Title
                     </span>
                     <input
                       type="text"
                       placeholder="Enter Post "
-                      value={jobData.title}
-                      onChange={(e) =>
-                        setJobData({ ...jobData, title: e.target.value })
-                      }
-                      className="justify-center items-start p-4 leading-4 rounded  w-1/2  pr-10 focus:border-neutral-500 focus:ring-neutral-500 border focus:outline"
+                      value={title}
+                      onChange={(e) => setTitle(e.target.value)}
+                      className="justify-center items-start p-4 leading-4 rounded w-1/2 pr-10 focus:border-neutral-500 focus:ring-neutral-500 border focus:outline"
+                    />
+                  </div>
+                  <div className="gap-3 my-5">
+                    <span className="block text-lg font-spline font-semibold text-gray-700 whitespace-nowrap">
+                      Description
+                    </span>
+                    <input
+                      type="text"
+                      placeholder="Enter Post "
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      className="justify-center items-start p-4 leading-4 rounded w-1/2 pr-10 focus:border-neutral-500 focus:ring-neutral-500 border focus:outline"
                     />
                   </div>
                   <div className="gap-3 w-full">
@@ -330,21 +342,27 @@ const CreateJobs: React.FC = () => {
                 <div className="font-medium text-md font-spline text-slate-700">
                   Start Date{" "}
                 </div>
-                <DatePicker
-                  className="flex gap-2.5 justify-between px-4 py-5 mt-4 bg-white rounded-md border border-solid border-neutral-500 text-neutral-500"
-                  selected={startDate}
-                  onChange={(date) => setStartDate(date as Date)}
-                />
+                <div className="flex gap-2 mt-2 mb-2">
+                  <DatePicker
+                    selected={startDate}
+                    onChange={(date: Date | null) => setStartDate(date)}
+                    dateFormat="MM/dd/yyyy"
+                    className="px-4 py-3 text-base text-gray-600 border border-solid border-neutral-500 rounded"
+                  />
+                
+                </div>
               </div>
               <div className="flex flex-col flex-1 grow shrink-0  basis-0 w-fit">
                 <div className="font-medium text-md font-spline text-slate-700">
                   End Date{" "}
                 </div>
                 <DatePicker
-                  className="flex gap-2.5 justify-between px-4 py-5 mt-4 bg-white rounded-md border border-solid border-neutral-500 text-neutral-500"
-                  selected={endDate}
-                  onChange={(date) => setEndDate(date as Date)}
-                />
+                    selected={endDate}
+                    onChange={(date: Date | null) => setEndDate(date)}
+                    dateFormat="MM/dd/yyyy"
+                    className="px-4 py-3 text-base text-gray-600 border border-solid border-neutral-500 rounded"
+                  />
+                
               </div>
             </div>
           <div>
@@ -378,7 +396,7 @@ const CreateJobs: React.FC = () => {
           </div>
             
             <button
-              className="flex justify-center items-center sticky bottom-0  self-stretch mx-auto px-4 py-5 mt-10 text-base text-white bg-sky-500 rounded-md border border-sky-500 border-solid w-full sm:w-2/3 max-md:px-5"
+              className="flex justify-center items-center   self-stretch mx-auto px-4 py-5 mt-10 text-base text-white bg-sky-500 rounded-md border border-sky-500 border-solid w-full sm:w-2/3 max-md:px-5"
               onClick={handleSaveAndPublish}
             >
               <div className="flex gap-2.5">

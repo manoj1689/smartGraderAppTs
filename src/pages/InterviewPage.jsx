@@ -412,12 +412,12 @@ const InterviewScreen = () => {
           <img src={SmartGrader} alt="Smart Grader" width={140} />
         </div>
       </div>
-      <div className="container mx-auto w-full ">
+      <div className=" px-4 md:px-10 mx-auto ">
         <NotificationBar />
 
-        <div className="rounded-md border border-solid my-5 border-black border-opacity-10 bg-white">
+        <div className="rounded-md border border-solid my-5  border-black border-opacity-10 bg-white">
           <ErrorBoundary>
-            <div ref={fullscreenRef} className="container mx-auto flex flex-col lg:flex-row  ">
+            <div ref={fullscreenRef} className=" mx-auto flex flex-col lg:flex-row  ">
               <div className="flex flex-col sm:flex-row lg:flex-col   basis-1/3 rounded-md border border-solid m-5 border-black border-opacity-10">
                 <div className=" sm:w-2/3   lg:w-full">
                   <CameraFeed

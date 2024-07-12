@@ -3,7 +3,6 @@ import { Route, Routes } from "react-router-dom";
 import ProtectedRoute from "../services/auth/ProtectedRoute";
 import Dashboard from "../components/Dashboard/Dashboard";
 import CreateJobsPage from "../pages/CreateJobsPage";
-import EditJobs from "../components/Dashboard/Organization/EditJobs";
 import InterviewInstructions from "../pages/InterviewInstructionsPage";
 import InterviewEndPage from "../pages/InterviewEndPage";
 
@@ -22,6 +21,7 @@ import EditSettingsPage from "../pages/EditSettingsPage";
 import CandidateInvitationPage from "../pages/CandidateInvitationPage";
 import CandidateResultPage from "../pages/CandidateResultPage";
 import CreateSetPage from "../pages/CreateSetPage";
+import ViewJobs from "../components/Dashboard/Organization/ViewJobs";
 // import SelectQuestion from "../components/dashboards/organizationDashBoard/SelectQuestion";
 
 
@@ -32,7 +32,7 @@ const PrivateRoutes: React.FC = () => {
       <Route path="/" element={<ProtectedRoute />}>
         <Route path="/" element={<Dashboard />} />
         <Route path="createjobs" element={<CreateJobsPage />} />
-        <Route path="editjobs" element={<EditJobs />} />
+        <Route path="viewjobs" element={<ViewJobs />} />
         {/* <Route path="interviewscreen" element={<InterviewPage />} /> */}
         {/* <Route path="question/:questionSetId" element={<InterviewPage />} />  */}
         <Route path="question/:questionSetId" element={<ProtectedRoute />}>

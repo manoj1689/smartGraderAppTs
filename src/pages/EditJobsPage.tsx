@@ -1,5 +1,5 @@
 import React from 'react'
-import EditJobs from "../components/Dashboard/Organization/EditJobs"
+import EditJobs from "../components/Dashboard/Organization/ViewJobs"
 
 const EditJobsPage:React.FC = ()=> {
   return (

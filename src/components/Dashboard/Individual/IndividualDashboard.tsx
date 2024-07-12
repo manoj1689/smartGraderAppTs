@@ -39,7 +39,7 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
   const [showPreparationTips, setShowPreparationTips] =
     useState<boolean>(false);
   const [showAchievementsTips, setShowAchievementsTips] =
-    useState<boolean>(false);
+    useState<boolean>(true);
   const prevQueryRef = useRef<string>("");
   
 

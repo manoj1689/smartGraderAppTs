@@ -146,6 +146,16 @@ export interface Job {
   interviews: number;
 }
 
+export interface AddJobData {
+  title: string;
+  description: string;
+  experience: string | undefined;
+  start_date: string;
+  end_date: string;
+  status: number;
+  set_id: number;
+}
+
 export interface SearchItem {
   name: string;
 }
@@ -158,17 +168,31 @@ export interface Category {
   id: number;
   name: string;
 }
-export interface Job {
+export interface JobDetail {
   id: number;
   title: string;
-  Experienced: string;
-  Respond: number;
-  UnResponse: number;
-  level: string;
-  status: string;
-  applicants: number;
-  interviews: number;
-  Date: string;
+  description: string;
+  experience: string;
+ // Respond: number;
+ // UnResponse: number;
+ // level: string;
+ // applicants: number;
+ // interviews: number;
+ start_date: string;
+ end_date: string;
+ status: number;
+
+}
+
+export interface JobList {
+  id: number;
+  title: string;
+  description: string;
+  experience: string;
+  start_date: string;
+  end_date: string;
+  status: number;
+  set_id: number;
 }
 
 export interface LineScore {
