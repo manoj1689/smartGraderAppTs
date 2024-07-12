@@ -9,7 +9,6 @@ import { IoMdAddCircle } from 'react-icons/io';
 import Select, { SingleValue } from 'react-select';
 import { useNavigate } from 'react-router-dom';
 import { SearchItem, Option } from '../../../types/interfaces/interface';
-import { fetchSearchResults } from '../../../services/api/CurrentJobService';
 import { JobList } from "../../../types/interfaces/interface";
 import { fetchJobList } from '../../../services/api/JobService';
 import ResponsivePagination from 'react-responsive-pagination';
@@ -49,18 +48,6 @@ const CurrentJobs: React.FC = () => {
   };
 
   const itemsPerPage = 3;
-
-  const customStylesModel = {
-    content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-      backgroundColor: '#ADD8E6',
-    },
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -109,7 +96,7 @@ const CurrentJobs: React.FC = () => {
     setFilteredJobs(filtered);
   };
 
-  const handleOnSelect = (item: SearchItem) => {
+  const handleOnSelect = (item: SearchItem ) => {
     const filtered = jobs.filter((job) => job.id === item.id);
     setFilteredJobs(filtered);
   };

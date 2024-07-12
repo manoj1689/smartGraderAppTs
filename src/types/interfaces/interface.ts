@@ -156,9 +156,6 @@ export interface AddJobData {
   set_id: number;
 }
 
-export interface SearchItem {
-  name: string;
-}
 
 export interface Option {
   value: string;
@@ -194,7 +191,10 @@ export interface JobList {
   status: number;
   set_id: number;
 }
-
+export interface SearchItem {
+  id: number; // or string, depending on your data structure
+  name: string;
+}
 export interface LineScore {
   id: number;
   title: string;
