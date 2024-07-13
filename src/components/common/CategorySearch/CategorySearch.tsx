@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { FaList } from "react-icons/fa";
 import {
   fetchCategories,
   fetchSelectedItemId,
@@ -17,7 +18,10 @@ interface CategorySearchProps {
   setListOfAllIds: (ids: number[]) => void;
   setMatchingQuestionSets: (cards: Card[]) => void;
 }
-const CategorySearch: React.FC<CategorySearchProps> = ({ setListOfAllIds,setMatchingQuestionSets }) => {
+const CategorySearch: React.FC<CategorySearchProps> = ({
+  setListOfAllIds,
+  setMatchingQuestionSets,
+}) => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
@@ -39,7 +43,6 @@ const CategorySearch: React.FC<CategorySearchProps> = ({ setListOfAllIds,setMatc
 
     fetchData();
   }, []);
-  
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -64,8 +67,8 @@ const CategorySearch: React.FC<CategorySearchProps> = ({ setListOfAllIds,setMatc
     loadMatchingQuestionSetsIds();
   }, [selectedItems]);
 
- console.log("the search term is",searchTerm)
-  
+  console.log("the search term is", searchTerm);
+
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const term = event.target.value.toLowerCase();
     setSearchTerm(term);
@@ -144,8 +147,8 @@ const CategorySearch: React.FC<CategorySearchProps> = ({ setListOfAllIds,setMatc
     try {
       const allCardList: any = await fetchQuestionSets(0, 0, 0);
       setMatchingQuestionSets(allCardList);
-      setSelectedItems([]); 
-      setIsAllSelected(true);  // Clear the selection when "All" is clicked
+      setSelectedItems([]);
+      setIsAllSelected(true); // Clear the selection when "All" is clicked
     } catch (error) {
       console.error("Error fetching all cards:", error);
     }
@@ -199,7 +202,9 @@ const CategorySearch: React.FC<CategorySearchProps> = ({ setListOfAllIds,setMatc
                 ? "text-blue-500"
                 : "text-gray-700 hover:text-gray-900"
             }`}
-            onClick={() => {handleItemClick(mainCategory, level),setIsAllSelected(false)}}
+            onClick={() => {
+              handleItemClick(mainCategory, level), setIsAllSelected(false);
+            }}
           >
             {mainCategory}
           </button>
@@ -215,8 +220,6 @@ const CategorySearch: React.FC<CategorySearchProps> = ({ setListOfAllIds,setMatc
     });
   };
 
-
-
   const handleSuggestionClick = async (suggestion: string) => {
     const pathItems = suggestion.split(" > ");
     pathItems.forEach((item, level) => handleItemClick(item, level));
@@ -224,82 +227,98 @@ const CategorySearch: React.FC<CategorySearchProps> = ({ setListOfAllIds,setMatc
     setFilteredSuggestions([]);
   };
 
-
-  const handleKeyDown = async (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === 'Enter') {
-      const ListOfAllIds:any = await fetchSelectedItemId([searchTerm]);
+  const handleKeyDown = async (
+    event: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (event.key === "Enter") {
+      const ListOfAllIds: any = await fetchSelectedItemId([searchTerm]);
       setListOfAllIds(ListOfAllIds);
       setFilteredSuggestions([]);
     }
   };
 
   return (
-    <div className="container mx-auto" ref={menuRef}>
-      <header>
-        <div className=" flex justify-end m-2 ">
-          <button
-            className=" block lg:hidden text-gray-500 focus:outline-none m-2 "
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d={
-                  isMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16m-7 6h7"
-                }
-              ></path>
-            </svg>
-          </button>
+    <div className="container mx-auto   p-4 border rounded-md bg-sky-100" ref={menuRef}>
+     
+      <div className="flex flex-col lg:flex-row justify-between ">
+        
+      <div className="flex justify-between items-center">
+      <div className="flex gap-5">
+        <span >
+          {" "}
+          <FaList size={24} color="#01AFF4" />
+        </span>
+        <span className=" text-lg font-semi-bold font-spline text-slate-800">AI Generated Questions</span>
         </div>
-        <input
-          type="text"
-          placeholder="Search categories..."
-          className="justify-center items-start p-4 leading-4 rounded-md border border-solid border-neutral-400 w-full pr-10 focus:border-neutral-500 focus:ring-neutral-500 focus:outline-none"
-          value={searchTerm}
-          onChange={handleSearchChange}
-          onKeyDown={handleKeyDown}
-        />
-        {filteredSuggestions.length > 0 && (
-          <div className="absolute bg-blue-100 shadow-lg  overflow-y-scroll scroll-smooth rounded-md w-3/4 sm:w-2/3 mt-4 z-10">
-            <ul className="p-3">
-              {filteredSuggestions.map((suggestion, index) => (
-                <li
-                  key={index}
-                  className="p-2 cursor-pointer hover:bg-blue-200"
-                  onClick={() => handleSuggestionClick(suggestion)}
-                >
-                  {suggestion}
-                </li>
-              ))}
-            </ul>
+        <div className=" flex justify-end m-2 ">
+            <button
+              className=" block lg:hidden text-gray-500 focus:outline-none m-2 "
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d={
+                    isMenuOpen
+                      ? "M6 18L18 6M6 6l12 12"
+                      : "M4 6h16M4 12h16m-7 6h7"
+                  }
+                ></path>
+              </svg>
+            </button>
           </div>
-        )}
-      </header>
+      </div>
+        <header>
+         
+          <input
+            type="text"
+            placeholder="Search categories..."
+            className="justify-center items-start p-4 w-full lg:w-96  leading-4 rounded-md border border-solid border-neutral-400  pr-10 focus:border-neutral-500 focus:ring-neutral-500 focus:outline-none"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            onKeyDown={handleKeyDown}
+          />
+          {filteredSuggestions.length > 0 && (
+            <div className="absolute bg-blue-100 shadow-lg  overflow-y-scroll scroll-smooth rounded-md w-4/5 md:w-2/3 lg:w-96 mt-4 z-10">
+              <ul className="py-3">
+                {filteredSuggestions.map((suggestion, index) => (
+                  <li
+                    key={index}
+                    className="p-2 cursor-pointer hover:bg-blue-200"
+                    onClick={() => handleSuggestionClick(suggestion)}
+                  >
+                    {suggestion}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </header>
+        
+      </div>
       <nav
-        className={`flex flex-col sm:flex-row px-4 mt-2 justify-start items-center flex-wrap lg:flex-nowrap font-spline space-x-4 ${
-          isMenuOpen ? "" : "hidden lg:flex"
-        }`}
-      >
-        <span
-          onClick={ShowAllCards}
-          className={`flex flex-wrap font-spline text-sm cursor-pointer ${
-            isAllSelected ? "text-blue-400" : "text-gray-700"
+          className={`flex flex-col sm:flex-row  mt-2 justify-start items-center flex-wrap lg:flex-nowrap font-spline space-x-4 ${
+            isMenuOpen ? "" : "hidden lg:flex"
           }`}
         >
-          All
-        </span>
-        {renderCategories(categoriesData)}
-      </nav>
-      
-     
+          <span
+            onClick={ShowAllCards}
+            className={`flex flex-wrap font-spline text-sm cursor-pointer ${
+              isAllSelected ? "text-blue-400" : "text-gray-700"
+            }`}
+          >
+            Recommended
+          </span>
+          {renderCategories(categoriesData)}
+        </nav>
     </div>
   );
 };

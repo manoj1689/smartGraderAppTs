@@ -52,7 +52,7 @@ const CurrentJobs: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       const jobListData = await fetchJobList();
-      setJobs(jobListData);
+      setJobs(jobListData.reverse());
       setFilteredJobs(jobListData);
       const searchItems = jobListData.map((job) => ({ id: job.id, name: job.title }));
       setSearchList(searchItems);
@@ -119,10 +119,9 @@ const CurrentJobs: React.FC = () => {
   return (
     <div>
       <div className="rounded-md bg-white border border-solid px-5 my-10 border-black border-opacity-10">
-        <div className='mb-10'></div>
-        <div className="flex flex-col lg:flex-row justify-between">
-          <div className="flex flex-row items-center max-lg:my-5 space-x-4">
-            <FaLaptopCode size={30} color="5E676B" />
+        <div className="flex flex-col lg:flex-row my-3 justify-between">
+          <div className="flex flex-row items-center  space-x-4">
+            <FaLaptopCode size={24} color="#01AFF4" />
             <span className='text-lg lg:text-xl font-spline font-semibold text-gray-700'>Current Job Opening</span>
             <IoMdAddCircle size={40} color="01AFF4" className="cursor-pointer" onClick={() => navigate('createjobs')} />
           </div>
@@ -150,10 +149,12 @@ const CurrentJobs: React.FC = () => {
                 styles={customStyles}
               />
             </div>
+            
           </div>
+          
         </div>
+        <div className="shrink-0 mt-3.5 h-px border border-solid bg-black bg-opacity-10 border-black border-opacity-10 max-md:max-w-full" />
         <div className="container mx-auto p-4">
-          <h1 className="text-md lg:text-lg font-spline font-semibold mb-4">Job Listings</h1>
 
           <Modal isOpen={isDetailModalOpen} onRequestClose={closeDetailModal} style={{
             overlay: {
@@ -247,16 +248,16 @@ const CurrentJobs: React.FC = () => {
                 </div>
                 <div className="flex flex-row lg:w-2/5 gap-5 justify-between items-start sm:px-5 my-auto">
                   <div className="flex flex-col whitespace-nowrap">
-                    <div className="text-sm font-light leading-5 text-neutral-500">Status</div>
-                    <div className="mt-2.5 text-lg leading-6 text-red-500">{job.status === 1 ? "Hiring" : "Closed"}</div>
+                    <div className="text-sm font-light leading-5 self-center text-neutral-500">Status</div>
+                    <div className="mt-2.5 text-lg leading-6 self-center text-red-500">{job.status === 1 ? "Hiring" : "Closed"}</div>
                   </div>
-                  <div className="flex flex-col self-stretch">
-                    <div className="text-sm font-light leading-5 text-neutral-500">Experience</div>
-                    <div className="mt-2 text-lg leading-6 text-slate-800">{job.experience}</div>
+                  <div className="flex flex-col  self-stretch">
+                    <div className="text-sm font-light leading-5 self-center text-neutral-500">Experience</div>
+                    <div className="mt-2 text-lg leading-6 self-center text-slate-800">{job.experience}</div>
                   </div>
                   <div className="flex flex-col whitespace-nowrap">
-                    <div className="text-sm font-light leading-5 text-neutral-500">Interview</div>
-                    <div className="mt-3 text-lg leading-6 text-slate-800">{randomNumberInterviews}</div>
+                    <div className="text-sm font-light leading-5 self-center text-neutral-500">Interview</div>
+                    <div className="mt-3 text-lg leading-6 self-center text-slate-800">{randomNumberInterviews}</div>
                   </div>
                 </div>
                 <div className='flex lg:w-1/5 flex-col gap-2 justify-center items-center'>

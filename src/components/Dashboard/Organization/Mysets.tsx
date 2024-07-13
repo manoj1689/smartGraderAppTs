@@ -8,6 +8,7 @@ import { HiDotsVertical } from "react-icons/hi";
 import { FaEdit, FaEye } from "react-icons/fa";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { MdOutlineDataset, MdArrowOutward } from "react-icons/md";
+import graderLogo from "../../../assets/images/Individual/graderIcon.png";
 import codingDev from "../../../assets/images/Individual/codingdeveloper.png";
 import star from "../../../assets/images/Individual/Star.png";
 import java from "../../../assets/images/Individual/javaLogo.png";
@@ -20,6 +21,7 @@ import QuestionView from "./QuestionView";
 import Modal from "react-modal";
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
+import { FiArrowUpRight } from "react-icons/fi";
 Modal.setAppElement("#root");
 
 const MySets: React.FC = () => {
@@ -53,7 +55,13 @@ const MySets: React.FC = () => {
     setEditDescription(description);
     setIsEditModalOpen(true);
   };
-
+  const continueWithSet = (card: Card) => {
+    setSelectedSetId(card.id.toString());
+    console.log("Selected Question Set ID:", card.id);
+    navigate("/dashboard/createjobs", {
+      state: { selectedSetId: card.id.toString() },
+    });
+  };
   const handleEditSave = async () => {
     const updatedSetData: updatedSetData = {
       title: editTitle,
@@ -82,14 +90,14 @@ const MySets: React.FC = () => {
     <div>
       <div className="rounded-md border border-solid my-5 p-4 border-black border-opacity-10">
         <ToastContainer />
-        <div className="py-3">
+        <div >
           <div className="flex flex-col sm:flex-row gap-8 justify-start">
             <div className="flex gap-3 items-center">
               <span>
-                <MdOutlineDataset size={30} color="gray" />
+                <MdOutlineDataset size={24} color="#01AFF4" />
               </span>
               <span className="text-xl lg:text-2xl font-spline font-semibold text-gray-700">
-                Question Sets
+               My AI Sets
               </span>
             </div>
             <span>
@@ -111,15 +119,15 @@ const MySets: React.FC = () => {
         </div>
         <div className="shrink-0 mt-3.5 h-px border border-solid bg-black bg-opacity-10 border-black border-opacity-10 max-md:max-w-full" />
         {currentItems.length > 0 ? (
-          <div className="flex flex-wrap max-lg:justify-start max-lg:align-center gap-5 px-5 py-10 mt-10 cursor-pointer">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 ">
             {currentItems.map((card) => (
               <div
                 key={card.id}
-                className={`flex justify-between px-3 py-6 font-light rounded-md border border-sky-500 border-solid text-neutral-500 ${
+                className={`flex flex-col my-3 p-4 mx-auto  rounded-md border border-solid border-black border-opacity-10 shadow-md hover:shadow-lg hover:border-slate-800 transition duration-300 max-sm:w-80 max-lg:w-72 min-w-60  2xl:min-w-64 bg-white font-light text-neutral-500 cursor-pointer  ${
                   selectedSetId === card.id.toString() ? "bg-blue-200" : ""
                 }`}
               >
-                <div className="flex flex-col gap-2">
+                 <div className="flex flex-col gap-2">
                   <div className="flex justify-center">
                     <img
                       loading="lazy"
@@ -128,46 +136,63 @@ const MySets: React.FC = () => {
                       className="w-20 h-20"
                     />
                   </div>
-                  <div className="flex flex-col">
-                    <div className="flex gap-1 self-start py-1.5 text-xs leading-4 whitespace-nowrap rounded-sm shadow-sm">
-                      <img
-                        loading="lazy"
-                        alt="star"
-                        src={star}
-                        className="shrink-0 aspect-[1.09] fill-amber-400 w-[17px] h-[17px]"
-                      />
-                      <div className="flex-auto">{card.rating}/5</div>
-                    </div>
-                    <div className="flex mt-2.5 w-72 text-lg leading-4 text-slate-800">
-                      <div className="flex">
-                        <div>{card.title}</div>
+                  <div className="flex justify-between">
+                      <div className="flex relative gap-1 py-1.5 mt-3 bg-white rounded-sm shadow-sm">
                         <img
                           loading="lazy"
-                          alt="java"
+                          alt="star"
+                          src={star}
+                          className="shrink-0 aspect-[1.09] fill-amber-400 w-[17px] h-[17px]"
+                        />
+
+                        <div className="flex-auto">{card.rating}/5</div>
+                      </div>
+                      <div>
+                        <img
+                          loading="lazy"
                           src={java}
-                          className="shrink-0 aspect-[1.09] ml-5 w-[30px] h-[30px]"
+                          alt={card.image_url}
+                          className="w-10 h-10"
                         />
                       </div>
                     </div>
-                    <div className="flex flex-row  mt-3 justify-around items-center px-0.5 text-sm leading-2">
-                      <div className="flex flex-col  ">
-                        <div className="flex gap-1">
-                          <div className="flex justify-center items-center">
-                            <CiClock2 size={14} color="#01AFF4" />
-                          </div>
-                          <div>{card.duration} Min</div>
-                        </div>
-                        <div className="flex gap-1 ">
-                          <div className="flex justify-center items-center">
-                            <IoHelpCircleOutline size={14} color="#01AFF4" />
-                          </div>
-                          <div>{card.questions_count} Questions</div>
-                        </div>
-                      </div>
-                      <div className="flex justify-center items-center self-stretch px-2.5 py-1 text-xs leading-4 whitespace-nowrap bg-sky-50 rounded-md border border-solid border-neutral-500">
-                        Frontend
-                      </div>
-                      <div className=" justify-center items-center">
+                    <div className="flex gap-2 justify-between mt-4">
+                  <div className="flex gap-1 bg-sky-200 rounded-xl px-2 py-1 text-sm leading-4">
+                    <img
+                      loading="lazy"
+                      alt="grader"
+                      src={graderLogo}
+                      className="shrink-0 aspect-[1.27] w-[30px]"
+                    />
+                    <div className="my-auto">SmartGrader</div>
+                  </div>
+                  
+                  <div className="justify-center px-2 py-1 my-auto text-xs leading-4 whitespace-nowrap bg-sky-50 rounded-md border border-solid border-neutral-500">
+                    {/* {card.level} */}
+                    frontend
+                  </div>
+                </div>
+                <div className=" text-sm leading-6 text-slate-800">
+                  {card.title}
+                  {/* {card.description} */}
+                </div>
+                    <div className="flex flex-row justify-between   px-0.5 text-sm leading-2">
+                    <div className="flex gap-2 self-start mt-2 text-xs items-center leading-5">
+                  <div className="flex gap-1">
+                    <div className="flex justify-center items-center ">
+                      <CiClock2 size={14} color="#01AFF4" />
+                    </div>
+                    <div>{card.duration} Min</div>
+                  </div>
+                  <div className="flex gap-1">
+                    <div className="flex justify-center items-center ">
+                      <IoHelpCircleOutline size={14} color="#01AFF4" />
+                    </div>
+                    <div>{card.questions_count} Questions</div>
+                  </div>
+                </div>
+                    
+                      <div>
                         <Popup
                           trigger={<button className="text-gray-500 hover:text-gray-600"><HiDotsVertical size={25} /></button>}
                           z-Index={1000}
@@ -201,6 +226,17 @@ const MySets: React.FC = () => {
                         </Popup>
                       </div>
                     </div>
+                    <button
+                  className="flex items-center justify-center px-4 py-3 mt-4 text-xs text-white bg-sky-500 rounded border border-sky-500 border-solid hover:bg-slate-800 hover:border-slate-800"
+                  onClick={() => continueWithSet(card)}
+                >
+                  <div className="flex flex-row items-center gap-2">
+                    <div>Assign Job</div>
+                    <div>
+                      <FiArrowUpRight size={15} />
+                    </div>
+                  </div>
+                </button>
                   </div>
                   {/* <div className="hidden lg:block my-auto justify-center items-center">
                     <Popup
@@ -237,7 +273,7 @@ const MySets: React.FC = () => {
                     </Popup>
                   </div> */}
                 </div>
-              </div>
+             
             ))}
           </div>
         ) : (

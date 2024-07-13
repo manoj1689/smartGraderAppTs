@@ -92,7 +92,7 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
       </div>
      
 
-      <div className="rounded-md mx-4 border border-solid my-4  border-black border-opacity-10 ">
+      <div >
         <div className=" px-2 py-5">
           <IndividualSets />
         </div>
