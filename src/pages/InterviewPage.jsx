@@ -15,10 +15,11 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ErrorBoundary from "../components/common/Error/ErrorBoundary";
 import { GiSoundWaves } from "react-icons/gi";
+import { MdDone } from "react-icons/md";
 import QuestionDisplay from "../components/Interview/QuestionDisplay";
 import BrowserInstructions from "../components/Interview/BrowserInstructions";
 import { HiSpeakerWave } from "react-icons/hi2";
-import Checkbox from "react-custom-checkbox";
+import { MdArrowForward } from "react-icons/md";
 import { AiOutlineClose } from "react-icons/ai";
 import Modal from "react-modal";
 import {
@@ -476,8 +477,8 @@ const InterviewScreen = () => {
 
               <div className="flex flex-col basis-2/3 rounded-md border border-solid my-5 mr-5 border-black border-opacity-10">
                 {examStarted && (
-                  <div className="p-8 space-y-4">
-                    <div className="flex items-center justify-between p-4 border-b border-solid border-black border-opacity-10 my-5 mr-5">
+                  <div className="px-2 space-y-4">
+                    <div className="flex items-center justify-between p-4 border-b border-solid border-black border-opacity-10  mr-5">
                       <span className="text-xl text-neutral-700 font-spline font-semibold">
                        {setDetail.title}
                       </span>
@@ -493,7 +494,7 @@ const InterviewScreen = () => {
                       Question {currentQuestion?.id}
                       <span className="text-xs text-neutral-600">
                         {" "}
-                        (Click the waves icon to listen to question)
+                        (Click the speaker icon to listen to question)
                       </span>
                     </div>
                     <div className="flex flex-col md:flex-row text-base leading-5 text-neutral-600 gap-2.5 justify-between px-4 py-4 mt-2.5 w-full rounded-md border border-solid border-neutral-500">
@@ -523,9 +524,9 @@ const InterviewScreen = () => {
                         disabled={isTimeOut}
                       />
                       <div
-                        className={`absolute bottom-10 left-2 p-1 text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer ${
+                        className={`absolute bottom-10 right-2 p-1 text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer ${
                           listening
-                            ? "text-red-500 hover:text-gray-700"
+                            ? "text-red-500 hover:text-red-700"
                             : "text-gray-500 hover:text-gray-700"
                         }`}
                         onClick={() => {
@@ -559,18 +560,18 @@ const InterviewScreen = () => {
                           onClick={
                             isTimeOut ? handleNextQuestion : handleSubmitAnswer
                           }
-                          className="flex-1 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+                          className="flex px-4 py-4 gap-5 bg-gray-500 justify-center items-center w-full lg:w-1/2 text-white rounded hover:bg-gray-600"
                         >
-                          Next
+                           <span>Next</span> <span><MdArrowForward size={20} /></span> 
                         </button>
                       ) : (
                         <button
                         onClick={() => {
                           handleExamEnd(), fullScreenExit();
                         }}
-                          className="flex-1 px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600"
+                          className="flex px-4 py-4 bg-gray-500 gap-5 text-white justify-center items-center rounded w-full lg:w-1/2 hover:bg-gray-600"
                         >
-                          Finish
+                         <span>Finish</span> <span><MdDone size={20} /></span> 
                         </button>
                       )}
                     </div>
@@ -621,7 +622,7 @@ const InterviewScreen = () => {
                             <button
                               onClick={handleExamStart}
                               disabled={!areAllPermissionsGranted}
-                              className="px-4 py-4 bg-blue-500 w-full lg:w-1/2 text-white rounded hover:bg-blue-600"
+                              className="px-4 py-4 w-full lg:w-1/2 text-white roundedbg-sky-500 rounded border bg-sky-500 border-solid hover:bg-sky-600 hover:border-sky-600"
                             >
                               Start Exams
                             </button>

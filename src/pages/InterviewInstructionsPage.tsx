@@ -106,7 +106,7 @@ const InterviewInstructions: React.FC = () => {
               </button>
               <button
                 type="button"
-                className="p-4 bg-blue-600 w-full  lg:w-1/2 text-white rounded hover:bg-blue-700"
+                className="p-4 text-white lg:w-1/2 bg-sky-500 rounded border border-sky-500 border-solid hover:bg-sky-600 hover:border-sky-600"
                 onClick={(handleStartInterviewClick)}
               >
                 Start Interview
