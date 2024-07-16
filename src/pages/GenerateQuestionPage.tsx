@@ -26,12 +26,27 @@ import { QUESTION_SOURCE } from "../constants/Constants";
 import NotificationBar from "../components/common/Notification/NotificationBar";
 import { FaLaptopCode } from "react-icons/fa6";
 import { handleQuestionSubmit } from "../services/api/QuestionsAddService";
+import { ChangeEvent, FormEvent } from 'react';
+import { toast, ToastContainer } from 'react-toastify';
+import Select from 'react-select';
+import { handleSetSubmit } from '../services/api/SetService';
 
+import ThinkPerson from '../../assets/images/GenerateQuestions/CreateSet.webp';
+import { MdArrowOutward } from "react-icons/md";
+import { IoIosCreate } from "react-icons/io";
+import { fetchCategories } from '../services/api/CategorySearchService';
 interface QuestionAdd {
   q: string;
   desc: string;
   type: number;
   duration: number;
+}
+interface SetData {
+  sub_category_id: number;
+  title: string;
+  description: string;
+  set_type: number;
+  set_level: number;
 }
 
 const GenerateQuestionsPage: React.FC = () => {
@@ -52,7 +67,76 @@ console.log('Sub Cat  ID:', subCatId);
   const [isConfirm, setConfirm] = useState<boolean>(false);
   const [image, setImage] = useState<string>(maleEmployee);
   const [questionList, setQuestionList] = useState<QuestionAdd[]>([]);
+  const [title, setTitle] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+  const [setType, setSetType] = useState<number>(0);
+  const [setLevel, setSetLevel] = useState<number>(0);
+  const [categories, setCategories] = useState<{ value: number; label: string }[]>([]);
+  const [category, setCategory] = useState<number>(0);
+  const setLevelOptions = [
+    { value: 0, label: 'Easy' },
+    { value: 1, label: 'Medium' },
+    { value: 2, label: 'Hard' },
+    // Add more options as needed
+  ];
+  const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.target.value);
+  };
 
+  const handleDescriptionChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setDescription(event.target.value);
+  };
+
+  const handleSetTypeChange = (selectedOption: any) => {
+    setSetType(selectedOption.value);
+  };
+
+  const handleSetLevelChange = (selectedOption: any) => {
+    setSetLevel(selectedOption.value);
+  };
+
+  const handleCategoryChange = (selectedOption: any) => {
+    setCategory(selectedOption.value);
+  };
+
+  const handleFormSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+
+    const newSet: SetData = {
+      sub_category_id: category,
+      title,
+      description,
+      set_type: 0,
+      set_level: setLevel,
+    };
+
+    console.log('Submitting set:', newSet);
+
+    const setId = await handleSetSubmit(newSet, navigate, toast);
+    console.log("Geting setId on Question Page inside handleFormSubmit", setId);
+  };
+
+  useEffect(() => {
+    const fetchCategoryData = async () => {
+      const categoryData = await fetchCategories();
+      console.log("the categoryData", categoryData);
+      
+      const categoryOptions = Object.values(categoryData).map((category: any) => ({
+        value: category.id,
+        label: category.name,
+        subcategories: Object.values(category.subcategories).map((subcategory: any) => ({
+          value: subcategory.id,
+          label: subcategory.name,
+        })),
+      }));
+
+      setCategories(categoryOptions);
+    };
+
+    fetchCategoryData();
+  }, []);
+
+  console.log("the list of all categories", categories);
   useEffect(() => {
     // Update image based on question source
     switch (questionSource) {
@@ -121,6 +205,42 @@ console.log('Sub Cat  ID:', subCatId);
       setError("Failed to save question set. Please try again.");
     }
   };
+  const handleFormSubmitAndSaveQuestions = async (event: FormEvent) => {
+    event.preventDefault();
+  
+    const newSet: SetData = {
+      sub_category_id: category,
+      title,
+      description,
+      set_type: 0,
+      set_level: setLevel,
+    };
+  
+    console.log('Submitting set:', newSet);
+  
+    try {
+      const setId = await handleSetSubmit(newSet, navigate, toast);
+      console.log("Getting setId on Question Page inside handleFormSubmit", setId);
+  
+      if (!setId) {
+        throw new Error('Failed to retrieve set ID.');
+      }
+  
+      const questionsToSubmit = generatedQuestions.map((data) => ({
+        q: data.question_text,
+        desc: data.expected_answer_format ?? "", // Ensure desc is a string
+        type: 0, // Assuming 0 is the default type for 'easy'
+        duration: 10, // Default duration of 10
+      }));
+  
+      setQuestionList(questionsToSubmit);
+  
+      await handleQuestionSubmit(setId, questionsToSubmit, navigate);
+      openModal();
+    } catch (error) {
+      setError("Failed to save question set. Please try again.");
+    }
+  };
   
   const handleConfirm = () => {
     const interview = {
@@ -141,13 +261,83 @@ console.log('Sub Cat  ID:', subCatId);
         <div>
           <NotificationBar />
         </div>
+       <div className="text-2xl px-4 font-spline font-semibold text-slate-700 ">
+       <span>AI Question Set Creation</span>
+       </div>
         <div className="container flex flex-col lg:flex-row">
           <div className="flex flex-col px-4 py-8 order-2  lg:order-1 w-full lg:w-2/3">
-            <div className="flex gap-3">
-              <FaLaptopCode size={30} color="gray" />
-              <span className=" text-2xl font-semibold font-spline text-gray-700 mb-5">
-                Generate Questions
-              </span>
+          <div className=" w-full p-4" >
+            <div className="flex flex-col lg:flex-row gap-5">
+            <div className="mb-4 w-full lg:w-1/2">
+              <label className="block text-md font-semibold font-spline text-gray-700 mb-2">Title</label>
+              <input
+                type="text"
+                value={title}
+                onChange={handleTitleChange}
+                className="justify-center items-start p-4 leading-4 rounded-md border border-solid border-neutral-400 w-full pr-10 focus:border-neutral-500 focus:ring-neutral-500 focus:outline-none"
+                required
+                placeholder="e.g.,Software Engineer"
+              />
+            </div>
+            <div className="mb-4 w-full lg:w-1/2">
+              <label className="block text-md font-semibold font-spline text-gray-700 mb-2">Description</label>
+              <textarea
+                value={description}
+                onChange={handleDescriptionChange}
+                className="justify-center items-start h-32 p-4  leading-4 rounded-md border border-solid border-neutral-400 w-full pr-10 focus:border-neutral-500 focus:ring-neutral-500 focus:outline-none"
+                required
+                placeholder="e.g.,About Job"
+              />
+            </div>
+            </div>
+          
+            <div className="flex flex-col lg:flex-row gap-5">
+            <div className="mb-4 w-full  lg:w-1/2">
+              <label className="block text-md font-semibold font-spline text-gray-700 mb-2">Category</label>
+              <Select
+                options={categories}
+                onChange={handleCategoryChange}
+                className="w-full"
+                required
+                placeholder="Software Development"
+              />
+            </div>
+            <div className="mb-4 w-full lg:w-1/2">
+              <label className="block text-md font-semibold font-spline text-gray-700 mb-2">Set Level</label>
+              <Select
+                options={setLevelOptions}
+                onChange={handleSetLevelChange}
+                className="w-full"
+                required
+                placeholder="Hard"
+              />
+            </div>
+            </div>
+           
+            {/* <div className="mb-4">
+              <label className="block text-md font-semibold font-spline text-gray-700 mb-2">Set Type</label>
+              <Select
+                options={setTypeOptions}
+                onChange={handleSetTypeChange}
+                className="w-full"
+                required
+              />
+            </div> */}
+          
+            {/* <button
+              className="flex justify-center items-center self-stretch mx-auto px-4 py-5 mt-10 text-base text-white bg-gray-500 hover:bg-gray-600 hover:border-gray-600 rounded-md border border-gray-500 border-solid w-full lg:w-3/4 max-md:px-5"
+              type="submit"
+            >
+              <div className="flex gap-2.5">
+                <div className="flex items-center gap-3">
+                  <span>Continue With Question Set</span>
+                  <span><MdArrowOutward /></span>
+                </div>
+              </div>
+            </button> */}
+          </div>
+            <div className="text-2xl font-spline font-semibold my-4 text-slate-700 ">
+            Submit AI Questions
             </div>
             <div className="bg-white shadow-md rounded-lg px-4 py-4 ">
               <div className="mb-4">
@@ -214,7 +404,7 @@ console.log('Sub Cat  ID:', subCatId);
                 <DomainQuestionsForm
                   onGenerate={handleGenerateQuestions}
                   loading={loading}
-                  subCatId={subCatId}
+                  subCatId={category}
                 />
               )}
 
@@ -251,7 +441,7 @@ console.log('Sub Cat  ID:', subCatId);
                   setGeneratedQuestions={setGeneratedQuestions}
                 />
                 <button
-                  onClick={handleSaveQuestionSet}
+                  onClick={handleFormSubmitAndSaveQuestions}
                   className="mt-4 bg-blue-400 text-white px-4 py-4 font-spline rounded w-8/12 mx-auto justify-center transition duration-300 hover:bg-blue-600 flex items-center"
                 >
                   {loading ? (

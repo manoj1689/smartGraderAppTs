@@ -4,9 +4,10 @@ import { BsGraphDownArrow } from "react-icons/bs";
 import { TiGroup } from "react-icons/ti";
 const CandidateStatus: React.FC = () => {
   return (
-    <div className="flex flex-col lg:flex-row gap-5 p-7 mb-10 bg-white rounded-md border border-solid border-black border-opacity-10 max-w-full mx-auto mt-10">
-      <div className="flex flex-col justify-between items-start px-7 pt-7 pb-4 bg-white rounded-md border border-solid border-black border-opacity-10 w-full">
-        <div className="flex flex-col font-medium text-slate-800 w-full">
+    <div className="flex  flex-col  lg:flex-row my-5  ">
+      <div className="w-full lg:w-1/3 ">
+      <div className="flex flex-col  justify-between items-start px-7 pt-7 pb-4 mx-2 bg-white rounded-md border border-solid border-black border-opacity-10 ">
+        <div className="flex flex-col font-medium text-slate-800 ">
           <div className="text-lg leading-6">Interviews</div>
           <div className="mt-2.5 text-sm font-light leading-5 text-neutral-500">
             Jan 2024
@@ -21,8 +22,11 @@ const CandidateStatus: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col justify-between items-start px-7 pt-7 pb-4 bg-white rounded-md border border-solid border-black border-opacity-10 w-full">
-        <div className="flex flex-col font-medium text-slate-800 w-full">
+
+      </div>
+     <div className="w-full lg:w-1/3 "> 
+     <div className="flex flex-col justify-between items-start px-7 pt-7 pb-4 mx-2 bg-white rounded-md border border-solid border-black border-opacity-10  ">
+        <div className="flex flex-col font-medium text-slate-800 ">
           <div className="text-lg leading-6">Shortlisted</div>
           <div className="mt-2.5 text-sm font-light leading-5 text-neutral-500">
           Year 2024
@@ -39,8 +43,11 @@ const CandidateStatus: React.FC = () => {
         </div>
       </div>
 
-      <div className="flex flex-col justify-between items-start px-7 pt-7 pb-4 bg-white rounded-md border border-solid border-black border-opacity-10 w-full">
-        <div className="flex flex-col font-medium text-slate-800 w-full">
+     </div>
+     
+    <div className="w-full lg:w-1/3">
+    <div className="flex flex-col justify-between items-start px-7 pt-7 pb-4 mx-2 bg-white rounded-md border border-solid border-black border-opacity-10   ">
+        <div className="flex flex-col font-medium text-slate-800 ">
           <div className="text-lg leading-6"> Hired Candidates</div>
           <div className="mt-2.5 text-sm font-light leading-5 text-neutral-500">
           Year 2024
@@ -57,6 +64,9 @@ const CandidateStatus: React.FC = () => {
         </div>
         </div>
       </div> 
+
+    </div>
+    
 
       
     </div>

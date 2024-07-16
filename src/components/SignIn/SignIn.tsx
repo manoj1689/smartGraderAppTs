@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
-import smartLogo from "../../assets/logos/smart-logo.png";
+import smartLogo from "../../assets/logos/smartGrader.png";
 import educationSticker from "../../assets/stickers/persons/education-sticker.png";
 import organisationSticker from "../../assets/stickers/persons/organisation-sticker.png";
 import individualSticker from "../../assets/stickers/persons/individul-sticker.png";
@@ -52,15 +52,15 @@ const SignIn: React.FC = () => {
 
   return (
     <>
-      <div className="container mx-auto min-h-screen px-4  flex flex-col lg:flex-row ">
-        <div className="lg:hidden w-full ">
+      <div className="container mx-auto min-h-screen p-4  flex flex-col lg:flex-row ">
+        <div className="lg:hidden w-full">
           <Link to="/">
             <img width={179} height={43} src={smartLogo} alt="smart Grader" />
           </Link>
         </div>
-        <div className="w-full lg:w-1/2 flex flex-col justify-center bg-white items-start">
+        <div className="w-full lg:w-1/2 flex flex-col justify-center bg-transparent items-start">
           {(activeTab === undefined || activeTab === "individual") && (
-            <div className="flex flex-col justify-center sm:px-8 py-4 mt-5 sm:mt-10 bg-white rounded-md">
+            <div className="flex flex-col w-full justify-center px-4 sm:px-8 py-4 mt-5 sm:mt-10 bg-white rounded-md">
               <div className="flex flex-row gap-5 max-md:flex-wrap ">
                 <div className="flex gap-5 justify-center items-center">
                   <img
@@ -88,7 +88,7 @@ const SignIn: React.FC = () => {
             </div>
           )}
           {(activeTab === undefined || activeTab === "organization") && (
-            <div className="flex flex-col justify-center sm:px-8  mt-5 bg-white rounded-md">
+            <div className="flex w-full flex-col justify-center px-4 sm:px-8 py-4 mt-5 bg-white rounded-md">
               <div className="flex gap-5 max-md:flex-wrap">
                 <div className="flex gap-5 justify-center items-center">
                   <img
@@ -115,7 +115,7 @@ const SignIn: React.FC = () => {
             </div>
           )}
           {(activeTab === undefined || activeTab === "educational") && (
-            <div className="flex flex-col justify-center sm:px-8 py-4 mt-5 bg-white rounded-md">
+            <div className="flex flex-col w-full justify-center px-4 sm:px-8 py-4 mt-5 bg-white rounded-md">
               <div className="flex gap-5 max-md:flex-wrap">
                 <div className="flex gap-5 justify-center items-center">
                   <img
@@ -144,7 +144,7 @@ const SignIn: React.FC = () => {
         </div>
         <div className="w-full  lg:w-1/2">
           <ToastContainer />
-          <div className="flex flex-col md:h-[60%] my-5 md:my-28 text-sm max-md:max-w-full justify-center items-center">
+          <div className="flex flex-col h-full text-sm max-md:max-w-full justify-center items-center">
             <div className="max-lg:hidden  ">
               <Link to="/">
                 <img
@@ -172,7 +172,7 @@ const SignIn: React.FC = () => {
             )}
             <form
               onSubmit={handleSubmit}
-              className="flex-flex-col w-full sm:py-10   sm:w-96"
+              className="flex-flex-col w-full py-10 sm:w-96"
             >
               <div>
                 <input
@@ -212,11 +212,11 @@ const SignIn: React.FC = () => {
                   />
                   <div className="text-gray-600 font-spline ">Remember Me </div>
                 </div>
-                <Link to="password">
-                  <div className="text-cyan-600 font-spline ">
+                <div>
+                  <div className="text-cyan-600 font-spline cursor-pointer " onClick={()=>navigate("/signIn/password")}>
                     Forget Password?
                   </div>
-                </Link>
+                </div>
               </div>
               <button
                 className={`flex justify-center items-center px-4 py-3 mt-8 text-white bg-sky-500 rounded border border-sky-500 border-solid w-full ${
@@ -249,8 +249,7 @@ const SignIn: React.FC = () => {
                 </div>
               </div>
             </form>
-          </div>
-          <div className="flex  px-5   text-sm  font-light leading-5 justify-center text-center text-neutral-500">
+            <div className="flex  px-5 md:mt-20  text-sm  font-light leading-5 justify-center text-center text-neutral-500">
             <div className="flex flex-col sm:flex-row">
               <div className="flex mx-5 ">
                 <div className="flex px-2 sm:px-4 md:gap-5 font-spline max-sm:text-[12px]  ">
@@ -269,6 +268,8 @@ const SignIn: React.FC = () => {
               <div></div>
             </div>
           </div>
+          </div>
+         
         </div>
       </div>
     </>

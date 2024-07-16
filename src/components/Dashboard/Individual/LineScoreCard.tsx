@@ -87,7 +87,7 @@ const LineScoreCard: React.FC = () => {
     setViewSample(!viewSample);
   };
   return (
-    <div className="flex flex-col grow  px-7 pt-5 w-full bg-white rounded-md border border-solid border-black border-opacity-10 max-md:px-5 max-md:mt-7 max-md:max-w-full">
+    <div className="flex flex-col grow  p-4 w-full bg-white rounded-md border border-solid border-black border-opacity-10 ">
       <div className="flex gap-5 justify-between w-full max-md:flex-wrap max-md:max-w-full">
         <div className="flex gap-2.5 my-auto text-lg font-medium leading-6 text-slate-800">
           <FaRegIdCard size={24} color="#01AFF4" />
@@ -95,7 +95,7 @@ const LineScoreCard: React.FC = () => {
         </div>
       </div>
       <div className="shrink-0 mt-3.5 h-px border border-solid bg-black bg-opacity-10 border-black border-opacity-10 max-md:max-w-full" />
-      <div className="flex gap-5 mt-10 max-h-[352px] overflow-y-auto max-md:flex-wrap">
+      <div className="flex gap-5 sm:mt-16 md:mt-16 lg:mt-12 xl:mt-4 max-h-[352px] overflow-y-auto max-md:flex-wrap">
         <div className="flex flex-col grow shrink-0 my-auto basis-0 w-fit max-md:max-w-full">
           {loading ? (
             <p>Loading...</p>

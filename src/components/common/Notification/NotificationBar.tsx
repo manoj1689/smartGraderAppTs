@@ -21,8 +21,8 @@ const NotificationBar: React.FC = () => {
   }, []);
 
   return (
-    <div>
-      <div className="flex gap-5 my-8 sm:mb-8 justify-between">
+    <div className='max-lg:mt-20 '>
+      <div className="flex gap-5 px-2 my-8 sm:mb-8 justify-between">
         <div className="flex flex-col lg:flex-row gap-4 px-4">
           <div className="flex text-sky-500">
             <span className="block text-base font-spline md:text-xl lg:text-2xl xl:text-3xl">
@@ -38,7 +38,7 @@ const NotificationBar: React.FC = () => {
           </div>
         </div>
 
-        <div className="max-lg:hidden">
+        <div className="max-lg:hidden mr-10">
           <FaBell size={30} color="#01AFF4" />
         </div>
       </div>

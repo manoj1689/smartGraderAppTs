@@ -238,17 +238,17 @@ const CategorySearch: React.FC<CategorySearchProps> = ({
   };
 
   return (
-    <div className="container mx-auto   p-4 border rounded-md bg-sky-100" ref={menuRef}>
+    <div className="mx-2 p-4 border rounded-md bg-sky-100" ref={menuRef}>
      
       <div className="flex flex-col lg:flex-row justify-between ">
         
       <div className="flex justify-between items-center">
-      <div className="flex gap-5">
+      <div className="flex gap-3 md:gap-5">
         <span >
           {" "}
           <FaList size={24} color="#01AFF4" />
         </span>
-        <span className=" text-lg font-semi-bold font-spline text-slate-800">AI Generated Questions</span>
+        <span className=" text-md md:text-lg font-semi-bold font-spline text-slate-800">AI-Generated Question Sets</span>
         </div>
         <div className=" flex justify-end m-2 ">
             <button
@@ -305,7 +305,7 @@ const CategorySearch: React.FC<CategorySearchProps> = ({
         
       </div>
       <nav
-          className={`flex flex-col sm:flex-row  mt-2 justify-start items-center flex-wrap lg:flex-nowrap font-spline space-x-4 ${
+          className={`flex flex-col sm:flex-row  mt-2 justify-start items-center flex-wrap 2xl:flex-nowrap font-spline space-x-4 ${
             isMenuOpen ? "" : "hidden lg:flex"
           }`}
         >

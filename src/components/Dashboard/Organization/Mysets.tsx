@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { fetchMySets, editMySet } from "../../../services/api/SetService";
 import ResponsivePagination from "react-responsive-pagination";
-import "react-responsive-pagination/themes/classic.css";
+// import 'react-responsive-pagination/themes/bootstrap.css'
+import '../../../pagination.css'; 
 import { CiClock2 } from "react-icons/ci";
 import { IoHelpCircleOutline } from "react-icons/io5";
 import { HiDotsVertical } from "react-icons/hi";
@@ -28,12 +29,32 @@ const MySets: React.FC = () => {
   const navigate = useNavigate();
   const [mySets, setMySets] = useState<Card[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const itemsPerPage = 5;
+  // const itemsPerPage = 5;
   const [selectedSetId, setSelectedSetId] = useState<string>("");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState<boolean>(false);
   const [editTitle, setEditTitle] = useState<string>("");
   const [editDescription, setEditDescription] = useState<string>("");
+  const getItemsPerPage = (width: number): number => {
+    if (width < 640) return 2; // For sm screens
+    if (width < 768) return 2; // For md screens
+    if (width < 1024) return 4; // For lg screens
+    if (width < 1280) return 6; // For xl screens
+    if (width < 1520) return 8; // For 2xl screens
+   
+    return 10; // Default for large screens
+  };
+
+  const [itemsPerPage, setItemsPerPage] = useState<number>(getItemsPerPage(window.innerWidth));
+
+
+  useEffect(() => {
+    const handleResize = () => {
+      setItemsPerPage(getItemsPerPage(window.innerWidth));
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const loadMySets = async () => {
     const SetsList = await fetchMySets(0);
@@ -62,6 +83,7 @@ const MySets: React.FC = () => {
       state: { selectedSetId: card.id.toString() },
     });
   };
+
   const handleEditSave = async () => {
     const updatedSetData: updatedSetData = {
       title: editTitle,
@@ -87,17 +109,17 @@ const MySets: React.FC = () => {
   const pageCount = Math.ceil(mySets.length / itemsPerPage);
 
   return (
-    <div>
-      <div className="rounded-md border border-solid my-5 p-4 border-black border-opacity-10">
+    <div className="mx-2">
+      <div>
         <ToastContainer />
-        <div >
+        <div className="bg-white p-4 rounded-md" >
           <div className="flex flex-col sm:flex-row gap-8 justify-start">
             <div className="flex gap-3 items-center">
               <span>
-                <MdOutlineDataset size={24} color="#01AFF4" />
+                <MdOutlineDataset size={30} color="#01AFF4"/>
               </span>
-              <span className="text-xl lg:text-2xl font-spline font-semibold text-gray-700">
-               My AI Sets
+              <span className=" text-md md:text-lg font-semi-bold font-spline text-slate-800">
+              User-Created AI Question Sets
               </span>
             </div>
             <span>
@@ -116,14 +138,15 @@ const MySets: React.FC = () => {
               </button>
             </span>
           </div>
+          <div className="shrink-0 mt-3.5 h-px border border-solid bg-black bg-opacity-10 border-black border-opacity-10 max-md:max-w-full" />
         </div>
-        <div className="shrink-0 mt-3.5 h-px border border-solid bg-black bg-opacity-10 border-black border-opacity-10 max-md:max-w-full" />
+       
         {currentItems.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 ">
             {currentItems.map((card) => (
               <div
                 key={card.id}
-                className={`flex flex-col my-3 p-4 mx-auto  rounded-md border border-solid border-black border-opacity-10 shadow-md hover:shadow-lg hover:border-slate-800 transition duration-300 max-sm:w-80 max-lg:w-72 min-w-60  2xl:min-w-64 bg-white font-light text-neutral-500 cursor-pointer  ${
+                className={`className="flex flex-col my-5 p-4 mx-auto max-lg:w-72 w-full rounded-md border border-solid border-black border-opacity-10 shadow-md hover:shadow-lg hover:border-slate-800 transition duration-300   bg-white font-light text-neutral-500 cursor-pointer" ${
                   selectedSetId === card.id.toString() ? "bg-blue-200" : ""
                 }`}
               >
@@ -162,7 +185,7 @@ const MySets: React.FC = () => {
                       loading="lazy"
                       alt="grader"
                       src={graderLogo}
-                      className="shrink-0 aspect-[1.27] w-[30px]"
+                      className="shrink-0 aspect-[1.27] w-[20px]"
                     />
                     <div className="my-auto">SmartGrader</div>
                   </div>
@@ -285,14 +308,19 @@ const MySets: React.FC = () => {
             />
           </div>
         )}
-        <div className="mt-5 sm:w-3/5 mx-auto">
-          <ResponsivePagination
-            narrowBehaviour={combine(dropNav, dropEllipsis)}
-            current={currentPage + 1}
-            total={pageCount}
-            onPageChange={(page) => setCurrentPage(page - 1)}
-          />
-        </div>
+         <div className="mt-5 sm:w-3/5 mx-auto">
+        <ResponsivePagination
+       
+      
+        
+         
+        
+          narrowBehaviour={combine(dropNav, dropEllipsis)}
+          current={currentPage + 1}
+          total={pageCount}
+          onPageChange={(page) => setCurrentPage(page - 1)}
+        />
+      </div>
         <Modal
           isOpen={isModalOpen}
           onRequestClose={() => {

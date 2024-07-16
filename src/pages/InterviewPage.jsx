@@ -33,7 +33,7 @@ import { MESSAGES } from "../constants/Constants";
 import NotificationBar from "../components/common/Notification/NotificationBar";
 import { useParams } from "react-router-dom";
 import Sticky from "react-sticky-el";
-import SmartGrader from "../assets/logos/smart-logo.png";
+import SmartGrader from "../assets/logos/smartGrader.png";
 
 
 const InterviewScreen = () => {

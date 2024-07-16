@@ -47,9 +47,9 @@ const Result = () => {
   }
   return (
     <div className="container  mx-auto w-full h-full">
-     <div className="mt-20 lg:mt-10">
+   
       <NotificationBar />
-      </div>
+     
       <ToastContainer />
       <div className="flex my-5 flex-col rounded-md border border-solid border-black border-opacity-10 lg:flex-row">
         <div className="basis-2/3 flex flex-col md:flex-row  ">

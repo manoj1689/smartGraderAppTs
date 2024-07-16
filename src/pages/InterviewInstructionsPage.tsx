@@ -5,7 +5,7 @@ import { formattedCurrentDate } from '../utils/formatDate';
 import BrowserInstructions from '../components/Interview/BrowserInstructions';
 import { ToastContainer, toast, ToastOptions } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import SmartGrader from "../assets/logos/smart-logo.png";
+import SmartGrader from "../assets/logos/smartGrader.png";
 import { FaUser } from "react-icons/fa";
 
 const InterviewInstructions: React.FC = () => {

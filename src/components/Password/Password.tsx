@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import passwordIcon from "../../assets/images/Password/password-icon.png";
-import smartLogo from "../../assets/logos/smart-logo.png";
+import smartLogo from "../../assets/logos/smartGrader.png";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { handleRecoverSubmit, handleOtpSubmit, handleResetPassword } from '../../services/api/PasswordService';
@@ -105,7 +105,7 @@ const Password: React.FC = () => {
             <img width={179} height={43} src={smartLogo} alt="smart Grader" />
           </Link>
         </div>
-        <div className="w-full lg:w-1/2 flex flex-col md:flex-row px-4 py-7 my-5 sm:my-20  ">
+        <div className="w-full lg:w-1/2 bg-sky-200 rounded-md flex flex-col md:flex-row px-4 py-7 my-5 sm:my-20  ">
           <div className=" flex sm:flex-row items-center">
             <img
               src={passwordIcon}

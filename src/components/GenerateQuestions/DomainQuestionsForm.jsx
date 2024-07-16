@@ -53,7 +53,7 @@ const DomainQuestionsForm = ({ onGenerate, loading, subCatId }) => {
           )}
           className="basic-multi-select"
           classNamePrefix="select"
-          placeholder="Select or type a category"
+          placeholder="Select Category First"
         />
       </div>
       <div className="mt-5 sm:mt-10 mb-4">

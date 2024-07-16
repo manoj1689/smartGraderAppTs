@@ -53,18 +53,18 @@ const CandidateInvitation: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col px-7 pt-7 pb-10 bg-white rounded-md border border-solid border-black border-opacity-10 max-md:px-5 mx-auto mt-10">
-      <div className="flex gap-3.5 self-start text-lg font-medium leading-6 text-slate-800">
-        <FaArrowUpRightFromSquare size={20} color="gray" />
-        <div className="flex-auto">Candidate Invitation & Monitoring</div>
+    <div className="flex flex-col grow  p-4 w-full bg-white rounded-md border border-solid border-black border-opacity-10 ">
+      <div className="flex gap-3.5 self-start items-center text-lg font-medium leading-6  text-slate-800">
+        <FaArrowUpRightFromSquare size={24} color="#01AFF4"/>
+        <div className=" text-md md:text-lg font-semi-bold font-spline text-slate-800">Candidate Invitation & Monitoring</div>
       </div>
       <div className="shrink-0 mt-3 border border-solid bg-black bg-opacity-10 border-black border-opacity-10" />
-      <div className="justify-between mt-5 mb-5 w-full">
+      <div className="justify-between mt-5 w-full">
         <div>
           {candidates.map((candidate, index) => (
             <div key={index} className="flex flex-col w-full hover:bg-blue-100 rounded-sm transition duration-300 cursor-pointer" onClick={()=>navigate('/dashboard/candidateinvitation')}>
               <div className="flex flex-row justify-between items-center my-5 px-2 sm:px-4 md:px-8">
-                <div className="flex flex-col md:flex-row justify-center items-start gap-5">
+                <div className="flex flex-col lg:flex-row justify-center items-start gap-5">
                   {imageLoaded[index] && candidate.image ? (
                     <img
                       loading="lazy"

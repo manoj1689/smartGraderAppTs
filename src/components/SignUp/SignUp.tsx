@@ -7,7 +7,7 @@ import {
   handleMouseUp,
 } from "../common/Mouse/HandleMouse";
 import { SignupRequest } from "../../types/interfaces/interface";
-import smartLogo from "../../assets/logos/smart-logo.png";
+import smartLogo from "../../assets/logos/smartGrader.png";
 import educationSticker from "../../assets/stickers/persons/education-sticker.png";
 import organisationSticker from "../../assets/stickers/persons/organisation-sticker.png";
 import individualSticker from "../../assets/stickers/persons/individul-sticker.png";
@@ -56,7 +56,7 @@ const SignUp: React.FC = () => {
         </div>
         <div className="w-full lg:w-1/2 flex flex-col justify-center py-5 items-start">
           {(activeTab === undefined || activeTab === "individual") && (
-            <div className="flex flex-col justify-center sm:px-8 py-4 mt-5 sm:mt-10 bg-white rounded-md">
+            <div className="flex flex-col justify-center p-4 mt-5 sm:mt-10 bg-white rounded-md">
               <div className="flex flex-row gap-5 max-md:flex-wrap ">
               <div className="flex gap-5 justify-center items-center">
               <img
@@ -90,7 +90,7 @@ const SignUp: React.FC = () => {
             </div>
           )}
           {(activeTab === undefined || activeTab === "organization") && (
-            <div className="flex flex-col justify-center sm:px-8  mt-5 bg-white rounded-md">
+            <div className="flex flex-col justify-center p-4  mt-5 bg-white rounded-md">
               <div className="flex gap-5 max-md:flex-wrap">
                 <div className="flex gap-5 justify-center items-center">
                 <img
@@ -123,7 +123,7 @@ const SignUp: React.FC = () => {
           )}
           {(activeTab === undefined || activeTab === "educational") && (
 
-            <div className="flex flex-col justify-center sm:px-8 py-4 mt-5 bg-white rounded-md">
+            <div className="flex flex-col justify-center p-4 mt-5 bg-white rounded-md">
             <div className="flex gap-5 max-md:flex-wrap">
             <div className="flex gap-5 justify-center items-center">
               <img

@@ -27,11 +27,11 @@ const Setting: React.FC = () => {
     setChecked(checked);
   };
   return (
-    <div className="container  mx-auto w-full h-full">
-      <div className="mt-20 lg:mt-10">
+    <div className="sm:p-4 w-full h-full">
+    
       <NotificationBar />
-      </div>
-      <div className="flex gap-3 px-4 py-4">
+     
+      <div className="flex gap-3 p-5">
         {" "}
         <span>
           <IoSettingsOutline size={20} color="#5E676B" />{" "}
@@ -104,7 +104,7 @@ const Setting: React.FC = () => {
             </div>
           </div>
 
-          <button className="flex justify-center  mx-4 my-10 w-full  md:w-3/5  sm: items-center self-stretch px-4 py-5 text-base text-white whitespace-nowrap bg-sky-500 rounded-md border border-sky-500 border-solid   max-md:px-5"  onClick={() => navigate("/dashboard/editsettings")}>
+          <button className="flex justify-center mx-auto  md:mx-4 my-10 w-11/12  md:w-3/5  sm: items-center self-stretch px-4 py-5 text-base text-white whitespace-nowrap bg-sky-500 rounded-md border border-sky-500 border-solid   max-md:px-5"  onClick={() => navigate("/dashboard/editsettings")}>
             <div className="flex  gap-2.5">
               <span>Edit</span>
               <span>

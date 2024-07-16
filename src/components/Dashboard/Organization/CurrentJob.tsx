@@ -118,16 +118,16 @@ const CurrentJobs: React.FC = () => {
 
   return (
     <div>
-      <div className="rounded-md bg-white border border-solid px-5 my-10 border-black border-opacity-10">
-        <div className="flex flex-col lg:flex-row my-3 justify-between">
+      <div className="rounded-md mx-2 bg-white border border-solid px-5 my-10 border-black border-opacity-10">
+        <div className="flex flex-col md:flex-row my-3 gap-3 justify-between">
           <div className="flex flex-row items-center  space-x-4">
-            <FaLaptopCode size={24} color="#01AFF4" />
-            <span className='text-lg lg:text-xl font-spline font-semibold text-gray-700'>Current Job Opening</span>
+            <FaLaptopCode size={30} color="#01AFF4"/>
+            <span className=" text-md md:text-lg font-semi-bold font-spline flex-nowrap text-slate-800">AI-Optimized Job Listings</span>
             <IoMdAddCircle size={40} color="01AFF4" className="cursor-pointer" onClick={() => navigate('createjobs')} />
           </div>
 
-          <div className="flex flex-col justify-center md:flex-row">
-            <div className="md:mb-0 md:px-5 md:w-[350px] max-md:w-full">
+          <div className="">
+            <div className=" md:w-[350px] max-md:w-full">
               <ReactSearchAutocomplete
                 items={searchList}
                 onSearch={handleOnSearch}
@@ -139,7 +139,7 @@ const CurrentJobs: React.FC = () => {
                 styling={{ border: '1.5px solid #C0C0C0', borderRadius: '5px' }}
               />
             </div>
-            <div className="flex justify-end my-5 md:my-0">
+            {/* <div className="flex justify-end my-5 md:my-0">
               <Select
                 defaultValue={selectedOption}
                 onChange={setSelectedOption}
@@ -148,7 +148,7 @@ const CurrentJobs: React.FC = () => {
                 className="w-60"
                 styles={customStyles}
               />
-            </div>
+            </div> */}
             
           </div>
           
@@ -240,27 +240,27 @@ const CurrentJobs: React.FC = () => {
 
             {currentItems.map((job) => (
               <div key={job.id} className="flex flex-col lg:flex-row gap-5 justify-between w-full max-md:flex-wrap mb-4 border p-4 rounded">
-                <div className="flex lg:w-2/5 gap-3">
+                <div className="flex lg:w-5/12 gap-3">
                   <div className="flex flex-col sm:px-5 my-auto">
                     <div className="text-lg leading-6 text-slate-800">{job.title}</div>
                     <div className="mt-1.5 text-sm font-light leading-5 text-neutral-500">{job.description}</div>
                   </div>
                 </div>
-                <div className="flex flex-row lg:w-2/5 gap-5 justify-between items-start sm:px-5 my-auto">
+                <div className="flex flex-row lg:w-6/12 gap-5 justify-between items-start sm:px-5 my-auto">
                   <div className="flex flex-col whitespace-nowrap">
                     <div className="text-sm font-light leading-5 self-center text-neutral-500">Status</div>
-                    <div className="mt-2.5 text-lg leading-6 self-center text-red-500">{job.status === 1 ? "Hiring" : "Closed"}</div>
+                    <div className="mt-2.5 text-lg leading-6 text-center text-red-500">{job.status === 1 ? "Hiring" : "Closed"}</div>
                   </div>
                   <div className="flex flex-col  self-stretch">
                     <div className="text-sm font-light leading-5 self-center text-neutral-500">Experience</div>
-                    <div className="mt-2 text-lg leading-6 self-center text-slate-800">{job.experience}</div>
+                    <div className="mt-2 text-lg leading-6 text-center text-slate-800">{job.experience}</div>
                   </div>
                   <div className="flex flex-col whitespace-nowrap">
                     <div className="text-sm font-light leading-5 self-center text-neutral-500">Interview</div>
-                    <div className="mt-3 text-lg leading-6 self-center text-slate-800">{randomNumberInterviews}</div>
+                    <div className="mt-3 text-lg leading-6 text-center text-slate-800">{randomNumberInterviews}</div>
                   </div>
                 </div>
-                <div className='flex lg:w-1/5 flex-col gap-2 justify-center items-center'>
+                <div className='flex lg:w-1/12 flex-col gap-2 justify-center items-center'>
                   <Popup
                     trigger={<button className="text-gray-500 hover:text-gray-600"><HiDotsHorizontal size={30} /></button>}
                     position="bottom center"
@@ -302,7 +302,7 @@ const CurrentJobs: React.FC = () => {
             current={currentPage + 1}
             total={Math.ceil(jobs.length / itemsPerPage)}
             onPageChange={handlePageClick}
-            maxWidth={400}
+           // maxWidth={400}
           />
         </div>
       </div>

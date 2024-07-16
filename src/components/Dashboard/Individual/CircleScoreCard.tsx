@@ -28,7 +28,7 @@ const CircleScoreCard: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col grow px-7 py-5  w-full bg-white rounded-md border border-solid border-black border-opacity-10 max-md:px-5 max-md:mt-7 max-md:max-w-full">
+    <div className="flex flex-col grow p-4  w-full bg-white rounded-md border border-solid border-black border-opacity-10 ">
       <div className="flex w-full max-md:flex-wrap max-md:max-w-full">
         <div className="flex flex-col w-full max-md:ml-0 max-md:w-full">
           <div className="flex flex-col gap-2.5 my-auto text-lg font-medium leading-6 text-slate-800">

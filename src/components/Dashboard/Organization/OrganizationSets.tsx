@@ -88,12 +88,9 @@ const OrganizationSets: React.FC = () => {
       />
       {currentItems.length > 0 ? (
         <div className="mt-8 justify-center ">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 ">
+                   <div className="px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 lg:gap-10 ">
             {currentItems.map((card) => (
-              <div
-                className="flex flex-col my-3 p-4 mx-auto  rounded-md border border-solid border-black border-opacity-10 shadow-md hover:shadow-lg hover:border-slate-800 transition duration-300 max-sm:w-80 max-lg:w-72 min-w-60  2xl:min-w-64 bg-white font-light text-neutral-500 cursor-pointer"
-                key={card.id}
-              >
+              <div className="flex flex-col my-5 p-4 mx-auto max-lg:w-72 w-full rounded-md border border-solid border-black border-opacity-10 shadow-md hover:shadow-lg hover:border-slate-800 transition duration-300   bg-white font-light text-neutral-500 cursor-pointer" key={card.id}>
                 <div className="flex flex-col justify-start text-xs leading-6 whitespace-nowrap bg-sky-50 rounded-md">
                   <div className="flex overflow-hidden relative flex-col pt-4 pb-1 w-full aspect-w-1 aspect-h-1">
                     <div className="flex flex-row w-full justify-around">
@@ -127,12 +124,12 @@ const OrganizationSets: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex gap-2 justify-between mt-4">
-                  <div className="flex gap-1 text-sm leading-4">
+                  <div className="flex gap-1 bg-sky-200 rounded-xl px-2 py-1 text-sm leading-4">
                     <img
                       loading="lazy"
                       alt="grader"
                       src={graderLogo}
-                      className="shrink-0 aspect-[1.27] w-[30px]"
+                      className="shrink-0 aspect-[1.27] w-[20px]"
                     />
                     <div className="my-auto">SmartGrader</div>
                   </div>
@@ -185,7 +182,7 @@ const OrganizationSets: React.FC = () => {
       )}
       <div className="mt-5 sm:w-3/5 mx-auto">
         <ResponsivePagination
-          maxWidth={500}
+          //maxWidth={350}
           narrowBehaviour={combine(dropNav, dropEllipsis)}
           current={currentPage + 1}
           total={pageCount}

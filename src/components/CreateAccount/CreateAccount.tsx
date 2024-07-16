@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiArrowUpRight } from "react-icons/fi";
-import smartLogo from "../../assets/logos/smart-logo.png";
+import smartLogo from "../../assets/logos/smartGrader.png";
 import individualPerson from "../../assets/images/Account/individual-person.png";
 import organizationPerson from "../../assets/images/Account/organization-person.png";
 import educationalPerson from "../../assets/images/Account/educational-person.png";

@@ -940,30 +940,7 @@ video {
   color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 
-.pagination {
-  display: flex;
-  list-style-type: none;
-  padding: 0;
-  justify-content: center;
-}
 
-.pagination li {
-  margin: 5px;
-}
-
-.pagination .page-item a {
-  text-decoration: none;
-  border: 1px solid #5E676B;
-  border-radius: 5px;
-  padding: 10px 12px;
-}
-
-.pagination .page-item.disabled a {
-  pointer-events: none;
-  background-color: #f1f1f1;
-  color: #5E676B;
-  border: 1px solid #f1f1f1;
-}
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;

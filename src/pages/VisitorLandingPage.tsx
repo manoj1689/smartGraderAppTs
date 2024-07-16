@@ -8,6 +8,7 @@ const VisitorLandingPage:React.FC=() => {
   const queryParams = new URLSearchParams(location.search);
   const queryEmail = queryParams.get("email") || "";
   const userEmail = getEmail();
+  console.log(getEmail())
   if (queryEmail === userEmail) {
     return  <Visitor_landing />;
   }

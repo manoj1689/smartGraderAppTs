@@ -20,7 +20,7 @@ function ProtectedRoute() {
           <SideBar />
         </div>
       )}
-      <div className={`flex-grow ${isInterviewPage ? 'ml-0' : 'ml-0 lg:ml-64'}`}> 
+      <div className={`flex-grow ${isInterviewPage ? 'ml-0' : 'ml-0 lg:ml-56 xl:ml-64 '}`}> 
         <Outlet />
       </div>
     </div>

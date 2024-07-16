@@ -1,7 +1,7 @@
 import React from 'react';
 import {  useNavigate } from "react-router-dom";
 import NotificationBar from "../components/common/Notification/NotificationBar";
-import SmartGrader from "../assets/logos/smart-logo.png";
+import SmartGrader from "../assets/logos/smartGrader.png";
 
 
 const InterviewEndPage = () => {

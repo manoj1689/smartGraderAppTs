@@ -90,15 +90,13 @@ const CreateJobs: React.FC = () => {
   }, [selectedSetId]);
 
   return (
-    <div className="container mx-auto w-full h-full">
-      <div className="mt-20 lg:mt-10">
+    <div className="p-4 w-full h-full">
       <NotificationBar />
-      </div>
 
-      <div className="bg-white my-5 rounded-md border border-solid border-black border-opacity-10 px-4 py-4">
+      <div className="bg-white my-5 rounded-md border border-solid border-black border-opacity-10 p-4">
         <div className="flex flex-row items-center max-lg:my-5 space-x-4">
-          <FaLaptopCode size={30} color="5E676B" />
-          <span className="text-lg sm:text-xl font-spline font-semibold">
+          <FaLaptopCode size={30} color="#01AFF4" />
+          <span className=" text-lg font-semi-bold font-spline text-slate-800">
             Current Job Opening
           </span>
         </div>
@@ -107,38 +105,41 @@ const CreateJobs: React.FC = () => {
           <div className="lg:w-2/3 order-2 lg:order-1 px-4">
             <div className="bg-white my-5  rounded-lg">
               <form>
-                <div className=" p-4 w-full border-solid max-md:flex-wrap max-md:max-w-full">
-                <div className="gap-3">
-                    <span className="block text-lg font-spline font-semibold text-gray-700 whitespace-nowrap">
+                <div className=" w-full border-solid max-md:flex-wrap max-md:max-w-full">
+                  <div className="flex flex-col md:flex-row gap-3 ">
+                  <div className="gap-3 w-full ">
+                    <span className="block text-lg font-spline my-2 font-semibold text-gray-700 whitespace-nowrap">
                       Title
                     </span>
                     <input
                       type="text"
-                      placeholder="Enter Post "
+                      placeholder="e.g., Frontend Developer"
                       value={title}
                       onChange={(e) => setTitle(e.target.value)}
-                      className="justify-center items-start p-4 leading-4 rounded w-1/2 pr-10 focus:border-neutral-500 focus:ring-neutral-500 border focus:outline"
-                    />
-                  </div>
-                  <div className="gap-3 my-5">
-                    <span className="block text-lg font-spline font-semibold text-gray-700 whitespace-nowrap">
-                      Description
-                    </span>
-                    <input
-                      type="text"
-                      placeholder="Enter Post "
-                      value={description}
-                      onChange={(e) => setDescription(e.target.value)}
-                      className="justify-center items-start p-4 leading-4 rounded w-1/2 pr-10 focus:border-neutral-500 focus:ring-neutral-500 border focus:outline"
+                      className="justify-center items-start p-4 leading-4 rounded w-full pr-10 border-neutral-500 ring-neutral-500 focus:border-sky-400 focus:ring-sky-400 border focus:outline-none resize-none"
                     />
                   </div>
                   <div className="gap-3 w-full">
-                    <span className="block  text-lg font-spline font-semibold  text-gray-700  whitespace-nowrap">
+                    <span className="block text-lg my-2 font-spline font-semibold text-gray-700 whitespace-nowrap">
+                      Description
+                    </span>
+                    <textarea
+                      placeholder="e.g., Responsible for developing and maintaining web applications"
+                      value={description}
+                      onChange={(e) => setDescription(e.target.value)}
+                      className="justify-center items-start p-4 leading-4 rounded w-full  h-32 pr-10 border-neutral-500 ring-neutral-500 focus:border-sky-400 focus:ring-sky-400 border  border focus:outline-none resize-none"
+                    />
+                  </div>
+
+                  </div>
+                
+                  <div className="gap-3 w-full">
+                    <span className="block my-3 text-lg font-spline font-semibold  text-gray-700  whitespace-nowrap">
                       Experience Required
                     </span>
 
                     <Select
-                      className="w-full md:w-1/2 my-4"
+                      className="w-full "
                       value={experience}
                       onChange={handleChange}
                       options={options}
@@ -146,12 +147,10 @@ const CreateJobs: React.FC = () => {
                     />
                   </div>
                 </div>
-
-                <div className="mt-5"></div>
               </form>
             </div>
 
-            <div>
+            <div className="mt-4">
               {selectedSetId ? (
                 <div className="my-5">
                   <div className="text-xl font-spline font-semibold text-gray-700">
@@ -348,8 +347,8 @@ const CreateJobs: React.FC = () => {
                     onChange={(date: Date | null) => setStartDate(date)}
                     dateFormat="MM/dd/yyyy"
                     className="px-4 py-3 text-base text-gray-600 border border-solid border-neutral-500 rounded"
+                    placeholderText="e.g.,01/01/2024"
                   />
-                
                 </div>
               </div>
               <div className="flex flex-col flex-1 grow shrink-0  basis-0 w-fit">
@@ -357,44 +356,43 @@ const CreateJobs: React.FC = () => {
                   End Date{" "}
                 </div>
                 <DatePicker
-                    selected={endDate}
-                    onChange={(date: Date | null) => setEndDate(date)}
-                    dateFormat="MM/dd/yyyy"
-                    className="px-4 py-3 text-base text-gray-600 border border-solid border-neutral-500 rounded"
-                  />
-                
+                  selected={endDate}
+                  onChange={(date: Date | null) => setEndDate(date)}
+                  dateFormat="MM/dd/yyyy"
+                  className="px-4 py-3 text-base text-gray-600 border border-solid border-neutral-500 rounded"
+                  placeholderText="e.g.,01/04/2024"
+                />
               </div>
             </div>
-          <div>
-          <div className="flex justify-center my-4">
-              <FaArrowsDownToPeople size={80} className="text-blue-400" />
+            <div>
+              <div className="flex justify-center my-4">
+                <FaArrowsDownToPeople size={80} className="text-blue-400" />
+              </div>
+              <h2 className="text-2xl font-bold text-center mb-4">
+                Send Invitation
+              </h2>
+              <p className="text-center text-gray-600 mb-4">
+                You haven’t added any candidates for the interview yet. As the
+                owner of this project, you can send invitations for interviews
+                with AI.
+              </p>
+              <ReactMultiEmail
+                emails={emailsList}
+                onChange={setEmailsList}
+                validateEmail={(email) => isEmail(email)}
+                getLabel={(email, index, removeEmail) => (
+                  <div data-tag key={index}>
+                    {email}
+                    <span data-tag-handle onClick={() => removeEmail(index)}>
+                      ×
+                    </span>
+                  </div>
+                )}
+                placeholder="e.g., abc@gmail.com"
+                className="w-full p-2 border rounded mb-4 h-20 border-gray-500"
+              />
             </div>
-            <h2 className="text-2xl font-bold text-center mb-4">
-              Send Invitation
-            </h2>
-            <p className="text-center text-gray-600 mb-4">
-              You haven’t added any candidates for the interview yet. As the
-              owner of this project, you can send invitations for interviews
-              with AI.
-            </p>
-            <ReactMultiEmail
-              emails={emailsList}
-              onChange={setEmailsList}
-              validateEmail={(email) => isEmail(email)}
-              getLabel={(email, index, removeEmail) => (
-                <div data-tag key={index}>
-                  {email}
-                  <span data-tag-handle onClick={() => removeEmail(index)}>
-                    ×
-                  </span>
-                </div>
-              )}
-             placeholder="Ex: abc@gmail.com"
-              className="w-full p-2 border rounded mb-4 h-20 border-gray-500"
-            />
 
-          </div>
-            
             <button
               className="flex justify-center items-center   self-stretch mx-auto px-4 py-5 mt-10 text-base text-white bg-sky-500 rounded-md border border-sky-500 border-solid w-full sm:w-2/3 max-md:px-5"
               onClick={handleSaveAndPublish}

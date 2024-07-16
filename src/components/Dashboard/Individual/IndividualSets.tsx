@@ -74,9 +74,9 @@ const IndividualSets: React.FC = () => {
       <CategorySearch setListOfAllIds={setListOfAllId} setMatchingQuestionSets={setMatchingQuestionSets} />
       {currentItems.length > 0 ? (
         <div className="mt-8 justify-center ">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3 ">
+          <div className="px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 lg:gap-10 ">
             {currentItems.map((card) => (
-              <div className="flex flex-col my-3 p-4 mx-auto  rounded-md border border-solid border-black border-opacity-10 shadow-md hover:shadow-lg hover:border-slate-800 transition duration-300 max-sm:w-80 max-lg:w-72 min-w-60  2xl:min-w-64 bg-white font-light text-neutral-500 cursor-pointer" key={card.id}>
+              <div className="flex flex-col my-5 p-4 mx-auto max-lg:w-72 w-full rounded-md border border-solid border-black border-opacity-10 shadow-md hover:shadow-lg hover:border-slate-800 transition duration-300   bg-white font-light text-neutral-500 cursor-pointer" key={card.id}>
                 <div className="flex flex-col justify-start text-xs leading-6 whitespace-nowrap bg-sky-50 rounded-md">
                   <div className="flex overflow-hidden relative flex-col pt-4 pb-1 w-full aspect-w-1 aspect-h-1">
                     <div className="flex flex-row w-full justify-around">

@@ -15,7 +15,7 @@ const JDQuestionsForm = ({ onGenerate, loading }) => {
       <div className="mb-4">
         <textarea
           className="w-full p-4 border border-gray-300 rounded"
-          placeholder="Write Your Job Descriptions"
+          placeholder="e.g.,Write Your Job Descriptions"
           value={jobDescription}
           onChange={(e) => setJobDescription(e.target.value)}
         />

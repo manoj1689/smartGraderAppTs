@@ -8,42 +8,28 @@ import CandidateInvitation from "./CandidateInvitation";
 import CandidateStatus from "./CandidateStatus";
 import OrganizationSets from "./OrganizationSets";
 import MySets from "./Mysets";
-const OrganizationDashboard: React.FC<OrganizationDashboardProps> = ({ organizationData }) => {
-
+const OrganizationDashboard: React.FC<OrganizationDashboardProps> = ({
+  organizationData,
+}) => {
   return (
-    <div className="container  mx-auto w-full h-full ">
-      
-      <div className="mt-20 lg:mt-10">
-      <NotificationBar />
+    <div className="p-4">
+      <div>
+        <NotificationBar />
       </div>
       <OrganizationSets/>
-      <CurrentJobs /> 
+       <CurrentJobs />  
       <MySets/>
-    <div className="flex flex-col gap-5 lg:flex-row">
-      <div className="w-full">
-      <CandidateResults/>
+      <div className="flex flex-col mx-2 mt-10 gap-5 xl:flex-row">
+        <div className="w-full">
+          <CandidateResults />
+        </div>
+        <div className="w-full">
+          <CandidateInvitation />
+        </div>
       </div>
-  <div className="w-full">
-  <CandidateInvitation/>
-  </div>
-   
-    </div>
-<CandidateStatus/>
+      <CandidateStatus />
     </div>
   );
 };
 
 export default OrganizationDashboard;
-
-
-
-
-
-
-
-
-
-
-
-
-

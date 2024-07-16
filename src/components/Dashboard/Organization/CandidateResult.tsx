@@ -37,7 +37,7 @@ const candidates: Candidate[] = [
   {
     name: "Kristin Watson",
     role: "Marketing Manager",
-    image: "",
+    image: "https://via.placeholder.com/55",
     performance: [{ type: "Average", percentage: 65 }],
   },
 ];
@@ -65,14 +65,14 @@ const CandidateResults: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col px-7 pt-5 pb-14 bg-white w-full rounded-md border border-solid border-black border-opacity-10 max-md:px-5 mx-auto mt-10">
-      <div className="flex gap-5 justify-between">
-        <div className="flex gap-3.5 self-start mt-3 text-lg font-medium leading-6 text-slate-800">
-          <FaIdCard size={20} color="grey" />
-          <div className="flex-auto my-auto">Candidates Results</div>
+    <div className="flex flex-col grow  p-4 w-full bg-white rounded-md border border-solid border-black border-opacity-10 ">
+   
+        <div className="flex gap-3.5 self-start  text-lg font-medium leading-6 text-slate-800">
+          <FaIdCard size={30} color="#01AFF4" />
+          <div className=" text-md md:text-lg font-semi-bold font-spline text-slate-800">Candidates Results</div>
         </div>
-        <IoNavigate size={30} color="blue" />
-      </div>
+        
+    
       <div className="shrink-0 mt-3 mb-5 border border-solid bg-black bg-opacity-10 border-black border-opacity-10" />
 
       <div>

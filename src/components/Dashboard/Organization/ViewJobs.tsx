@@ -64,19 +64,19 @@ const UnResponse=2
   };
 
   return (
-    <div className="container flex flex-col mx-auto p-4">
-      <div className="mt-20 lg:mt-10">
+    <div className="flex flex-col p-4">
+ 
         <NotificationBar />
-      </div>
+  
 
       <div className="bg-white rounded-md border border-solid border-black border-opacity-10 px-4 py-4">
         <ToastContainer/>
         <div className="flex items-center gap-5">
-          <FaLaptopCode size={40} color="grey" />
-          <div className="font-semibold">{title}</div>
+          <FaLaptopCode size={30} color="#01AFF4" />
+          <div className=" text-lg font-semi-bold font-spline text-slate-800">{title}</div>
         </div>
         <div className="shrink-0 mt-3.5 h-px border border-solid bg-black bg-opacity-10 border-black border-opacity-10 max-md:max-w-full" />
-        <div className="flex flex-col my-5 lg:flex-row">
+        <div className="flex flex-col my-5 px-4 lg:flex-row">
           <div className="lg:w-2/3 order-2 lg:order-1">
             <div className="flex flex-col my-5 lg:flex-row">
               <div className="flex flex-col w-full mb-4">
@@ -120,7 +120,7 @@ const UnResponse=2
                   Respond
                 </div>
                 <div className="flex gap-2 mt-2 text-lg font-medium leading-6 text-slate-800">
-                  <div className="shrink-0 self-start bg-sky-500 rounded-full h-[11px] w-[11px] my-2" />
+                  <div className="shrink-0 self-start bg-sky-500 mt-[6px] rounded-full h-[11px] w-[11px] " />
                   <div className="flex-auto">{Respond} Candidates</div>
                 </div>
               </div>
@@ -132,7 +132,7 @@ const UnResponse=2
                   Unresponse
                 </div>
                 <div className="flex gap-2 self-start mt-2 text-lg font-medium leading-6 text-slate-800">
-                  <div className="shrink-0 self-start bg-orange-600 rounded-full h-[11px] w-[11px]" />
+                  <div className="shrink-0 self-start mt-[6px] bg-orange-600 rounded-full h-[11px] w-[11px]" />
                   <div className="flex-auto">{UnResponse} Candidates</div>
                 </div>
                 <div className="self-start mt-2.5 text-base font-light leading-4 text-sky-500 underline">
@@ -162,7 +162,7 @@ const UnResponse=2
                 </div>
               </div>
             </button>
-            <button className="flex justify-center items-center mx-auto self-stretch px-4 py-5 my-10 text-red-500 bg-white rounded-md border border-gray-400 w-full sm:w-2/3 max-md:px-5">
+            <button className="flex justify-center items-center mx-auto self-stretch px-4 py-5 my-10 text-red-500 bg-white rounded-md border border-gray-400 w-full sm:w-2/3 max-md:px-5" onClick={()=>navigate("/dashboard")}>
               <div className="flex gap-2.5">
                 <div>Back</div>
               </div>
@@ -213,13 +213,13 @@ const UnResponse=2
                   </svg>
                 </div>
               </div>
-              <div className="flex gap-5 self-center mt-9 text-base font-light leading-6">
-                <div className="flex flex-1 gap-2 justify-end px-5">
-                  <div className="shrink-0 self-start bg-sky-500 rounded-full h-[11px] w-[11px]" />
+              <div className="flex gap-5 items-center mt-9   text-base  font-light leading-6">
+                <div className="flex flex-1 gap-2 justify-end items-center px-5">
+                  <div className="shrink-0 self-start bg-sky-500 mt-[6px] rounded-full h-[11px] w-[11px]" />
                   <div>Respond</div>
                 </div>
                 <div className="flex flex-1 gap-2 px-5">
-                  <div className="shrink-0 self-start bg-orange-600 rounded-full h-[11px] w-[11px]" />
+                  <div className="shrink-0 self-start bg-orange-600 mt-[6px] rounded-full h-[11px] w-[11px]" />
                   <div>Unrespond</div>
                 </div>
               </div>
