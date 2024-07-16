@@ -125,7 +125,7 @@ const MySets: React.FC = () => {
             <span>
               <button
                 className="flex justify-center items-center px-4 py-3 text-base text-white bg-sky-500 rounded-md border border-sky-500 border-solid max-md:px-5"
-                onClick={() => navigate("createset")}
+                onClick={() => navigate("/dashboard/generatequestion")}
               >
                 <div className="flex gap-2.5">
                   <div className="flex items-center gap-3">
