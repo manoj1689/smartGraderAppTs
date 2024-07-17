@@ -61,7 +61,7 @@ console.log('Sub Cat  ID:', subCatId);
     QUESTION_SOURCE.DOMAIN
   );
   const [generatedQuestions, setGeneratedQuestions] = useState<Question[]>([]);
-  const [examTiming, setExamTiming] = useState<number>(60);
+  const [examTiming, setExamTiming] = useState<number>(0);
   const [error, setError] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isConfirm, setConfirm] = useState<boolean>(false);
@@ -79,6 +79,12 @@ console.log('Sub Cat  ID:', subCatId);
     { value: 2, label: 'Hard' },
     // Add more options as needed
   ];
+
+  useEffect(() => {
+    // Set the exam timing to 2 minutes per generated question
+    setExamTiming(generatedQuestions.length * 2);
+  }, [generatedQuestions]);
+
   const handleTitleChange = (event: ChangeEvent<HTMLInputElement>) => {
     setTitle(event.target.value);
   };
@@ -165,7 +171,7 @@ console.log('Sub Cat  ID:', subCatId);
     setIsOpen(false);
   };
 
- 
+ console.log("generate Questions ",generatedQuestions)
 
   const handleGenerateQuestions = async (data: FormData) => {
     setLoading(true);
@@ -433,6 +439,7 @@ console.log('Sub Cat  ID:', subCatId);
             {generatedQuestions.length > 0 && (
               <>
                 <ExamSettings
+                  generatedQuestions={generatedQuestions}
                   examTiming={examTiming}
                   setExamTiming={setExamTiming}
                 />

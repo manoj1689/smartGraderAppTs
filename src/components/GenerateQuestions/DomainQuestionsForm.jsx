@@ -46,10 +46,10 @@ const DomainQuestionsForm = ({ onGenerate, loading, subCatId }) => {
           isMulti
           options={[ ...subCategoryOptions]}
           onChange={(selectedOptions) =>
-            setSelectedTopics(selectedOptions.map((option) => option.value))
+            setSelectedTopics(selectedOptions.map((option) => option.label))
           }
           value={[...defaultOptions, ...subCategoryOptions].filter((option) =>
-            selectedTopics.includes(option.value)
+            selectedTopics.includes(option.label)
           )}
           className="basic-multi-select"
           classNamePrefix="select"
@@ -68,7 +68,7 @@ const DomainQuestionsForm = ({ onGenerate, loading, subCatId }) => {
             setNumberOfQuestions(isNaN(value) ? 0 : value);
           }}
           min="0"
-          max="8"
+          max="5"
           className="w-full p-2 border border-gray-300 rounded"
         />
       </div>

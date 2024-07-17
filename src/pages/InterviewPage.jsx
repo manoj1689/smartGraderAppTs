@@ -194,7 +194,7 @@ const InterviewScreen = () => {
   const handleNextQuestion = useCallback(() => {
     setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
   }, []);
-
+  
   const currentQuestion = questionsData[currentQuestionIndex];
 
   async function requestCameraAndMicrophone() {
@@ -319,8 +319,8 @@ const InterviewScreen = () => {
 
     if (examStarted) {
       setStartTime(new Date());
-      setRemainingTime(questionsData[currentQuestionIndex]?.duration);
-
+      //setRemainingTime(questionsData[currentQuestionIndex]?.duration);
+      setRemainingTime(120);
       timerInterval = setInterval(() => {
         setRemainingTime((prevTime) => {
           if (prevTime > 1) {
@@ -491,7 +491,8 @@ const InterviewScreen = () => {
                       </div>
                     </div>
                     <div className="w-full text-lg font-semibold leading-6 text-neutral-700">
-                      Question {currentQuestion?.id}
+                      {/* Question {currentQuestion?.id} */}
+                      Question {currentQuestionIndex + 1}
                       <span className="text-xs text-neutral-600">
                         {" "}
                         (Click the speaker icon to listen to question)
