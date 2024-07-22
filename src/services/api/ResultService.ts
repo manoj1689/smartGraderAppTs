@@ -1,15 +1,20 @@
-// services/resultService.ts
+import axiosInstance from '../axios/axiosInstance';
+import { getToken } from '../../utils/tokenUtils';
+import { ENDPOINTS } from "../../constants/Endpoints";
 
-import axios from "axios";
-import { RESULT_BASE_URL } from "../../constants/Constants";
- const fetchResultData = async () => {
+
+export const fetchSetsResult = async (examId: string) => {
+  const token = getToken();
   try {
-    const response = await axios.get(RESULT_BASE_URL);
+    const response = await axiosInstance.get(`${ENDPOINTS.EXAM_RESULT}/${examId}`,{
+      headers: {
+        Accept: "application/json",
+        Token: token,
+      }
+    });
+   // console.log("Set Result",  JSON.stringify(response.data, null, 2))
     return response.data;
   } catch (error) {
-    console.error("There was an error fetching the user data!", error);
-    throw error;
+    throw new Error('Error Fetching Set Result.');
   }
 };
-
-export default fetchResultData;

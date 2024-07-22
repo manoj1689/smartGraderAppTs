@@ -96,7 +96,7 @@ const InterviewInstructions: React.FC = () => {
               I have read and understood the instructions. All Computer Hardwares allotted to me are in proper working condition. I agree that in case of not adhering to the instructions, I will be disqualified from taking the exam.
             </span>
 
-            <div className="flex w-full my-12 lg:w-5/6 mx-auto justify-center space-x-4">
+            <div className="flex flex-col lg:flex-row w-full my-12 lg:w-5/6 mx-auto justify-center gap-3">
               <button
                 type="button"
                 className="p-4 w-full lg:w-1/2 bg-slate-500 text-white rounded hover:bg-slate-600"

@@ -135,19 +135,29 @@ const InterviewScreen = () => {
         answer,
         token
       );
-      if (!isTimeOut) {
+      if(!isTimeOut){
         handleNextQuestion();
+        setIsTimeOut(true)
+        
       }
-      setAnswer("");
+      
+     setAnswer("")
     } catch (error) {
       setError(MESSAGES.SUBMIT_ANSWER_ERROR);
     } finally {
       setLoading(false);
     }
   };
+  const handleNextQuestion = useCallback(() => {
+    setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
+  }, []);
+  
+  const currentQuestion = questionsData[currentQuestionIndex];
 
   const handleSubmitAnswerWithoutNext = async () => {
-    const endTime = new Date();
+    let endTime = new Date();
+    endTime.setSeconds(endTime.getSeconds() + 90);
+    //const endTime = new Date();
     const duration = Math.floor((endTime - startTime) / 1000);
     try {
       await submitAnswer(
@@ -157,11 +167,13 @@ const InterviewScreen = () => {
         answer,
         token
       );
+      handleNextQuestion();
       setAnswer("");
+      setIsTimeOut(false)
     } catch (error) {
       setError(MESSAGES.SUBMIT_ANSWER_ERROR);
     } finally {
-      setLoading(false);
+      setLoading(true);
     }
   };
 
@@ -191,12 +203,7 @@ const InterviewScreen = () => {
     }
   };
 
-  const handleNextQuestion = useCallback(() => {
-    setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-  }, []);
-  
-  const currentQuestion = questionsData[currentQuestionIndex];
-
+ 
   async function requestCameraAndMicrophone() {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -292,6 +299,7 @@ const InterviewScreen = () => {
 
   const stopListening = () => {
     SpeechRecognition.stopListening();
+    resetTranscript();
   };
 
   useEffect(() => {
@@ -314,28 +322,39 @@ const InterviewScreen = () => {
   //   return <div>Loading...</div>;
   // }
 
-  useEffect(() => {
-    let timerInterval;
+  const updateTime = useCallback(() => {
+    if (startTime) {
+      const now = new Date();
+         console.log("startTime",startTime,"nowTime",now)
+      const elapsed = Math.floor((now - startTime) / 1000);
+      const remaining = currentQuestion.duration - elapsed ;
+      setRemainingTime(remaining);
 
-    if (examStarted) {
-      setStartTime(new Date());
-      //setRemainingTime(questionsData[currentQuestionIndex]?.duration);
-      setRemainingTime(120);
-      timerInterval = setInterval(() => {
-        setRemainingTime((prevTime) => {
-          if (prevTime > 1) {
-            return prevTime - 1;
-          } else {
-            clearInterval(timerInterval);
-            setIsTimeOut(true);
-            handleSubmitAnswerWithoutNext(); // Auto-submit when time runs out
-            return 0;
-          }
-        });
-      }, 1000);
+      if (remaining <= 0) {
+        stopListening();
+        // setIsTimeOut(true);
+        handleSubmitAnswerWithoutNext()
+        
+      }
     }
-    return () => clearInterval(timerInterval);
-  }, [examStarted, currentQuestionIndex, questionsData]);
+  }, [startTime]);
+
+  useEffect(() => {
+    if (examStarted && currentQuestion) {
+      let date = new Date();
+      date.setSeconds(date.getSeconds() + 90);
+      setStartTime(date);
+      
+      setRemainingTime(120);
+    }
+  }, [examStarted, currentQuestion]);
+
+  useEffect(() => {
+    if (remainingTime !== null && remainingTime > 0) {
+      const intervalId = setInterval(updateTime, 1000);
+      return () => clearInterval(intervalId);
+    }
+  }, [remainingTime, updateTime]);
 
   const handleButtonClick = () => {
     setIsModalOpen(true);
@@ -385,7 +404,14 @@ const InterviewScreen = () => {
       document.removeEventListener("fullscreenchange", handleFullscreenChange);
     };
   }, []);
-
+  const handleNextButtonClick = useCallback(() => {
+    stopListening(); // Call stopListening function to stop mic or speech input
+    if (isTimeOut) {
+      handleSubmitAnswer(); // Handle submitAnswer if it's a timeout
+    } else {
+      handleSubmitAnswerWithoutNext(); // Handle submitAnswerWithoutNext if not a timeout
+    }
+  }, [stopListening, handleSubmitAnswer, handleSubmitAnswerWithoutNext, isTimeOut]);
   return (
     <>
       <Sticky topOffset={80} className="fixed top-10 right-10 z-50">
@@ -558,9 +584,8 @@ const InterviewScreen = () => {
 
                       {currentQuestionIndex < questionsLength - 1 ? (
                         <button
-                          onClick={
-                            isTimeOut ? handleNextQuestion : handleSubmitAnswer
-                          }
+                        onClick={handleNextButtonClick}
+                          //onClick={handleSubmitAnswer}
                           className="flex px-4 py-4 gap-5 bg-gray-500 justify-center items-center w-full lg:w-1/2 text-white rounded hover:bg-gray-600"
                         >
                            <span>Next</span> <span><MdArrowForward size={20} /></span> 

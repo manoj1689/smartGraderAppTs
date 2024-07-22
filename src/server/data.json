@@ -1,0 +1,34 @@
+{
+  "interview": [
+    {
+      "id": 1,
+      "question": "Can you please introduce yourself, mentioning your educational background and any relevant experience in programming?",
+      "answer": "Hello, my name is Alex Johnson. I have a Bachelor's degree in Computer Science from XYZ University. I have been programming for about three years, primarily working with languages such as Python, JavaScript, and Java. I have experience developing web applications, automating tasks, and working on various personal projects to enhance my skills.",
+      "video_url": "videos/1.mp4"
+    },
+    {
+      "id": 2,
+      "question": "Can you explain the concept of variables and data types in programming? Give examples of different data types you have used in your projects.",
+      "answer": "Variables are used to store data that can be manipulated and referenced throughout a program. Data types specify the kind of data that can be stored in a variable. Common data types include integers, floating-point numbers, strings, and booleans. For example, in Python, 'x = 5' declares an integer variable, 'y = 3.14' declares a float, 'name = \"Alex\"' declares a string, and 'is_student = True' declares a boolean.",
+      "video_url": "videos/2.mp4"
+    },
+    {
+      "id": 3,
+      "question": "What are control structures in programming? Please discuss the differences between if-else statements and switch-case statements, and provide examples of when you might use each.",
+      "answer": "Control structures are used to dictate the flow of a program. If-else statements are used to execute code based on a condition: if the condition is true, one block of code is executed; otherwise, another block is executed. Switch-case statements are used to simplify the process of selecting one of many code blocks to execute based on the value of a variable. If-else is useful for simple, binary conditions, while switch-case is beneficial when dealing with multiple potential values. For example, an if-else statement might be used to check if a user is logged in or not, whereas a switch-case might be used to handle different user roles (e.g., admin, editor, viewer).",
+      "video_url": "videos/3.mp4"
+    },
+    {
+      "id": 4,
+      "question": "How do functions work in programming? Can you describe a function you have written recently and explain its purpose and how it was implemented?",
+      "answer": "Functions are blocks of code designed to perform specific tasks and can be reused throughout a program. They take input, process it, and return an output. Recently, I wrote a function in Python to calculate the factorial of a number. The function takes an integer as input and returns its factorial by multiplying all integers from 1 to the input number. Here's an example implementation:\n\n```python\n def factorial(n):\n if n == 0:\n return 1\n else:\n return n * factorial(n-1)\n ```",
+      "video_url": "videos/4.mp4"
+    },
+    {
+      "id": 5,
+      "question": "What is the significance of loops in programming? Please explain the differences between for loops and while loops, and describe a situation where you have used each.",
+      "answer": "Loops are used to execute a block of code repeatedly until a specified condition is met. For loops are used when the number of iterations is known beforehand, while while loops are used when the number of iterations is not known and depends on a condition. For example, I used a for loop to iterate over a list of user names and print each one, and I used a while loop to keep prompting a user for input until they entered a valid response.",
+      "video_url": "videos/5.mp4"
+    }
+  ]
+}

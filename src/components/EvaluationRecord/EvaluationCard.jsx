@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 const EvaluationCard = ({ record }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-
+ 
   return (
     <div className="bg-blue-50 rounded-lg shadow-md p-6 mb-6 border border-gray-300 ">
       <div

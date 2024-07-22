@@ -299,7 +299,7 @@ console.log('Sub Cat  ID:', subCatId);
           
             <div className="flex flex-col lg:flex-row gap-5">
             <div className="mb-4 w-full  lg:w-1/2">
-              <label className="block text-md font-semibold font-spline text-gray-700 mb-2">Category</label>
+              <label className="block text-md font-semibold font-spline text-gray-700 mb-2">Specialization</label>
               <Select
                 options={categories}
                 onChange={handleCategoryChange}

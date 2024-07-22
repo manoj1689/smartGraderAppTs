@@ -17,13 +17,14 @@ export const fetchSetQuestions = async (setId: string, token: string) => {
 
 export const submitAnswer = async (questionId: string, examId: string, duration: string, answer: string, token: string) => {
   try {
-   
+   console.log(`Question Id ${questionId} and examId ${examId} and Answer Of question ${answer}`)
     const response = await axiosInstance.post(`${ENDPOINTS.SUBMIT_ANSWER}?question_id=${questionId}&exam_id=${examId}&duration=${duration}&answer=${answer}`, {}, {
       headers: {
         Accept: "application/json",
         Token: token,
       }
     });
+    console.log("The response after submit Answer",response.data)
     return response.data;
     
   } catch (error) {

@@ -42,6 +42,7 @@ const DomainQuestionsForm = ({ onGenerate, loading, subCatId }) => {
         <label className="block text-md font-semibold font-spline text-gray-700 mb-2">
           Type Categories
         </label>
+        {subCatId ? (
         <CreatableSelect
           isMulti
           options={[ ...subCategoryOptions]}
@@ -53,8 +54,16 @@ const DomainQuestionsForm = ({ onGenerate, loading, subCatId }) => {
           )}
           className="basic-multi-select"
           classNamePrefix="select"
-          placeholder="Select Category First"
-        />
+          placeholder="Choose Options"
+        />): (
+          <CreatableSelect
+            isDisabled
+            options={[]}
+            className="basic-multi-select"
+            classNamePrefix="select"
+            placeholder="Select Category First"
+          />
+        )}
       </div>
       <div className="mt-5 sm:mt-10 mb-4">
         <label className="block text-md font-semibold font-spline text-gray-700  mb-2">

@@ -8,7 +8,7 @@ import SelectInterestPage from "../pages/SelectInterestPage";
 import VisitorLandingPage from "../pages/VisitorLandingPage";
 import { getToken } from "../utils/tokenUtils";
 import { getEmail } from "../utils/tokenUtils";
-
+import AIDemo from "../components/Demo/AIDemo";
 const PublicRoutes: React.FC = () => {
   const userEmail = getEmail();
   const shouldRenderVisitorLanding = userEmail === getEmail();
@@ -25,7 +25,7 @@ const PublicRoutes: React.FC = () => {
         <Route path="/" element={<SignInPage />} />
         <Route path="/signIn" element={<SignInPage />} />
         <Route path="/signUp" element={<SignUpPage />} />
-
+        <Route path="/AIDemo" element={<AIDemo />} /> 
         {/* To run this route run from terminal : 
         cd src
         node server.js  */}

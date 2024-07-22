@@ -39,5 +39,6 @@ export const ENDPOINTS = {
     FETCH_USER_DATA: "/users/me", 
     EXAM_END: "/exams/end", 
     EXAM_START: "/exams/start", 
+    EXAM_RESULT: "/question_answer_evaluations", 
     MEDIA_UPLOAD: '/media/upload'
 };

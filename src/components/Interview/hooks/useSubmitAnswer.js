@@ -1,6 +1,6 @@
 // src/components/Interview/hooks/useSubmitAnswer.js
 import { useState } from 'react';
-import axiosInstance from '"../../../services/api/axiosInstance"; // adjust the import path as needed
+import axiosInstance from '"../../../services/api/axiosInstance"; 
 
 export const useSubmitAnswer = () => {
   const [loading, setLoading] = useState(false);
