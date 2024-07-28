@@ -15,7 +15,7 @@ const DomainQuestionsForm = ({ onGenerate, loading, subCatId }) => {
   const [selectedTopics, setSelectedTopics] = useState([]);
   const [numberOfQuestions, setNumberOfQuestions] = useState(1);
   const [subCategoryOptions, setSubCategoryOptions] = useState([]);
-
+  console.log("subCatId at domain page",subCatId)
   useEffect(() => {
     const fetchSubCat = async () => {
       const subCategories = await fetchSubCategories(subCatId);

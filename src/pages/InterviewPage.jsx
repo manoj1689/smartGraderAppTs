@@ -48,6 +48,7 @@ const InterviewScreen = () => {
   const [startTime, setStartTime] = useState(null);
   const [remainingTime, setRemainingTime] = useState(null);
   const [examStarted, setExamStarted] = useState(false);
+  const [examId,setExamId]=useState("")
   const [transcript, setTranscript] = useState("");
   const [isTimeOut, setIsTimeOut] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -59,7 +60,7 @@ const InterviewScreen = () => {
     browserSupportsSpeechRecognition,
     resetTranscript,
   } = useSpeechRecognition();
-
+  console.log("trasncript data",transcript)
   const [permissions, setPermissions] = useState({
     camera: false,
     microphone: false,
@@ -130,7 +131,7 @@ const InterviewScreen = () => {
     try {
       await submitAnswer(
         currentQuestion?.id,
-        questionSetId,
+        examId,
         duration,
         answer,
         token
@@ -162,7 +163,7 @@ const InterviewScreen = () => {
     try {
       await submitAnswer(
         currentQuestion?.id,
-        questionSetId,
+        examId,
         duration,
         answer,
         token
@@ -180,20 +181,29 @@ const InterviewScreen = () => {
   const handleExamStart = async () => {
     setLoading(true);
     try {
-      await examStart(questionSetId, token);
-      setExamStarted(true);
+      const response = await examStart(questionSetId, token);
+      console.log("startExam details", response);
+  
+      if (response.msg==="success") {
+        setExamStarted(true);
+        setExamId(response.exam_id)
+        // You can handle more logic here based on the response
+      } else {
+        setError(response.message || "Error starting the exam");
+      }
     } catch (error) {
-      setError(MESSAGES.EXAM_STARTED_ERROR);
+      setError("Error starting the exam");
     } finally {
       setLoading(false);
     }
   };
-
+//console.log("the Exam id",examId,"type of examId",typeof examId)
   const handleExamEnd = async () => {
     setLoading(true);
     try {
       await handleSubmitAnswer();
-      await examEnd(questionSetId, token);
+      await examEnd(examId, token);
+      setExamId("")
       setIsModalOpen(false);
       navigate(`/dashboard/question/exam-end`);
     } catch (error) {
@@ -332,7 +342,7 @@ const InterviewScreen = () => {
 
       if (remaining <= 0) {
         stopListening();
-        // setIsTimeOut(true);
+         setIsTimeOut(true);
         handleSubmitAnswerWithoutNext()
         
       }
@@ -563,13 +573,24 @@ const InterviewScreen = () => {
                         }}
                       >
                         {listening ? (
-                          <FaMicrophoneAlt
+                          <>
+                             <FaMicrophoneAlt
                             size={25}
                             color="green"
                             className="mr-2"
                           />
+                          <div>
+                          Save
+                          </div>
+                     
+                          </>
+                       
                         ) : (
-                          <FaMicrophoneAlt size={25} className="mr-2" />
+                          <>
+                           <FaMicrophoneAlt size={25} className="mr-2" />
+                           <div>Record</div>
+                          </>
+                         
                         )}
                       </div>
                     </div>

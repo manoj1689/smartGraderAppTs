@@ -119,7 +119,7 @@ const MySets: React.FC = () => {
                 <MdOutlineDataset size={30} color="#01AFF4"/>
               </span>
               <span className=" text-md md:text-lg font-semi-bold font-spline text-slate-800">
-              User-Created AI Question Sets
+              AI Sets by Our Team
               </span>
             </div>
             <span>

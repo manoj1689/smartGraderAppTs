@@ -22,6 +22,7 @@ import CandidateInvitationPage from "../pages/CandidateInvitationPage";
 import CandidateResultPage from "../pages/CandidateResultPage";
 import CreateSetPage from "../pages/CreateSetPage";
 import ViewJobs from "../components/Dashboard/Organization/ViewJobs";
+import HelpSupportTopic from "../components/Help&Support/HelpSupportTopic";
 // import SelectQuestion from "../components/dashboards/organizationDashBoard/SelectQuestion";
 
 
@@ -46,6 +47,7 @@ const PrivateRoutes: React.FC = () => {
         <Route path="settings" element={<SettingPage />} /> 
         <Route path="editsettings" element={<EditSettingsPage />} /> 
         <Route path="help&support" element={<HelpSupportPage />} /> 
+        <Route path="/help&support/:id" element={<HelpSupportTopic />} />
         <Route path="mockinterview" element={<MockInterViewPage />} /> 
         <Route path="progresstracker" element={<ProgressTrackerPage />} /> 
 

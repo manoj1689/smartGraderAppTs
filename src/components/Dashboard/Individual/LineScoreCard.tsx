@@ -26,6 +26,7 @@ const LineScoreCard: React.FC = () => {
         }
         const data = await fetchSetAttemps(token);
         //setResults([]);
+        
         setResults(data);
         setLoading(false); // Set loading state to false after data fetch
       } catch (error) {

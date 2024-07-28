@@ -13,12 +13,12 @@ import ErrorPage from "../common/Error/ErrorDisplay";
 import { useLocation } from "react-router-dom";
 // @ts-ignore
 import { fetchSetsResult } from "../../services/api/ResultService";
-import { examStart,examEnd} from "../../services/api/ExamService";
+import { examStart, examEnd } from "../../services/api/ExamService";
 import generatePDF from "react-to-pdf";
 const Result = () => {
   const location = useLocation();
   const targetRef = useRef();
-  console.log("result at result page", location.state);
+  console.log("Set Attempt SetId and Data at result page", location.state);
 
   const [user, setUser] = useState([]);
   const [error, setError] = useState(false);
@@ -34,33 +34,32 @@ const Result = () => {
       setExamData(setData.result);
       const id = setData.result.id;
       setSetId(id);
-      console.log("Result Data:", id);
+      console.log("Detail of set of SetId:", id);
       console.log("set_id", id, "Type of setId:", typeof id);
     } else {
       console.log("No state data available");
     }
   }, [setData]);
 
-  // Second useEffect to fetch user data
+  // Second useEffect to fetch Details of Set-Id
   useEffect(() => {
     // Only fetch data if setId is valid
     if (setId) {
-      const fetchData = async () => {
+      const fetchListOfAttempts = async () => {
         try {
           const data = await fetchSetsResult(setId);
           setUser(data);
-          console.log(`Result of ${setId}`, data);
+          console.log(`Details of set  of ${setId}`, data);
         } catch (error) {
           setError(true);
           toast.error("Failed to fetch data.");
         }
       };
 
-      fetchData();
+      fetchListOfAttempts();
     }
   }, [setId]); // Dependency on setId
-  
-  
+
   useEffect(() => {
     // Only fetch data if setId is valid
     if (setId) {
@@ -69,7 +68,7 @@ const Result = () => {
           const startExam = await examStart(setId);
           setExamStartDetail(startExam);
           console.log(`Exam Start Detail of ${setId}`, startExam);
-          
+
           const endExam = await examEnd(setId);
           setExamEndDetail(endExam);
           console.log(`Exam End Detail of ${setId}`, endExam);
@@ -78,33 +77,30 @@ const Result = () => {
           toast.error("Failed to fetch data.");
         }
       };
-  
+
       fetchData();
-    
     }
-  }, [setId]); 
-
-
+  }, [setId]);
 
   const calculateTotalTime = (start, end) => {
     const startTime = new Date(start);
-    
+
     const endTime = new Date(end);
-  
+
     const diffInMs = endTime - startTime; // Difference in milliseconds
     const diffInSec = Math.floor(diffInMs / 1000); // Difference in seconds
-  
+
     const hours = Math.floor(diffInSec / 3600); // Number of hours
     const minutes = Math.floor((diffInSec % 3600) / 60); // Number of minutes
     const seconds = diffInSec % 60; // Number of seconds
-  
+
     return `${hours}h ${minutes}m ${seconds}s`;
   };
-  const startTime = examStartDetail.start_time
+  const startTime = examStartDetail.start_time;
 
- const endTime=examEndDetail.end_time
-  const totalTime = calculateTotalTime(startTime,endTime );
-    console.log(examStartDetail.start_time,examEndDetail.end_time,totalTime)
+  const endTime = examEndDetail.end_time;
+  const totalTime = calculateTotalTime(startTime, endTime);
+  console.log(examStartDetail.start_time, examEndDetail.end_time, totalTime);
   console.log("SET STATUS OF EXAM DETAIL", ExamData);
   console.log("SET STATUS AFTER AI SCORE", user, "Type of User:", typeof user);
 
@@ -234,9 +230,18 @@ const Result = () => {
         </div>
         <div className="py-1.5 px-2 pr-1 mt-12 bg-sky-50 rounded-md border border-solid border-black border-opacity-10 ">
           <div className="flex gap-5 max-lg:flex-col max-md:gap-0 justify-center">
-            <div className="flex flex-col   lg:w-2/3 max-md:ml-30">
-              {user.scores?.map((skill, index) => {
-                return <UserInfo key={index} data={skill} />;
+            <div className="flex flex-col lg:w-2/3 max-md:ml-30">
+            <div className="text-2xl px-2 font-spline font-bold ">
+            Smart Score: AI Evaluation
+            </div>
+              {user.map((performance, index) => {
+                return (
+                  <UserInfo
+                    key={index}
+                    data={performance}
+                    questionNumber={index + 1}
+                  />
+                );
               })}
             </div>
             <div></div>

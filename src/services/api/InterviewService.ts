@@ -32,14 +32,17 @@ export const submitAnswer = async (questionId: string, examId: string, duration:
   }
 };
 
-export const examStart = async (examId: string, token: string) => {
+
+
+export const examStart = async (setId: number, token: string) => {
   try {
-    const response = await axiosInstance.post(`${ENDPOINTS.EXAM_START}?set_id=${examId}`, {}, {
+    const response = await axiosInstance.post(`${ENDPOINTS.EXAM_START}?set_id=${244}`, {}, {
       headers: {
         Accept: "application/json",
         Token: token,
       }
     });
+    console.log("response of exam start at interview page",response.data)
     return response.data;
   } catch (error) {
     throw new Error('Error ending exams.');

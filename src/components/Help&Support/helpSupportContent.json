@@ -1,0 +1,86 @@
+{
+  "topics": [
+    {
+      "id": "1",
+      "name": "Privacy and Security Information",
+      "description": "You can use the Privacy Checkup to review and adjust your settings to make sure that you're sharing with who you want.",
+      "details": "To ensure your privacy, regularly review your profile's audience settings and posts. Utilize privacy shortcuts to access and update your privacy settings quickly. For detailed guidance, visit our Privacy Policy page.",
+      "image_url": "../Support/Privacy.png",
+      "background_img_url": "../Support/backgroundPrivacy.png"
+    },
+    {
+      "id": "2",
+      "name": "Technical Requirements",
+      "description": "Ensure you meet the following technical requirements for effective platform use.",
+      "details": "To access our platform optimally, use a modern web browser (latest versions of Chrome, Firefox, or Edge), ensure you have a stable internet connection, and set your screen resolution to at least 1280x720 pixels. For detailed requirements, visit our Technical Requirements page.",
+      "image_url": "../Support/technicalSupport.png",
+      "background_img_url": "../Support/backgroundTechnical.png"
+    },
+    {
+      "id": "3",
+      "name": "Payment And Offers",
+      "description": "Check for ongoing promotions and resolve payment issues.",
+      "details": "We accept various payment methods including credit/debit cards and PayPal. For current discounts and offers, visit our Offers page. If you face any payment issues, please contact our support team directly for resolution. Ensure your payment details are up to date to avoid issues.",
+      "image_url": "../Support/Offer.png",
+      "background_img_url": "../Support/backgroundOffer.png"
+    },
+    {
+      "id": "4",
+      "name": "Troubleshooting Tips",
+      "description": "Resolve common issues with our troubleshooting steps.",
+      "details": "If you encounter issues, first try refreshing the page, clearing your browser's cache, or switching to a different browser. If the problem persists, consult our Troubleshooting Guide or contact support with detailed information about your issue for further assistance.",
+      "image_url": "../Support/troubleshooting.png",
+      "background_img_url": "../Support/backgroundTroubleshooting.png"
+    },
+    {
+      "id": "5",
+      "name": "User Guides and Tutorials",
+      "description": "Learn how to use our platform with step-by-step guides and tutorials.",
+      "details": "Our User Guides page offers comprehensive instructions and video tutorials on various platform features. Follow these guides to familiarize yourself with platform functionalities, from basic navigation to advanced features.",
+      "image_url": "../Support/userGuide.png",
+      "background_img_url": "../Support/backgroundUserGuide.png"
+    },
+    {
+      "id": "6",
+      "name": "Contact Information",
+      "description": "Get in touch with our support team for inquiries or help.",
+      "details": "For support, contact us via email at support@example.com or call +123-456-7890. Our team is available Monday to Friday, from 9 AM to 6 PM. Provide detailed information about your issue or inquiry to receive prompt assistance.",
+      "image_url": "../Support/contact.png",
+      "background_img_url": "../Support/backgroundContact.png"
+    },
+    {
+      "id": "7",
+      "name": "Additional Resources",
+      "description": "Access extra materials like FAQs and community forums.",
+      "details": "Explore our Additional Resources page for FAQs, community forums, and technical blogs. These resources offer in-depth help and insights into common issues, platform updates, and user discussions.",
+      "image_url": "../Support/resources.png",
+      "background_img_url": "../Support/backgroundResources.png"
+    },
+    {
+      "id": "8",
+      "name": "Feedback and Suggestions",
+      "description": "Submit your feedback to help us improve our service.",
+      "details": "We value your input! Use our Feedback Form to submit suggestions or comments. Your feedback helps us enhance our services. For detailed suggestions, provide specific information and examples in the feedback form.",
+      "image_url": "../Support/feedback.png",
+      "background_img_url": "../Support/backgroundFeedback.png"
+    },
+    {
+      "id": "9",
+      "name": "Can't Find Issue",
+      "description": "Seek help if you can't resolve your issue.",
+      "details": "If you can't find a solution, browse our comprehensive FAQ section or contact our support team. Provide detailed information about the issue for personalized assistance. Our team will help you troubleshoot and resolve the problem effectively.",
+      "image_url": "../Support/cantfind.png",
+      "background_img_url": "../Support/backgroundCantFind.png"
+    },
+    {
+      "id": "10",
+      "name": "Smartgrader Credits and Insider",
+      "description": "Learn about earning and using Smartgrader Credits.",
+      "details": "Smartgrader Credits can be earned through platform usage and redeemed for various benefits. Visit the Credits and Insider page to learn how to earn credits, redeem them, and access exclusive insider content. Detailed information on credits can be found on the respective page.",
+      "image_url": "../Support/credit.png",
+      "background_img_url": "../Support/backgroundCredit.png"
+    }
+  ]
+}
+
+  

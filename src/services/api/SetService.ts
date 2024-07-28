@@ -124,7 +124,7 @@ export const fetchSetDetail = async (setId: number): Promise<Card[] | null> => {
         },
       }
     );
-    console.log(response.data);
+    console.log("the response at the service page of fetchDetails",response.data);
     return response.data.data;
   } catch (error) {
     console.error("Error fetching set detail:", error);
