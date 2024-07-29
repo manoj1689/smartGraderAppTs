@@ -1,66 +1,76 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
-import { FaMicrophoneAlt, FaMicrophoneAltSlash } from "react-icons/fa";
-
+import { useNavigate, useLocation } from "react-router-dom";
+// library
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
-import { useNavigate,useLocation } from "react-router-dom";
-import { BiSolidError } from "react-icons/bi";
-import AnswerField from "../components/Interview/AnswerField";
-import Checklist from "../components/Interview/Checklist";
-import CameraFeed from "../components/Interview/CameraFeed";
-import { MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
-import useFullscreen from "../components/Interview/CheatingPrevention/useFullscreen";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import ErrorBoundary from "../components/common/Error/ErrorBoundary";
+import Sticky from "react-sticky-el";
+import Modal from "react-modal";
+import { useParams } from "react-router-dom";
+//icons
+import { FaMicrophoneAlt, FaMicrophoneAltSlash } from "react-icons/fa";
+import { BiSolidError } from "react-icons/bi";
+import { MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
 import { GiSoundWaves } from "react-icons/gi";
 import { MdDone } from "react-icons/md";
-import QuestionDisplay from "../components/Interview/QuestionDisplay";
-import BrowserInstructions from "../components/Interview/BrowserInstructions";
 import { HiSpeakerWave } from "react-icons/hi2";
 import { MdArrowForward } from "react-icons/md";
 import { AiOutlineClose } from "react-icons/ai";
-import Modal from "react-modal";
+
+// imported components
+import useFullscreen from "../components/Interview/CheatingPrevention/useFullscreen";
+import QuestionDisplay from "../components/Interview/QuestionDisplay";
+import VideoDisplay from "../components/Interview/VideoDisplay";
+import BrowserInstructions from "../components/Interview/BrowserInstructions";
+import ErrorBoundary from "../components/common/Error/ErrorBoundary";
+import AnswerField from "../components/Interview/AnswerField";
+import Checklist from "../components/Interview/Checklist";
+import CameraFeed from "../components/Interview/CameraFeed";
+import NotificationBar from "../components/common/Notification/NotificationBar";
+
+// imported Services
 import {
   examEnd,
   examStart,
   fetchSetQuestions,
   submitAnswer,
 } from "../services/api/InterviewService";
-import {fetchSetDetail} from "../services/api/SetService"
-import { GiCheckMark } from "react-icons/gi";
+import { fetchSetDetail } from "../services/api/SetService";
+
+// imported Endpoints
+
 import { MESSAGES } from "../constants/Constants";
-import NotificationBar from "../components/common/Notification/NotificationBar";
-import { useParams } from "react-router-dom";
-import Sticky from "react-sticky-el";
+
+// import images
+
 import SmartGrader from "../assets/logos/smartGrader.png";
-
-
+import mic from "../assets/images/interview/mic.png";
+import save from "../assets/images/interview/save.png";
 const InterviewScreen = () => {
+  const token = localStorage.getItem("accessToken");
+  const navigate = useNavigate();
+
+  const location = useLocation();
+  const { interview } = location.state || {};
+
   const [questionsData, setQuestionsData] = useState([]);
-  const [setDetail,setSetDetails]=useState()
+  const [setDetail, setSetDetails] = useState();
+  const [AIAvatrarSet,setAIAvatarSet]=useState()
   const [questionsLength, setQuestionsLength] = useState([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [answer, setAnswer] = useState("");
-  const token = localStorage.getItem("accessToken");
-  const navigate = useNavigate();
   const [startTime, setStartTime] = useState(null);
   const [remainingTime, setRemainingTime] = useState(null);
   const [examStarted, setExamStarted] = useState(false);
-  const [examId,setExamId]=useState("")
+  const [examId, setExamId] = useState("");
   const [transcript, setTranscript] = useState("");
   const [isTimeOut, setIsTimeOut] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
-  const {
-    transcript: liveTranscript,
-    listening,
-    browserSupportsSpeechRecognition,
-    resetTranscript,
-  } = useSpeechRecognition();
-  console.log("trasncript data",transcript)
   const [permissions, setPermissions] = useState({
     camera: false,
     microphone: false,
@@ -78,6 +88,13 @@ const InterviewScreen = () => {
   const synth = window.speechSynthesis;
   const fullscreenRef = useRef(null);
   const { questionSetId } = useParams();
+  const {
+    transcript: liveTranscript,
+    listening,
+    browserSupportsSpeechRecognition,
+    resetTranscript,
+  } = useSpeechRecognition();
+  // console.log("trasncript data",transcript)
 
   const speak = useCallback(
     (text) => {
@@ -92,10 +109,7 @@ const InterviewScreen = () => {
     [synth]
   );
 
-  const location = useLocation();
-  const { interview } = location.state || {};
-
-
+  // fetching Question set Data
   useEffect(() => {
     const fetchQuestionsData = async () => {
       try {
@@ -111,18 +125,21 @@ const InterviewScreen = () => {
 
     const fetchSetData = async () => {
       try {
+        if (interview?.id === 254){
+          const AIAvatarSetData = await fetchSetDetail(interview?.id);
+          setAIAvatarSet(AIAvatarSetData);
+        }
         const setData = await fetchSetDetail(interview?.id);
-        setSetDetails(setData)
+        setSetDetails(setData);
       } catch (error) {
         setError(error.message);
       }
     };
 
     fetchSetData();
-
-    
-   
   }, []);
+ //console.log("AI Avatar Set At Interview Page",AIAvatrarSet)
+  // submit Answer
 
   const handleSubmitAnswer = async () => {
     setLoading(true);
@@ -133,26 +150,28 @@ const InterviewScreen = () => {
         currentQuestion?.id,
         examId,
         duration,
-        answer,
+        `${answer} ${transcript}`,
         token
       );
-      if(!isTimeOut){
+      if (!isTimeOut) {
         handleNextQuestion();
-        setIsTimeOut(true)
-        
+        setIsTimeOut(true);
       }
-      
-     setAnswer("")
+
+      setAnswer("");
     } catch (error) {
       setError(MESSAGES.SUBMIT_ANSWER_ERROR);
     } finally {
       setLoading(false);
     }
   };
+
+  //console.log("AI Avatar Question list",questionsData)
+ 
   const handleNextQuestion = useCallback(() => {
     setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
   }, []);
-  
+
   const currentQuestion = questionsData[currentQuestionIndex];
 
   const handleSubmitAnswerWithoutNext = async () => {
@@ -165,12 +184,12 @@ const InterviewScreen = () => {
         currentQuestion?.id,
         examId,
         duration,
-        answer,
+        `${answer} ${transcript}`,
         token
       );
       handleNextQuestion();
       setAnswer("");
-      setIsTimeOut(false)
+      setIsTimeOut(false);
     } catch (error) {
       setError(MESSAGES.SUBMIT_ANSWER_ERROR);
     } finally {
@@ -178,15 +197,16 @@ const InterviewScreen = () => {
     }
   };
 
+  // exam start
   const handleExamStart = async () => {
     setLoading(true);
     try {
       const response = await examStart(questionSetId, token);
       console.log("startExam details", response);
-  
-      if (response.msg==="success") {
+
+      if (response.msg === "success") {
         setExamStarted(true);
-        setExamId(response.exam_id)
+        setExamId(response.exam_id);
         // You can handle more logic here based on the response
       } else {
         setError(response.message || "Error starting the exam");
@@ -197,13 +217,15 @@ const InterviewScreen = () => {
       setLoading(false);
     }
   };
-//console.log("the Exam id",examId,"type of examId",typeof examId)
+  //console.log("the Exam id",examId,"type of examId",typeof examId)
+
+  // Exam end
   const handleExamEnd = async () => {
     setLoading(true);
     try {
       await handleSubmitAnswer();
       await examEnd(examId, token);
-      setExamId("")
+      setExamId("");
       setIsModalOpen(false);
       navigate(`/dashboard/question/exam-end`);
     } catch (error) {
@@ -212,8 +234,7 @@ const InterviewScreen = () => {
       setLoading(false);
     }
   };
-
- 
+  console.log("currentQuestion Id at interview Page",currentQuestion?.id)
   async function requestCameraAndMicrophone() {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -235,17 +256,19 @@ const InterviewScreen = () => {
       console.error("Error requesting media permissions:", error);
     }
   }
-  const toggleFullscreen = useCallback(() => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen().catch((err) => {
-        console.error(`Failed to enter fullscreen mode: ${err.message}`);
-      });
-    } else {
-      document.exitFullscreen().catch((err) => {
-        console.error(`Failed to exit fullscreen mode: ${err.message}`);
-      });
-    }
-  }, []);
+  // const toggleFullscreen = useCallback(() => {
+  //   if (!document.fullscreenElement) {
+  //     document.documentElement.requestFullscreen().catch((err) => {
+  //       console.error(`Failed to enter fullscreen mode: ${err.message}`);
+  //     });
+  //   } else {
+  //     document.exitFullscreen().catch((err) => {
+  //       console.error(`Failed to exit fullscreen mode: ${err.message}`);
+  //     });
+  //   }
+  // }, []);
+
+  // securty
 
   const fullScreenExit = useCallback(() => {
     if (document.fullscreenElement) {
@@ -303,6 +326,8 @@ const InterviewScreen = () => {
     [listening]
   );
 
+  // Mic recording and transcript
+
   const startListening = () => {
     SpeechRecognition.startListening({ continuous: true });
   };
@@ -335,16 +360,15 @@ const InterviewScreen = () => {
   const updateTime = useCallback(() => {
     if (startTime) {
       const now = new Date();
-         console.log("startTime",startTime,"nowTime",now)
+      console.log("startTime", startTime, "nowTime", now);
       const elapsed = Math.floor((now - startTime) / 1000);
-      const remaining = currentQuestion.duration - elapsed ;
+      const remaining = currentQuestion.duration - elapsed;
       setRemainingTime(remaining);
 
       if (remaining <= 0) {
         stopListening();
-         setIsTimeOut(true);
-        handleSubmitAnswerWithoutNext()
-        
+        setIsTimeOut(true);
+        handleSubmitAnswerWithoutNext();
       }
     }
   }, [startTime]);
@@ -354,7 +378,7 @@ const InterviewScreen = () => {
       let date = new Date();
       date.setSeconds(date.getSeconds() + 90);
       setStartTime(date);
-      
+
       setRemainingTime(120);
     }
   }, [examStarted, currentQuestion]);
@@ -421,7 +445,12 @@ const InterviewScreen = () => {
     } else {
       handleSubmitAnswerWithoutNext(); // Handle submitAnswerWithoutNext if not a timeout
     }
-  }, [stopListening, handleSubmitAnswer, handleSubmitAnswerWithoutNext, isTimeOut]);
+  }, [
+    stopListening,
+    handleSubmitAnswer,
+    handleSubmitAnswerWithoutNext,
+    isTimeOut,
+  ]);
   return (
     <>
       <Sticky topOffset={80} className="fixed top-10 right-10 z-50">
@@ -445,7 +474,7 @@ const InterviewScreen = () => {
         )}
       </Sticky>
       <div className="flex items-center justify-between border-b border-slate-200">
-        <div className='w-auto p-4'>
+        <div className="w-auto p-4">
           <img src={SmartGrader} alt="Smart Grader" width={140} />
         </div>
       </div>
@@ -454,7 +483,10 @@ const InterviewScreen = () => {
 
         <div className="rounded-md border border-solid my-5  border-black border-opacity-10 bg-white">
           <ErrorBoundary>
-            <div ref={fullscreenRef} className=" mx-auto flex flex-col lg:flex-row  ">
+            <div
+              ref={fullscreenRef}
+              className=" mx-auto flex flex-col lg:flex-row  "
+            >
               <div className="flex flex-col sm:flex-row lg:flex-col   basis-1/3 rounded-md border border-solid m-5 border-black border-opacity-10">
                 <div className=" sm:w-2/3   lg:w-full">
                   <CameraFeed
@@ -516,7 +548,7 @@ const InterviewScreen = () => {
                   <div className="px-2 space-y-4">
                     <div className="flex items-center justify-between p-4 border-b border-solid border-black border-opacity-10  mr-5">
                       <span className="text-xl text-neutral-700 font-spline font-semibold">
-                       {setDetail.title}
+                        {setDetail.title}
                       </span>
                       <div className="text-right">
                         <p className="text-base text-neutral-600">
@@ -534,15 +566,30 @@ const InterviewScreen = () => {
                         (Click the speaker icon to listen to question)
                       </span>
                     </div>
+                    
+                     <VideoDisplay
+                      currentQuestionId={currentQuestion?.id}
+                     
+                     />
+                    
+
                     <div className="flex flex-col md:flex-row text-base leading-5 text-neutral-600 gap-2.5 justify-between px-4 py-4 mt-2.5 w-full rounded-md border border-solid border-neutral-500">
+                   
+                  
+                     
+                     
+
                       <QuestionDisplay
+                       
                         questionText={
                           currentQuestion
                             ? currentQuestion.title
                             : "Loading question..."
                         }
                       />
-                      <div className="flex items-center px-4 rounded">
+                    
+                   
+                      <div className="flex items-center px-4  rounded">
                         <span
                           onClick={() => speak(currentQuestion.title)}
                           className="cursor-pointer"
@@ -561,11 +608,7 @@ const InterviewScreen = () => {
                         disabled={isTimeOut}
                       />
                       <div
-                        className={`absolute bottom-10 right-2 p-1 text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer ${
-                          listening
-                            ? "text-red-500 hover:text-red-700"
-                            : "text-gray-500 hover:text-gray-700"
-                        }`}
+                        className={`absolute bottom-12 right-5 p-1 text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer transform transition-transform duration-200 hover:scale-110`}
                         onClick={() => {
                           if (!isTimeOut) {
                             listening ? stopListening() : startListening();
@@ -574,23 +617,12 @@ const InterviewScreen = () => {
                       >
                         {listening ? (
                           <>
-                             <FaMicrophoneAlt
-                            size={25}
-                            color="green"
-                            className="mr-2"
-                          />
-                          <div>
-                          Save
-                          </div>
-                     
+                            <img src={save} alt="save" width={50} />
                           </>
-                       
                         ) : (
                           <>
-                           <FaMicrophoneAlt size={25} className="mr-2" />
-                           <div>Record</div>
+                            <img src={mic} alt="mic" width={50} />
                           </>
-                         
                         )}
                       </div>
                     </div>
@@ -605,20 +637,27 @@ const InterviewScreen = () => {
 
                       {currentQuestionIndex < questionsLength - 1 ? (
                         <button
-                        onClick={handleNextButtonClick}
+                          onClick={handleNextButtonClick}
                           //onClick={handleSubmitAnswer}
                           className="flex px-4 py-4 gap-5 bg-gray-500 justify-center items-center w-full lg:w-1/2 text-white rounded hover:bg-gray-600"
                         >
-                           <span>Next</span> <span><MdArrowForward size={20} /></span> 
+                          <span>Next</span>{" "}
+                          <span>
+                            <MdArrowForward size={20} />
+                          </span>
                         </button>
                       ) : (
                         <button
-                        onClick={() => {
-                          handleExamEnd(), fullScreenExit();
-                        }}
+                          onClick={() => {
+                            stopListening();
+                            handleExamEnd(), fullScreenExit();
+                          }}
                           className="flex px-4 py-4 bg-gray-500 gap-5 text-white justify-center items-center rounded w-full lg:w-1/2 hover:bg-gray-600"
                         >
-                         <span>Finish</span> <span><MdDone size={20} /></span> 
+                          <span>Finish</span>{" "}
+                          <span>
+                            <MdDone size={20} />
+                          </span>
                         </button>
                       )}
                     </div>
@@ -687,7 +726,6 @@ const InterviewScreen = () => {
       <Modal
         isOpen={isModalOpen}
         onRequestClose={handleModalClose}
-        
         style={{
           overlay: {
             backgroundColor: "rgba(0, 0, 0, 0.3)",
@@ -741,7 +779,7 @@ const InterviewScreen = () => {
       <Modal
         isOpen={isFullscreenOpen}
         onRequestClose={handleFullScreenClose}
-        shouldCloseOnOverlayClick={false} 
+        shouldCloseOnOverlayClick={false}
         style={{
           overlay: {
             backgroundColor: "rgba(0, 0, 0, 0.3)",

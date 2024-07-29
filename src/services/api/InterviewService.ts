@@ -36,7 +36,7 @@ export const submitAnswer = async (questionId: string, examId: string, duration:
 
 export const examStart = async (setId: number, token: string) => {
   try {
-    const response = await axiosInstance.post(`${ENDPOINTS.EXAM_START}?set_id=${244}`, {}, {
+    const response = await axiosInstance.post(`${ENDPOINTS.EXAM_START}?set_id=${setId}`, {}, {
       headers: {
         Accept: "application/json",
         Token: token,

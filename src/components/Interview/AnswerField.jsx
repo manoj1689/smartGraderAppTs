@@ -7,7 +7,7 @@ const AnswerField = ({ value, onChange, placeholder, charLimit, disabled }) => {
   return (
     <div className="space-y-2">
       <textarea
-        className="w-full h-[300px] p-2 border rounded-lg resize-none shadow-sm focus:outline-none focus:ring-2 focus:ring-lightblue-500 focus:border-transparent"
+        className="w-full h-[300px]  p-2 border rounded-lg resize-none shadow-sm focus:outline-none focus:ring-2 focus:ring-lightblue-500 focus:border-transparent"
         value={value}
         onChange={onChange}
         placeholder={placeholder}
