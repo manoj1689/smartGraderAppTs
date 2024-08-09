@@ -26,3 +26,8 @@ yarn-lock
 *.njsproj
 *.sln
 *.sw?
+
+
+
+# local env files
+.env*.local
