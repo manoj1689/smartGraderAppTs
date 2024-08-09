@@ -115,7 +115,7 @@ const CameraFeed = ({ onFacesDetected, examStarted }) => {
     }, [handleVideoPlay]);
 
     return (
-        <div className='flex w-11/12 mx-auto p-4'>
+        <div className='flex '>
             <ToastContainer/>
             <video ref={videoRef} autoPlay muted style={{ width: '100%', borderRadius: '1%' }} />
         </div>

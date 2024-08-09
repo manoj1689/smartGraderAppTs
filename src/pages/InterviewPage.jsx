@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useScreenshot } from 'use-react-screenshot'
+import { useScreenshot } from "use-react-screenshot";
 // library
 
 import { ToastContainer, toast } from "react-toastify";
@@ -30,7 +30,7 @@ import {
   examEnd,
   examStart,
   fetchSetQuestions,
-  uploadScreenshot
+  uploadScreenshot,
 } from "../services/api/InterviewService";
 import { fetchSetDetail } from "../services/api/SetService";
 // imported Endpoints
@@ -56,9 +56,9 @@ const InterviewScreen = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
-  const ref = useRef(null)
-  const [image, takeScreenshot] = useScreenshot()
-  const getImage = () => takeScreenshot(ref.current)
+  const ref = useRef(null);
+  const [image, takeScreenshot] = useScreenshot();
+  const getImage = () => takeScreenshot(ref.current);
   const [permissions, setPermissions] = useState({
     camera: false,
     microphone: false,
@@ -71,9 +71,16 @@ const InterviewScreen = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
- 
+
   const fullscreenRef = useRef(null);
   const { questionSetId } = useParams();
+
+  const [transcript, setTranscript] = useState("");
+
+  // Callback function to receive data from the child
+  const handleTranscriptChange = (newTranscript) => {
+    setTranscript(newTranscript);
+  };
 
   // fetching Question set Data
   useEffect(() => {
@@ -146,11 +153,9 @@ const InterviewScreen = () => {
 
     fullScreenExit();
   };
-//console.log("The Face Detection Result at interview Page",faceDetectionResults)
+  //console.log("The Face Detection Result at interview Page",faceDetectionResults)
   // console.log("currentQuestion Id at interview Page",currentQuestion?.id)
   const [capturedImage, setCapturedImage] = useState(null);
-
-
 
   // Capture the screenshot and update the state
   const captureScreenshot = async () => {
@@ -162,19 +167,19 @@ const InterviewScreen = () => {
     const saveAndUploadScreenshot = async () => {
       if (capturedImage && examId) {
         // Convert the image to a Blob
-        const blob = await fetch(capturedImage).then(res => res.blob());
+        const blob = await fetch(capturedImage).then((res) => res.blob());
 
         // Create a FormData object
         const file = new FormData();
-        file.append('file', blob, 'screenshot.png');
+        file.append("file", blob, "screenshot.png");
 
         // Upload the image to your API
         try {
           const response = await uploadScreenshot(examId, token, file);
           console.log(response);
-          console.log('Screenshot uploaded successfully');
+          console.log("Screenshot uploaded successfully");
         } catch (error) {
-          console.error('Error uploading screenshot:', error);
+          console.error("Error uploading screenshot:", error);
         }
       }
     };
@@ -190,8 +195,6 @@ const InterviewScreen = () => {
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
   }, []); // Empty dependency array to run only once
-
- 
 
   async function requestCameraAndMicrophone() {
     try {
@@ -340,62 +343,91 @@ const InterviewScreen = () => {
           )}
         </Sticky>
 
-        <div  ref={ref} className=" mx-auto">
+        <div ref={ref} className=" mx-auto">
           <div className="container mx-auto">
             <NotificationBar />
           </div>
-          <div  className=" container mx-auto  ">
+          <div className=" container mx-auto  ">
             <ErrorBoundary>
-              <div ref={fullscreenRef} >
-                <div className="flex flex-row gap-5 p-4 rounded-md border border-solid bg-white ">
-                  <div className="w-2/3 bg-gray-200 rounded-md p-4">
+              <div ref={fullscreenRef}>
+                <div className="flex flex-col md:flex-row gap-5 p-4 rounded-md border border-solid bg-white ">
+                  <div className="w-full  md:w-1/2 lg:w-3/5 bg-gray-200 rounded-md p-4">
                     <div className="px-4 flex justify-between">
                       <div>
-                      <div className="text-xl font-spline font-bold text-slate-800">
-                        {setDetail.title}
+                        <div className="text-xl font-spline font-bold text-slate-800">
+                          {setDetail.title}
+                        </div>
+                        <div className="text-md font-spline font-medium text-gray-500">
+                          {setDetail.description}
+                        </div>
                       </div>
-                      <div className="text-md font-spline font-medium text-gray-500">
-                        {setDetail.description}
+                      <div>
+                        <div className="text-md font-spline font-medium text-slate-800">
+                          Level:{setDetail.level}
+                        </div>
+                        <div className="text-md font-spline font-medium text-blue-400">
+                          No of Questions:{setDetail.questions_count}
+                        </div>
                       </div>
-                      </div>
-                     <div>
-                     <div className="text-md font-spline font-medium text-slate-800">
-                        Level:{setDetail.level}
-                      </div>
-                      <div className="text-md font-spline font-medium text-blue-400">
-                        No of Questions:{setDetail.questions_count}
-                      </div>
-                     </div>
-                    
                     </div>
-                    <div className="flex relative ">
-                    <div className="bg-slate-300 w-48 h-28 p-4 gap-3 justify-center items-center absolute z-10 ml-16 rounded-md shadow-md mt-8">
-                     <div className="font-spline text-slate-600 font-light">
-                     {faceDetectionResults.faceVerified ? "Face Verified":"Face Not Verifid "}
-                     </div>
-                      <div className="font-spline text-slate-600 font-light">
-                      {faceDetectionResults.multiplePeopleDetected? "Multiple face Detected":"Single face Detected"} 
+                    <div className="flex relative  mx-auto ">
+                      <div className="bg-black bg-opacity-50 w-40 h-24 text-sm  lg:w-48 lg:h-28  lg:text-md p-4 lg:gap-2 flex  flex-col absolute z-10 ml-4 lg:ml-20 rounded-md shadow-md mt-4">
+                        <div className="font-spline font-light">
+                          {/* Face Verification Result */}
+                          <div
+                            className={`${
+                              faceDetectionResults.faceVerified
+                                ? "text-blue-300 font-medium"
+                                : "text-red-500 font-medium"
+                            }`}
+                          >
+                            {faceDetectionResults.faceVerified
+                              ? "Face Verified"
+                              : "Face Not Verified"}
+                          </div>
+
+                          {/* Face Count Detection, shown only if face is verified */}
+                          {faceDetectionResults.faceVerified && (
+                            <div
+                              className={`${
+                                faceDetectionResults.multiplePeopleDetected
+                                  ? "text-red-500 font-medium"
+                                  : "text-blue-300 font-medium"
+                              }`}
+                            >
+                              {faceDetectionResults.multiplePeopleDetected
+                                ? "Multi Faces Detected"
+                                : "Single Face Detected"}
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    
-                    
+
+                      <div className="relative w-full lg:w-5/6   mx-auto">
+                        <CameraFeed
+                          onFacesDetected={handleFacesDetected}
+                          examStarted={examStarted}
+                        />
+                      </div>
                     </div>
-                    <div className="relative w-full">
-                    <CameraFeed
-                        onFacesDetected={handleFacesDetected}
-                        examStarted={examStarted}
-                      />
-                    </div>
-                    
+                    <div className="border border-gray-300 bg-white bg-opacity-70 shadow-lg rounded-lg mt-4 p-4">
+                      <p>
+                        <span className="font-semibold text-sky-400">
+                          Speech Text -
+                        </span>{" "}
+                        {transcript}
+                      </p>
                     </div>
                   </div>
 
-                  <div className="w-1/3">
+                  <div className="w-full md:w-1/2 lg:w-2/5">
                     {examStarted ? (
                       <div>
                         <AIChat
                           questionList={questionsData}
                           handleExamEnd={handleExamEnd}
                           examID={examId}
+                          onTranscriptChange={handleTranscriptChange}
                         />
                         {error && (
                           <div className="error mt-4 text-red-500">{error}</div>
@@ -448,19 +480,19 @@ const InterviewScreen = () => {
                           <>
                             <div className="flex p-4 w-5/6 mx-auto gap-5 items-center">
                               <div className="w-1/2">
-                              <button
-                                className="px-4  w-full text-lg font-spline flex justify-center items-center gap-3  font-medium text-white cursor-pointer bg-gray-500 hover:bg-gray-600  p-4 rounded "
-                                onClick={() => {
-                                  navigate(`/dashboard`), fullScreenExit();
-                                }}
-                              >
-                                <span>
-                                  <IoMdArrowRoundBack />
-                                </span>{" "}
-                                <span>DashBoard</span>
-                              </button>
+                                <button
+                                  className="px-4  w-full text-lg font-spline flex justify-center items-center gap-3  font-medium text-white cursor-pointer bg-gray-500 hover:bg-gray-600  p-4 rounded "
+                                  onClick={() => {
+                                    navigate(`/dashboard`), fullScreenExit();
+                                  }}
+                                >
+                                  <span>
+                                    <IoMdArrowRoundBack />
+                                  </span>{" "}
+                                  <span>DashBoard</span>
+                                </button>
                               </div>
-                             
+
                               <div className="w-1/2">
                                 <p className="text-red-500 font-semibold">
                                   The selected question set does not have
@@ -493,26 +525,21 @@ const InterviewScreen = () => {
                                 <IoMdArrowRoundForward />
                               </span>
                             </button>
-                  
-               
                           </div>
-                          
                         )}
                       </div>
-                    
                     </div>
                   )}
                 </div>
-               
               </div>
             </ErrorBoundary>
           </div>
         </div>
-        <button style={{ marginBottom: '10px' }} onClick={captureScreenshot}>
-        Take screenshot
-      </button>
+        {/* <button style={{ marginBottom: "10px" }} onClick={captureScreenshot}>
+          Take screenshot
+        </button>
 
-      <img width={240} src={image} alt={'Screenshot'} />
+        <img width={240} src={image} alt={"Screenshot"} /> */}
       </div>
 
       <Modal
@@ -537,7 +564,7 @@ const InterviewScreen = () => {
           },
         }}
       >
-        <div className="w-80 sm:w-96">
+        <div className=" w-80 sm:w-96">
           <span className="text-xl text-gray-600 font-spline font-semibold py-2 ">
             Quit Exam
           </span>
@@ -550,22 +577,21 @@ const InterviewScreen = () => {
             </p>
 
             <div className="mt-4 flex justify-center space-x-4">
-            <button
+              <button
                 onClick={handleModalClose}
-                className="bg-gray-500 text-white w-full px-4 py-2 rounded hover:bg-gray-600 focus:outline-none"
+                className="bg-gray-400 text-white w-full px-4 py-2 rounded hover:bg-gray-500 focus:outline-none"
               >
                 No
               </button>
-            </div>
               <button
                 onClick={() => {
                   handleExamEnd(), fullScreenExit();
                 }}
-                className="bg-blue-500 text-white w-full px-4 py-2 rounded hover:bg-blue-600 focus:outline-none"
+                className="bg-blue-400 text-white w-full px-4 py-2 rounded hover:bg-blue-400 focus:outline-none"
               >
                 Yes
               </button>
-            
+            </div>
           </div>
         </div>
       </Modal>
@@ -592,7 +618,7 @@ const InterviewScreen = () => {
           },
         }}
       >
-        <div className="flex bg-blue-400 text-white justify-center items-center p-10">
+        <div className="flex bg-blue-400 text-white justify-center items-center p-10 w-80 sm:w-96">
           {" "}
           <BiSolidError size={80} color="white" />{" "}
         </div>
@@ -601,18 +627,18 @@ const InterviewScreen = () => {
         </h2>
         <div className="mt-4 flex justify-center space-x-4">
           <button
-            onClick={handleEnterFullscreen}
-            className="bg-blue-400 w-full text-white px-4 py-2 rounded hover:bg-blue-500 focus:outline-none"
-          >
-            Yes
-          </button>
-          <button
             onClick={() => {
               handleFullScreenClose(), navigate(`/dashboard`);
             }}
             className="bg-gray-400 w-full text-white px-4 py-2 rounded hover:bg-gray-500 focus:outline-none"
           >
             No
+          </button>
+          <button
+            onClick={handleEnterFullscreen}
+            className="bg-blue-400 w-full text-white px-4 py-2 rounded hover:bg-blue-500 focus:outline-none"
+          >
+            Yes
           </button>
         </div>
       </Modal>

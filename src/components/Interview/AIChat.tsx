@@ -6,6 +6,9 @@ import { useUserId } from "../../context/userId"; // Adjust the path if needed
 import { toast } from "react-toastify";
 import { getChatbotResponse } from "../../services/api/openaiService"; // Adjust the path if needed
 import Assistant from "../../assets/assitant.png";
+
+import { MessageBox } from "react-chat-elements";
+import "react-chat-elements/dist/main.css"
 import { submitAnswer } from "../../services/api/InterviewService";
 //@ts-ignore
 import WaveEffect from "../Interview/WaveEffect.jsx"
@@ -23,17 +26,23 @@ interface AIChatProps {
   questionList: Question[];
   handleExamEnd: () => void;
   examID:string;
+  onTranscriptChange: (transcript: string) => void; 
 }
 
 // Define types for ChatMessage
 type ChatMessageRole = "system" | "user" | "assistant";
 
 interface ChatMessage {
-  role: ChatMessageRole;
+  role: "system" | "user" | "assistant";
   content: string;
+  type: 'text' | 'location' | 'photo' | 'video' | 'spotify' | 'meetingLink' | 'file';
+  position: 'left' | 'right';
+  title: string;
 }
 
-const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID}) => {
+
+
+const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onTranscriptChange}) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
@@ -74,6 +83,10 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID}) =
       {
         role: "assistant",
         content: "Hi, start by giving a brief introduction about yourself.",
+        type: 'text',
+        position: 'left',
+        title: "AI"
+
       },
     ];
    setMessages(initialMessages);
@@ -83,6 +96,14 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID}) =
       window.speechSynthesis.cancel();
     };
   }, []);
+  useEffect(() => {
+    // Simulate obtaining transcript data
+    const transcriptData = transcript;
+
+    // Send data to parent component
+    onTranscriptChange(transcriptData);
+  }, [onTranscriptChange]);
+
 
   useEffect(() => {
     if (listening) {
@@ -233,6 +254,9 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID}) =
           role: "assistant",
           content:
             "Sorry, no response recorded. Do you want to continue or exit the exam?",
+            type: 'text',
+        position: 'left',
+        title: "AI"
         },
       ]);
       AlertMessage(
@@ -246,7 +270,9 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID}) =
   
     if (messageToSend.toLowerCase() === "continue") {
       
-      const newMessage: ChatMessage = { content: messageToSend, role: "user" };
+      const newMessage: ChatMessage = { content: messageToSend, role: "user", type: 'text',
+        position: 'right',
+        title: "User" };
       setMessages((prevMessages) => [...prevMessages, newMessage]);
       setLoading(true);
       try {
@@ -267,6 +293,10 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID}) =
           {
             role: "assistant",
             content: questionList[0].title,
+            type: 'text',
+            position: 'left',
+            title: "AI"
+            
           },
         ]);
         speakText(questionList[0].title, continueListening);
@@ -288,6 +318,9 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID}) =
           role: "assistant",
           content:
             "Thank you for answering the questions. Your responses have been recorded.",
+            type: 'text',
+            position: 'left',
+            title: "AI"
         },
       ]);
       examEndMessage(
@@ -296,7 +329,9 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID}) =
       return; 
     }
   
-    const newMessage: ChatMessage = { content: messageToSend, role: "user" };
+    const newMessage: ChatMessage = { content: messageToSend, role: "user" , type: 'text',
+      position: 'right',
+      title: "User" };
     console.log("Answer of Question ", newMessage);
     setMessages((prevMessages) => [...prevMessages, newMessage]);
     setLoading(true);
@@ -317,6 +352,9 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID}) =
           {
             role: "assistant",
             content: questionList[0].title,
+            type: 'text',
+            position: 'left',
+            title: "AI"
           },
         ]);
         speakText(questionList[0].title, continueListening);
@@ -326,6 +364,9 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID}) =
         const botMessage: ChatMessage = {
           content: response || "",
           role: "assistant",
+          type: 'text',
+          position: 'left',
+          title: "AI"
         };
         setLoading(false);
   
@@ -360,6 +401,9 @@ const handleNextQuestion = async () => {
       {
         role: "assistant",
         content: nextQuestion,
+        type: 'text',
+        position: 'left',
+        title: "AI"
       },
     ]);
     speakText(nextQuestion, continueListening);
@@ -371,6 +415,9 @@ const handleNextQuestion = async () => {
         role: "assistant",
         content:
           "Thank you for answering the questions. Your responses have been recorded.",
+          type: 'text',
+          position: 'left',
+          title: "AI"
       },
     ]);
     examEndMessage("Thank you for answering all the questions. Your responses have been recorded.");
@@ -412,28 +459,43 @@ const handleNextQuestion = async () => {
   };
 
   return (
-<div className="flex flex-col  max-h-[750px]">
-  <div className="bg-blue-500 text-white p-4 flex justify-between items-center rounded-md">
+<div className="flex flex-col h-auto min-h-[500px] lg:min-h-[750px] max-h-[700px] ">
+  <div className="bg-[#01AFF4] text-white p-4 flex justify-between items-center rounded-md">
     <div className="flex items-center">
-      <img
+      {/* <img
         src={Assistant}
         alt="User Profile"
         className="w-16 h-16 rounded-full"
-      />
+      /> */}
       <div className="ml-2 font-bold">SmartGrader AI Assistant</div>
     </div>
   </div>
-  <div className="flex-1 overflow-y-auto p-4">
+ 
+  <div className="flex-1 overflow-y-auto bg-sky-100 p-4">
     {messages.map((message, index) => (
       <div
-        className={`p-2 my-2 rounded-md ${
+        className={`p-2 my-2 rounded-md  ${
           message.role === "user"
-            ? "bg-gray-200 self-end ml-12"
-            : "bg-blue-200 self-start mr-12 "
+            ? "self-end ml-12"
+            : " self-start mr-12 "
         }`}
         key={index}
       >
-        {message.content}
+
+        {message.role ?
+        (
+          <MessageBox
+          key={index}
+          position={message.position}
+          title={message.title}
+          type={message.type as 'text' | 'photo' | 'file' | 'location' | 'meetingLink' | 'spotify' | 'video'}
+          text={message.content}
+          date={new Date()}
+        />
+        ):("")
+     
+      
+      }
       </div>
     ))}
     <div ref={messagesEndRef}></div>
@@ -447,36 +509,8 @@ const handleNextQuestion = async () => {
       </div>
     )}
   </div>
-  <div className="p-4 bg-gray-100">
-    <form onSubmit={(e) => e.preventDefault()} className="flex space-x-2">
-      {/* {showWave && <WaveEffect/>} */}
-
-      <textarea
-        className="flex-1 p-2 border rounded-md"
-        placeholder="Type your message here..."
-        value={transcript}
-        readOnly
-      />
-
-      {/* <button
-        className="p-2 bg-green-500 text-white rounded-md"
-        onClick={(e) => {
-          e.preventDefault();
-          storeMessage();
-        }}
-      >
-        Finish Chat
-      </button>
-      <div>
-        <p>Microphone: {listening ? "on" : "off"}</p>
-        <button onClick={continueListening}>Start</button>
-        <button onClick={SpeechRecognition.stopListening}>Stop</button>
-        <button onClick={resetTranscript}>Reset</button>
-        <p>{transcript}</p>
-      </div> */}
-    </form>
-    {<WaveEffect showWave={showWave}/>}
-  </div>
+ 
+  {<WaveEffect showWave={showWave}/>}
 </div>
 
   );
