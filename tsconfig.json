@@ -21,9 +21,5 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": ["src", "src/react-country-state-city.d.ts"],
-  "files": [],
-  "references": [
-    { "path": "./tsconfig.root.json" },
-    { "path": "./scripts/tsconfig.json" }
-  ]
+ 
 }
