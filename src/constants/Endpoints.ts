@@ -13,6 +13,7 @@ export const ROUTES = {
     READ_SUBCATEGORIES: '/categories/subcat',
     SEARCH_CATEGORIES: '/categories/search',
     GET_ALL_SETS: '/sets/all',
+    GET_EXAM_ATTEMPTED: '/exams/list',
     GET_SETS_ATTEMPTED: '/sets/attempted',
     GET_ALL_QUESTIONS: '/questions/all',
     SUBMIT_ANSWER: '/questions/answer',
@@ -25,6 +26,7 @@ export const ROUTES = {
     START_EXAM: '/exams/start',
     END_EXAM: '/exams/end',
     UPLOAD_MEDIA: '/media/upload',
+   
 };
 
 
@@ -39,6 +41,8 @@ export const ENDPOINTS = {
     FETCH_USER_DATA: "/users/me", 
     EXAM_END: "/exams/end", 
     EXAM_START: "/exams/start", 
+    EXAM_ATTEMPTED: "/exams/attempted", 
     EXAM_RESULT: "/question_answer_evaluations", 
-    MEDIA_UPLOAD: '/media/upload'
+    MEDIA_UPLOAD: '/media/upload',
+    EXAM_MEDIA:'/media/exam'
 };

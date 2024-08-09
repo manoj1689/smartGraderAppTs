@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaRegIdCard } from "react-icons/fa6";
-import { fetchSetAttemps } from "../../../services/api/LineScoreService";
+import { fetchexamAttemps } from "../../../services/api/LineScoreService";
 import { LineScore } from "../../../types/interfaces/interface";
 import { getToken } from "../../../utils/tokenUtils";
 import noRecordFound from "../../../assets/images/Individual/NoRecordFound.png";
@@ -24,7 +24,7 @@ const LineScoreCard: React.FC = () => {
           console.error("Token not found.");
           return;
         }
-        const data = await fetchSetAttemps(token);
+        const data = await fetchexamAttemps(token);
         //setResults([]);
         
         setResults(data);
@@ -37,6 +37,9 @@ const LineScoreCard: React.FC = () => {
 
     fetchData();
   }, []);
+
+console.log("the result List have set id for each attempt ", results)
+
   const sampleResult = [
     {
       id: "1",
@@ -216,12 +219,12 @@ const LineScoreCard: React.FC = () => {
           ) : (
             results.map((result) => (
               <div
-                key={result.id}
+                key={result.exam_id}
                 className="my-4  cursor-pointer p-4 rounded-sm  lg:pr-8 bg-sky-100 "
                 onClick={() => navigate("result", { state: { result } })}
     
               >
-                <a data-tooltip-id="my-tooltip" data-tooltip-content="View Score!">
+            
 
                 <div className="flex items-center gap-3 max-md:flex-wrap max-md:max-w-full">
                   <div className="flex flex-col flex-auto">
@@ -229,7 +232,7 @@ const LineScoreCard: React.FC = () => {
                       <div className="text-lg  md:text-md lg:text-lg font-semibold leading-4 font-spline text-slate-600">
                         <div className="flex w-full justify-between items-center gap-3 ">
                           <div className="whitespace-nowrap">
-                            {result.title}
+                            {result.exam_id}
                           </div>
 
                           <Rating style={{ maxWidth: 120 }} value={3} />
@@ -238,27 +241,27 @@ const LineScoreCard: React.FC = () => {
 
                       <div
                         className={`text-md font-spline ${getLevelColor(
-                          result.level
+                          result.score
                         )}`}
                       >
-                        <span className="text-slate-800"> Level:</span>{" "}
-                        {getLevel(result.level)}
+                        <span className="text-slate-800"> Score:</span>{" "}
+                        {getLevel(result.score)}
                       </div>
                     </div>
                     <div className="flex w-full justify-between mt-3  items-center gap-3">
                       <div className="text-md font-medium leading-4 font-spline text-slate-600 w-4/12 ">
-                        No Of Questions:{result.questions_count}
+                        No Of Questions:{result.q_count}
                       </div>
 
                       <div className="flex flex-col justify-center mt-4  rounded-md h-[5px] bg-zinc-300 w-8/12">
                         <div
                           className={`shrink-0  ${getBarColor(
-                            result.questions_count
+                            result.q_count
                           )} rounded-md h-[5px]`}
                           style={{
                             // width: `${((result.questions_count ) / 20) * 100}%`,
                             width: `${Math.min(
-                              (result.questions_count / 20) * 100,
+                              (result.q_count / 20) * 100,
                               100
                             )}%`,
                           }}
@@ -267,50 +270,10 @@ const LineScoreCard: React.FC = () => {
                     </div>
                   </div>
                   <div className="flex items-center"></div>
-                  {/* <div className="relative flex items-center justify-center">
-                    <svg className="w-16 h-16">
-                      <circle
-                        className="text-gray-300"
-                        strokeWidth="2"
-                        stroke="currentColor"
-                        fill="transparent"
-                        r="24"
-                        cx="30"
-                        cy="30"
-                      />
-                      <circle
-                        className={`transition duration-300 ${getCircleColor(
-                          result.rating
-                        )}`}
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        stroke="currentColor"
-                        fill="transparent"
-                        r="24"
-                        cx="30"
-                        cy="30"
-                        style={{
-                          strokeDasharray: 150,
-                          strokeDashoffset: 150 - (result.rating / 5) * 150,
-                        }}
-                      />
-                      <text
-                        x="50%"
-                        y="50%"
-                        dy=".3em"
-                        textAnchor="middle"
-                        className={`font-spline text-xs ${getColor(
-                          result.rating
-                        )}`}
-                        fill="currentColor"
-                      >
-                        {result.rating.toFixed(1)} / 5
-                      </text>
-                    </svg>
-                  </div> */}
+               
                 </div>
-                </a>
-<Tooltip id="my-tooltip" style={{backgroundColor:"#01AFF4"}} />
+                
+
               </div>
             ))
           )}

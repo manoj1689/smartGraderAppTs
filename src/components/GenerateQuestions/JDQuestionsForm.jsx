@@ -3,7 +3,7 @@ import { FaSpinner, FaCheck} from "react-icons/fa";
 
 const JDQuestionsForm = ({ onGenerate, loading }) => {
   const [jobDescription, setJobDescription] = useState('');
-  const [numberOfQuestions, setNumberOfQuestions] = useState(1);
+  const [numberOfQuestions, setNumberOfQuestions] = useState(4);
 
   const handleGenerate = (e) => {
     e.preventDefault();

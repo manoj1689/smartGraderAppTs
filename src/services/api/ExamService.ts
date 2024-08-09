@@ -35,3 +35,20 @@ export const examEnd = async (setId: number) => {
       throw new Error('Error Fetching Exam End Details.');
     }
   };
+
+
+  export const examAttempts = async (setId: number) => {
+    const token = getToken();
+    try {
+      const response = await axiosInstance.post(`${ENDPOINTS.EXAM_ATTEMPTED}?set_id=${setId}`,{},{
+        headers: {
+          Accept: "application/json",
+          Token: token,
+        }
+      });
+     console.log("Exam Attempts Details at service Page",response.data)
+      return response.data;
+    } catch (error) {
+      throw new Error('Error Fetching Exam End Details.');
+    }
+  };

@@ -4,7 +4,7 @@ import { FaSpinner, FaCheck } from "react-icons/fa";
 
 const ResumeQuestionsForm = ({ onGenerate, loading }) => {
   const [resume, setResume] = useState(null);
-  const [numberOfQuestions, setNumberOfQuestions] = useState(1);
+  const [numberOfQuestions, setNumberOfQuestions] = useState(4);
   const { getRootProps, getInputProps } = useDropzone({
     accept: 'application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     onDrop: acceptedFiles => setResume(acceptedFiles[0])

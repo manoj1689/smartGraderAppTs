@@ -13,7 +13,7 @@ const defaultOptions = [
 
 const DomainQuestionsForm = ({ onGenerate, loading, subCatId }) => {
   const [selectedTopics, setSelectedTopics] = useState([]);
-  const [numberOfQuestions, setNumberOfQuestions] = useState(1);
+  const [numberOfQuestions, setNumberOfQuestions] = useState(4);
   const [subCategoryOptions, setSubCategoryOptions] = useState([]);
   console.log("subCatId at domain page",subCatId)
   useEffect(() => {

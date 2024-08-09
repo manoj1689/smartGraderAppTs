@@ -1,10 +1,23 @@
 import React, { useState } from "react";
-
+import { PieChart } from 'react-minimal-pie-chart';
+import ReactAudioPlayer from 'react-audio-player';
 const EvaluationCard = ({ record }) => {
   const [isExpanded, setIsExpanded] = useState(false);
- 
+
+  // Calculate the pie chart values based on score or other metrics
+  const calculatePieChartData = () => {
+    // Example data - you can customize this logic
+    const total = record.score*10 ; // Assuming score is out of 100
+    const remaining = 100 - total;
+
+    return [
+      { title: 'Score', value: total, color: '#87CEEB' },
+      { title: 'Remaining', value: remaining, color: '#696969' },
+    ];
+  };
+
   return (
-    <div className="bg-blue-50 rounded-lg shadow-md p-6 mb-6 border border-gray-300 ">
+    <div className="bg-blue-50 rounded-lg shadow-md p-6 mb-6 border border-gray-300">
       <div
         className="cursor-pointer"
         onClick={() => setIsExpanded(!isExpanded)}
@@ -16,9 +29,25 @@ const EvaluationCard = ({ record }) => {
           >
             {isExpanded ? "−" : "+"}
           </button>
-          <div className="flex-1">
-            <div className="text-xl font-semibold text-gray-800">{record.question}</div>
+          <div className="flex-1 flex items-center">
+            <div className="text-xl font-semibold text-gray-800 mr-4">{record.question}</div>
+         
           </div>
+          <div className=" flex justify-center items-center">
+              <div className="flex w-full flex-row gap-2 justify-center" >
+                <span>Score:</span> <span>{record.score}</span>
+              </div>
+              <div className="w-32 h-24">
+
+              <PieChart
+                data={calculatePieChartData()}
+                lineWidth={30}
+                radius={30}
+                // Add other props if needed
+              />
+              </div>
+           
+            </div>
         </div>
       </div>
       {isExpanded && (
@@ -26,6 +55,13 @@ const EvaluationCard = ({ record }) => {
           <div className="mb-4">
             <span className="font-medium text-[#01AFF4]"><b>Your Answer:</b></span>
             <div className="text-gray-700 mt-1">{record.user_answer}</div>
+          </div>
+          <div>
+          <ReactAudioPlayer
+  src="../VoiceRecords/introVideo.mpeg"
+  autoPlay
+  controls
+/>
           </div>
           <hr className="my-4 border-t-2 border-gray-200"/>
           <div className="mb-4 bg-gray-100 p-4 rounded-md">
@@ -70,14 +106,14 @@ const EvaluationCard = ({ record }) => {
                 <span className="font-medium text-[#01AFF4]"><b>Score:</b></span>
                 <div className="text-gray-800 mt-1">{record.score}</div>
               </li>
-              <li>
+              {/* <li>
                 <span className="font-medium text-[#01AFF4]"><b>Input Tokens:</b></span>
                 <div className="text-gray-800 mt-1">{record.input_tokens}</div>
               </li>
               <li>
                 <span className="font-medium text-[#01AFF4]"><b>Output Tokens:</b></span>
                 <div className="text-gray-800 mt-1">{record.output_tokens}</div>
-              </li>
+              </li> */}
               <li>
                 <span className="font-medium text-[#01AFF4]"><b>Final Evaluation:</b></span>
                 <div className="text-gray-800 mt-1">{record.final_evaluation}</div>
@@ -91,6 +127,8 @@ const EvaluationCard = ({ record }) => {
 };
 
 export default EvaluationCard;
+
+
 
 
 

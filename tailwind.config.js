@@ -39,8 +39,14 @@ export default {
           '100%': { backgroundPosition: '100% 0%' },
         },
       },
+      borderGrow: {
+        '0%': { borderRadius: '50%', borderWidth: '10px' },
+        '100%': { borderRadius: '50%', borderWidth: '2px' },
+      },
+    
       animation: {
         colorChange: 'colorChange 1s forwards',
+        borderGrow: 'borderGrow 0.5s ease-in-out',
       },
       
     },

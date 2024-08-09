@@ -2,10 +2,10 @@ import axiosInstance from '../axios/axiosInstance';
 import { LineScore } from '../../types/interfaces/interface';
 import { ROUTES } from '../../constants/Endpoints';
 
-export const fetchSetAttemps = async (token:string): Promise<LineScore[]> => {
+export const fetchexamAttemps = async (token:string): Promise<LineScore[]> => {
   try {
     
-    const response = await axiosInstance.get(`${ROUTES.GET_SETS_ATTEMPTED}`, {
+    const response = await axiosInstance.get(`${ROUTES.GET_EXAM_ATTEMPTED}`, {
       headers: {
         Accept: "application/json",
         Token: token,

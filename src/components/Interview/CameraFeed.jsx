@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import * as faceapi from 'face-api.js';
-import { toast } from 'react-toastify';
-import { uploadScreenshot } from '../../services/api/InterviewService';
+import { toast, ToastContainer } from 'react-toastify';
 import { useParams } from 'react-router-dom';
 
 const MODEL_URL = '/models';
@@ -43,35 +42,35 @@ const CameraFeed = ({ onFacesDetected, examStarted }) => {
     const intervalIdRef = useRef(null);
     const noFaceTimeoutRef = useRef(null);
     const multipleFaceTimeoutRef = useRef(null);
-    const token = localStorage.getItem("accessToken");
     const { questionSetId } = useParams();
-    const screenshotIntervalRef = useRef(null);  // Reference for screenshot interval
 
     const handleVideoPlay = useCallback(() => {
         intervalIdRef.current = setInterval(async () => {
             if (videoRef.current) {
                 const detections = await detectFaces(videoRef.current);
-             //   console.log('Detections:', detections);
-
                 const faceVerified = detections.length > 0;
                 const multiplePeopleDetected = detections.length > 1;
-               // console.log(`Face Verified: ${faceVerified}, Multiple People Detected: ${multiplePeopleDetected}`);
 
-                if (!faceVerified && !noFaceTimeoutRef.current) {
-                    noFaceTimeoutRef.current = setTimeout(() => {
-                        console.log('No face detected for more than 10 seconds.');
-                        toast.warn('No face detected for more than 10 seconds.');
-                    }, 10000);
-                } else if (faceVerified && noFaceTimeoutRef.current) {
-                    clearTimeout(noFaceTimeoutRef.current);
-                    noFaceTimeoutRef.current = null;
+                if (!faceVerified) {
+                    if (!noFaceTimeoutRef.current) {
+                        noFaceTimeoutRef.current = setTimeout(() => {
+                            console.log('No face detected for more than 20 seconds.');
+                            toast.warn('No face detected for more than 20 seconds.');
+                            noFaceTimeoutRef.current = null; // Reset the timeout reference
+                        }, 20000);
+                    }
+                } else {
+                    if (noFaceTimeoutRef.current) {
+                        clearTimeout(noFaceTimeoutRef.current);
+                        noFaceTimeoutRef.current = null;
+                    }
                 }
 
                 if (multiplePeopleDetected && !multipleFaceTimeoutRef.current) {
                     multipleFaceTimeoutRef.current = setTimeout(() => {
-                        console.log('Multiple faces detected for more than 10 seconds.');
-                        toast.warn('Multiple faces detected for more than 10 seconds.');
-                    }, 10000);
+                        console.log('Multiple faces detected for more than 20 seconds.');
+                        toast.warn('Multiple faces detected for more than 20 seconds.');
+                    }, 20000);
                 } else if (!multiplePeopleDetected && multipleFaceTimeoutRef.current) {
                     clearTimeout(multipleFaceTimeoutRef.current);
                     multipleFaceTimeoutRef.current = null;
@@ -85,31 +84,6 @@ const CameraFeed = ({ onFacesDetected, examStarted }) => {
             }
         }, 500);
     }, [onFacesDetected]);
-
-    const handleUploadMedia = async (file) => {
-        try {
-          await uploadScreenshot(questionSetId, token, file);    
-        } catch (error) {
-          console.log(' error', error) //TODO handle error here
-        }
-      };
-
-      const captureScreenshot = useCallback(async () => {
-        if (videoRef.current) {
-            const canvas = document.createElement('canvas');
-            canvas.width = videoRef.current.videoWidth;
-            canvas.height = videoRef.current.videoHeight;
-            const context = canvas.getContext('2d');
-            context.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-
-            canvas.toBlob(async (blob) => {
-                const formData = new FormData();
-                formData.append('file', blob, 'screenshot.png');
-
-                handleUploadMedia(formData)
-            }, 'image/png');
-        }
-        }, []);
 
     useEffect(() => {
         const currentVideoRef = videoRef.current; // Copy videoRef.current to a local variable
@@ -135,28 +109,21 @@ const CameraFeed = ({ onFacesDetected, examStarted }) => {
         return () => {
             if (intervalIdRef.current) clearInterval(intervalIdRef.current);
             if (noFaceTimeoutRef.current) clearTimeout(noFaceTimeoutRef.current);
-            if (screenshotIntervalRef.current) clearInterval(screenshotIntervalRef.current); // Clear screenshot interval
             if (multipleFaceTimeoutRef.current) clearTimeout(multipleFaceTimeoutRef.current);
             stopCamera(currentVideoRef);
         };
     }, [handleVideoPlay]);
 
-    useEffect(() => {
-        if (examStarted) {
-            screenshotIntervalRef.current = setInterval(captureScreenshot, 30000); // Take screenshots every 30 seconds
-        } else {
-            if (screenshotIntervalRef.current) clearInterval(screenshotIntervalRef.current);
-        }
-        return () => {
-            if (screenshotIntervalRef.current) clearInterval(screenshotIntervalRef.current);
-        };
-    }, [examStarted, captureScreenshot]);
-
     return (
-        <div>
+        <div className='flex w-11/12 mx-auto p-4'>
+            <ToastContainer/>
             <video ref={videoRef} autoPlay muted style={{ width: '100%', borderRadius: '1%' }} />
         </div>
     );
 };
 
 export default React.memo(CameraFeed);
+
+
+
+

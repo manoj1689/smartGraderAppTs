@@ -3,7 +3,8 @@ import { getToken } from '../../utils/tokenUtils';
 import { ENDPOINTS } from "../../constants/Endpoints";
 
 
-export const fetchSetsResult = async (examId: string) => {
+
+export const fetchExamResult = async (examId: string) => {
   const token = getToken();
   try {
     const response = await axiosInstance.get(`${ENDPOINTS.EXAM_RESULT}/${examId}`,{
@@ -12,9 +13,24 @@ export const fetchSetsResult = async (examId: string) => {
         Token: token,
       }
     });
-   // console.log("Set Result",  JSON.stringify(response.data, null, 2))
+   console.log("Set List  in fetch Attempt Api",response.data)
     return response.data;
   } catch (error) {
     throw new Error('Error Fetching Set Result.');
+  }
+};
+
+export const fetchExamScreenshots = async (examId: string) => {
+  const token = getToken();
+  try {
+    const response = await axiosInstance.get(`${ENDPOINTS.EXAM_MEDIA}?exam_id=${examId}`, {
+      headers: {
+        Accept: "application/json",
+        Token: token,
+      },
+    });
+    return response.data.data;
+  } catch (error) {
+    throw new Error('Error fetching of Media ScreenShots');
   }
 };

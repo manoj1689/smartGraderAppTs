@@ -1,9 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useScreenshot } from 'use-react-screenshot'
 // library
-import SpeechRecognition, {
-  useSpeechRecognition,
-} from "react-speech-recognition";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -11,35 +9,30 @@ import Sticky from "react-sticky-el";
 import Modal from "react-modal";
 import { useParams } from "react-router-dom";
 //icons
-import { FaMicrophoneAlt, FaMicrophoneAltSlash } from "react-icons/fa";
+
 import { BiSolidError } from "react-icons/bi";
-import { MdOutlineCheckBoxOutlineBlank } from "react-icons/md";
-import { GiSoundWaves } from "react-icons/gi";
-import { MdDone } from "react-icons/md";
-import { HiSpeakerWave } from "react-icons/hi2";
-import { MdArrowForward } from "react-icons/md";
+
 import { AiOutlineClose } from "react-icons/ai";
+import { IoMdArrowRoundForward } from "react-icons/io";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 // imported components
-import useFullscreen from "../components/Interview/CheatingPrevention/useFullscreen";
-import QuestionDisplay from "../components/Interview/QuestionDisplay";
-import VideoDisplay from "../components/Interview/VideoDisplay";
+
 import BrowserInstructions from "../components/Interview/BrowserInstructions";
 import ErrorBoundary from "../components/common/Error/ErrorBoundary";
-import AnswerField from "../components/Interview/AnswerField";
 import Checklist from "../components/Interview/Checklist";
 import CameraFeed from "../components/Interview/CameraFeed";
 import NotificationBar from "../components/common/Notification/NotificationBar";
+import AIChat from "../components/Interview/AIChat";
 
 // imported Services
 import {
   examEnd,
   examStart,
   fetchSetQuestions,
-  submitAnswer,
+  uploadScreenshot
 } from "../services/api/InterviewService";
 import { fetchSetDetail } from "../services/api/SetService";
-
 // imported Endpoints
 
 import { MESSAGES } from "../constants/Constants";
@@ -47,30 +40,25 @@ import { MESSAGES } from "../constants/Constants";
 // import images
 
 import SmartGrader from "../assets/logos/smartGrader.png";
-import mic from "../assets/images/interview/mic.png";
-import save from "../assets/images/interview/save.png";
+import { Button } from "@mui/material";
+
 const InterviewScreen = () => {
   const token = localStorage.getItem("accessToken");
   const navigate = useNavigate();
-
   const location = useLocation();
   const { interview } = location.state || {};
 
   const [questionsData, setQuestionsData] = useState([]);
-  const [setDetail, setSetDetails] = useState();
-  const [AIAvatrarSet,setAIAvatarSet]=useState()
+  const [setDetail, setSetDetails] = useState([]);
   const [questionsLength, setQuestionsLength] = useState([]);
-  const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [answer, setAnswer] = useState("");
-  const [startTime, setStartTime] = useState(null);
-  const [remainingTime, setRemainingTime] = useState(null);
   const [examStarted, setExamStarted] = useState(false);
   const [examId, setExamId] = useState("");
-  const [transcript, setTranscript] = useState("");
-  const [isTimeOut, setIsTimeOut] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
+  const ref = useRef(null)
+  const [image, takeScreenshot] = useScreenshot()
+  const getImage = () => takeScreenshot(ref.current)
   const [permissions, setPermissions] = useState({
     camera: false,
     microphone: false,
@@ -81,33 +69,11 @@ const InterviewScreen = () => {
     faceVerified: false,
     multiplePeopleDetected: false,
   });
-  const [ttsPlaying, setTtsPlaying] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [progress, setProgress] = useState(0);
   const [error, setError] = useState(null);
-  const synth = window.speechSynthesis;
+ 
   const fullscreenRef = useRef(null);
   const { questionSetId } = useParams();
-  const {
-    transcript: liveTranscript,
-    listening,
-    browserSupportsSpeechRecognition,
-    resetTranscript,
-  } = useSpeechRecognition();
-  // console.log("trasncript data",transcript)
-
-  const speak = useCallback(
-    (text) => {
-      if (synth.speaking) {
-        synth.cancel();
-      }
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.onend = () => setTtsPlaying(false);
-      synth.speak(utterance);
-      setTtsPlaying(true);
-    },
-    [synth]
-  );
 
   // fetching Question set Data
   useEffect(() => {
@@ -122,10 +88,12 @@ const InterviewScreen = () => {
     };
 
     fetchQuestionsData();
+  }, []);
 
+  useEffect(() => {
     const fetchSetData = async () => {
       try {
-        if (interview?.id === 254){
+        if (interview?.id === 254) {
           const AIAvatarSetData = await fetchSetDetail(interview?.id);
           setAIAvatarSet(AIAvatarSetData);
         }
@@ -138,65 +106,7 @@ const InterviewScreen = () => {
 
     fetchSetData();
   }, []);
- //console.log("AI Avatar Set At Interview Page",AIAvatrarSet)
-  // submit Answer
-
-  const handleSubmitAnswer = async () => {
-    setLoading(true);
-    const endTime = new Date();
-    const duration = Math.floor((endTime - startTime) / 1000);
-    try {
-      await submitAnswer(
-        currentQuestion?.id,
-        examId,
-        duration,
-        `${answer} ${transcript}`,
-        token
-      );
-      if (!isTimeOut) {
-        handleNextQuestion();
-        setIsTimeOut(true);
-      }
-
-      setAnswer("");
-    } catch (error) {
-      setError(MESSAGES.SUBMIT_ANSWER_ERROR);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  //console.log("AI Avatar Question list",questionsData)
- 
-  const handleNextQuestion = useCallback(() => {
-    setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
-  }, []);
-
-  const currentQuestion = questionsData[currentQuestionIndex];
-
-  const handleSubmitAnswerWithoutNext = async () => {
-    let endTime = new Date();
-    endTime.setSeconds(endTime.getSeconds() + 90);
-    //const endTime = new Date();
-    const duration = Math.floor((endTime - startTime) / 1000);
-    try {
-      await submitAnswer(
-        currentQuestion?.id,
-        examId,
-        duration,
-        `${answer} ${transcript}`,
-        token
-      );
-      handleNextQuestion();
-      setAnswer("");
-      setIsTimeOut(false);
-    } catch (error) {
-      setError(MESSAGES.SUBMIT_ANSWER_ERROR);
-    } finally {
-      setLoading(true);
-    }
-  };
-
+  // console.log("set Detail at interview Page", setDetail);
   // exam start
   const handleExamStart = async () => {
     setLoading(true);
@@ -217,14 +127,14 @@ const InterviewScreen = () => {
       setLoading(false);
     }
   };
-  //console.log("the Exam id",examId,"type of examId",typeof examId)
 
   // Exam end
   const handleExamEnd = async () => {
     setLoading(true);
     try {
-      await handleSubmitAnswer();
+      //await handleSubmitAnswer();
       await examEnd(examId, token);
+
       setExamId("");
       setIsModalOpen(false);
       navigate(`/dashboard/question/exam-end`);
@@ -233,8 +143,56 @@ const InterviewScreen = () => {
     } finally {
       setLoading(false);
     }
+
+    fullScreenExit();
   };
-  console.log("currentQuestion Id at interview Page",currentQuestion?.id)
+//console.log("The Face Detection Result at interview Page",faceDetectionResults)
+  // console.log("currentQuestion Id at interview Page",currentQuestion?.id)
+  const [capturedImage, setCapturedImage] = useState(null);
+
+
+
+  // Capture the screenshot and update the state
+  const captureScreenshot = async () => {
+    const img = await takeScreenshot(ref.current);
+    setCapturedImage(img);
+  };
+
+  useEffect(() => {
+    const saveAndUploadScreenshot = async () => {
+      if (capturedImage && examId) {
+        // Convert the image to a Blob
+        const blob = await fetch(capturedImage).then(res => res.blob());
+
+        // Create a FormData object
+        const file = new FormData();
+        file.append('file', blob, 'screenshot.png');
+
+        // Upload the image to your API
+        try {
+          const response = await uploadScreenshot(examId, token, file);
+          console.log(response);
+          console.log('Screenshot uploaded successfully');
+        } catch (error) {
+          console.error('Error uploading screenshot:', error);
+        }
+      }
+    };
+
+    saveAndUploadScreenshot();
+  }, [capturedImage]);
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      captureScreenshot();
+    }, 10000); // 10 seconds
+
+    // Cleanup the interval on component unmount
+    return () => clearInterval(intervalId);
+  }, []); // Empty dependency array to run only once
+
+ 
+
   async function requestCameraAndMicrophone() {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -256,19 +214,6 @@ const InterviewScreen = () => {
       console.error("Error requesting media permissions:", error);
     }
   }
-  // const toggleFullscreen = useCallback(() => {
-  //   if (!document.fullscreenElement) {
-  //     document.documentElement.requestFullscreen().catch((err) => {
-  //       console.error(`Failed to enter fullscreen mode: ${err.message}`);
-  //     });
-  //   } else {
-  //     document.exitFullscreen().catch((err) => {
-  //       console.error(`Failed to exit fullscreen mode: ${err.message}`);
-  //     });
-  //   }
-  // }, []);
-
-  // securty
 
   const fullScreenExit = useCallback(() => {
     if (document.fullscreenElement) {
@@ -316,87 +261,11 @@ const InterviewScreen = () => {
     setFaceDetectionResults(results);
   }, []);
 
-  const handleAnswerChange = useCallback(
-    (event) => {
-      if (listening) {
-        stopListening();
-      }
-      setAnswer(event.target.value);
-    },
-    [listening]
-  );
-
-  // Mic recording and transcript
-
-  const startListening = () => {
-    SpeechRecognition.startListening({ continuous: true });
-  };
-
-  const stopListening = () => {
-    SpeechRecognition.stopListening();
-    resetTranscript();
-  };
-
-  useEffect(() => {
-    if (!listening) {
-      setAnswer((prev) => `${prev} ${transcript}`.trim());
-      setTranscript("");
-      resetTranscript();
-    } else {
-      setTranscript(liveTranscript);
-    }
-  }, [listening, liveTranscript]);
-
   const areAllPermissionsGranted =
     permissions.camera &&
     permissions.microphone &&
     permissions.fullscreen &&
     !permissions.devToolsOpen;
-
-  // if (!questionsData.length) {
-  //   return <div>Loading...</div>;
-  // }
-
-  const updateTime = useCallback(() => {
-    if (startTime) {
-      const now = new Date();
-      console.log("startTime", startTime, "nowTime", now);
-      const elapsed = Math.floor((now - startTime) / 1000);
-      const remaining = currentQuestion.duration - elapsed;
-      setRemainingTime(remaining);
-
-      if (remaining <= 0) {
-        stopListening();
-        setIsTimeOut(true);
-        handleSubmitAnswerWithoutNext();
-      }
-    }
-  }, [startTime]);
-
-  useEffect(() => {
-    if (examStarted && currentQuestion) {
-      let date = new Date();
-      date.setSeconds(date.getSeconds() + 90);
-      setStartTime(date);
-
-      setRemainingTime(120);
-    }
-  }, [examStarted, currentQuestion]);
-
-  useEffect(() => {
-    if (remainingTime !== null && remainingTime > 0) {
-      const intervalId = setInterval(updateTime, 1000);
-      return () => clearInterval(intervalId);
-    }
-  }, [remainingTime, updateTime]);
-
-  const handleButtonClick = () => {
-    setIsModalOpen(true);
-  };
-
-  const handleModalClose = () => {
-    setIsModalOpen(false);
-  };
 
   const enterFullscreen = useCallback(() => {
     if (!document.fullscreenElement) {
@@ -438,291 +307,214 @@ const InterviewScreen = () => {
       document.removeEventListener("fullscreenchange", handleFullscreenChange);
     };
   }, []);
-  const handleNextButtonClick = useCallback(() => {
-    stopListening(); // Call stopListening function to stop mic or speech input
-    if (isTimeOut) {
-      handleSubmitAnswer(); // Handle submitAnswer if it's a timeout
-    } else {
-      handleSubmitAnswerWithoutNext(); // Handle submitAnswerWithoutNext if not a timeout
-    }
-  }, [
-    stopListening,
-    handleSubmitAnswer,
-    handleSubmitAnswerWithoutNext,
-    isTimeOut,
-  ]);
+
+  const handleButtonClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
   return (
     <>
-      <Sticky topOffset={80} className="fixed top-10 right-10 z-50">
-        {isVisible && (
-          <button
-            className="bg-red-500 text-white rounded-full p-4 transition-transform hover:rotate-90 hover:scale-110 focus:outline-none"
-            onClick={handleButtonClick}
-          >
-            <AiOutlineClose size={30} />
-          </button>
-        )}
-      </Sticky>
-      <Sticky topOffset={80} className="fixed top-10 right-10 z-50">
-        {!isVisible && (
-          <button
-            className="bg-blue-400 text-white rounded-full p-4 transition-transform hover:rotate-90 hover:scale-110 focus:outline-none"
-            onClick={enterFullscreen}
-          >
-            <AiOutlineClose size={30} />
-          </button>
-        )}
-      </Sticky>
-      <div className="flex items-center justify-between border-b border-slate-200">
-        <div className="w-auto p-4">
-          <img src={SmartGrader} alt="Smart Grader" width={140} />
-        </div>
-      </div>
-      <div className=" px-4 md:px-10 mx-auto ">
-        <NotificationBar />
-
-        <div className="rounded-md border border-solid my-5  border-black border-opacity-10 bg-white">
-          <ErrorBoundary>
-            <div
-              ref={fullscreenRef}
-              className=" mx-auto flex flex-col lg:flex-row  "
+      <div className=" p-4 h-auto ">
+        <img src={SmartGrader} alt="Smart Grader" width={140} height={140} />
+        <Sticky topOffset={80} className="fixed top-10 right-10 z-50">
+          {isVisible && (
+            <button
+              className="bg-red-500 text-white rounded-full p-4 transition-transform hover:rotate-90 hover:scale-110 focus:outline-none"
+              onClick={handleButtonClick}
             >
-              <div className="flex flex-col sm:flex-row lg:flex-col   basis-1/3 rounded-md border border-solid m-5 border-black border-opacity-10">
-                <div className=" sm:w-2/3   lg:w-full">
-                  <CameraFeed
-                    onFacesDetected={handleFacesDetected}
-                    examStarted={examStarted}
-                  />
-                </div>
+              <AiOutlineClose size={30} />
+            </button>
+          )}
+        </Sticky>
+        <Sticky topOffset={80} className="fixed top-10 right-10 z-50">
+          {!isVisible && (
+            <button
+              className="bg-blue-400 text-white rounded-full p-4 transition-transform hover:rotate-90 hover:scale-110 focus:outline-none"
+              onClick={enterFullscreen}
+            >
+              <AiOutlineClose size={30} />
+            </button>
+          )}
+        </Sticky>
 
-                <div className="mt-4 sm:w-1/3  lg:w-full">
-                  <Checklist
-                    items={[
-                      { label: "Camera Access", isChecked: permissions.camera },
-                      {
-                        label: "Microphone Access",
-                        isChecked: permissions.microphone,
-                      },
-                      {
-                        label: "Fullscreen Mode",
-                        isChecked: permissions.fullscreen,
-                      },
-                      {
-                        label: "DevTools Closed",
-                        isChecked: !permissions.devToolsOpen,
-                      },
-                    ]}
-                  />
-                  {/* <div
-                    className={`flex  items-center space-x-2 mx-4 p-2 border rounded-md ${
-                      permissions.fullscreen
-                        ? "bg-green-100 border-green-300"
-                        : "bg-red-100 border-red-300"
-                    } `}
-                  >
-                    <Checkbox
-                      icon={
-                        permissions.fullscreen ? (
-                          <GiCheckMark color="green" size={12} />
-                        ) : (
-                          ""
-                        )
-                      }
-                      checked={permissions.fullscreen}
-                      onChange={fullScreenExit}
-                      borderRadius={3}
-                      size={24}
-                      style={{ marginLeft: "auto" }}
-                    />
-                    <div className=" text-sm font-medium ">
-                      {permissions.fullscreen
-                        ? "Exit Fullscreen"
-                        : "Enter Fullscreen"}
-                    </div>
-                  </div> */}
-                </div>
-              </div>
-
-              <div className="flex flex-col basis-2/3 rounded-md border border-solid my-5 mr-5 border-black border-opacity-10">
-                {examStarted && (
-                  <div className="px-2 space-y-4">
-                    <div className="flex items-center justify-between p-4 border-b border-solid border-black border-opacity-10  mr-5">
-                      <span className="text-xl text-neutral-700 font-spline font-semibold">
+        <div  ref={ref} className=" mx-auto">
+          <div className="container mx-auto">
+            <NotificationBar />
+          </div>
+          <div  className=" container mx-auto  ">
+            <ErrorBoundary>
+              <div ref={fullscreenRef} >
+                <div className="flex flex-row gap-5 p-4 rounded-md border border-solid bg-white ">
+                  <div className="w-2/3 bg-gray-200 rounded-md p-4">
+                    <div className="px-4 flex justify-between">
+                      <div>
+                      <div className="text-xl font-spline font-bold text-slate-800">
                         {setDetail.title}
-                      </span>
-                      <div className="text-right">
-                        <p className="text-base text-neutral-600">
-                          Time left:{" "}
-                          <span className="font-bold">{remainingTime}</span>{" "}
-                          seconds
-                        </p>
                       </div>
+                      <div className="text-md font-spline font-medium text-gray-500">
+                        {setDetail.description}
+                      </div>
+                      </div>
+                     <div>
+                     <div className="text-md font-spline font-medium text-slate-800">
+                        Level:{setDetail.level}
+                      </div>
+                      <div className="text-md font-spline font-medium text-blue-400">
+                        No of Questions:{setDetail.questions_count}
+                      </div>
+                     </div>
+                    
                     </div>
-                    <div className="w-full text-lg font-semibold leading-6 text-neutral-700">
-                      {/* Question {currentQuestion?.id} */}
-                      Question {currentQuestionIndex + 1}
-                      <span className="text-xs text-neutral-600">
-                        {" "}
-                        (Click the speaker icon to listen to question)
-                      </span>
+                    <div className="flex relative ">
+                    <div className="bg-slate-300 w-48 h-28 p-4 gap-3 justify-center items-center absolute z-10 ml-16 rounded-md shadow-md mt-8">
+                     <div className="font-spline text-slate-600 font-light">
+                     {faceDetectionResults.faceVerified ? "Face Verified":"Face Not Verifid "}
+                     </div>
+                      <div className="font-spline text-slate-600 font-light">
+                      {faceDetectionResults.multiplePeopleDetected? "Multiple face Detected":"Single face Detected"} 
+                      </div>
+                    
+                    
+                    </div>
+                    <div className="relative w-full">
+                    <CameraFeed
+                        onFacesDetected={handleFacesDetected}
+                        examStarted={examStarted}
+                      />
                     </div>
                     
-                     <VideoDisplay
-                      currentQuestionId={currentQuestion?.id}
-                     
-                     />
-                    
-
-                    <div className="flex flex-col md:flex-row text-base leading-5 text-neutral-600 gap-2.5 justify-between px-4 py-4 mt-2.5 w-full rounded-md border border-solid border-neutral-500">
-                   
-                  
-                     
-                     
-
-                      <QuestionDisplay
-                       
-                        questionText={
-                          currentQuestion
-                            ? currentQuestion.title
-                            : "Loading question..."
-                        }
-                      />
-                    
-                   
-                      <div className="flex items-center px-4  rounded">
-                        <span
-                          onClick={() => speak(currentQuestion.title)}
-                          className="cursor-pointer"
-                        >
-                          <HiSpeakerWave size={29} />
-                        </span>
-                      </div>
                     </div>
-                    <div className="relative">
-                      <AnswerField
-                        value={answer + (listening ? ` ${transcript}` : "")}
-                        onChange={handleAnswerChange}
-                        placeholder="Type your answer here..."
-                        charLimit={500}
-                        className="w-full p-3 border border-gray-300 rounded-lg"
-                        disabled={isTimeOut}
-                      />
-                      <div
-                        className={`absolute bottom-12 right-5 p-1 text-gray-500 hover:text-gray-700 focus:outline-none cursor-pointer transform transition-transform duration-200 hover:scale-110`}
-                        onClick={() => {
-                          if (!isTimeOut) {
-                            listening ? stopListening() : startListening();
-                          }
-                        }}
-                      >
-                        {listening ? (
-                          <>
-                            <img src={save} alt="save" width={50} />
-                          </>
-                        ) : (
-                          <>
-                            <img src={mic} alt="mic" width={50} />
-                          </>
-                        )}
-                      </div>
-                    </div>
-                    <div className="flex flex-wrap justify-center items-center gap-3 mt-4">
-                      {/* <button
-                          onClick={handleExamStart}
-                          // disabled={!areAllPermissionsGranted}
-                          className="flex-1 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                        >
-                          Start Exams
-                        </button> */}
-
-                      {currentQuestionIndex < questionsLength - 1 ? (
-                        <button
-                          onClick={handleNextButtonClick}
-                          //onClick={handleSubmitAnswer}
-                          className="flex px-4 py-4 gap-5 bg-gray-500 justify-center items-center w-full lg:w-1/2 text-white rounded hover:bg-gray-600"
-                        >
-                          <span>Next</span>{" "}
-                          <span>
-                            <MdArrowForward size={20} />
-                          </span>
-                        </button>
-                      ) : (
-                        <button
-                          onClick={() => {
-                            stopListening();
-                            handleExamEnd(), fullScreenExit();
-                          }}
-                          className="flex px-4 py-4 bg-gray-500 gap-5 text-white justify-center items-center rounded w-full lg:w-1/2 hover:bg-gray-600"
-                        >
-                          <span>Finish</span>{" "}
-                          <span>
-                            <MdDone size={20} />
-                          </span>
-                        </button>
-                      )}
-                    </div>
-                    {loading && (
-                      <div
-                        className="progress-bar mt-4"
-                        style={{ width: `${progress}%` }}
-                      />
-                    )}
-                    {error && (
-                      <div className="error mt-4 text-red-500">{error}</div>
-                    )}
-                    <ToastContainer />
                   </div>
-                )}
-                {!examStarted && (
-                  <div className="flex items-center justify-center my-5 py-10 ">
-                    <div className="space-y-8 w-full lg:w-5/6 bg-white p-8 ">
+
+                  <div className="w-1/3">
+                    {examStarted ? (
+                      <div>
+                        <AIChat
+                          questionList={questionsData}
+                          handleExamEnd={handleExamEnd}
+                          examID={examId}
+                        />
+                        {error && (
+                          <div className="error mt-4 text-red-500">{error}</div>
+                        )}
+                        <ToastContainer />
+                      </div>
+                    ) : (
+                      <>
+                        <div className="space-y-8 w-full flex  flex-col bg-white p-4 ">
+                          <div>
+                            <BrowserInstructions />
+                          </div>
+                          <div>
+                            <p>
+                              Please check every box on the left before starting
+                              your interview
+                            </p>
+                            <div></div>
+                          </div>
+                        </div>
+                        <Checklist
+                          items={[
+                            {
+                              label: "Camera Access",
+                              isChecked: permissions.camera,
+                            },
+                            {
+                              label: "Microphone Access",
+                              isChecked: permissions.microphone,
+                            },
+                            {
+                              label: "Fullscreen Mode",
+                              isChecked: permissions.fullscreen,
+                            },
+                            {
+                              label: "DevTools Closed",
+                              isChecked: !permissions.devToolsOpen,
+                            },
+                          ]}
+                        />
+                      </>
+                    )}
+                  </div>
+                </div>
+                <div className="flex flex-col">
+                  {!examStarted && (
+                    <div className="flex flex-col justify-around">
                       <div className="space-y-2 text-center">
-                        <BrowserInstructions />
-                        <p>
-                          Please check every box on the left befire starting
-                          your interview
-                        </p>
                         {questionsData.length === 0 ? (
                           <>
-                            <p>
-                              The selected question set does not have questions
-                              in it, please contact the interviewer
-                            </p>
-                            <button
-                              type="button"
-                              className="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-blue-600"
-                              onClick={() => navigate(`/dashboard`)}
-                            >
-                              Dashboard
-                            </button>
+                            <div className="flex p-4 w-5/6 mx-auto gap-5 items-center">
+                              <div className="w-1/2">
+                              <button
+                                className="px-4  w-full text-lg font-spline flex justify-center items-center gap-3  font-medium text-white cursor-pointer bg-gray-500 hover:bg-gray-600  p-4 rounded "
+                                onClick={() => {
+                                  navigate(`/dashboard`), fullScreenExit();
+                                }}
+                              >
+                                <span>
+                                  <IoMdArrowRoundBack />
+                                </span>{" "}
+                                <span>DashBoard</span>
+                              </button>
+                              </div>
+                             
+                              <div className="w-1/2">
+                                <p className="text-red-500 font-semibold">
+                                  The selected question set does not have
+                                  questions in it, please contact the
+                                  interviewer !
+                                </p>
+                              </div>
+                            </div>
                           </>
                         ) : (
-                          <div className="flex w-full lg:w-10/12 mx-auto py-10">
+                          <div className="flex w-5/6 mx-auto justify-between gap-5  py-4">
                             <button
-                              type="button"
-                              className="px-4 py-4 w-full  lg:w-1/2 bg-gray-500 text-white rounded hover:bg-gray-600 mr-3"
-                              onClick={() => navigate(`/dashboard`)}
+                              className="px-4  w-full text-lg font-spline flex justify-center items-center gap-3  font-medium text-white cursor-pointer bg-gray-500 hover:bg-gray-600  p-4 rounded "
+                              onClick={() => {
+                                navigate(`/dashboard`), fullScreenExit();
+                              }}
                             >
-                              Go back
+                              <span>
+                                <IoMdArrowRoundBack />
+                              </span>{" "}
+                              <span>Go back</span>
                             </button>
                             <button
                               onClick={handleExamStart}
                               disabled={!areAllPermissionsGranted}
-                              className="px-4 py-4 w-full lg:w-1/2 text-white roundedbg-sky-500 rounded border bg-sky-500 border-solid hover:bg-sky-600 hover:border-sky-600"
+                              className="px-4  w-full text-lg font-spline flex justify-center items-center gap-3  font-medium text-white cursor-pointer bg-sky-500 hover:bg-sky-600  p-4 rounded  "
                             >
-                              Start Exams
+                              <span>Start Exam</span>{" "}
+                              <span>
+                                <IoMdArrowRoundForward />
+                              </span>
                             </button>
+                  
+               
                           </div>
+                          
                         )}
                       </div>
+                    
                     </div>
-                  </div>
-                )}
+                  )}
+                </div>
+               
               </div>
-            </div>
-          </ErrorBoundary>
+            </ErrorBoundary>
+          </div>
         </div>
+        <button style={{ marginBottom: '10px' }} onClick={captureScreenshot}>
+        Take screenshot
+      </button>
+
+      <img width={240} src={image} alt={'Screenshot'} />
       </div>
+
       <Modal
         isOpen={isModalOpen}
         onRequestClose={handleModalClose}
@@ -758,6 +550,13 @@ const InterviewScreen = () => {
             </p>
 
             <div className="mt-4 flex justify-center space-x-4">
+            <button
+                onClick={handleModalClose}
+                className="bg-gray-500 text-white w-full px-4 py-2 rounded hover:bg-gray-600 focus:outline-none"
+              >
+                No
+              </button>
+            </div>
               <button
                 onClick={() => {
                   handleExamEnd(), fullScreenExit();
@@ -766,13 +565,7 @@ const InterviewScreen = () => {
               >
                 Yes
               </button>
-              <button
-                onClick={handleModalClose}
-                className="bg-gray-500 text-white w-full px-4 py-2 rounded hover:bg-gray-600 focus:outline-none"
-              >
-                No
-              </button>
-            </div>
+            
           </div>
         </div>
       </Modal>

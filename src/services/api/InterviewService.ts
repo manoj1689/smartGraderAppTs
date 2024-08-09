@@ -1,5 +1,6 @@
 import axiosInstance from "../axios/axiosInstance";
 import { ENDPOINTS } from "../../constants/Endpoints";
+import axios from 'axios';
 
 export const fetchSetQuestions = async (setId: string, token: string) => {
   try {
@@ -15,9 +16,10 @@ export const fetchSetQuestions = async (setId: string, token: string) => {
   }
 };
 
-export const submitAnswer = async (questionId: string, examId: string, duration: string, answer: string, token: string) => {
+export const submitAnswer = async (questionId: string, examId: string, duration: string, answer: string) => {
   try {
    console.log(`Question Id ${questionId} and examId ${examId} and Answer Of question ${answer}`)
+   const token = localStorage.getItem("accessToken");
     const response = await axiosInstance.post(`${ENDPOINTS.SUBMIT_ANSWER}?question_id=${questionId}&exam_id=${examId}&duration=${duration}&answer=${answer}`, {}, {
       headers: {
         Accept: "application/json",
@@ -50,6 +52,7 @@ export const examStart = async (setId: number, token: string) => {
 };
 
 export const examEnd = async (examId: string, token: string) => {
+  console.log("The exam id Submit Before Post Request",examId)
   try {
     const response = await axiosInstance.post(`${ENDPOINTS.EXAM_END}?exam_id=${examId}`, {}, {
       headers: {
@@ -63,19 +66,28 @@ export const examEnd = async (examId: string, token: string) => {
   }
 };
 
+
+const POINTS = {
+  MEDIA_UPLOAD: 'https://api.smartgrader.in/media/upload',
+};
+
 export const uploadScreenshot = async (examId: string, token: string, file: File) => {
   try {
-    const response = await axiosInstance.post(`${ENDPOINTS.MEDIA_UPLOAD}?exam_id=${examId}`, file, {
+    // const formData = new FormData();
+    // formData.append('file', file);
+
+    const response = await axios.post(`${POINTS.MEDIA_UPLOAD}?exam_id=${examId}`, file, {
       headers: {
         'Content-Type': 'multipart/form-data',
-        Accept: "application/json",
-        Token: token,
-      }
+        'Accept': 'application/json',
+        'Token': token,
+      },
+    
     });
+
     return response.data;
   } catch (error) {
+    console.error('Error uploading media:', error);
     throw new Error('Error uploading media.');
   }
 };
-
-

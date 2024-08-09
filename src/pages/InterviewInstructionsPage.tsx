@@ -29,15 +29,16 @@ const InterviewInstructions: React.FC = () => {
       });
     } else {
       toast.error("Please accept the terms and conditions before proceeding.", {
-        className: 'rounded-full bg-grey-500 text-black p-4 text-center',
-        bodyClassName: 'text-black',
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: true,
+      
+        
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
+        theme: "dark",
       } as ToastOptions);
     }
   };
@@ -114,11 +115,21 @@ const InterviewInstructions: React.FC = () => {
             </div>
           </div>
         </div>
+      
         <ToastContainer
-          toastClassName="rounded-full bg-green-500 text-white p-4 text-center"
-          bodyClassName="text-white"
-          position="top-center"
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+
         />
+    
       </div>
     </div>
   );
