@@ -422,13 +422,13 @@ const handleNextQuestion = async () => {
 
   return (
 <div className="flex flex-col h-auto min-h-[500px] lg:min-h-[750px] max-h-[700px] ">
-  <div className="bg-sky-400 text-white p-4 flex justify-between items-center rounded-md">
+  <div className="bg-blue-500 text-white p-4 flex justify-between items-center rounded-md">
     <div className="flex items-center">
-      {/* <img
+      <img
         src={Assistant}
         alt="User Profile"
         className="w-16 h-16 rounded-full"
-      /> */}
+      />
       <div className="ml-2 font-bold">SmartGrader AI Assistant</div>
     </div>
   </div>
