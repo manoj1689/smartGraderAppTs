@@ -6,9 +6,6 @@ import { useUserId } from "../../context/userId"; // Adjust the path if needed
 import { toast } from "react-toastify";
 import { getChatbotResponse } from "../../services/api/openaiService"; // Adjust the path if needed
 import Assistant from "../../assets/assitant.png";
-
-import { MessageBox } from "react-chat-elements";
-import "react-chat-elements/dist/main.css"
 import { submitAnswer } from "../../services/api/InterviewService";
 //@ts-ignore
 import WaveEffect from "../Interview/WaveEffect.jsx"
@@ -33,14 +30,9 @@ interface AIChatProps {
 type ChatMessageRole = "system" | "user" | "assistant";
 
 interface ChatMessage {
-  role: "system" | "user" | "assistant";
+  role: ChatMessageRole;
   content: string;
-  type: 'text' | 'location' | 'photo' | 'video' | 'spotify' | 'meetingLink' | 'file';
-  position: 'left' | 'right';
-  title: string;
 }
-
-
 
 const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onTranscriptChange}) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -83,10 +75,6 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onT
       {
         role: "assistant",
         content: "Hi, start by giving a brief introduction about yourself.",
-        type: 'text',
-        position: 'left',
-        title: "AI"
-
       },
     ];
    setMessages(initialMessages);
@@ -254,9 +242,6 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onT
           role: "assistant",
           content:
             "Sorry, no response recorded. Do you want to continue or exit the exam?",
-            type: 'text',
-        position: 'left',
-        title: "AI"
         },
       ]);
       AlertMessage(
@@ -270,9 +255,7 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onT
   
     if (messageToSend.toLowerCase() === "continue") {
       
-      const newMessage: ChatMessage = { content: messageToSend, role: "user", type: 'text',
-        position: 'right',
-        title: "User" };
+      const newMessage: ChatMessage = { content: messageToSend, role: "user" };
       setMessages((prevMessages) => [...prevMessages, newMessage]);
       setLoading(true);
       try {
@@ -293,10 +276,6 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onT
           {
             role: "assistant",
             content: questionList[0].title,
-            type: 'text',
-            position: 'left',
-            title: "AI"
-            
           },
         ]);
         speakText(questionList[0].title, continueListening);
@@ -318,9 +297,6 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onT
           role: "assistant",
           content:
             "Thank you for answering the questions. Your responses have been recorded.",
-            type: 'text',
-            position: 'left',
-            title: "AI"
         },
       ]);
       examEndMessage(
@@ -329,9 +305,7 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onT
       return; 
     }
   
-    const newMessage: ChatMessage = { content: messageToSend, role: "user" , type: 'text',
-      position: 'right',
-      title: "User" };
+    const newMessage: ChatMessage = { content: messageToSend, role: "user" };
     console.log("Answer of Question ", newMessage);
     setMessages((prevMessages) => [...prevMessages, newMessage]);
     setLoading(true);
@@ -352,9 +326,6 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onT
           {
             role: "assistant",
             content: questionList[0].title,
-            type: 'text',
-            position: 'left',
-            title: "AI"
           },
         ]);
         speakText(questionList[0].title, continueListening);
@@ -364,9 +335,6 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onT
         const botMessage: ChatMessage = {
           content: response || "",
           role: "assistant",
-          type: 'text',
-          position: 'left',
-          title: "AI"
         };
         setLoading(false);
   
@@ -401,9 +369,6 @@ const handleNextQuestion = async () => {
       {
         role: "assistant",
         content: nextQuestion,
-        type: 'text',
-        position: 'left',
-        title: "AI"
       },
     ]);
     speakText(nextQuestion, continueListening);
@@ -415,9 +380,6 @@ const handleNextQuestion = async () => {
         role: "assistant",
         content:
           "Thank you for answering the questions. Your responses have been recorded.",
-          type: 'text',
-          position: 'left',
-          title: "AI"
       },
     ]);
     examEndMessage("Thank you for answering all the questions. Your responses have been recorded.");
@@ -460,7 +422,7 @@ const handleNextQuestion = async () => {
 
   return (
 <div className="flex flex-col h-auto min-h-[500px] lg:min-h-[750px] max-h-[700px] ">
-  <div className="bg-[#01AFF4] text-white p-4 flex justify-between items-center rounded-md">
+  <div className="bg-sky-400 text-white p-4 flex justify-between items-center rounded-md">
     <div className="flex items-center">
       {/* <img
         src={Assistant}
@@ -470,32 +432,17 @@ const handleNextQuestion = async () => {
       <div className="ml-2 font-bold">SmartGrader AI Assistant</div>
     </div>
   </div>
- 
-  <div className="flex-1 overflow-y-auto bg-sky-100 p-4">
+  <div className="flex-1 overflow-y-auto p-4">
     {messages.map((message, index) => (
       <div
-        className={`p-2 my-2 rounded-md  ${
+        className={`p-2 my-2 rounded-md ${
           message.role === "user"
-            ? "self-end ml-12"
-            : " self-start mr-12 "
+            ? "bg-pink-200 self-end ml-12"
+            : "bg-blue-200 self-start mr-12 "
         }`}
         key={index}
       >
-
-        {message.role ?
-        (
-          <MessageBox
-          key={index}
-          position={message.position}
-          title={message.title}
-          type={message.type as 'text' | 'photo' | 'file' | 'location' | 'meetingLink' | 'spotify' | 'video'}
-          text={message.content}
-          date={new Date()}
-        />
-        ):("")
-     
-      
-      }
+        {message.content}
       </div>
     ))}
     <div ref={messagesEndRef}></div>
