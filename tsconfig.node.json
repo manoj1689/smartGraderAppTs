@@ -1,11 +1,13 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "CommonJS",  // Or another module type as needed
-    "outDir": "./dist",    // Make sure this directory is set correctly
-    "esModuleInterop": true,
+    "composite": true,
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
     "skipLibCheck": true,
-    "strict": true
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "noEmit": true
   },
-  "include": ["src/**/*"]
+  "include": ["vite.config.ts"]
 }
