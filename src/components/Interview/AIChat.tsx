@@ -8,7 +8,7 @@ import { getChatbotResponse } from "../../services/api/openaiService"; // Adjust
 import Assistant from "../../assets/assitant.png";
 import { submitAnswer } from "../../services/api/InterviewService";
 //@ts-ignore
-import WaveEffect from "../Interview/WaveEffect.jsx"
+import WaveEffect from "../Interview/WaveEffect.jsx";
 // Define the type for the question set
 interface Question {
   id: number;
@@ -22,8 +22,8 @@ interface Question {
 interface AIChatProps {
   questionList: Question[];
   handleExamEnd: () => void;
-  examID:string;
-  onTranscriptChange: (transcript: string) => void; 
+  examID: string;
+  onTranscriptChange: (transcript: string) => void;
 }
 
 // Define types for ChatMessage
@@ -34,21 +34,28 @@ interface ChatMessage {
   content: string;
 }
 
-const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onTranscriptChange}) => {
+const AIChat: React.FC<AIChatProps> = ({
+  questionList,
+  handleExamEnd,
+  examID,
+  onTranscriptChange,
+}) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [intro,setIntro]=useState(true)
-  const [currentQuestionId, setCurrentQuestionId] = useState<number | null>(null);
+  const [intro, setIntro] = useState(true);
+  const [currentQuestionId, setCurrentQuestionId] = useState<number | null>(
+    null
+  );
   const [answered, setAnswered] = useState(false);
   const [listeningEnabled, setListeningEnabled] = useState(true);
-    const [showWave, setShowWave] = useState(false);
+  const [showWave, setShowWave] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const { selectedUserId } = useUserId();
   const userId = selectedUserId;
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  
+
   const {
     transcript,
     listening,
@@ -65,9 +72,9 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onT
     }
   };
 
-//console.log(`the Question set id at ${currentQuestionIndex} is ${questionList[currentQuestionIndex].id}`  )
- 
- const questionId=questionList[currentQuestionIndex].id;
+  //console.log(`the Question set id at ${currentQuestionIndex} is ${questionList[currentQuestionIndex].id}`  )
+
+  const questionId = questionList[currentQuestionIndex].id;
 
   useEffect(() => {
     // Start with the first message when the component mounts
@@ -77,9 +84,9 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onT
         content: "Hi, start by giving a brief introduction about yourself.",
       },
     ];
-   setMessages(initialMessages);
+    setMessages(initialMessages);
     speakText(initialMessages[0].content, continueListening);
-    
+
     return () => {
       window.speechSynthesis.cancel();
     };
@@ -92,7 +99,6 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onT
     onTranscriptChange(transcriptData);
   }, [onTranscriptChange]);
 
-
   useEffect(() => {
     if (listening) {
       if (timeoutRef.current) {
@@ -102,7 +108,7 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onT
         SpeechRecognition.stopListening();
         sendMessage();
         console.log("Microphone stopped due to inactivity");
-        setShowWave(false)
+        setShowWave(false);
       }, 7000); // 7 seconds
     }
   }, [listening, transcript]);
@@ -112,7 +118,7 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onT
   }, [messages]);
 
   const speakText = (text: string, continueListening: () => void) => {
-    setShowWave(false)
+    setShowWave(false);
     const synth = window.speechSynthesis;
 
     // Fetch voices
@@ -132,8 +138,7 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onT
       utterance.onend = () => {
         console.log("Speech ended, now you can start listening again.");
         continueListening();
-        setShowWave(true)
-
+        setShowWave(true);
       };
 
       synth.speak(utterance);
@@ -143,7 +148,7 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onT
   // console.log("Show Wave",showWave)
   const AlertMessage = (text: string, continueListening: () => void) => {
     const synth = window.speechSynthesis;
-    setShowWave(false)
+    setShowWave(false);
     SpeechRecognition.stopListening();
     // Fetch voices
     const voices = synth.getVoices();
@@ -162,7 +167,7 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onT
       utterance.onend = () => {
         console.log("Alert Message, wait for alert message to speak.");
         continueListening();
-        setShowWave(true)
+        setShowWave(true);
         resetTranscript(); // Reset the transcript after the message is spoken
       };
 
@@ -200,7 +205,6 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onT
     }
   };
 
-
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -217,14 +221,13 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onT
         duration,
         answer,
       });
-      setIntro(false)
+      setIntro(false);
     } else {
       try {
-        if(!intro){
+        if (!intro) {
           await submitAnswer(questionId, examId, duration, answer);
           console.log("Answer submitted successfully");
         }
-       
       } catch (error) {
         console.error("Error submitting answer:", error);
       } finally {
@@ -232,9 +235,8 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onT
       }
     }
   };
-  
+
   const sendMessage = async () => {
-    
     if (!inputValue && !transcript) {
       setMessages((prevMessages) => [
         ...prevMessages,
@@ -248,29 +250,28 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onT
         "Sorry, no response recorded. Do you want to continue or exit the exam?",
         continueListening
       );
-      return; 
+      return;
     }
-  
+
     const messageToSend = inputValue || transcript;
-  
+
     if (messageToSend.toLowerCase() === "continue") {
-      
       const newMessage: ChatMessage = { content: messageToSend, role: "user" };
       setMessages((prevMessages) => [...prevMessages, newMessage]);
       setLoading(true);
       try {
-        await handleSubmitAnswer("Not Answered" ,questionId);
+        await handleSubmitAnswer("Not Answered", questionId);
       } catch (error) {
         console.error("Error submitting 'NOT ANSWERED':", error);
       }
       SpeechRecognition.stopListening();
       setInputValue(transcript);
       resetTranscript();
-  
+
       if (!answered) {
         setAnswered(true);
-        setCurrentQuestionIndex(0); 
-  
+        setCurrentQuestionIndex(0);
+
         setMessages((prevMessages) => [
           ...prevMessages,
           {
@@ -282,14 +283,14 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onT
       } else {
         setTimeout(() => {
           handleNextQuestion();
-        }, 1000); 
+        }, 1000);
       }
-  
+
       setInputValue("");
       resetTranscript();
-      return; 
+      return;
     }
-  
+
     if (messageToSend.toLowerCase() === "exit") {
       setMessages((prevMessages) => [
         ...prevMessages,
@@ -302,25 +303,25 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onT
       examEndMessage(
         "Thank you for answering the questions. Your responses have been recorded."
       );
-      return; 
+      return;
     }
-  
+
     const newMessage: ChatMessage = { content: messageToSend, role: "user" };
     console.log("Answer of Question ", newMessage);
     setMessages((prevMessages) => [...prevMessages, newMessage]);
     setLoading(true);
-  
+
     SpeechRecognition.stopListening();
     setInputValue(transcript);
     resetTranscript();
-  
+
     try {
-      await handleSubmitAnswer(newMessage.content ,questionId);
-  
+      await handleSubmitAnswer(newMessage.content, questionId);
+
       if (!answered) {
         setAnswered(true);
-        setCurrentQuestionIndex(0); 
-  
+        setCurrentQuestionIndex(0);
+
         setMessages((prevMessages) => [
           ...prevMessages,
           {
@@ -331,60 +332,58 @@ const AIChat: React.FC<AIChatProps> = ({ questionList ,handleExamEnd ,examID,onT
         speakText(questionList[0].title, continueListening);
       } else {
         const response = await getChatbotResponse([...messages, newMessage]);
-  
+
         const botMessage: ChatMessage = {
           content: response || "",
           role: "assistant",
         };
         setLoading(false);
-  
+
         setMessages((prevMessages) => [...prevMessages, botMessage]);
-  
+
         setTimeout(() => {
           handleNextQuestion();
-        }, 1000); 
+        }, 1000);
       }
     } catch (error) {
       console.error("Error fetching response from OpenAI API:", error);
       setLoading(false);
     }
-  
+
     setInputValue("");
     resetTranscript();
     SpeechRecognition.stopListening();
   };
-  
 
+  const handleNextQuestion = async () => {
+    const nextIndex = currentQuestionIndex + 1;
 
-
-
-const handleNextQuestion = async () => {
-  const nextIndex = currentQuestionIndex + 1;
-  
-  if (nextIndex < questionList.length) {
-    setCurrentQuestionIndex(nextIndex);
-    const nextQuestion = questionList[nextIndex].title;
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      {
-        role: "assistant",
-        content: nextQuestion,
-      },
-    ]);
-    speakText(nextQuestion, continueListening);
-  } else {
-    // End of manual questions
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      {
-        role: "assistant",
-        content:
-          "Thank you for answering the questions. Your responses have been recorded.",
-      },
-    ]);
-    examEndMessage("Thank you for answering all the questions. Your responses have been recorded.");
-  }
-};
+    if (nextIndex < questionList.length) {
+      setCurrentQuestionIndex(nextIndex);
+      const nextQuestion = questionList[nextIndex].title;
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          role: "assistant",
+          content: nextQuestion,
+        },
+      ]);
+      speakText(nextQuestion, continueListening);
+    } else {
+      // End of manual questions
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        {
+          role: "assistant",
+          content:
+            "Thank you for answering the questions. Your responses have been recorded.",
+        },
+      ]);
+      examEndMessage(
+        "Thank you for answering all the questions. Your responses have been recorded."
+      );
+    }
+  };
 
   const storeMessage = async () => {
     if (!userId) return;
@@ -421,45 +420,68 @@ const handleNextQuestion = async () => {
   };
 
   return (
-<div className="flex flex-col h-auto min-h-[500px] lg:min-h-[750px] max-h-[700px] ">
-  <div className="bg-blue-500 text-white p-4 flex justify-between items-center rounded-md">
-    <div className="flex items-center">
-      <img
-        src={Assistant}
-        alt="User Profile"
-        className="w-16 h-16 rounded-full"
-      />
-      <div className="ml-2 font-bold">SmartGrader AI Assistant</div>
-    </div>
-  </div>
-  <div className="flex-1 overflow-y-auto p-4">
-    {messages.map((message, index) => (
-      <div
-        className={`p-2 my-2 rounded-md ${
-          message.role === "user"
-            ? "bg-pink-200 self-end ml-12"
-            : "bg-blue-200 self-start mr-12 "
-        }`}
-        key={index}
-      >
-        {message.content}
-      </div>
-    ))}
-    <div ref={messagesEndRef}></div>
-    {loading && (
-      <div className="p-2 my-2 rounded-md bg-blue-200 self-start">
-        <div className="flex space-x-2">
-          <div className="w-2 h-2 bg-gray-600 rounded-full animate-pulse"></div>
-          <div className="w-2 h-2 bg-gray-600 rounded-full animate-pulse"></div>
-          <div className="w-2 h-2 bg-gray-600 rounded-full animate-pulse"></div>
+    <div className="flex flex-col h-auto min-h-[500px] lg:min-h-[750px] max-h-[700px] ">
+      <div className="bg-[#01AFF4] text-white p-4 flex justify-between items-center rounded-md">
+        <div className="flex items-center">
+          {/* <img
+            src={Assistant}
+            alt="User Profile"
+            className="w-16 h-16 rounded-full"
+          /> */}
+          <div className="ml-2 font-bold">SmartGrader AI Assistant</div>
         </div>
       </div>
-    )}
-  </div>
- 
-  {<WaveEffect showWave={showWave}/>}
+      <div className="flex-1 overflow-y-auto p-4">
+        {messages.map((message, index) => (
+          <div key={index}>
+            {message.role === "user" ? (
+              <>
+                <div className="flex justify-end">
+                <div className="relative text-white bg-sky-400 p-4 rounded-md shadow-[-4px_4px_8px_0px_rgba(0,0,0,0.2)] ml-12 rounded-tr-none">
+  {message.content}
 </div>
 
+
+                  <div
+                    className="w-0 h-0 
+  border-t-[0px] border-t-transparent
+  border-l-[20px] border-l-sky-400
+  border-b-[20px] border-b-transparent"
+                  ></div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex my-4">
+                  <div
+                    className="w-0 h-0 
+  border-t-[0px] border-t-transparent
+  border-r-[20px] border-r-slate-200
+  border-b-[20px] border-b-transparent"
+                  ></div>
+
+                  <div className="text-slate-800 bg-slate-200 p-4 rounded-tl-none rounded-md mr-12 shadow-[4px_4px_8px_0px_rgba(0,0,0,0.2)]">
+                    {message.content}
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+        ))}
+        <div ref={messagesEndRef}></div>
+        {loading && (
+          <div className="p-2 my-2 rounded-md bg-blue-200 self-start">
+            <div className="flex space-x-2">
+              <div className="w-2 h-2 bg-gray-600 rounded-full animate-pulse"></div>
+              <div className="w-2 h-2 bg-gray-600 rounded-full animate-pulse"></div>
+              <div className="w-2 h-2 bg-gray-600 rounded-full animate-pulse"></div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {<WaveEffect showWave={showWave} />}
+    </div>
   );
 };
 

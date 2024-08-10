@@ -50,7 +50,7 @@ const App = ({showWave}) => {
 
 
   return (
-    <div className=" flex flex-col items-center justify-center bg-sky-100 rounded-sm shadow-md p-4">
+    <div className=" flex flex-col items-center justify-center bg-gray-200 rounded-sm shadow-md p-4">
       <div className="relative flex items-center justify-center mb-4">
         <div className="relative w-40 h-40 flex items-center justify-center">
           <div
