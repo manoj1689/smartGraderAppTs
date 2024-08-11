@@ -141,7 +141,7 @@ const InterviewScreen = () => {
     try {
       //await handleSubmitAnswer();
       await examEnd(examId, token);
-
+      setExamStarted(false)
       setExamId("");
       setIsModalOpen(false);
       navigate(`/dashboard/question/exam-end`);
@@ -407,6 +407,7 @@ const InterviewScreen = () => {
                         <CameraFeed
                           onFacesDetected={handleFacesDetected}
                           examStarted={examStarted}
+                          examEnd={examEnd}
                         />
                       </div>
                     </div>

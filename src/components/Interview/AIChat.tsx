@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { getChatbotResponse } from "../../services/api/openaiService";
 import Assistant from "../../assets/assitant.png";
 import { submitAnswer } from "../../services/api/InterviewService";
+import Modal from "react-modal";
 //@ts-ignore
 import WaveEffect from "../Interview/WaveEffect.jsx";
 
@@ -98,24 +99,41 @@ const AIChat: React.FC<AIChatProps> = ({
           console.log("Microphone stopped due to inactivity");
           setShowWave(false);
           
-        }, 10000); // 10 seconds
-      }if (transcript===""){
-        timeoutRef.current = setTimeout(() => {
-          SpeechRecognition.stopListening();
-          console.log("Microphone stopped due to inactivity");
-          setShowWave(false);
-          const clarificationMessage: ChatMessage = {
-            role: "assistant",
-            content:
-              "Sorry, I didn't get a response. Thanks for participating the exam ",
-          };
-          setMessages((prevMessages) => [...prevMessages, clarificationMessage]);
-          setLastAssistantMessage(clarificationMessage);
-          ExamEndMessage(clarificationMessage.content, continueListening);
+        }, 5000); // 10 seconds
+      // }if (transcript===""){
+      //   timeoutRef.current = setTimeout(() => {
+      //     SpeechRecognition.stopListening();
+      //     console.log("Microphone stopped due to inactivity");
+      //     setShowWave(false);
+      //     const clarificationMessage: ChatMessage = {
+      //       role: "assistant",
+      //       content:
+      //         "Sorry, I didn't get a response. Will you like to continue or repeat or leave ,move to next Question? ",
+      //     };
+      //     setMessages((prevMessages) => [...prevMessages, clarificationMessage]);
+      //     setLastAssistantMessage(clarificationMessage);
+      //     speakText(clarificationMessage.content, continueListening);
 
           
-        }, 30000); // 10 seconds
-      }
+      //   }, 30000); // 10 seconds
+       }
+    if (transcript===""){
+      timeoutRef.current = setTimeout(() => {
+        SpeechRecognition.stopListening();
+        console.log("Microphone stopped due to inactivity");
+        setShowWave(false);
+        const clarificationMessage: ChatMessage = {
+          role: "assistant",
+          content:
+            "Sorry, you are not avilable . Thanks for participating in the exam Your Score Will update Sortly. ",
+        };
+        setMessages((prevMessages) => [...prevMessages, clarificationMessage]);
+        setLastAssistantMessage(clarificationMessage);
+        ExamEndMessage(clarificationMessage.content, continueListening);
+
+        
+      }, 30000); // 40 seconds
+    }
  
     }
   }, [listening, transcript]);
@@ -339,6 +357,7 @@ const AIChat: React.FC<AIChatProps> = ({
       </div>
 
       {<WaveEffect showWave={showWave} />}
+      
     </div>
   );
 };

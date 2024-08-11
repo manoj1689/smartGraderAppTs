@@ -37,7 +37,7 @@ const stopCamera = (videoElement) => {
     }
 };
 
-const CameraFeed = ({ onFacesDetected, examStarted }) => {
+const CameraFeed = ({ onFacesDetected, examStarted,examEnd }) => {
     const videoRef = useRef(null);
     const intervalIdRef = useRef(null);
     const noFaceTimeoutRef = useRef(null);
