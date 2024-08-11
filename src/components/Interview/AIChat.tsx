@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { getChatbotResponse } from "../../services/api/openaiService";
 import Assistant from "../../assets/assitant.png";
 import { submitAnswer } from "../../services/api/InterviewService";
+//@ts-ignore
 import WaveEffect from "../Interview/WaveEffect.jsx";
 
 interface Question {
