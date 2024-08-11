@@ -165,7 +165,7 @@ const InterviewScreen = () => {
 
   useEffect(() => {
     const saveAndUploadScreenshot = async () => {
-      if (capturedImage && examId) {
+      if (capturedImage && !examId) {
         // Convert the image to a Blob
         const blob = await fetch(capturedImage).then((res) => res.blob());
 

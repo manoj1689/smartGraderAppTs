@@ -1,15 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
-import SpeechRecognition, {
-  useSpeechRecognition,
-} from "react-speech-recognition";
-import { useUserId } from "../../context/userId"; // Adjust the path if needed
+import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
+import { useUserId } from "../../context/userId";
 import { toast } from "react-toastify";
-import { getChatbotResponse } from "../../services/api/openaiService"; // Adjust the path if needed
+import { getChatbotResponse } from "../../services/api/openaiService";
 import Assistant from "../../assets/assitant.png";
 import { submitAnswer } from "../../services/api/InterviewService";
-//@ts-ignore
 import WaveEffect from "../Interview/WaveEffect.jsx";
-// Define the type for the question set
+
 interface Question {
   id: number;
   title: string;
@@ -18,7 +15,6 @@ interface Question {
   duration: number;
 }
 
-// Define the props type for AIChat
 interface AIChatProps {
   questionList: Question[];
   handleExamEnd: () => void;
@@ -26,7 +22,6 @@ interface AIChatProps {
   onTranscriptChange: (transcript: string) => void;
 }
 
-// Define types for ChatMessage
 type ChatMessageRole = "system" | "user" | "assistant";
 
 interface ChatMessage {
@@ -41,16 +36,12 @@ const AIChat: React.FC<AIChatProps> = ({
   onTranscriptChange,
 }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
-  const [inputValue, setInputValue] = useState("");
+  const [transcriptMsg, setTranscriptMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [intro, setIntro] = useState(true);
-  const [currentQuestionId, setCurrentQuestionId] = useState<number | null>(
-    null
-  );
-  const [answered, setAnswered] = useState(false);
   const [listeningEnabled, setListeningEnabled] = useState(true);
   const [showWave, setShowWave] = useState(false);
+  const [lastAssistantMessage, setLastAssistantMessage] = useState<ChatMessage | null>(null); // Add state for last assistant message
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const { selectedUserId } = useUserId();
   const userId = selectedUserId;
@@ -66,50 +57,65 @@ const AIChat: React.FC<AIChatProps> = ({
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;
   }
+
   const continueListening = () => {
     if (listeningEnabled) {
       SpeechRecognition.startListening({ continuous: true });
     }
   };
 
-  //console.log(`the Question set id at ${currentQuestionIndex} is ${questionList[currentQuestionIndex].id}`  )
-
-  const questionId = questionList[currentQuestionIndex].id;
+  const questionId = questionList[currentQuestionIndex]?.id;
 
   useEffect(() => {
-    // Start with the first message when the component mounts
-    const initialMessages: ChatMessage[] = [
-      {
-        role: "assistant",
-        content: "Hi, start by giving a brief introduction about yourself.",
-      },
-    ];
-    setMessages(initialMessages);
-    speakText(initialMessages[0].content, continueListening);
+    const initialMessage: ChatMessage = {
+      role: "assistant",
+      content: "Hi, start by giving a brief introduction about yourself.",
+    };
+    setMessages([initialMessage]);
+    setLastAssistantMessage(initialMessage); // Update the last assistant message
+    speakText(initialMessage.content, continueListening);
 
     return () => {
       window.speechSynthesis.cancel();
     };
   }, []);
-  useEffect(() => {
-    // Simulate obtaining transcript data
-    const transcriptData = transcript;
 
-    // Send data to parent component
+  useEffect(() => {
+    const transcriptData = transcript;
     onTranscriptChange(transcriptData);
-  }, [onTranscriptChange]);
+  }, [transcript, onTranscriptChange]);
 
   useEffect(() => {
     if (listening) {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
-      timeoutRef.current = setTimeout(() => {
-        SpeechRecognition.stopListening();
-        sendMessage();
-        console.log("Microphone stopped due to inactivity");
-        setShowWave(false);
-      }, 7000); // 7 seconds
+      if(transcript !==""){
+        timeoutRef.current = setTimeout(() => {
+          SpeechRecognition.stopListening();
+          setTranscriptMsg(transcript);
+          console.log("Microphone stopped due to inactivity");
+          setShowWave(false);
+          
+        }, 10000); // 10 seconds
+      }if (transcript===""){
+        timeoutRef.current = setTimeout(() => {
+          SpeechRecognition.stopListening();
+          console.log("Microphone stopped due to inactivity");
+          setShowWave(false);
+          const clarificationMessage: ChatMessage = {
+            role: "assistant",
+            content:
+              "Sorry, I didn't get a response. Thanks for participating the exam ",
+          };
+          setMessages((prevMessages) => [...prevMessages, clarificationMessage]);
+          setLastAssistantMessage(clarificationMessage);
+          ExamEndMessage(clarificationMessage.content, continueListening);
+
+          
+        }, 30000); // 10 seconds
+      }
+ 
     }
   }, [listening, transcript]);
 
@@ -121,20 +127,15 @@ const AIChat: React.FC<AIChatProps> = ({
     setShowWave(false);
     const synth = window.speechSynthesis;
 
-    // Fetch voices
     const voices = synth.getVoices();
-    // Filter for female voices
     const femaleVoices = voices.filter((voice) =>
       voice.name.toLowerCase().includes("female")
     );
 
     if (!synth.speaking) {
       const utterance = new SpeechSynthesisUtterance(text);
-
-      // Check if a female voice is available, otherwise use the default voice
       utterance.voice = femaleVoices.length > 0 ? femaleVoices[0] : voices[0];
 
-      // Handle the end of speech synthesis
       utterance.onend = () => {
         console.log("Speech ended, now you can start listening again.");
         continueListening();
@@ -144,290 +145,159 @@ const AIChat: React.FC<AIChatProps> = ({
       synth.speak(utterance);
     }
   };
-
-  // console.log("Show Wave",showWave)
-  const AlertMessage = (text: string, continueListening: () => void) => {
-    const synth = window.speechSynthesis;
+  const ExamEndMessage = (text: string, continueListening: () => void) => {
     setShowWave(false);
-    SpeechRecognition.stopListening();
-    // Fetch voices
-    const voices = synth.getVoices();
-    // Filter for female voices
-    const femaleVoices = voices.filter((voice) =>
-      voice.name.toLowerCase().includes("female")
-    );
-
-    if (!synth.speaking) {
-      const utterance = new SpeechSynthesisUtterance(text);
-
-      // Check if a female voice is available, otherwise use the default voice
-      utterance.voice = femaleVoices.length > 0 ? femaleVoices[0] : voices[0];
-
-      // Handle the end of speech synthesis
-      utterance.onend = () => {
-        console.log("Alert Message, wait for alert message to speak.");
-        continueListening();
-        setShowWave(true);
-        resetTranscript(); // Reset the transcript after the message is spoken
-      };
-
-      synth.speak(utterance);
-    }
-  };
-
-  const examEndMessage = (text: string) => {
     const synth = window.speechSynthesis;
-    SpeechRecognition.stopListening();
-    // Fetch voices
+
     const voices = synth.getVoices();
-    // Filter for female voices
     const femaleVoices = voices.filter((voice) =>
       voice.name.toLowerCase().includes("female")
     );
 
     if (!synth.speaking) {
       const utterance = new SpeechSynthesisUtterance(text);
-
-      // Check if a female voice is available, otherwise use the default voice
       utterance.voice = femaleVoices.length > 0 ? femaleVoices[0] : voices[0];
 
-      // Handle the end of speech synthesis
       utterance.onend = () => {
-        console.log("Exam End  Message, wait for alert message to speak.");
-        setInputValue("");
-        resetTranscript();
+        console.log("Speech ended, now you can start listening again.");
         SpeechRecognition.stopListening();
-        setListeningEnabled(false); // Reset the transcript after the message is spoken
-        handleExamEnd();
+        setShowWave(false);
+        resetTranscript();
+        setTranscriptMsg("")
+        handleExamEnd()
       };
 
       synth.speak(utterance);
     }
   };
-
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
   const handleSubmitAnswer = async (answer: string, questionId: any) => {
     setLoading(true);
     console.log("Handle Submit Answer Called");
-    const duration = "12";
+    const duration = "75";
     const examId = examID;
-
-    if (intro) {
-      console.log("Question ID is 1, answer data:", {
-        questionId,
-        examId,
-        duration,
-        answer,
-      });
-      setIntro(false);
-    } else {
+    
       try {
-        if (!intro) {
           await submitAnswer(questionId, examId, duration, answer);
           console.log("Answer submitted successfully");
-        }
       } catch (error) {
         console.error("Error submitting answer:", error);
       } finally {
         setLoading(false);
       }
-    }
+    
   };
 
-  const sendMessage = async () => {
-    if (!inputValue && !transcript) {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        {
-          role: "assistant",
-          content:
-            "Sorry, no response recorded. Do you want to continue or exit the exam?",
-        },
-      ]);
-      AlertMessage(
-        "Sorry, no response recorded. Do you want to continue or exit the exam?",
-        continueListening
-      );
-      return;
-    }
+  useEffect(() => {
+    const testIntentDetermination = async () => {
+       if (!transcriptMsg) return;
 
-    const messageToSend = inputValue || transcript;
-
-    if (messageToSend.toLowerCase() === "continue") {
-      const newMessage: ChatMessage = { content: messageToSend, role: "user" };
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-      setLoading(true);
+      const userMessage: ChatMessage = { role: "user", content: transcriptMsg };
+      setMessages((prevMessages) => [...prevMessages, userMessage]);
       try {
-        await handleSubmitAnswer("Not Answered", questionId);
-      } catch (error) {
-        console.error("Error submitting 'NOT ANSWERED':", error);
-      }
-      SpeechRecognition.stopListening();
-      setInputValue(transcript);
-      resetTranscript();
+        const intent = await getChatbotResponse([{ role: "user", content: transcriptMsg }]);
+        console.log(`Intent for message "${transcriptMsg}": ${intent}`);
 
-      if (!answered) {
-        setAnswered(true);
-        setCurrentQuestionIndex(0);
+        let assistantMessage: ChatMessage | null = null;
 
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          {
+        if (intent === "Introduce" || intent === "Repeat") {
+          if (intent === "Repeat" && lastAssistantMessage) {
+            assistantMessage = lastAssistantMessage;
+          } else {
+            assistantMessage = {
+              role: "assistant",
+              content: questionList[0].title,
+            };
+          }
+          
+          resetTranscript();
+          setTranscriptMsg("");
+          setLastAssistantMessage(assistantMessage); // Update last assistant message
+          speakText(assistantMessage.content, continueListening);
+        } else if (intent === "Continue") {
+          try {
+            await handleSubmitAnswer(transcript, questionId);
+            resetTranscript();
+            setTranscriptMsg("");
+        
+            const nextIndex = currentQuestionIndex + 1;
+            if (nextIndex < questionList.length) {
+              setCurrentQuestionIndex(nextIndex);
+              const assistantMessage: ChatMessage = {
+                role: "assistant",
+                content: questionList[nextIndex].title,
+              };
+              setMessages((prevMessages) => [...prevMessages, assistantMessage]);
+              setLastAssistantMessage(assistantMessage); // Update last assistant message
+              speakText(assistantMessage.content, continueListening);
+            } else {
+              handleExamEnd();
+            }
+          } catch (error) {
+            console.error("Error submitting answer:", error);
+          }
+        } else if (intent === "Move to a new question") {
+          try {
+            await handleSubmitAnswer("NOT Answered", questionId);
+            resetTranscript();
+            setTranscriptMsg("");
+        
+            const nextIndex = currentQuestionIndex + 1;
+            if (nextIndex < questionList.length) {
+              setCurrentQuestionIndex(nextIndex);
+              const assistantMessage: ChatMessage = {
+                role: "assistant",
+                content: questionList[nextIndex].title,
+              };
+              setMessages((prevMessages) => [...prevMessages, assistantMessage]);
+              setLastAssistantMessage(assistantMessage); // Update last assistant message
+              speakText(assistantMessage.content, continueListening);
+            } else {
+              handleExamEnd();
+            }
+          } catch (error) {
+            console.error('Error submitting answer:', error);
+          }
+        } else if (intent === "Unclear" ) {
+          const unclearMessage: ChatMessage = {
+            role: 'assistant',
+            content: "I'm sorry, I didn't quite understand that. Could you please clarify or ask another question?",
+          };
+          setMessages((prevMessages) => [...prevMessages, unclearMessage]);
+          setLastAssistantMessage(unclearMessage); // Update last assistant message
+          speakText(unclearMessage.content, continueListening);
+          resetTranscript();
+          setTranscriptMsg("");
+
+        } else if (intent === "Leave"){
+          resetTranscript();
+          setTranscriptMsg("");
+
+          assistantMessage = {
             role: "assistant",
-            content: questionList[0].title,
-          },
-        ]);
-        speakText(questionList[0].title, continueListening);
-      } else {
-        setTimeout(() => {
-          handleNextQuestion();
-        }, 1000);
-      }
-
-      setInputValue("");
-      resetTranscript();
-      return;
-    }
-
-    if (messageToSend.toLowerCase() === "exit") {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        {
-          role: "assistant",
-          content:
-            "Thank you for answering the questions. Your responses have been recorded.",
-        },
-      ]);
-      examEndMessage(
-        "Thank you for answering the questions. Your responses have been recorded."
-      );
-      return;
-    }
-
-    const newMessage: ChatMessage = { content: messageToSend, role: "user" };
-    console.log("Answer of Question ", newMessage);
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
-    setLoading(true);
-
-    SpeechRecognition.stopListening();
-    setInputValue(transcript);
-    resetTranscript();
-
-    try {
-      await handleSubmitAnswer(newMessage.content, questionId);
-
-      if (!answered) {
-        setAnswered(true);
-        setCurrentQuestionIndex(0);
-
-        setMessages((prevMessages) => [
-          ...prevMessages,
-          {
-            role: "assistant",
-            content: questionList[0].title,
-          },
-        ]);
-        speakText(questionList[0].title, continueListening);
-      } else {
-        const response = await getChatbotResponse([...messages, newMessage]);
-
-        const botMessage: ChatMessage = {
-          content: response || "",
-          role: "assistant",
-        };
-        setLoading(false);
-
-        setMessages((prevMessages) => [...prevMessages, botMessage]);
-
-        setTimeout(() => {
-          handleNextQuestion();
-        }, 1000);
-      }
-    } catch (error) {
-      console.error("Error fetching response from OpenAI API:", error);
-      setLoading(false);
-    }
-
-    setInputValue("");
-    resetTranscript();
-    SpeechRecognition.stopListening();
-  };
-
-  const handleNextQuestion = async () => {
-    const nextIndex = currentQuestionIndex + 1;
-
-    if (nextIndex < questionList.length) {
-      setCurrentQuestionIndex(nextIndex);
-      const nextQuestion = questionList[nextIndex].title;
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        {
-          role: "assistant",
-          content: nextQuestion,
-        },
-      ]);
-      speakText(nextQuestion, continueListening);
-    } else {
-      // End of manual questions
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        {
-          role: "assistant",
-          content:
-            "Thank you for answering the questions. Your responses have been recorded.",
-        },
-      ]);
-      examEndMessage(
-        "Thank you for answering all the questions. Your responses have been recorded."
-      );
-    }
-  };
-
-  const storeMessage = async () => {
-    if (!userId) return;
-
-    console.log("The List of all communication", messages);
-    const sendMsg = async (userId: number) => {
-      try {
-        const response = await fetch("/api/storeChat", {
-          // Replace with your actual API URL
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            userId,
-            description: "Chat summary",
-            chatHistory: messages,
-          }),
-        });
-
-        if (!response.ok) {
-          throw new Error("Failed to store message");
+            content: "Thank you for your Answers, we will update your score shortly.",
+          };
+         // setLastAssistantMessage(assistantMessage); // Update last assistant message
+          ExamEndMessage(assistantMessage.content, continueListening);
         }
 
-        toast.success("Chat saved successfully");
-        return response.json();
+        if (assistantMessage) {
+          setMessages((prevMessages) => [...prevMessages, assistantMessage]);
+        }
       } catch (error) {
-        console.error("Error storing messages:", error);
-        toast.error("Error storing messages");
+        console.error("Error determining intent:", error);
       }
     };
 
-    if (userId !== -1) await sendMsg(userId);
-  };
-
+    testIntentDetermination();
+  }, [transcriptMsg, currentQuestionIndex]);
   return (
     <div className="flex flex-col h-auto min-h-[500px] lg:min-h-[750px] max-h-[700px] ">
       <div className="bg-[#01AFF4] text-white p-4 flex justify-between items-center rounded-md">
         <div className="flex items-center">
-          {/* <img
-            src={Assistant}
-            alt="User Profile"
-            className="w-16 h-16 rounded-full"
-          /> */}
           <div className="ml-2 font-bold">SmartGrader AI Assistant</div>
         </div>
       </div>
@@ -435,36 +305,23 @@ const AIChat: React.FC<AIChatProps> = ({
         {messages.map((message, index) => (
           <div key={index}>
             {message.role === "user" ? (
-              <>
-                <div className="flex justify-end">
+              <div className="flex justify-end">
                 <div className="relative text-white bg-sky-400 p-4 rounded-md shadow-[-4px_4px_8px_0px_rgba(0,0,0,0.2)] ml-12 rounded-tr-none">
-  {message.content}
-</div>
-
-
-                  <div
-                    className="w-0 h-0 
-  border-t-[0px] border-t-transparent
-  border-l-[20px] border-l-sky-400
-  border-b-[20px] border-b-transparent"
-                  ></div>
+                  {message.content}
                 </div>
-              </>
+                <div
+                  className="w-0 h-0 border-t-[0px] border-t-transparent border-l-[20px] border-l-sky-400 border-b-[20px] border-b-transparent"
+                ></div>
+              </div>
             ) : (
-              <>
-                <div className="flex my-4">
-                  <div
-                    className="w-0 h-0 
-  border-t-[0px] border-t-transparent
-  border-r-[20px] border-r-slate-200
-  border-b-[20px] border-b-transparent"
-                  ></div>
-
-                  <div className="text-slate-800 bg-slate-200 p-4 rounded-tl-none rounded-md mr-12 shadow-[4px_4px_8px_0px_rgba(0,0,0,0.2)]">
-                    {message.content}
-                  </div>
+              <div className="flex my-4">
+                <div
+                  className="w-0 h-0 border-t-[0px] border-t-transparent border-r-[20px] border-r-slate-200 border-b-[20px] border-b-transparent"
+                ></div>
+                <div className="text-slate-800 bg-slate-200 p-4 rounded-tl-none rounded-md mr-12 shadow-[4px_4px_8px_0px_rgba(0,0,0,0.2)]">
+                  {message.content}
                 </div>
-              </>
+              </div>
             )}
           </div>
         ))}
