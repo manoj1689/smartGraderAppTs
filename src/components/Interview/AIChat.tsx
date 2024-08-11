@@ -71,8 +71,10 @@ const AIChat: React.FC<AIChatProps> = ({
   useEffect(() => {
     const initialMessage: ChatMessage = {
       role: "assistant",
-      content: "Hi, start by giving a brief introduction about yourself.",
-    };
+      content: "Hello! I’m your SmartGrader Assistant. Let's start with a brief introduction—tell me about your background and key skills."
+    }
+    
+    
     setMessages([initialMessage]);
     setLastAssistantMessage(initialMessage); // Update the last assistant message
     speakText(initialMessage.content, continueListening);
@@ -124,15 +126,14 @@ const AIChat: React.FC<AIChatProps> = ({
         setShowWave(false);
         const clarificationMessage: ChatMessage = {
           role: "assistant",
-          content:
-            "Sorry, you are not avilable . Thanks for participating in the exam Your Score Will update Sortly. ",
+          content: "It seems you're unavailable. Thank you for participating in the exam. Your score will be updated shortly.",
         };
         setMessages((prevMessages) => [...prevMessages, clarificationMessage]);
         setLastAssistantMessage(clarificationMessage);
         ExamEndMessage(clarificationMessage.content, continueListening);
 
         
-      }, 30000); // 40 seconds
+      }, 30000); // 30 seconds
     }
  
     }

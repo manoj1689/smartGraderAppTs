@@ -190,7 +190,7 @@ const InterviewScreen = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       captureScreenshot();
-    }, 10000); // 10 seconds
+    }, 60000); // 60 seconds
 
     // Cleanup the interval on component unmount
     return () => clearInterval(intervalId);
