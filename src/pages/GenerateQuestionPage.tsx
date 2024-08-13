@@ -246,7 +246,7 @@ const GenerateQuestionsPage: React.FC = () => {
       state: { interview },
     });
   
-    closeModal(); // Close the modal after navigating
+   
   };
   
   
