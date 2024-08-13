@@ -15,42 +15,28 @@ export const getChatbotResponse = async (messages: ChatMessage[]): Promise<strin
   try {
     console.log('Sending messages:', messages); // Debugging
 
-    // Ensure the messages array is not empty and contains a user message
     if (messages.length === 0 || !messages.some(msg => msg.role === 'user')) {
       throw new Error('No user message found in the provided messages');
     }
 
-    // Extract the user message
     const userMessage = messages.find(msg => msg.role === 'user')?.content || '';
-    const normalizedResponse = userMessage.trim().toLowerCase();
 
-    // Quick intent handling based on specific responses
-    if (normalizedResponse === 'no') {
-      return 'Leave';
-    }
-    if (normalizedResponse === 'yes') {
-      return 'Continue';
-    }
-
-    // Request completion from OpenAI
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4',
+      model: 'gpt-4o-mini',
       messages: [
         {
           role: 'system',
-          content: `You are a helpful assistant tasked with identifying the intent behind a user's sentence. Given the following user input, please classify the intent into one of the categories below: "Introduce", "Continue","Not speak", "Leave","Unclear","Repeat or "Move to a new question". If the intent is unclear, ask "Do you want to continue, leave, repeat or move to a new question?" again.`,
+          content: `You are a helpful assistant tasked with identifying the intent behind a user's sentence. Given the following user input, please classify the intent into one of the categories below: "Introduce", "Continue", "User Not Available", "Leave", "Unclear", "Repeat", "Move to a new question", or "Explain". If the intent is unclear, ask "Do you want to continue, leave, repeat, move to a new question, or explain?" again.`,
         },
         { role: 'user', content: userMessage },
       ],
-      max_tokens: 10,
+      max_tokens: 500,
     });
 
-    // Safeguard against null or undefined choices
     if (!completion.choices || completion.choices.length === 0) {
       throw new Error('No choices available in completion response');
     }
 
-    // Extract and clean the intent from the response
     const choice = completion.choices[0];
     if (!choice.message || !choice.message.content) {
       throw new Error('No content available in choice message');
@@ -68,10 +54,11 @@ export const getChatbotResponse = async (messages: ChatMessage[]): Promise<strin
       return 'Introduce';
     } else if (intent.includes('repeat')) {
       return 'Repeat';
-    } else if (intent.includes('not speak')) {
-      return 'Not Speak';
-    }
-    else {
+    } else if (intent.includes('user not available')) {
+      return 'User Not Available';
+    } else if (intent.includes('explain')) {
+      return 'Explain';
+    } else {
       return 'Unclear';
     }
   } catch (error) {
@@ -79,6 +66,32 @@ export const getChatbotResponse = async (messages: ChatMessage[]): Promise<strin
     return 'Error';
   }
 };
+
+
+export const explainChatbotResponse = async (messages: ChatMessage[]): Promise<string | undefined> => {
+  console.log('Sending messages:', messages);  // Debugging
+
+  try {
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4o-mini',// Ensure this model is correct for your use case
+      messages: messages.map(msg => ({
+        role: msg.role,
+        content: msg.content,
+      })),
+      max_tokens: 500,
+    });
+
+    console.log('API Response:', response);  // Debugging
+    // Ensure content is a string, or return undefined
+    return response.choices[0]?.message?.content ?? undefined;
+  } catch (error:any) {
+    console.error('Error with OpenAI API:', error.response ? error.response.data : error.message);  // Debugging
+    throw new Error('Error fetching response from OpenAI API');
+  }
+};
+
+
+
 
 
 // // Test function to simulate user inputs and log the intent

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
 import { useUserId } from "../../context/userId";
 import { toast } from "react-toastify";
-import { getChatbotResponse } from "../../services/api/openaiService";
+import { getChatbotResponse ,explainChatbotResponse } from "../../services/api/openaiService";
 import Assistant from "../../assets/assitant.png";
 import { submitAnswer } from "../../services/api/InterviewService";
 import Modal from "react-modal";
@@ -47,6 +47,7 @@ const AIChat: React.FC<AIChatProps> = ({
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const { selectedUserId } = useUserId();
   const userId = selectedUserId;
+  const [noResponse,setNoResponse]=useState(true)
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const {
@@ -70,8 +71,10 @@ const AIChat: React.FC<AIChatProps> = ({
 
   useEffect(() => {
     const initialMessage: ChatMessage = {
-      role: "assistant",
-      content: "Hello! I’m your SmartGrader Assistant. Let's start with a brief introduction—tell me about your background and key skills."
+      
+        role: 'assistant',
+        content: "Welcome to SmartGrader. Introduce yourself, and then provide an overview of your professional journey and expertise."
+
     }
     
     
@@ -91,54 +94,61 @@ const AIChat: React.FC<AIChatProps> = ({
 
   useEffect(() => {
     if (listening) {
+      // Clear any existing timeouts when starting listening
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
-      if(transcript !==""){
+  
+      if (transcript) {
+        console.log("Transcript detected. Starting 5-second timer.");
+        setNoResponse(true)
+        // Stop listening after 5 seconds of inactivity if there's a transcript
         timeoutRef.current = setTimeout(() => {
           SpeechRecognition.stopListening();
           setTranscriptMsg(transcript);
-          console.log("Microphone stopped due to inactivity");
+          console.log("Microphone stopped due to inactivity after 5 seconds.");
           setShowWave(false);
-          
-        }, 5000); // 10 seconds
-      // }if (transcript===""){
-      //   timeoutRef.current = setTimeout(() => {
-      //     SpeechRecognition.stopListening();
-      //     console.log("Microphone stopped due to inactivity");
-      //     setShowWave(false);
-      //     const clarificationMessage: ChatMessage = {
-      //       role: "assistant",
-      //       content:
-      //         "Sorry, I didn't get a response. Will you like to continue or repeat or leave ,move to next Question? ",
-      //     };
-      //     setMessages((prevMessages) => [...prevMessages, clarificationMessage]);
-      //     setLastAssistantMessage(clarificationMessage);
-      //     speakText(clarificationMessage.content, continueListening);
-
-          
-      //   }, 30000); // 10 seconds
-       }
-    if (transcript===""){
-      timeoutRef.current = setTimeout(() => {
-        SpeechRecognition.stopListening();
-        console.log("Microphone stopped due to inactivity");
-        setShowWave(false);
-        const clarificationMessage: ChatMessage = {
-          role: "assistant",
-          content: "It seems you're unavailable. Thank you for participating in the exam. Your score will be updated shortly.",
-        };
-        setMessages((prevMessages) => [...prevMessages, clarificationMessage]);
-        setLastAssistantMessage(clarificationMessage);
-        ExamEndMessage(clarificationMessage.content, continueListening);
-
-        
-      }, 30000); // 30 seconds
+          window.speechSynthesis.cancel();
+        }, 5000); // 5 seconds
+      } else {
+        if (noResponse) {
+          console.log("No transcript detected. Starting 20-second timer.");
+  
+          // Stop listening after 20 seconds if there is no transcript
+          timeoutRef.current = setTimeout(() => {
+            SpeechRecognition.stopListening();
+            setTranscriptMsg("This is an automated response; I'm not available to chat.");
+            setShowWave(false);
+            setNoResponse(false);
+          }, 20000); // 20 seconds
+        } else {
+          console.log("No transcript detected. Starting 10-second timer.");
+  
+          // Stop listening after 10 seconds if there is no transcript
+          timeoutRef.current = setTimeout(() => {
+            SpeechRecognition.stopListening();
+            setTranscriptMsg("");
+            const userNotAvailableMessage: ChatMessage = {
+              role: 'assistant',
+              content: "Thank you for participating .It appears you are not available during the exam. Your score will be updated shortly. For further assistance, please contact us.",
+            };
+            
+            setMessages((prevMessages) => [...prevMessages, userNotAvailableMessage]);
+            ExamEndMessage(userNotAvailableMessage.content, continueListening);
+            resetTranscript();
+            setTranscriptMsg("");
+          }, 10000); // 10 seconds
+        }
+      }
     }
- 
-    }
-  }, [listening, transcript]);
-
+  
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [listening, transcript, noResponse]);
+  
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -213,107 +223,117 @@ const AIChat: React.FC<AIChatProps> = ({
 
   useEffect(() => {
     const testIntentDetermination = async () => {
-       if (!transcriptMsg) return;
-
+      if (!transcriptMsg) return;
+  
       const userMessage: ChatMessage = { role: "user", content: transcriptMsg };
       setMessages((prevMessages) => [...prevMessages, userMessage]);
+  
       try {
         const intent = await getChatbotResponse([{ role: "user", content: transcriptMsg }]);
         console.log(`Intent for message "${transcriptMsg}": ${intent}`);
-
+  
         let assistantMessage: ChatMessage | null = null;
-
-        if (intent === "Introduce" || intent === "Repeat") {
-          if (intent === "Repeat" && lastAssistantMessage) {
-            assistantMessage = lastAssistantMessage;
-          } else {
+  
+        switch (intent) {
+          case "Introduce":
             assistantMessage = {
               role: "assistant",
-              content: questionList[0].title,
+              content: questionList[0].title, // Start with the first question
             };
-          }
-          
-          resetTranscript();
-          setTranscriptMsg("");
-          setLastAssistantMessage(assistantMessage); // Update last assistant message
-          speakText(assistantMessage.content, continueListening);
-        } else if (intent === "Continue") {
-          try {
-            await handleSubmitAnswer(transcript, questionId);
-            resetTranscript();
-            setTranscriptMsg("");
-        
-            const nextIndex = currentQuestionIndex + 1;
-            if (nextIndex < questionList.length) {
-              setCurrentQuestionIndex(nextIndex);
-              const assistantMessage: ChatMessage = {
-                role: "assistant",
-                content: questionList[nextIndex].title,
-              };
-              setMessages((prevMessages) => [...prevMessages, assistantMessage]);
-              setLastAssistantMessage(assistantMessage); // Update last assistant message
-              speakText(assistantMessage.content, continueListening);
-            } else {
-              handleExamEnd();
+            setLastAssistantMessage(assistantMessage);
+            break;
+  
+          case "Repeat":
+            assistantMessage = lastAssistantMessage || {
+              role: "assistant",
+              content: "No previous message to repeat.",
+            };
+            break;
+  
+          case "Continue":
+          case "Move to a new question":
+            try {
+              await handleSubmitAnswer(intent === "Continue" ? transcriptMsg : "NOT Answered", questionId);
+              const nextIndex = currentQuestionIndex + 1;
+  
+              if (nextIndex < questionList.length) {
+                setCurrentQuestionIndex(nextIndex);
+                assistantMessage = {
+                  role: "assistant",
+                  content: questionList[nextIndex].title,
+                };
+                setLastAssistantMessage(assistantMessage);
+              } else {
+                handleExamEnd();
+                return;
+              }
+            } catch (error) {
+              console.error("Error submitting answer:", error);
+              return;
             }
-          } catch (error) {
-            console.error("Error submitting answer:", error);
-          }
-        } else if (intent === "Move to a new question") {
-          try {
-            await handleSubmitAnswer("NOT Answered", questionId);
-            resetTranscript();
-            setTranscriptMsg("");
-        
-            const nextIndex = currentQuestionIndex + 1;
-            if (nextIndex < questionList.length) {
-              setCurrentQuestionIndex(nextIndex);
-              const assistantMessage: ChatMessage = {
-                role: "assistant",
-                content: questionList[nextIndex].title,
-              };
-              setMessages((prevMessages) => [...prevMessages, assistantMessage]);
-              setLastAssistantMessage(assistantMessage); // Update last assistant message
-              speakText(assistantMessage.content, continueListening);
+            break;
+  
+          case "Unclear":
+            assistantMessage = {
+              role: "assistant",
+              content: "I'm sorry, I didn't quite understand that. Would you like to repeat the current question, ask a different question, or leave the exam?",
+            };
+            break;
+  
+          case "User Not Available":
+            assistantMessage = {
+              role: "assistant",
+              content: "It looks like you're not available at the moment. This is your final prompt. Please tell me whether you’d like to repeat the current question, move on to the next one, or want to leave the exam.",
+            };
+            break;
+  
+          case "Explain":
+            if (lastAssistantMessage) {
+              try {
+                const explainByChatBot: any = await explainChatbotResponse([{ role: "system", content: `Can you ask this in another way: ${lastAssistantMessage.content}` }]);
+                assistantMessage = {
+                  role: "assistant",
+                  content: explainByChatBot,
+                };
+              } catch (error) {
+                console.error("Error explaining message:", error);
+                return;
+              }
             } else {
-              handleExamEnd();
+              assistantMessage = {
+                role: "assistant",
+                content: "No previous message to explain.",
+              };
             }
-          } catch (error) {
-            console.error('Error submitting answer:', error);
-          }
-        } else if (intent === "Unclear" ) {
-          const unclearMessage: ChatMessage = {
-            role: 'assistant',
-            content: "I'm sorry, I didn't quite understand that. Could you please clarify or ask another question?",
-          };
-          setMessages((prevMessages) => [...prevMessages, unclearMessage]);
-          setLastAssistantMessage(unclearMessage); // Update last assistant message
-          speakText(unclearMessage.content, continueListening);
-          resetTranscript();
-          setTranscriptMsg("");
-
-        } else if (intent === "Leave"){
-          resetTranscript();
-          setTranscriptMsg("");
-
-          assistantMessage = {
-            role: "assistant",
-            content: "Thank you for your Answers, we will update your score shortly.",
-          };
-         // setLastAssistantMessage(assistantMessage); // Update last assistant message
-          ExamEndMessage(assistantMessage.content, continueListening);
+            break;
+  
+          case "Leave":
+            assistantMessage = {
+              role: "assistant",
+              content: "Thank you for your answers. We will update your score shortly.",
+            };
+            ExamEndMessage(assistantMessage.content, continueListening);
+            return;
+  
+          default:
+            console.error("Unknown intent:", intent);
+            return;
         }
-
+  
         if (assistantMessage) {
           setMessages((prevMessages) => [...prevMessages, assistantMessage]);
+          speakText(assistantMessage.content, continueListening);
+          resetTranscript();
+          setTranscriptMsg("");
         }
       } catch (error) {
         console.error("Error determining intent:", error);
       }
     };
-
+  
     testIntentDetermination();
   }, [transcriptMsg, currentQuestionIndex]);
+  
   return (
     <div className="flex flex-col h-auto min-h-[500px] lg:min-h-[750px] max-h-[700px] ">
       <div className="bg-[#01AFF4] text-white p-4 flex justify-between items-center rounded-md">
