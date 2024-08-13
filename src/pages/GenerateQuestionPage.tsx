@@ -235,17 +235,21 @@ const GenerateQuestionsPage: React.FC = () => {
       setError("Failed to save question set. Please try again.");
     }
   };
-
   const handleConfirm = () => {
     const interview = {
-      id: setId,
+      id: setId // Ensure setId is properly defined and holds the interview ID
     };
+  
     setConfirm(true);
-
-    navigate(`/dashboard/question/${interview.id}/instructions`, { state: { interview } });
-    closeModal();
+  
+    navigate(`/dashboard/question/${interview.id}/instructions`, {
+      state: { interview },
+    });
+  
+    closeModal(); // Close the modal after navigating
   };
-
+  
+  
   // Your component code, such as form JSX, button handlers, etc.
 
   return (
@@ -466,22 +470,23 @@ const GenerateQuestionsPage: React.FC = () => {
             {isOpen && (
               <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50">
                 <div className="bg-white w-96 p-6 rounded-md">
-                  <div className="text-xl font-bold mb-4">
+                  <div className="text-xl text-sky-500 font-bold mb-4">
                     Question Generated Successfully
                   </div>
-                  <div className="text-gray-700 mb-4">
+                  <hr className="border-t-4 border-gray-300  my-4" />
+                  <div className="text-gray-700 my-8">
                     Do you want to start the interview assessment?
                   </div>
-                  <div className="flex justify-around">
+                  <div className="flex gap-5">
                     <button
                       onClick={closeModal}
-                      className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md mr-2"
+                      className="bg-gray-400 hover:bg-gray-500 text-white w-full px-4 py-4 rounded mr-2"
                     >
                       Dashboard
                     </button>
                     <button
                       onClick={handleConfirm}
-                      className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                      className="bg-blue-400  hover:bg-blue-600 w-full text-white px-4 py-2 rounded"
                     >
                       Start
                     </button>

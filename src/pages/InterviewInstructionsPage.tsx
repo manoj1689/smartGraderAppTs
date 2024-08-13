@@ -50,6 +50,9 @@ const InterviewInstructions: React.FC = () => {
           <img src={SmartGrader} alt="Smart Grader" width={140} />
         </div>
       </div>
+      <div className='container mx-auto'>
+        <NotificationBar/>
+      </div>
       <div className="container lg:w-5/6 mx-auto w-full">
         <div className="flex rounded-md border border-solid m-4 border-black border-opacity-10">
           <div className="w-full bg-white p-4">

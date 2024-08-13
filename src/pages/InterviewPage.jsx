@@ -320,8 +320,12 @@ const InterviewScreen = () => {
   };
   return (
     <>
-      <div className=" p-4 h-auto ">
-        <img src={SmartGrader} alt="Smart Grader" width={140} height={140} />
+      <div className="h-auto ">
+      <div className="flex items-center justify-between border-b border-slate-200">
+        <div className='w-auto p-4 '>
+          <img src={SmartGrader} alt="Smart Grader" width={140} />
+        </div>
+      </div>
         <Sticky topOffset={80} className="fixed top-10 right-10 z-50">
           {isVisible && (
             <button
@@ -343,7 +347,7 @@ const InterviewScreen = () => {
           )}
         </Sticky>
 
-        <div ref={ref} className=" mx-auto">
+        <div ref={ref} >
           <div className="container mx-auto">
             <NotificationBar />
           </div>

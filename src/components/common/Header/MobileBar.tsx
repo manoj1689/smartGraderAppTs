@@ -30,7 +30,7 @@ const MobileBar: React.FC = () => {
 
   const handleLogoutClick = () => {
     serviceLogout();
-    window.location.href = "https://smart-grader-landing-web.vercel.app/";
+    window.location.href = "https://smart-grader-landing-last.vercel.app/";
   };
 
   const handleClickOutside = (event: MouseEvent) => {
