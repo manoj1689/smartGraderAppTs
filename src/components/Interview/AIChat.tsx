@@ -40,6 +40,7 @@ const AIChat: React.FC<AIChatProps> = ({
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [transcriptMsg, setTranscriptMsg] = useState("");
   const [loading, setLoading] = useState(false);
+  const [intro,setIntro]=useState(false)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [listeningEnabled, setListeningEnabled] = useState(true);
   const [showWave, setShowWave] = useState(false);
@@ -220,7 +221,7 @@ const AIChat: React.FC<AIChatProps> = ({
       }
     
   };
-
+ console.log("loading value",loading)
   useEffect(() => {
     const testIntentDetermination = async () => {
       if (!transcriptMsg) return;
@@ -238,8 +239,10 @@ const AIChat: React.FC<AIChatProps> = ({
           case "Introduce":
             assistantMessage = {
               role: "assistant",
-              content: questionList[0].title, // Start with the first question
+              content: "Hey there! Are you ready to continue with the exam and show what you’ve got, or would you prefer to leave?",
             };
+            
+            
             setLastAssistantMessage(assistantMessage);
             break;
   
@@ -250,12 +253,46 @@ const AIChat: React.FC<AIChatProps> = ({
             };
             break;
   
-          case "Continue":
+            case "Continue":
+              if (!intro) {
+                // Set intro to true and immediately start with the first question
+                setIntro(true);
+                setCurrentQuestionIndex(0); // Start with the first question (index 0)
+                assistantMessage = {
+                  role: "assistant",
+                  content: questionList[0].title, // Display the first question directly
+                };
+                setLastAssistantMessage(assistantMessage);
+              } else {
+                // If intro is already true, continue with the current question or submit answer
+                try {
+                  await handleSubmitAnswer(transcriptMsg, questionId);
+                  
+                const nextIndex = currentQuestionIndex + 1;
+                  if (nextIndex < questionList.length) {
+                    setCurrentQuestionIndex(nextIndex);
+                    assistantMessage = {
+                      role: "assistant",
+                      content: questionList[nextIndex].title,
+                    };
+                    setLastAssistantMessage(assistantMessage);
+                  } else {
+                    handleExamEnd();
+                    return;
+                  }
+                } catch (error) {
+                  console.error("Error submitting answer:", error);
+                  return;
+                }
+              }
+              break;
+            
+  
           case "Move to a new question":
             try {
-              await handleSubmitAnswer(intent === "Continue" ? transcriptMsg : "NOT Answered", questionId);
-              const nextIndex = currentQuestionIndex + 1;
-  
+              await handleSubmitAnswer("NOT ANSWERED", questionId);
+              
+            const nextIndex = currentQuestionIndex + 1;
               if (nextIndex < questionList.length) {
                 setCurrentQuestionIndex(nextIndex);
                 assistantMessage = {
@@ -333,6 +370,7 @@ const AIChat: React.FC<AIChatProps> = ({
   
     testIntentDetermination();
   }, [transcriptMsg, currentQuestionIndex]);
+  
   
   return (
     <div className="flex flex-col h-auto min-h-[500px] lg:min-h-[750px] max-h-[700px] ">
