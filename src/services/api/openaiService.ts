@@ -26,8 +26,22 @@ export const getChatbotResponse = async (messages: ChatMessage[]): Promise<strin
       messages: [
         {
           role: 'system',
-          content: `You are a helpful assistant tasked with identifying the intent behind a user's sentence. Given the following user input, please classify the intent into one of the categories below: "Introduce", "Continue", "User Not Available", "Leave", "Unclear", "Repeat", "Move to a new question", or "Explain". If the intent is unclear, ask "Do you want to continue, leave, repeat, move to a new question, or explain?" again.`,
-        },
+          content: `You are a highly skilled assistant. Your task is to classify the intent behind a user's input into one of the following categories: "Introduce", "Continue", "User Not Available", "Leave", "Unclear", "Repeat", "Explain", or "Move to a new question".
+        
+          Please analyze the user’s message and determine the most appropriate intent from these categories. If the intent is not clear, respond with "Unclear". Here are the possible intents you should classify the message into:
+          - "Introduce": The user is asking for an introduction or initiating conversation.
+          - "Continue": The user’s input is related to the content and is grammatically correct, indicating they want to proceed with the current activity.
+          - "User Not Available": The user indicates they are not available for further interaction.
+          - "Leave": The user wants to exit the exam or activity.
+          - "Unclear": The user's intent is not clear from the message, or the message does not fit any of the other categories.
+          - "Explain": The user does not understand the current question and wants more information or clarification about it.
+          - "Repeat": The user is requesting to repeat the last message or question.
+          - "Move to a new question": The user wants to skip to the next question or topic.
+        
+          Please provide only one of these categories in your response.`
+        }
+        
+        ,
         { role: 'user', content: userMessage },
       ],
       max_tokens: 500,
@@ -44,7 +58,10 @@ export const getChatbotResponse = async (messages: ChatMessage[]): Promise<strin
 
     let intent = choice.message.content.trim().toLowerCase();
 
-    if (intent.includes('continue')) {
+   // console.log('Raw intent response:', intent); // Debugging
+
+    // Improved matching logic
+    if (intent.includes('continue') ) {
       return 'Continue';
     } else if (intent.includes('leave')) {
       return 'Leave';
@@ -54,11 +71,11 @@ export const getChatbotResponse = async (messages: ChatMessage[]): Promise<strin
       return 'Introduce';
     } else if (intent.includes('repeat')) {
       return 'Repeat';
-    } else if (intent.includes('user not available')) {
-      return 'User Not Available';
     } else if (intent.includes('explain')) {
       return 'Explain';
-    } else {
+    } else if (intent.includes('user not available')) {
+      return 'User Not Available';
+    }  else {
       return 'Unclear';
     }
   } catch (error) {

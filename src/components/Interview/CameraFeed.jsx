@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 import * as faceapi from 'face-api.js';
 import { toast, ToastContainer } from 'react-toastify';
-import { useParams } from 'react-router-dom';
 
 const MODEL_URL = '/models';
 
@@ -32,17 +31,16 @@ const detectFaces = async (videoElement) => {
 const stopCamera = (videoElement) => {
     if (videoElement && videoElement.srcObject) {
         videoElement.srcObject.getTracks().forEach(track => track.stop());
-        videoElement.srcObject = null; // Clear the srcObject
+        videoElement.srcObject = null;
         console.log('Video stream stopped');
     }
 };
 
-const CameraFeed = ({ onFacesDetected, examStarted,examEnd }) => {
+const CameraFeed = ({ onFacesDetected, examStarted, examEnd }) => {
     const videoRef = useRef(null);
     const intervalIdRef = useRef(null);
     const noFaceTimeoutRef = useRef(null);
     const multipleFaceTimeoutRef = useRef(null);
-    const { questionSetId } = useParams();
 
     const handleVideoPlay = useCallback(() => {
         intervalIdRef.current = setInterval(async () => {
@@ -56,7 +54,7 @@ const CameraFeed = ({ onFacesDetected, examStarted,examEnd }) => {
                         noFaceTimeoutRef.current = setTimeout(() => {
                             console.log('No face detected for more than 20 seconds.');
                             toast.warn('No face detected for more than 20 seconds.');
-                            noFaceTimeoutRef.current = null; // Reset the timeout reference
+                            noFaceTimeoutRef.current = null;
                         }, 20000);
                     }
                 } else {
@@ -76,7 +74,6 @@ const CameraFeed = ({ onFacesDetected, examStarted,examEnd }) => {
                     multipleFaceTimeoutRef.current = null;
                 }
 
-                // Pass detections to the parent component
                 onFacesDetected({
                     faceVerified,
                     multiplePeopleDetected
@@ -86,25 +83,29 @@ const CameraFeed = ({ onFacesDetected, examStarted,examEnd }) => {
     }, [onFacesDetected]);
 
     useEffect(() => {
-        const currentVideoRef = videoRef.current; // Copy videoRef.current to a local variable
+        const currentVideoRef = videoRef.current;
 
         const startVideo = async () => {
             try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true ,audio:false});
                 videoRef.current.srcObject = stream;
                 console.log('Video stream started');
                 videoRef.current.onplay = handleVideoPlay;
             } catch (err) {
-                console.error('Error accessing webcam and microphone:', err);
+                console.error('Error accessing webcam:', err);
             }
         };
 
         const loadAndStart = async () => {
             await loadModels();
-            await startVideo();
+            if (examStarted) {
+                await startVideo();
+            }
         };
 
-        loadAndStart();
+        if (examStarted) {
+            loadAndStart();
+        }
 
         return () => {
             if (intervalIdRef.current) clearInterval(intervalIdRef.current);
@@ -112,18 +113,20 @@ const CameraFeed = ({ onFacesDetected, examStarted,examEnd }) => {
             if (multipleFaceTimeoutRef.current) clearTimeout(multipleFaceTimeoutRef.current);
             stopCamera(currentVideoRef);
         };
-    }, [handleVideoPlay]);
+    }, [examStarted, handleVideoPlay]);
+
+    useEffect(() => {
+        if (!examStarted) {
+            stopCamera(videoRef.current);
+        }
+    }, [examStarted]);
 
     return (
-        <div className='flex '>
-            <ToastContainer/>
+        <div className='flex'>
+            <ToastContainer />
             <video ref={videoRef} autoPlay muted style={{ width: '100%', borderRadius: '1%' }} />
         </div>
     );
 };
 
 export default React.memo(CameraFeed);
-
-
-
-

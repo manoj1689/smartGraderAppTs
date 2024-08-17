@@ -221,26 +221,27 @@ const AIChat: React.FC<AIChatProps> = ({
       }
     
   };
- console.log("loading value",loading)
+ //console.log("loading value",loading)
   useEffect(() => {
     const testIntentDetermination = async () => {
       if (!transcriptMsg) return;
-  
+   
       const userMessage: ChatMessage = { role: "user", content: transcriptMsg };
       setMessages((prevMessages) => [...prevMessages, userMessage]);
-  
+      setLoading(true)
       try {
         const intent = await getChatbotResponse([{ role: "user", content: transcriptMsg }]);
         console.log(`Intent for message "${transcriptMsg}": ${intent}`);
-  
+        setLoading(false)
         let assistantMessage: ChatMessage | null = null;
   
         switch (intent) {
           case "Introduce":
             assistantMessage = {
               role: "assistant",
-              content: "Hey there! Are you ready to continue with the exam and show what you’ve got, or would you prefer to leave?",
+              content: "Nice to meet you! We have an AI-developed question set for you. Reply 'Continue' to proceed or 'Leave' to exit the exam.",
             };
+            
             
             
             setLastAssistantMessage(assistantMessage);
@@ -350,8 +351,8 @@ const AIChat: React.FC<AIChatProps> = ({
               content: "Thank you for your answers. We will update your score shortly.",
             };
             ExamEndMessage(assistantMessage.content, continueListening);
-            return;
-  
+            //return;
+            break;
           default:
             console.error("Unknown intent:", intent);
             return;
@@ -403,13 +404,13 @@ const AIChat: React.FC<AIChatProps> = ({
             )}
           </div>
         ))}
-        <div ref={messagesEndRef}></div>
+         <div ref={messagesEndRef}></div>
         {loading && (
-          <div className="p-2 my-2 rounded-md bg-blue-200 self-start">
+          <div className="p-2 my-2 rounded-md bg-white self-start">
             <div className="flex space-x-2">
-              <div className="w-2 h-2 bg-gray-600 rounded-full animate-pulse"></div>
-              <div className="w-2 h-2 bg-gray-600 rounded-full animate-pulse"></div>
-              <div className="w-2 h-2 bg-gray-600 rounded-full animate-pulse"></div>
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
             </div>
           </div>
         )}

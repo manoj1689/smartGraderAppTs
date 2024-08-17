@@ -120,9 +120,9 @@ const InterviewScreen = () => {
     try {
       const response = await examStart(questionSetId, token);
       console.log("startExam details", response);
-
+      setExamStarted(true);
       if (response.msg === "success") {
-        setExamStarted(true);
+      
         setExamId(response.exam_id);
         // You can handle more logic here based on the response
       } else {
@@ -138,10 +138,11 @@ const InterviewScreen = () => {
   // Exam end
   const handleExamEnd = async () => {
     setLoading(true);
+    setExamStarted(false)
     try {
       //await handleSubmitAnswer();
       await examEnd(examId, token);
-      setExamStarted(false)
+     
       setExamId("");
       setIsModalOpen(false);
       navigate(`/dashboard/question/exam-end`);
@@ -196,10 +197,13 @@ const InterviewScreen = () => {
     return () => clearInterval(intervalId);
   }, []); // Empty dependency array to run only once
 
+ 
+ 
+
   async function requestCameraAndMicrophone() {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
+        video: false,
         audio: true,
       });
       const cameraStatus = await navigator.permissions.query({
@@ -217,6 +221,8 @@ const InterviewScreen = () => {
       console.error("Error requesting media permissions:", error);
     }
   }
+
+  
 
   const fullScreenExit = useCallback(() => {
     if (document.fullscreenElement) {
@@ -405,12 +411,12 @@ const InterviewScreen = () => {
                             </div>
                           )}
                         </div>
-                      </div>
+                      </div> 
 
                       <div className="relative w-full lg:w-5/6   mx-auto">
                         <CameraFeed
                           onFacesDetected={handleFacesDetected}
-                          examStarted={examStarted}
+                          examStarted={permissions.camera && permissions.microphone}
                           examEnd={examEnd}
                         />
                       </div>
@@ -633,7 +639,7 @@ const InterviewScreen = () => {
         <div className="mt-4 flex justify-center space-x-4">
           <button
             onClick={() => {
-              handleFullScreenClose(), navigate(`/dashboard`);
+              handleExamEnd(), fullScreenExit();
             }}
             className="bg-gray-400 w-full text-white px-4 py-2 rounded hover:bg-gray-500 focus:outline-none"
           >
