@@ -6,16 +6,16 @@ const ScorePieChart = ({ score }) => {
 
   let scoreColor;
   if (score >= 1 && score <= 2) {
-    scoreColor = 'red';
+    scoreColor = '#87CEEB';
   } else if (score >= 3 && score <= 4) {
-    scoreColor = 'orange';
+    scoreColor = '#6495ED';
   } else {
-    scoreColor = '#87CEEB'; // Strong score color
+    scoreColor = '#0047AB'; // Strong score color
   }
 
   const data = [
     { title: 'Score', value: score, color: scoreColor },
-    { title: 'Remaining', value: remaining, color: '#696969' },
+    { title: 'Remaining', value: remaining, color: '#008080' },
   ];
 
   return (

@@ -26,12 +26,10 @@ import interview from "../../assets/images/Result/interview.png";
 import result from "../../assets/images/Result/result.png";
 import clock from "../../assets/images/Result/clock.png";
 import { fetchSetDetail } from "../../services/api/SetService";
-import { fetchUserData } from '../../services/api/NotificationBarService';
-import { getToken } from '../../utils/tokenUtils';
-
+import { fetchUserData } from "../../services/api/NotificationBarService";
+import { getToken } from "../../utils/tokenUtils";
 
 const Result = () => {
- 
   const location = useLocation();
   const targetRef = useRef();
   console.log("Set Attempt SetId and Data at result page", location.state);
@@ -39,7 +37,7 @@ const Result = () => {
   const [user, setUser] = useState([]);
   const [error, setError] = useState(false);
   const printRef = useRef();
-  const [setDetail,setSetDetails]=useState([])
+  const [setDetail, setSetDetails] = useState([]);
   const [setId, setSetId] = useState();
   const [examData, setExamData] = useState({});
   const [examScreenshots, setExamScreenShots] = useState([]);
@@ -49,8 +47,6 @@ const Result = () => {
   console.log("set Data at result PAge", setData);
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-
-
 
   useEffect(() => {
     const accessToken = getToken();
@@ -67,34 +63,33 @@ const Result = () => {
     }
   }, []);
 
-
   useEffect(() => {
     if (examData?.start_date) {
       const timestamp = examData.start_date;
-      
+
       // Create a Date object from the timestamp
       const dateInUTC = new Date(timestamp);
 
       // Convert to IST (UTC+5:30)
-      const istDate = new Date(dateInUTC.getTime() + (5.5 * 60 * 60 * 1000));
+      const istDate = new Date(dateInUTC.getTime() + 5.5 * 60 * 60 * 1000);
 
       // Format the IST date and time
-      const optionsDate = { 
-        timeZone: 'Asia/Kolkata', 
-        year: 'numeric', 
-        month: '2-digit', 
-        day: '2-digit' 
+      const optionsDate = {
+        timeZone: "Asia/Kolkata",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
       };
-      const optionsTime = { 
-        timeZone: 'Asia/Kolkata', 
-        hour: '2-digit', 
-        minute: '2-digit', 
-        second: '2-digit', 
-        hour12: true 
+      const optionsTime = {
+        timeZone: "Asia/Kolkata",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true,
       };
 
-      const dateString = istDate.toLocaleDateString('en-IN', optionsDate);
-      const timeString = istDate.toLocaleTimeString('en-IN', optionsTime);
+      const dateString = istDate.toLocaleDateString("en-IN", optionsDate);
+      const timeString = istDate.toLocaleTimeString("en-IN", optionsTime);
 
       setDate(dateString);
       setTime(timeString);
@@ -200,162 +195,139 @@ const Result = () => {
   // console.log("SET STATUS AFTER AI SCORE", user, "Type of User:", typeof user);
 
   // console.log("Exam ID:", examId);
-console.log("set Details at result page",setDetail)
+  console.log("set Details at result page", setDetail);
   return (
-    <div className="container  mx-auto w-full h-full">
+    <div className="container   mx-auto w-full h-full">
       <NotificationBar />
 
       <ToastContainer />
-      <div ref={targetRef}>
+      <div ref={targetRef} className="px-4">
         <div className="flex my-5 gap-3 flex-col lg:flex-row">
-          <div className="basis-2/3  rounded-md border border-solid border-black border-opacity-10  ">
-            <div className="text-2xl font-spline font-bold text-slate-800 p-4">
-              Candidate Assessement Summary
-            </div>
-            <div className="flex flex-col md:flex-row">
-              <div className="flex md:w-1/3 lg:1/5 px-4 gap-4">
-                <img
-                  loading="lazy"
-                  src={ResultCard}
-                  alt="Fail to load image"
-                  className=" border rounded-lg"
-                />
+          <div className="flex flex-col lg:flex-row w-full lg:w-2/3 rounded-lg border border-gray-200 overflow-hidden shadow-lg bg-white">
+            {/* Left Section: User Information */}
+            <div className="flex flex-col w-full  lg:w-1/3 bg-gradient-to-b from-blue-500 to-blue-300 text-white p-6 text-left">
+              <div className="text-5xl font-extrabold mb-2 uppercase">
+                {username}
               </div>
 
-              <div className="md:w-2/3  lg:4/5 p-4 ">
-                <div className="my-3 text-2xl font-medium leading-6 text-sky-500">
-                  {username}
+              <div className="text-2xl font-light mb-4">{setDetail.title}</div>
+              <div className="text-lg">
+                <strong>Date:</strong> {date}
+              </div>
+              <div className="text-lg">
+                <strong>Time:</strong> {time}
+              </div>
+            </div>
+
+            {/* Right Section: Assessment Summary */}
+            <div className="flex flex-col lg:w-2/3 p-8 space-y-8 bg-blue-50">
+              {/* Header */}
+              <div className="text-3xl font-semibold text-gray-700 border-b border-gray-300 pb-2">
+                Assessment Summary
+              </div>
+
+              {/* Score Indicator */}
+              <div className="flex justify-between items-center">
+                <div className="text-xl font-medium text-gray-600">
+                  Overall Score
                 </div>
-                <div className="flex flex-col gap-4 sm:flex-row">
-                  <div className="flex gap-4 ">
-                    <div className="flex flex-col gap-10 ">
-                      <div className="flex gap-4 ">
-                        <img
-                          loading="lazy"
-                          src={interview}
-                          className=" w-20 h-16 "
-                        />
-                        <div className="text-base font-light  text-neutral-500">
-                          <div className=" font-bold  text-neutral-600">
-                            Interview{" "}
-                          </div>
-                          <div className=" text-lg leading-6 text-slate-800">
-                            {setDetail.title}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex gap-4 items-center">
-                        <img
-                          loading="lazy"
-                          src={calander}
-                          className="aspect-square w-16 h-16 "
-                        />
-                        <div className="text-base ">
-                          <div className="font-bold  text-neutral-600">
-                            Interview Date & Time
-                          </div>
-                          <div className="mt-1 text-lg leading-6 text-slate-800">
-                            <div>
-                              <strong>Date:</strong> {date}
-                            </div>
-                            <div>
-                              <strong>Time:</strong> {time}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                <div className="relative flex items-center justify-center w-24 h-24 bg-white border border-gray-300 rounded-full shadow-md">
+                  <div className="absolute inset-0 bg-gradient-to-t from-green-400 to-green-200 rounded-full opacity-75"></div>
+                  <span className="text-4xl font-bold text-green-600 z-10">
+                    75%
+                  </span>
+                </div>
+              </div>
+
+              {/* Result and Time Spent */}
+              <div className="grid grid-cols-2 gap-6">
+                {/* Result Card */}
+                <div className="flex flex-col items-center p-4 bg-white border border-gray-300 rounded-md shadow-sm">
+                  <div className="text-gray-600 font-medium text-lg">
+                    Result
                   </div>
-                  <div className="flex  ">
-                    <div className="flex flex-col gap-10  ">
-                      <div className="flex gap-4 ">
-                        <img
-                          loading="lazy"
-                          src={result}
-                          className="aspect-square w-16 h-16  "
-                        />
-                        <div className="flex flex-col ">
-                          <div className="text-base font-bold items-start text-neutral-600">
-                            Results
-                          </div>
-                          <div className="text-lg text-red-600">No</div>
-                        </div>
-                      </div>
-                      <div className="flex gap-5 px-2">
-                        <img
-                          loading="lazy"
-                          src={clock}
-                          className="aspect-square w-12 h-12  "
-                        />
-                        <div className="flex flex-col my-auto">
-                          <div className="text-base font-bold leading-6 text-neutral-600">
-                            Total Time Spent
-                          </div>
-                          <div className="mt-1 text-lg leading-6 text-slate-800">
-                            {totalTime}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                  <div
+                    className={`text-2xl font-bold mt-2 ${
+                      result === "Pass" ? "text-green-500" : "text-red-500"
+                    }`}
+                  >
+                  
+                   NO
                   </div>
+                </div>
+
+                {/* Time Spent Card */}
+                <div className="flex flex-col items-center p-4 bg-white border border-gray-300 rounded-md shadow-sm">
+                  <div className="text-gray-600 font-medium text-lg">
+                    Time Spent
+                  </div>
+                  <div className="text-2xl font-bold text-gray-700 mt-2">
+                    {totalTime}
+                  </div>
+                </div>
+              </div>
+
+              {/* Additional Notes Section */}
+              <div className="p-4 bg-yellow-50 border border-gray-300 rounded-md shadow-sm">
+                <div className="text-gray-600 font-medium text-lg">
+                  Additional Notes
+                </div>
+                <div className="text-base text-slate-800  font-mono mt-2">
+                  The candidate demonstrated strong problem-solving skills and a
+                  good understanding of algorithms. They struggled with time
+                  management, so additional practice on time-bound tasks might
+                  be beneficial.
                 </div>
               </div>
             </div>
           </div>
 
-          <div className=" basis-1/3 justify-center items-center rounded-md border border-solid border-black border-opacity-10 p-4 ">
-            <div className="text-lg font-spline font-semibold text-slate-800">
-              Candidate Performance
+          {/* New Section: Performance and Rating */}
+          <div className="flex flex-col lg:flex-col w-full lg:w-1/3 justify-center items-center rounded-lg border border-gray-200 shadow-lg p-6 bg-white">
+            {/* Candidate Performance */}
+            <div className="w-full mb-8">
+              <div className="text-xl font-semibold text-slate-800 mb-4 border-b border-gray-300 pb-2">
+                Candidate Performance
+              </div>
+              <div className="relative">
+                <GaugeChart
+                  id="gauge-chart6"
+                  animate={true}
+                  nrOfLevels={420}
+                  arcsLength={[0.3, 0.5, 0.2]}
+                 
+                  arcPadding={0.02}
+                  cornerRadius={2}
+                  colors={["#87CEEB", "#6495ED", "#0047AB"]}
+                  needleColor="#00BFFF"
+                  needleBaseColor="#4169E1"
+                  textColor="#008B8B"
+                  fontSize="40"
+                  className="w-full"
+                />
+              </div>
             </div>
-            <div>
-              <GaugeChart
-                id="gauge-chart6"
-                animate={true}
-                nrOfLevels={15}
-                arcWidth={0.3}
-                percent={0.56}
-                cornerRadius={2}
-                colors={["#FFC72C", "#E23D28", "#800020"]}
-                needleColor="#00BFFF"
-                needleBaseColor="#4169E1"
-                arcPadding={0.04}
-                textColor="#008B8B"
-                fontSize="40"
-              />{" "}
-            </div>
-            <div className="flex flex-col  w-full ">
-              <div className="flex w-full text-lg font-spline font-semibold text-slate-800 ">
+
+            {/* Candidate Rating */}
+            <div className="w-full">
+              <div className="text-xl font-semibold text-slate-800 mb-4 border-b border-gray-300 pb-2">
                 Candidate Rating
               </div>
-
-              <div className="flex   w-full lg:w-80 mx-auto gap-5  justify-around ">
-                <div className="flex flex-col h-20  items-center">
-                  <div>
-                    <PieChart score={2} />
-                  </div>
-                  <div className="justify-center text-neutral-600 font-spline font-semibold ">
-                    1-2
-                  </div>
-                  <div className="">No</div>
-                </div>
-
+              <div className="flex justify-around items-center">
                 <div className="flex flex-col items-center">
-                  <div>
-                    <PieChart score={3} />
-                  </div>
-                  <div className="justify-center text-neutral-600 font-spline font-semibold ">
-                    3-4
-                  </div>
-                  <div className="">Yes</div>
+                  <PieChart score={2} />
+                  <div className="text-neutral-600 font-semibold mt-2">1-2</div>
+                  <div className="text-gray-700">No</div>
                 </div>
                 <div className="flex flex-col items-center">
-                  <div>
-                    <PieChart score={5} />
-                  </div>
-                  <div className="justify-center text-neutral-600 font-spline font-semibold ">
-                    4-5
-                  </div>
-                  <div className="">Strong</div>
+                  <PieChart score={3} />
+                  <div className="text-neutral-600 font-semibold mt-2">3-4</div>
+                  <div className="text-gray-700">Yes</div>
+                </div>
+                <div className="flex flex-col items-center">
+                  <PieChart score={5} />
+                  <div className="text-neutral-600 font-semibold mt-2">4-5</div>
+                  <div className="text-gray-700">Strong</div>
                 </div>
               </div>
             </div>

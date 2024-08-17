@@ -11,10 +11,10 @@ const EvaluationRecord = ( {user ,screenshotsList}) => {
         <Tabs>
     <TabList>
       <Tab>
-      <span className="text-lg font-extralight ">AI Evalutaion</span>
+      <span className="text-lg text-sky-600 font-extralight ">AI Evalutaion</span>
       </Tab>
       <Tab>
-      <span className="text-lg font-extralight ">Screen Records</span>
+      <span className="text-lg text-sky-600 font-extralight ">Screen Records</span>
       </Tab>
     </TabList>
 
