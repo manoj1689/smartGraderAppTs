@@ -81,7 +81,7 @@ const IndividualSets: React.FC = () => {
             key={card.id}
           >
             <div className="flex flex-col justify-center items-center   rounded-lg p-3 shadow-sm">
-              <div className="px-12 py-4 bg-violet-200 rounded-md border border-gray-200 shadow-sm">
+              <div className="flex bg-sky-200 w-full p-2 justify-center rounded ">
                 <img
                   loading="lazy"
                   alt="Coding"
@@ -99,7 +99,7 @@ const IndividualSets: React.FC = () => {
                 />
                 <span className="text-base pt-1 font-medium text-gray-800">{card.rating}/5</span>
                 </div>
-                <div className="px-3 py-1 text-sm text-sky-800 bg-sky-300 rounded-md">
+                <div className="px-3 py-1 text-sm text-sky-800 bg-sky-200 rounded-md">
                 Frontend
               </div>
               </div>
@@ -107,14 +107,14 @@ const IndividualSets: React.FC = () => {
             </div>
           
             <div className="flex justify-between items-center ">
-              <div className="flex items-center gap-2">
+              <div className="flex items-center  gap-2">
                 <img
                   loading="lazy"
                   alt="grader"
                   src={graderLogo}
-                  className="w-10 h-10 rounded-md border border-gray-300 shadow-sm"
+                  className="w-10 h-10 rounded-md border border-gray-300  shadow-sm"
                 />
-                <div className="text-md font-medium text-gray-500">SmartGrader</div>
+                <div className="text-md font-medium text-gray-500 bg-sky-200 p-2 rounded">SmartGrader</div>
               </div>
               <div className="">
               <img
