@@ -80,7 +80,7 @@ const IndividualSets: React.FC = () => {
             className="flex flex-col my-4 p-4 mx-auto max-lg:w-72 w-full rounded-lg border border-violet-200 hover:border-violet-200 shadow-lg transition-transform transform hover:scale-105 duration-300 bg-white text-neutral-700"
             key={card.id}
           >
-            <div className="flex flex-col justify-center items-center   rounded-lg p-3 shadow-sm">
+            <div className="flex flex-col justify-center items-center   rounded-lg  shadow-sm">
               <div className="flex bg-sky-200 w-full p-2 justify-center rounded ">
                 <img
                   loading="lazy"
