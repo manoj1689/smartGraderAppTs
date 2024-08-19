@@ -77,10 +77,10 @@ const IndividualSets: React.FC = () => {
           <div className="px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 lg:gap-10 ">
             {currentItems.map((card) => (
             <div
-            className="flex flex-col my-4 p-4 mx-auto max-lg:w-72 w-full rounded-lg border border-gray-200 hover:border-sky-400 shadow-lg transition-transform transform hover:scale-105 duration-300 bg-white text-neutral-700"
+            className="flex flex-col my-4 p-4 mx-auto max-lg:w-72 w-full rounded-lg border border-violet-200 hover:border-violet-200 shadow-lg transition-transform transform hover:scale-105 duration-300 bg-white text-neutral-700"
             key={card.id}
           >
-            <div className="flex flex-col justify-center items-center bg-sky-100  rounded-lg p-2 shadow-sm">
+            <div className="flex flex-col justify-center items-center   rounded-lg p-3 shadow-sm">
               <div className="px-12 py-4 bg-violet-200 rounded-md border border-gray-200 shadow-sm">
                 <img
                   loading="lazy"
@@ -89,7 +89,7 @@ const IndividualSets: React.FC = () => {
                   className="w-24 h-24 object-cover rounded-md"
                 />
               </div>
-              <div className="flex w-full  justify-between items-center gap-2 mt-3 bg-white rounded-sm px-3  shadow-sm">
+              <div className="flex w-full  justify-between items-center gap-2  px-3 ">
                 <div className='flex  justify-center items-center py-2 gap-2'>
                 <img
                   loading="lazy"
@@ -99,14 +99,14 @@ const IndividualSets: React.FC = () => {
                 />
                 <span className="text-base pt-1 font-medium text-gray-800">{card.rating}/5</span>
                 </div>
-                <div className="px-3 py-1 text-sm text-white bg-sky-700 rounded-sm shadow-sm">
+                <div className="px-3 py-1 text-sm text-sky-800 bg-sky-300 rounded-md">
                 Frontend
               </div>
               </div>
               
             </div>
           
-            <div className="flex justify-between items-center mt-6">
+            <div className="flex justify-between items-center ">
               <div className="flex items-center gap-2">
                 <img
                   loading="lazy"
@@ -126,9 +126,9 @@ const IndividualSets: React.FC = () => {
               </div>
             </div>
           
-            <h3 className="mt-2 text-lg font-bold font-spline text-slate-700">{card.title}</h3>
+            <h3 className="py-2 text-lg font-medium font-spline text-slate-700">{card.title}</h3>
           
-            <div className="flex justify-start items-center gap-4 mt-2 text-sm text-gray-600">
+            <div className="flex justify-start items-center gap-4  text-sm text-gray-600">
               <div className="flex items-center gap-1">
                 <CiClock2 size={18} color="#01AFF4" />
                 <span>{card.duration} Min</span>
@@ -140,7 +140,7 @@ const IndividualSets: React.FC = () => {
             </div>
           
             <button
-              className="flex items-center justify-center px-4 py-4 mt-5 text-sm text-white bg-sky-500 rounded shadow hover:bg-sky-800 transition"
+              className="flex items-center justify-center px-4 py-3 mt-5 text-sm text-white bg-sky-500 rounded shadow hover:bg-sky-800 transition"
               onClick={(e) => {
                 e.stopPropagation();
                 handleCardClick(card);
