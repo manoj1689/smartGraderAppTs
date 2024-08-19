@@ -327,7 +327,7 @@ const InterviewScreen = () => {
   return (
     <>
       <div className="h-auto ">
-      <div className="flex items-center justify-between border-b border-slate-200">
+      <div className="flex items-center justify-between border-b border-slate-200 bg-sky-100">
         <div className='w-auto p-4 '>
           <img src={SmartGrader} alt="Smart Grader" width={140} />
         </div>

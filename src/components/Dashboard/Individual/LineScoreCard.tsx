@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { FaRegIdCard } from "react-icons/fa6";
 import { fetchexamAttemps } from "../../../services/api/LineScoreService";
-import { LineScore } from "../../../types/interfaces/interface";
+import { LineScore  } from "../../../types/interfaces/interface";
 import { getToken } from "../../../utils/tokenUtils";
 import noRecordFound from "../../../assets/images/Individual/NoRecordFound.png";
 import { MdArrowOutward } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { Rating } from "@smastrom/react-rating";
 import "@smastrom/react-rating/style.css";
-import { Tooltip } from 'react-tooltip'
-import 'react-tooltip/dist/react-tooltip.css'
+//@ts-ignore
+import DateFormat from "../../common/Date/DateFormat"
 const LineScoreCard: React.FC = () => {
   const navigate = useNavigate();
 
@@ -219,62 +219,55 @@ console.log("the result List have set id for each attempt ", results)
           ) : (
             results.map((result) => (
               <div
-                key={result.exam_id}
-                className="my-4  cursor-pointer p-4 rounded-sm  lg:pr-8 bg-sky-100 "
-                onClick={() => navigate("result", { state: { result } })}
-    
-              >
-            
-
-                <div className="flex items-center gap-3 max-md:flex-wrap max-md:max-w-full">
-                  <div className="flex flex-col flex-auto">
-                    <div className="flex flex-col gap-3 md:flex-row lg:flex-col xl:flex-row justify-between ">
-                      <div className="text-lg  md:text-md lg:text-lg font-semibold leading-4 font-spline text-slate-600">
-                        <div className="flex w-full justify-between items-center gap-3 ">
-                          <div className="whitespace-nowrap">
-                            {result.exam_id}
-                          </div>
-
-                          <Rating style={{ maxWidth: 120 }} value={3} />
-                        </div>
-                      </div>
-
-                      <div
-                        className={`text-md font-spline ${getLevelColor(
-                          result.score
-                        )}`}
-                      >
-                        <span className="text-slate-800"> Score:</span>{" "}
-                        {getLevel(result.score)}
-                      </div>
+              key={result.exam_id}
+              className="my-4 cursor-pointer p-4 rounded-lg bg-sky-100 shadow-md hover:shadow-lg transition-shadow duration-300"
+              onClick={() => navigate("result", { state: { result } })}
+            >
+              <div className="flex flex-col lg:flex-row ">
+                <div className="flex-1">
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-2">
+                    <div>
+                    <h3 className="text-lg font-spline font-semibold text-gray-800">{result.set_data.title}</h3>
+                    <div className={`text-md font-medium ${getLevelColor(result.score)}`}>
+                    <span className="text-gray-800">Level:</span> {getLevel(result.score)}
+                  </div>
                     </div>
-                    <div className="flex w-full justify-between mt-3  items-center gap-3">
-                      <div className="text-md font-medium leading-4 font-spline text-slate-600 w-4/12 ">
-                        No Of Questions:{result.q_count}
-                      </div>
-
-                      <div className="flex flex-col justify-center mt-4  rounded-md h-[5px] bg-zinc-300 w-8/12">
+                  
+                    <div>
+                  <DateFormat start_date={result?.start_date} />
+                  </div> 
+                  </div>
+                  <div className="flex items-center">
+                
+                  <div>
+                    Score
+                    </div>
+                  <div className="flex-1 ml-4">
+                    
+                 
+                      <div className="relative h-2 bg-gray-200 rounded-full">
                         <div
-                          className={`shrink-0  ${getBarColor(
-                            result.q_count
-                          )} rounded-md h-[5px]`}
+                          className={`absolute top-0 left-0 h-full rounded-full ${getBarColor(result.q_count)}`}
                           style={{
-                            // width: `${((result.questions_count ) / 20) * 100}%`,
-                            width: `${Math.min(
-                              (result.q_count / 20) * 100,
-                              100
-                            )}%`,
+                            width: `${Math.min((result.q_count / 20) * 100, 100)}%`,
                           }}
                         />
                       </div>
                     </div>
                   </div>
-                  <div className="flex items-center"></div>
                
-                </div>
-                
+                  <div className="flex items-center mt-4">
+                    <div className="text-md font-medium text-gray-600 flex-1">
+                      No Of Questions: <span className="text-sky-600">{result.q_count}</span>
+                    </div>
+                    <Rating style={{ maxWidth: 120 }} value={3} />
 
-              </div>
+                  </div>
+                 
+                  
+                </div>
+        </div>
+        </div>
             ))
           )}
         </div>

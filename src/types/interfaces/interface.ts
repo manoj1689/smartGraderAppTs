@@ -198,13 +198,23 @@ export interface SearchItem {
 export interface LineScore {
   exam_id: string;
   start_date: string;
-  dend_date: string;
+  end_date: string;
   score: number;
   score_percentage: number;
   set_id: number;
   q_count: number;
-  rating: number;
+  set_data: LineScoreSetData;
+}
 
+export interface LineScoreSetData {
+  id: number;
+  title: string;
+  description: string;
+  level: number;
+  img_url: string;
+  duration: number;
+  questions_count: number;
+  rating: number;
 }
 
 export interface SetData {

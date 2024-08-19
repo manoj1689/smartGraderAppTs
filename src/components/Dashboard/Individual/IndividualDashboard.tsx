@@ -95,7 +95,7 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
         </div>
       </div>
 
-      <div className="my-10 mx-4 px-4 bg-white rounded-md border border-solid border-black border-opacity-10">
+      <div className="my-10 mx-4 px-4 bg-white rounded-md border border-solid border-black border-opacity-10 shadow-lg">
   <div className="flex lg:flex-row flex-col gap-5">
     <div className="flex lg:basis-1/3 justify-center items-center order-1 lg:order-2">
       <img
@@ -106,33 +106,33 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
       />
     </div>
     <div className="flex flex-col lg:basis-2/3 gap-5 order-2 lg:order-1">
-      <div className="flex mt-4 gap-3 text-lg font-semi-bold font-spline text-slate-800">
+      <div className="flex mt-4 gap-3 text-lg font-semibold text-slate-800">
         <RiAiGenerate size={24} color="#01AFF4" />
         Set Your Own Questions
       </div>
-      <div className="w-full flex gap-3  bg-sky-100 shadow-sm rounded-md md:flex-row lg:flex-col  items-center p-4 flex-col xl:flex-row ">
-        <div className="w-full flex flex-col  gap-3 justify-center">
-          <div className="flex items-center gap-2.5 w-full whitespace-nowrap">
+      <div className="w-full flex gap-3 bg-sky-100 shadow-md rounded-md p-4 flex-col md:flex-row lg:flex-col xl:flex-row items-center">
+        <div className="w-full flex flex-col gap-3 justify-center">
+          <div className="flex items-center gap-2.5 w-full">
             <IoCheckmark size={28} color="#01AFF4" />
             <div className="flex-grow my-auto overflow-hidden text-ellipsis text-lg font-light leading-8 text-neutral-500">
               Create by Selecting Domain
             </div>
           </div>
-          <div className="flex items-center gap-2.5 w-full whitespace-nowrap">
+          <div className="flex items-center gap-2.5 w-full">
             <IoCheckmark size={28} color="#01AFF4" />
             <div className="flex-grow my-auto overflow-hidden text-ellipsis text-lg font-light leading-8 text-neutral-500">
               Create by Writing JD
             </div>
           </div>
         </div>
-        <div className="w-full flex flex-col gap-3 justify-center ">
-          <div className="flex  items-center gap-2.5  w-full whitespace-nowrap">
+        <div className="w-full flex flex-col gap-3 justify-center">
+          <div className="flex items-center gap-2.5 w-full">
             <IoCheckmark size={28} color="#01AFF4" />
-            <div className="flex-grow my-auto overflow-hidden self-center  text-ellipsis text-lg font-light leading-8 text-neutral-500">
+            <div className="flex-grow my-auto overflow-hidden text-ellipsis text-lg font-light leading-8 text-neutral-500">
               Create by Resume Uploading
             </div>
           </div>
-          <div className="flex items-center gap-2.5 w-full whitespace-nowrap">
+          <div className="flex items-center gap-2.5 w-full">
             <IoCheckmark size={28} color="#01AFF4" />
             <div className="flex-grow my-auto overflow-hidden text-ellipsis text-lg font-light leading-8 text-neutral-500">
               Create by Your Own Questions
@@ -140,11 +140,11 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
           </div>
         </div>
       </div>
-      <div className="w-full  flex mx-auto justify-center items-center">
+      <div className="w-full flex justify-center items-center">
         <button
           onClick={() => navigate("/dashboard/generatequestion")}
           type="button"
-          className="flex flex-row items-center justify-center bg-blue-400 w-50 md:w-60 my-5 text-sm text-white px-4 py-3 mt-4 rounded-sm hover:bg-blue-500 transition duration-300"
+          className="flex flex-row items-center justify-center bg-sky-700 w-50 md:w-60 my-5 text-sm text-white px-4 py-3 mt-4 rounded-sm transition duration-300 hover:bg-sky-800 transform hover:scale-105"
         >
           <span className="mr-2">Let's Get Started</span>
           <FiArrowUpRight size={20} />
@@ -153,6 +153,7 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
     </div>
   </div>
 </div>
+
 
          
           
