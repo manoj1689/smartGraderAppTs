@@ -80,10 +80,10 @@ const ExamEndPage = () => {
           <img src={SmartGrader} alt="Smart Grader" width={140} />
         </div>
       </div>
-      <div className="container mx-auto w-full py-4">
+      <div className="container mx-auto w-full ">
         <NotificationBar />
         <div className="bg-sky-100 rounded-md border border-solid  p-4 shadow-lg transition-shadow hover:shadow-xl">
-          <div className="text-center mb-8">
+          <div className="text-center ">
             <h2 className="text-4xl font-extrabold text-slate-700 mb-2">
               Exam End
             </h2>
@@ -94,7 +94,7 @@ const ExamEndPage = () => {
               We will highlight the following areas in your scorecard:
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
             {highlights.map((item, index) => (
               <div
                 key={index}
@@ -111,7 +111,7 @@ const ExamEndPage = () => {
             ))}
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-between mb-4">
+          <div className="flex flex-col sm:flex-row items-center justify-between ">
   <div className="flex-1 text-center p-4 sm:text-left sm:mr-8 w-full sm:w-1/2 mb-4 sm:mb-0">
     <h3 className="text-2xl font-semibold text-slate-800 mb-2">Performance Level</h3>
     <p className="text-lg text-gray-700 mb-2">{performanceLevel}</p>
