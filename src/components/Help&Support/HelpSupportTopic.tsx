@@ -159,7 +159,7 @@ const HelpSupportTopic: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className={`w-1/2 p-4 rounded-xl ${topic.img_background_col}`}>
+        <div className="w-1/2 p-4 rounded-xl">
           <div className="w-5/6 mx-auto">
             <img
               src={topic.background_img_url}
