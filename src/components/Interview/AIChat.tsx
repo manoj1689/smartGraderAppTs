@@ -1,8 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import SpeechRecognition, { useSpeechRecognition } from "react-speech-recognition";
+import { useReactMediaRecorder } from "react-media-recorder";
 import { useUserId } from "../../context/userId";
 import { toast } from "react-toastify";
-import { getChatbotResponse ,explainChatbotResponse } from "../../services/api/openaiService";
+import { getChatbotResponse ,explainChatbotResponse } from "../../services/api/OpenaiService.js";
 import Assistant from "../../assets/assitant.png";
 import { submitAnswer } from "../../services/api/InterviewService";
 import Modal from "react-modal";
@@ -39,6 +40,8 @@ const AIChat: React.FC<AIChatProps> = ({
 }) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [transcriptMsg, setTranscriptMsg] = useState("");
+  const [recordingUrl, setRecordingUrl] = useState<string | null>(null);
+  const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
   const [loading, setLoading] = useState(false);
   const [intro,setIntro]=useState(false)
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -61,6 +64,8 @@ const AIChat: React.FC<AIChatProps> = ({
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;
   }
+  const { status, startRecording, stopRecording, mediaBlobUrl } =
+    useReactMediaRecorder({ audio: true });
 
   const continueListening = () => {
     if (listeningEnabled) {
@@ -81,7 +86,7 @@ const AIChat: React.FC<AIChatProps> = ({
     
     setMessages([initialMessage]);
     setLastAssistantMessage(initialMessage); // Update the last assistant message
-    speakText(initialMessage.content, continueListening);
+    speakText(initialMessage.content, continueListening,startRecording);
 
     return () => {
       window.speechSynthesis.cancel();
@@ -106,6 +111,9 @@ const AIChat: React.FC<AIChatProps> = ({
         // Stop listening after 5 seconds of inactivity if there's a transcript
         timeoutRef.current = setTimeout(() => {
           SpeechRecognition.stopListening();
+          stopRecording()
+          setRecordingUrl(mediaBlobUrl || null);
+          setAudioBlob(audioBlob || null);
           setTranscriptMsg(transcript);
           console.log("Microphone stopped due to inactivity after 5 seconds.");
           setShowWave(false);
@@ -118,6 +126,9 @@ const AIChat: React.FC<AIChatProps> = ({
           // Stop listening after 20 seconds if there is no transcript
           timeoutRef.current = setTimeout(() => {
             SpeechRecognition.stopListening();
+            stopRecording();
+            setRecordingUrl(mediaBlobUrl || null);
+            setAudioBlob(audioBlob || null);
             setTranscriptMsg("This is an automated response; I'm not available to chat.");
             setShowWave(false);
             setNoResponse(false);
@@ -136,6 +147,9 @@ const AIChat: React.FC<AIChatProps> = ({
             
             setMessages((prevMessages) => [...prevMessages, userNotAvailableMessage]);
             ExamEndMessage(userNotAvailableMessage.content, continueListening);
+            stopRecording();
+            setRecordingUrl(mediaBlobUrl || null);
+            setAudioBlob(audioBlob || null);
             resetTranscript();
             setTranscriptMsg("");
           }, 10000); // 10 seconds
@@ -154,7 +168,7 @@ const AIChat: React.FC<AIChatProps> = ({
     scrollToBottom();
   }, [messages]);
 
-  const speakText = (text: string, continueListening: () => void) => {
+  const speakText = (text: string, continueListening: () => void ,startRecording:()=>void) => {
     setShowWave(false);
     const synth = window.speechSynthesis;
 
@@ -170,6 +184,7 @@ const AIChat: React.FC<AIChatProps> = ({
       utterance.onend = () => {
         console.log("Speech ended, now you can start listening again.");
         continueListening();
+        startRecording();
         setShowWave(true);
       };
 
@@ -192,6 +207,7 @@ const AIChat: React.FC<AIChatProps> = ({
       utterance.onend = () => {
         console.log("Speech ended, now you can start listening again.");
         SpeechRecognition.stopListening();
+        stopRecording();
         setShowWave(false);
         resetTranscript();
         setTranscriptMsg("")
@@ -360,7 +376,7 @@ const AIChat: React.FC<AIChatProps> = ({
   
         if (assistantMessage) {
           setMessages((prevMessages) => [...prevMessages, assistantMessage]);
-          speakText(assistantMessage.content, continueListening);
+          speakText(assistantMessage.content, continueListening,startRecording);
           resetTranscript();
           setTranscriptMsg("");
         }
@@ -417,7 +433,13 @@ const AIChat: React.FC<AIChatProps> = ({
       </div>
 
       {<WaveEffect showWave={showWave} />}
-      
+      {/* <div>
+      <p>{status}</p>
+      <button onClick={startRecording}>Start Recording</button>
+      <button onClick={stopRecording}>Stop Recording</button>
+      <video src={mediaBlobUrl} controls autoPlay loop />
+      <div>{recordingUrl}</div>
+    </div> */}
     </div>
   );
 };

@@ -155,7 +155,7 @@ const SelectQuestion: React.FC = () => {
   };
   console.log("card Data on organisation",cardsData)
   return (
-    <div className="container  mx-auto w-full h-full">
+    <div className="container   mx-auto w-full h-full">
   
       <NotificationBar />
      
@@ -228,7 +228,7 @@ const SelectQuestion: React.FC = () => {
                 e.stopPropagation();
                 handleCardClick(card.id);
               }}
-              className={`flex flex-row rounded-md border border-solid border-black border-opacity-10 shadow-md hover:shadow-lg hover:border-slate-800 transition duration-300 ease-in-out font-light text-neutral-500 cursor-pointer ${
+              className={`flex flex-row rounded-md border border-solid border-yellow-500 border-opacity-10 shadow-md hover:shadow-lg hover:border-slate-800 transition duration-300 ease-in-out font-light text-neutral-500 cursor-pointer ${
                 cardId === card.id ? "bg-sky-200" : "bg-sky-50"
               }`}
             >

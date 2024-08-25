@@ -150,8 +150,8 @@ export interface AddJobData {
   title: string;
   description: string;
   experience: string | undefined;
-  start_date: string;
-  end_date: string;
+  start_date: string | void;
+  end_date: string | void;
   status: number;
   set_id: number;
 }

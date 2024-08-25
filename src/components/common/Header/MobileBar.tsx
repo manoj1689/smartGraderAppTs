@@ -8,7 +8,6 @@ import { AiOutlineLogout } from 'react-icons/ai';
 import { IoSettingsOutline } from 'react-icons/io5';
 import { BsQuestionCircle } from 'react-icons/bs';
 import { FaBell } from 'react-icons/fa';
-import { GiHamburgerMenu } from 'react-icons/gi';
 import serviceLogout from '../../../services/api/LogoutService';
 import { TfiHelpAlt } from 'react-icons/tfi'; 
 import smartGrader from "../../../assets/logos/smartGrader.png"
@@ -52,8 +51,8 @@ const MobileBar: React.FC = () => {
   }, [isSidebarOpen]);
 
   return (
-    <div className="w-full h-full">
-      <div className="flex flex-row w-full fixed z-50 items-center justify-between px-4 py-5 border-b bg-sky-100 border-gray-200">
+    <div className="w-full">
+      <div className="flex flex-row w-full  fixed z-50 items-center justify-between px-4 py-5 border-b bg-sky-100 border-gray-200" >
         <div className='flex items-center gap-4 '>
           <ImMenu
             size={30}
@@ -70,116 +69,129 @@ const MobileBar: React.FC = () => {
       {isSidebarOpen && (
         <div
           ref={sidebarRef}
-          className="flex fixed z-50 flex-col mt-[72px] w-56 flex-grow shadow-md bg-sky-100 overflow-y-auto h-full"
-          style={{ scrollBehavior: 'smooth' }}
+          className="flex fixed z-50 flex-col mt-[72px] w-56 flex-grow shadow-md bg-sky-100 "
+          style={{ height: 'calc(100vh - 72px)', scrollBehavior: 'smooth' }}
         >
-          <div className="flex flex-col flex-grow">
-        <div className="flex flex-col items-center justify-center mt-4 space-y-4">
-          {/* Menu items */}
+          <div className="flex flex-col w-full py-4 flex-grow overflow-y-auto">
+        <div className="flex flex-col flex-grow space-y-8">
           {/* Dashboard */}
           <div
-            className={`flex items-center w-full p-4 text-base cursor-pointer transition duration-300 ${
-              activeItem === 'Dashboard' ? 'text-[#0190C3]' : 'text-neutral-500'
+            className={`flex items-center w-full p-4 text-base cursor-pointer transition-all duration-300 ${
+              activeItem === 'Dashboard'
+                ? 'bg-sky-700 text-white shadow-md hover:bg-sky-900'
+                : 'text-gray-700 hover:bg-sky-200 hover:text-sky-600 shadow-md hover:shadow-lg'
             }`}
             onClick={() => {
               handleItemClick('Dashboard');
               navigate('/dashboard');
             }}
-          > 
-            <MdOutlineDashboardCustomize className="w-6 h-6" />
-            <span className={`ml-4 ${
-              activeItem === 'Dashboard' ? 'text-slate-800' : 'text-neutral-500'
-            }`}>Dashboard</span>
+          >
+            <MdOutlineDashboardCustomize
+              className={`w-6 h-6 ${activeItem === 'Dashboard' ? 'text-white' : 'text-gray-700'}`}
+            />
+            <span className="ml-4">Dashboard</span>
           </div>
           {/* Mock Interviews */}
           <div
-            className={`flex items-center w-full p-4 text-base cursor-pointer transition duration-300 ${
-              activeItem === 'Mock Interviews' ? 'text-[#0190C3]' : 'text-neutral-500'
+            className={`flex items-center w-full p-4 text-base cursor-pointer transition-all duration-300 ${
+              activeItem === 'Mock Interviews'
+                ? 'bg-sky-700 text-white shadow-md hover:bg-sky-900'
+                : 'text-gray-700 hover:bg-sky-200 hover:text-sky-600 shadow-md hover:shadow-lg'
             }`}
             onClick={() => {
               handleItemClick('Mock Interviews');
               navigate('mockinterview');
             }}
           >
-            <FaLaptopMedical className="w-6 h-6" />
-            <span className={`ml-4 ${
-              activeItem === 'Mock Interviews' ? 'text-slate-800' : 'text-neutral-500'
-            }`}>Mock Interviews</span>
+            <FaLaptopMedical
+              className={`w-6 h-6 ${activeItem === 'Mock Interviews' ? 'text-white' : 'text-gray-700'}`}
+            />
+            <span className="ml-4">Mock Interviews</span>
           </div>
           {/* Progress Tracker */}
           <div
-            className={`flex items-center w-full p-4 text-base cursor-pointer transition duration-300 ${
-              activeItem === 'Progress Tracker' ? 'text-[#0190C3]' : 'text-neutral-500'
+            className={`flex items-center w-full p-4 text-base cursor-pointer transition-all duration-300 ${
+              activeItem === 'Progress Tracker'
+                ? 'bg-sky-700 text-white shadow-md hover:bg-sky-900'
+                : 'text-gray-700 hover:bg-sky-200 hover:text-sky-600 shadow-md hover:shadow-lg'
             }`}
             onClick={() => {
               handleItemClick('Progress Tracker');
               navigate('progresstracker');
             }}
           >
-            <GiProgression className="w-6 h-6" />
-            <span className={`ml-4 ${
-              activeItem === 'Progress Tracker' ? 'text-slate-800' : 'text-neutral-500'
-            }`}>Progress Tracker</span>
+            <GiProgression
+              className={`w-6 h-6 ${activeItem === 'Progress Tracker' ? 'text-white' : 'text-gray-700'}`}
+            />
+            <span className="ml-4">Progress Tracker</span>
           </div>
           {/* Quick Access */}
           <div
-            className={`flex items-center w-full p-4 text-base cursor-pointer transition duration-300 ${
-              activeItem === 'Quick Access' ? 'text-[#0190C3]' : 'text-neutral-500'
+            className={`flex items-center w-full p-4 text-base cursor-pointer transition-all duration-300 ${
+              activeItem === 'Quick Access'
+                ? 'bg-sky-700 text-white shadow-md hover:bg-sky-900'
+                : 'text-gray-700 hover:bg-sky-200 hover:text-sky-600 shadow-md hover:shadow-lg'
             }`}
             onClick={() => {
               handleItemClick('Quick Access');
               navigate('result');
             }}
           >
-            <BsGraphUpArrow className="w-6 h-6" />
-            <span className={`ml-4 ${
-              activeItem === 'Quick Access' ? 'text-slate-800' : 'text-neutral-500'
-            }`}>Quick Access</span>
+            <BsGraphUpArrow
+              className={`w-6 h-6 ${activeItem === 'Quick Access' ? 'text-white' : 'text-gray-700'}`}
+            />
+            <span className="ml-4">Quick Access</span>
           </div>
           {/* Settings */}
           <div
-            className={`flex items-center w-full p-4 text-base cursor-pointer transition duration-300 ${
-              activeItem === 'Settings' ? 'text-[#0190C3]' : 'text-neutral-500'
+            className={`flex items-center w-full p-4 text-base cursor-pointer transition-all duration-300 ${
+              activeItem === 'Settings'
+                ? 'bg-sky-700 text-white shadow-md hover:bg-sky-900'
+                : 'text-gray-700 hover:bg-sky-200 hover:text-sky-600 shadow-md hover:shadow-lg'
             }`}
             onClick={() => {
               handleItemClick('Settings');
               navigate('settings');
             }}
           >
-            <IoSettingsOutline className="w-6 h-6" />
-            <span className={`ml-4 ${
-              activeItem === 'Settings' ? 'text-slate-800' : 'text-neutral-500'
-            }`}>Settings</span>
+            <IoSettingsOutline
+              className={`w-6 h-6 ${activeItem === 'Settings' ? 'text-white' : 'text-gray-700'}`}
+            />
+            <span className="ml-4">Settings</span>
           </div>
         </div>
-
-        <div className="flex flex-col items-center justify-center mt-40  md:mt-40 mb-20">
+        <div className="w-full border-t border-gray-400 my-4"></div>
+        <div className="flex flex-col space-y-4 mb-4">
           {/* Help & Support */}
           <div
-            className={`flex items-center w-full p-4 text-base cursor-pointer transition duration-300 ${
-              activeItem === 'Help & Support' ? 'text-[#0190C3]' : 'text-neutral-500'
+            className={`flex items-center w-full p-4 text-base cursor-pointer transition-all duration-300 ${
+              activeItem === 'Help & Support'
+                ? 'bg-sky-800 text-white shadow-md hover:bg-sky-800'
+                : 'text-gray-700 hover:bg-sky-200 hover:text-sky-600 shadow-md hover:shadow-lg'
             }`}
             onClick={() => {
               handleItemClick('Help & Support');
               navigate('help&support');
             }}
           >
-            <TfiHelpAlt className="w-6 h-6" />
-            <span className={`ml-4 ${
-              activeItem === 'Help & Support' ? 'text-slate-800' : 'text-neutral-500'
-            }`}>Help & Support</span>
+            <TfiHelpAlt
+              className={`w-6 h-6 ${activeItem === 'Help & Support' ? 'text-white' : 'text-gray-700'}`}
+            />
+            <span className="ml-4">Help & Support</span>
           </div>
           {/* Logout */}
           <div
-            className={`flex items-center w-full p-4 text-base cursor-pointer transition duration-300 ${
-              activeItem === 'Logout' ? 'text-[#0190C3]' : 'text-neutral-500'
+            className={`flex items-center w-full p-4 text-base cursor-pointer transition-all duration-300 ${
+              activeItem === 'Logout'
+                ? 'bg-sky-800 text-white shadow-md hover:bg-sky-800'
+                : 'text-gray-700 hover:bg-sky-200 hover:text-sky-600 shadow-md hover:shadow-lg'
             }`}
             onClick={handleLogoutClick}
           >
-            <AiOutlineLogout className="w-6 h-6" />
-            <span className={`ml-4 ${
-              activeItem ===  'Logout' ? 'text-slate-800' : 'text-neutral-500'
-            }`}>Logout</span>
+            <AiOutlineLogout
+              className={`w-6 h-6 ${activeItem === 'Logout' ? 'text-white' : 'text-gray-700'}`}
+            />
+            <span className="ml-4">Logout</span>
           </div>
         </div>
       </div>

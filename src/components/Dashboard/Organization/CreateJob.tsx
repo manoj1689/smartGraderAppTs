@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import NotificationBar from "../../common/Notification/NotificationBar";
 import AddEmails from "./AddEmails";
@@ -27,7 +26,9 @@ import { ReactMultiEmail, isEmail } from "react-multi-email";
 import "react-multi-email/dist/style.css";
 import { FaArrowsDownToPeople } from "react-icons/fa6";
 import { toast } from "react-toastify";
-
+import { DateRangePicker, DateRange } from "react-date-range";
+import "react-date-range/dist/styles.css"; // main css file
+import "react-date-range/dist/theme/default.css"; // theme css file
 interface Option {
   value: string;
   label: string;
@@ -54,7 +55,18 @@ const CreateJobs: React.FC = () => {
     { value: "founder", label: "Founder" },
   ];
   const [experience, setExperience] = useState<Option | null>(options[0]); // Default selection
+  const [dateRange, setDateRange] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+    key: "selection",
+  });
 
+  const handleDateRangeChange = (ranges: any) => {
+    setDateRange(ranges.selection);
+  };
+  console.log(dateRange);
+  const startDate = dateRange.startDate;
+  const endDate = dateRange.endDate;
   const handleChange = (experience: Option | null) => {
     setExperience(experience);
   };
@@ -67,13 +79,16 @@ const CreateJobs: React.FC = () => {
     description,
     setTitle,
     setDescription,
-    startDate,
-    setStartDate,
-    endDate,
-    setEndDate,
+
     handleSaveAndPublish,
     handleDelete,
-  } = CreateJobService(selectedSetId, emailsList, experience);
+  } = CreateJobService(
+    selectedSetId,
+    emailsList,
+    experience,
+    startDate,
+    endDate
+  );
 
   const canSave = title && experience;
   const openQuestionSetModal = () => setIsQuestionModel(true);
@@ -93,7 +108,7 @@ const CreateJobs: React.FC = () => {
     <div className="p-4 w-full h-full">
       <NotificationBar />
 
-      <div className="bg-white my-5 rounded-md border border-solid border-black border-opacity-10 p-4">
+      <div className="bg-sky-100 my-5 rounded-md border border-solid border-black border-opacity-10 p-4">
         <div className="flex flex-row items-center max-lg:my-5 space-x-4">
           <FaLaptopCode size={30} color="#01AFF4" />
           <span className=" text-lg font-semi-bold font-spline text-slate-800">
@@ -102,37 +117,36 @@ const CreateJobs: React.FC = () => {
         </div>
         <div className="shrink-0 mt-3.5 h-px border border-solid bg-black bg-opacity-10 border-black border-opacity-10 max-md:max-w-full" />
         <div className="flex flex-col lg:flex-row">
-          <div className="lg:w-2/3 order-2 lg:order-1 px-4">
-            <div className="bg-white my-5  rounded-lg">
+          <div className="lg:w-7/12  order-2 lg:order-1 px-4">
+            <div className="bg-sky-100  my-5  rounded-lg">
               <form>
                 <div className=" w-full border-solid max-md:flex-wrap max-md:max-w-full">
-                  <div className="flex flex-col md:flex-row gap-3 ">
-                  <div className="gap-3 w-full ">
-                    <span className="block text-lg font-spline my-2 font-semibold text-gray-700 whitespace-nowrap">
-                      Title
-                    </span>
-                    <input
-                      type="text"
-                      placeholder="e.g., Frontend Developer"
-                      value={title}
-                      onChange={(e) => setTitle(e.target.value)}
-                      className="justify-center items-start p-4 leading-4 rounded w-full pr-10 border-neutral-500 ring-neutral-500 focus:border-sky-400 focus:ring-sky-400 border focus:outline-none resize-none"
-                    />
-                  </div>
-                  <div className="gap-3 w-full">
-                    <span className="block text-lg my-2 font-spline font-semibold text-gray-700 whitespace-nowrap">
-                      Description
-                    </span>
-                    <textarea
-                      placeholder="e.g., Responsible for developing and maintaining web applications"
-                      value={description}
-                      onChange={(e) => setDescription(e.target.value)}
-                      className="justify-center items-start p-4 leading-4 rounded w-full  h-32 pr-10 border-neutral-500 ring-neutral-500 focus:border-sky-400 focus:ring-sky-400 border  border focus:outline-none resize-none"
-                    />
+                  <div className="flex flex-col gap-3 ">
+                    <div className="gap-3 w-full ">
+                      <span className="block text-lg font-spline my-2 font-semibold text-gray-700 whitespace-nowrap">
+                        Title
+                      </span>
+                      <input
+                        type="text"
+                        placeholder="e.g., Frontend Developer"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        className="justify-center items-start p-4 leading-4 rounded w-full pr-10 border-neutral-500 ring-neutral-500 focus:border-sky-400 focus:ring-sky-400 border focus:outline-none resize-none"
+                      />
+                    </div>
+                    <div className="gap-3 w-full">
+                      <span className="block text-lg my-2 font-spline font-semibold text-gray-700 whitespace-nowrap">
+                        Description
+                      </span>
+                      <textarea
+                        placeholder="e.g., Responsible for developing and maintaining web applications"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                        className="justify-center items-start p-4 leading-4 rounded w-full  h-32 pr-10 border-neutral-500 ring-neutral-500 focus:border-sky-400 focus:ring-sky-400 border  border focus:outline-none resize-none"
+                      />
+                    </div>
                   </div>
 
-                  </div>
-                
                   <div className="gap-3 w-full">
                     <span className="block my-3 text-lg font-spline font-semibold  text-gray-700  whitespace-nowrap">
                       Experience Required
@@ -158,13 +172,13 @@ const CreateJobs: React.FC = () => {
                   </div>
                   {/* <div>Your Selected Id Of Question Set: {selectedSetId}</div> */}
                   {questionSet && (
-                    <div className="flex flex-wrap max-lg:justify-center max-lg:align-center gap-2 px-5 py-10  cursor-pointer">
+                    <div className="flex flex-wrap max-lg:justify-center max-lg:align-center gap-2 px-5 py-10 cursor-pointer">
                       <div
                         key={questionSet.id}
-                        className="flex justify-between px-3 py-6 font-light rounded-md border border-sky-500 border-solid text-neutral-500 bg-blue-100"
+                        className="flex justify-between px-3 py-6 font-light rounded-md border border-gray-300 shadow-md text-gray-700  transform transition-transform duration-300 hover:scale-105"
                       >
-                        <div className="flex flex-col lg:flex-row gap-2">
-                          <div className="flex justify-center">
+                        <div className="flex flex-col  gap-2">
+                          <div className="flex bg-sky-300 p-4 rounded-md justify-center">
                             <img
                               loading="lazy"
                               src={codingDev}
@@ -173,30 +187,35 @@ const CreateJobs: React.FC = () => {
                             />
                           </div>
                           <div className="flex flex-col">
-                            <div className="flex gap-1 self-start py-1.5 text-xs leading-4 whitespace-nowrap rounded-sm shadow-sm">
-                              <img
-                                loading="lazy"
-                                alt="star"
-                                src={star}
-                                className="shrink-0 aspect-[1.09] fill-amber-400 w-[17px] h-[17px]"
-                              />
-                              <div className="flex-auto">
-                                {questionSet.rating}/5
+                            <div className="flex mt-2.5 w-72 text-lg font-medium leading-5 text-gray-800">
+                              <div className="flex w-full justify-around">
+                                <div>
+                                  <div>{questionSet.title}</div>
+                                  <div className="flex gap-1 self-start py-2 text-xs leading-4 text-gray-500">
+                                    <img
+                                      loading="lazy"
+                                      alt="star"
+                                      src={star}
+                                      className="shrink-0 aspect-[1.09] fill-amber-400 w-[17px] h-[17px]"
+                                    />
+                                    <div className="flex-auto">
+                                      {questionSet.rating}/5
+                                    </div>
+                                  </div>
+                                </div>
+                                <div>
+                                  <img
+                                    loading="lazy"
+                                    alt="java"
+                                    src={java}
+                                    className="w-12 h-12"
+                                  />
+                                </div>
                               </div>
                             </div>
-                            <div className="flex mt-2.5 w-72 text-lg leading-4 text-slate-800">
-                              <div className="flex">
-                                <div>{questionSet.title}</div>
-                                <img
-                                  loading="lazy"
-                                  alt="java"
-                                  src={java}
-                                  className="shrink-0 aspect-[1.09] ml-5 w-[30px] h-[30px]"
-                                />
-                              </div>
-                            </div>
-                            <div className="flex gap-5 mt-3 justify-around items-center px-0.5 text-sm leading-5">
-                              <div className="flex flex-col gap-1 lg:flex-row">
+
+                            <div className="flex gap-5 mt-3 justify-around items-start px-0.5 text-sm leading-5">
+                              <div className="flex flex-col gap-1 ">
                                 <div className="flex gap-1">
                                   <div className="flex justify-center items-center">
                                     <CiClock2 size={14} color="#01AFF4" />
@@ -215,10 +234,13 @@ const CreateJobs: React.FC = () => {
                                   </div>
                                 </div>
                               </div>
-                              <div className="flex justify-center items-center self-stretch px-2.5 py-1 text-xs leading-4 whitespace-nowrap bg-sky-50 rounded-md border border-solid border-neutral-500">
-                                Frontend
+                              <div>
+                                <div className="flex justify-center items-center self-stretch px-8 py-1 text-xs whitespace-nowrap bg-sky-300 rounded-md border border-solid border-gray-300">
+                                  Frontend
+                                </div>
                               </div>
-                              <div className="block lg:hidden justify-center items-center">
+
+                              <div className=" justify-center items-center">
                                 <Popup
                                   trigger={
                                     <button className="text-gray-500 hover:text-gray-600">
@@ -249,53 +271,39 @@ const CreateJobs: React.FC = () => {
                                       />
                                       <span className="ml-2">View</span>
                                     </button>
-                                    {/* <button className="flex gap-3 items-center px-4 py-2 w-full text-sm text-gray-700 hover:bg-gray-300 hover:text-gray-900">
-                                        <RiDeleteBinFill
-                                          size={20}
-                                          className="text-gray-600"
-                                        />
-                                        <span className="ml-2">Delete</span>
-                                      </button> */}
                                   </div>
                                 </Popup>
                               </div>
                             </div>
                           </div>
-                          <div className="hidden lg:block my-auto justify-center items-center">
-                            <Popup
-                              trigger={
-                                <button className="text-gray-500 hover:text-gray-600">
-                                  <HiDotsVertical size={25} />
-                                </button>
-                              }
-                              z-Index={1000}
-                              position="bottom center"
-                            >
-                              <div className="py-1">
-                                <button
-                                  className="flex gap-3 items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-300 hover:text-gray-900"
-                                  onClick={() => navigate("selectset")}
-                                >
-                                  <FaEdit size={20} className="text-gray-600" />
-                                  <span className="ml-2">Edit</span>
-                                </button>
-                                <button
-                                  className="flex gap-3 items-center px-4 py-2 w-full text-sm text-gray-700 hover:bg-gray-300 hover:text-gray-900"
-                                  onClick={openQuestionSetModal}
-                                >
-                                  <FaEye size={20} className="text-gray-600" />
-                                  <span className="ml-2">View</span>
-                                </button>
-                                {/* <button className="flex gap-3 items-center px-4 py-2 w-full text-sm text-gray-700 hover:bg-gray-300 hover:text-gray-900">
-                                    <RiDeleteBinFill
-                                      size={20}
-                                      className="text-gray-600"
-                                    />
-                                    <span className="ml-2">Delete</span>
-                                  </button> */}
-                              </div>
-                            </Popup>
-                          </div>
+                          {/* <div className="hidden lg:block my-auto justify-center items-center">
+                         <Popup
+                           trigger={
+                             <button className="text-gray-500 hover:text-gray-600">
+                               <HiDotsVertical size={25} />
+                             </button>
+                           }
+                           z-Index={1000}
+                           position="bottom center"
+                         >
+                           <div className="py-1">
+                             <button
+                               className="flex gap-3 items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-300 hover:text-gray-900"
+                               onClick={() => navigate("selectset")}
+                             >
+                               <FaEdit size={20} className="text-gray-600" />
+                               <span className="ml-2">Edit</span>
+                             </button>
+                             <button
+                               className="flex gap-3 items-center px-4 py-2 w-full text-sm text-gray-700 hover:bg-gray-300 hover:text-gray-900"
+                               onClick={openQuestionSetModal}
+                             >
+                               <FaEye size={20} className="text-gray-600" />
+                               <span className="ml-2">View</span>
+                             </button>
+                           </div>
+                         </Popup>
+                       </div> */}
                         </div>
                       </div>
                     </div>
@@ -333,37 +341,34 @@ const CreateJobs: React.FC = () => {
                 </div>
               )}
             </div>
-            <div className="font-semibold  mt-5 text-lg font-spline text-slate-700">
+            <div className="font-semibold mt-5 text-lg font-spline text-slate-700">
               Scheduled AI Interview
             </div>
-            <div className="flex gap-5 my-5 text-lg leading-6 max-md:flex-wrap">
-              <div className="flex flex-col flex-1 grow shrink-0  basis-0 w-fit">
-                <div className="font-medium text-md font-spline text-slate-700">
-                  Start Date{" "}
-                </div>
-                <div className="flex gap-2 mt-2 mb-2">
-                  <DatePicker
-                    selected={startDate}
-                    onChange={(date: Date | null) => setStartDate(date)}
-                    dateFormat="MM/dd/yyyy"
-                    className="px-4 py-3 text-base text-gray-600 border border-solid border-neutral-500 rounded"
-                    placeholderText="e.g.,01/01/2024"
-                  />
-                </div>
+
+            <div className="flex justify-center w-full my-4 ">
+              {/* Show DateRangePicker for md and above */}
+              <div className="hidden   md:block lg:hidden xl:block">
+                <DateRangePicker
+                 
+                  ranges={[dateRange]}
+                  onChange={handleDateRangeChange}
+                  editableDateInputs={true}
+                  className="lg:w-[85%] 2xl:w-full ml-10 custom-date-range-picker"
+                  
+                />
               </div>
-              <div className="flex flex-col flex-1 grow shrink-0  basis-0 w-fit">
-                <div className="font-medium text-md font-spline text-slate-700">
-                  End Date{" "}
-                </div>
-                <DatePicker
-                  selected={endDate}
-                  onChange={(date: Date | null) => setEndDate(date)}
-                  dateFormat="MM/dd/yyyy"
-                  className="px-4 py-3 text-base text-gray-600 border border-solid border-neutral-500 rounded"
-                  placeholderText="e.g.,01/04/2024"
+
+              {/* Show DateRange for below md */}
+              <div className="block md:hidden lg:block xl:hidden">
+                <DateRange
+                  editableDateInputs={true}
+                  onChange={handleDateRangeChange}
+                  moveRangeOnFirstSelection={false}
+                  ranges={[dateRange]}
                 />
               </div>
             </div>
+
             <div>
               <div className="flex justify-center my-4">
                 <FaArrowsDownToPeople size={80} className="text-blue-400" />
@@ -407,24 +412,64 @@ const CreateJobs: React.FC = () => {
                 </div>
               </div>
             </button>
-            {/* <button
-              className="flex justify-center items-center sticky bottom-0  self-stretch mx-auto px-4 py-5 mt-10 text-base text-red-500 bg-white-500 rounded-md border border-red-500 border-solid w-full sm:w-2/3 max-md:px-5"
-              onClick={handleDelete}
-            >
-              <div className="flex gap-2.5">
-                <div className="flex items-center gap-3">
-                  {" "}
-                  <span>Cancel </span>
-                  <span>
-                  x
-                  </span>
-                </div>
-              </div>
-            </button>  */}
           </div>
 
-          <div className="flex justify-center items-start  mt-5 lg:pt-20 order-1 lg:order-2 lg:w-1/3 px-4">
-            <img loading="lazy" alt="coding" src={Coding} />
+          <div className="flex bg-sky-100 rounded-md justify-center items-start my-4 py-12 px-8 order-1 lg:order-2 lg:w-5/12  max-sm:max-h-[300px] overflow-y-auto">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6 w-full">
+              {[
+                {
+                  title: "Software Development",
+                  icon: "💻",
+                  bgColor: "bg-blue-200",
+                  hoverColor: "bg-blue-300",
+                },
+                {
+                  title: "Data Science & Engineering",
+                  icon: "📊",
+                  bgColor: "bg-green-200",
+                  hoverColor: "bg-green-300",
+                },
+                {
+                  title: "IT & Networking",
+                  icon: "🌐",
+                  bgColor: "bg-purple-200",
+                  hoverColor: "bg-purple-300",
+                },
+                {
+                  title: "Business & Management",
+                  icon: "📈",
+                  bgColor: "bg-lime-200",
+                  hoverColor: "bg-lime-300",
+                },
+                {
+                  title: "Health & Education",
+                  icon: "🏥",
+                  bgColor: "bg-orange-200",
+                  hoverColor: "bg-orange-300",
+                },
+                {
+                  title: "Legal & Humanities",
+                  icon: "⚖️",
+                  bgColor: "bg-zinc-200",
+                  hoverColor: "bg-zinc-300",
+                },
+              ].map((job, index) => (
+                <div
+                  key={index}
+                  className={`${job.bgColor} p-6 shadow-lg rounded-lg flex items-center space-x-4 hover:${job.hoverColor} hover:scale-105 transition-transform duration-300`}
+                >
+                  <div className="text-4xl">{job.icon}</div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-800">
+                      {job.title}
+                    </h3>
+                    <p className="text-gray-600">
+                      Explore opportunities in {job.title}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

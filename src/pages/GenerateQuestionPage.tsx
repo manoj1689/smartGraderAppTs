@@ -258,14 +258,14 @@ const GenerateQuestionsPage: React.FC = () => {
         <div>
           <NotificationBar />
         </div>
-        <div className="text-2xl px-4 font-spline font-semibold text-slate-700 ">
+        <div className="text-2xl p-4 font-spline font-semibold text-slate-700  ">
           <span>AI Question Set Creation</span>
         </div>
       
-        <div className="container flex flex-col lg:flex-row">
-          <div className="flex flex-col px-4 py-8 order-2  lg:order-1 w-full lg:w-2/3">
+        <div className="container  flex flex-col lg:flex-row">
+          <div className="flex flex-col px-4  order-2  lg:order-1 w-full lg:w-2/3">
           <form onSubmit={handleGenerateQuestions} noValidate>
-      <div className="w-full p-4">
+      <div className="w-full border border-r-2 rounded-md border-gray-400 bg-sky-100 p-4">
         <div className="flex flex-col gap-5">
           <div className="mb-4 w-full ">
             <label className="block text-md font-semibold font-spline text-gray-700 mb-2">
@@ -345,7 +345,7 @@ const GenerateQuestionsPage: React.FC = () => {
             <div className="text-2xl font-spline font-semibold my-4 text-slate-700 ">
               Submit AI Questions
             </div>
-            <div className="bg-white shadow-md rounded-lg px-4 py-4 ">
+            <div className="bg-gray-200 shadow-md rounded-lg px-4 py-4 ">
               <div className="mb-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex items-center font-spline mb-4">

@@ -28,3 +28,27 @@
   padding: 8px;          /* Padding */
   font-size: 12px;       /* Font size */
 }
+.custom-date-range-picker {
+  font-size: 14px; /* Font size for the overall picker */
+}
+
+.custom-date-range-picker .rdrCalendarWrapper {
+  font-size: 14px; /* Font size in the calendar */
+}
+
+.custom-date-range-picker .rdrDateDisplay {
+  font-size: 14px; /* Font size in the date input display */
+  padding: 24px; /* Padding around date display */
+}
+
+.custom-date-range-picker .rdrDay {
+  font-size: 14px; /* Font size for individual days */
+}
+
+.custom-date-range-picker .rdrMonthAndYearPickers {
+  font-size: 14px; /* Font size for month and year selectors */
+}
+
+.custom-date-range-picker .rdrDefinedRangesWrapper {
+  font-size: 14px; /* Font size for predefined ranges */
+}

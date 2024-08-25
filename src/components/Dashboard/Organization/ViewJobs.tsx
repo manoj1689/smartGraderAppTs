@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation,useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { FaLaptopCode } from "react-icons/fa";
 import NotificationBar from "../../common/Notification/NotificationBar";
 import { MdArrowOutward } from "react-icons/md";
@@ -7,6 +7,7 @@ import AddEmails from "./AddEmails";
 import { JobDetail } from "../../../types/interfaces/interface";
 import { fetchJobDetails } from "../../../services/api/JobService";
 import { toast, ToastContainer } from "react-toastify";
+//@ts-ignore
 
 interface LocationState {
   jobId?: number;
@@ -17,9 +18,12 @@ const ViewJobs: React.FC = () => {
   const location = useLocation();
   const state = location.state as LocationState;
   const { jobId } = state || {};
-  const navigate =useNavigate();
+  const navigate = useNavigate();
   console.log("The Job Id at edit page", jobId);
-
+  const [startDate, setStartDate] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [endTime, setEndTime] = useState("");
   const [jobDetail, setJobDetail] = useState<JobDetail | null>(null);
   const [emails, setEmails] = useState<string[]>([]);
 
@@ -37,14 +41,68 @@ const ViewJobs: React.FC = () => {
 
     fetchJobDetail();
   }, [jobId]);
+  useEffect(() => {
+    const optionsDate:any = {
+      timeZone: "Asia/Kolkata",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    };
+    const optionsTime:any = {
+      timeZone: "Asia/Kolkata",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true,
+    };
 
+    if (jobDetail?.start_date) {
+      const startTimestamp = jobDetail.start_date;
+
+      // Create a Date object from the start timestamp
+      const startDateInUTC = new Date(startTimestamp);
+
+      // Convert to IST (UTC+5:30)
+      const startISTDate = new Date(startDateInUTC.getTime() + 5.5 * 60 * 60 * 1000);
+
+      // Format the IST start date and time
+      const startDateString = startISTDate.toLocaleDateString("en-IN", optionsDate);
+      const startTimeString = startISTDate.toLocaleTimeString("en-IN", optionsTime);
+
+      setStartDate(startDateString);
+      setStartTime(startTimeString);
+    } else {
+      setStartDate("Date not available");
+      setStartTime("Time not available");
+    }
+
+    if (jobDetail?.end_date) {
+      const endTimestamp = jobDetail.end_date;
+
+      // Create a Date object from the end timestamp
+      const endDateInUTC = new Date(endTimestamp);
+
+      // Convert to IST (UTC+5:30)
+      const endISTDate = new Date(endDateInUTC.getTime() + 5.5 * 60 * 60 * 1000);
+
+      // Format the IST end date and time
+      const endDateString = endISTDate.toLocaleDateString("en-IN", optionsDate);
+      const endTimeString = endISTDate.toLocaleTimeString("en-IN", optionsTime);
+
+      setEndDate(endDateString);
+      setEndTime(endTimeString);
+    } else {
+      setEndDate("Date not available");
+      setEndTime("Time not available");
+    }
+  }, [jobDetail]);
   if (!jobDetail) {
     return <div>Loading...</div>;
   }
 
-  const { title, experience, start_date, end_date,status } = jobDetail;
-const Respond=3;
-const UnResponse=2
+  const { title, experience, start_date, end_date, status } = jobDetail;
+  const Respond = 3;
+  const UnResponse = 2;
   const total = Respond + UnResponse;
   const respondPercentage = (Respond / total) * 100;
   const unrespondPercentage = (UnResponse / total) * 100;
@@ -55,25 +113,24 @@ const UnResponse=2
       emails: emailsList,
     };
     console.log("Job Invites Data:", inviteData);
-    if(inviteData.emails.length>0){
-      navigate("/dashboard")
-    }else{
-      toast.error("Enter email-id")
+    if (inviteData.emails.length > 0) {
+      navigate("/dashboard");
+    } else {
+      toast.error("Enter email-id");
     }
-   
   };
 
   return (
     <div className="flex flex-col p-4">
- 
-        <NotificationBar />
-  
+      <NotificationBar />
 
-      <div className="bg-white rounded-md border border-solid border-black border-opacity-10 px-4 py-4">
-        <ToastContainer/>
+      <div className="bg-sky-100 rounded-md border border-solid border-black border-opacity-10 px-4 py-4">
+        <ToastContainer />
         <div className="flex items-center gap-5">
           <FaLaptopCode size={30} color="#01AFF4" />
-          <div className=" text-lg font-semi-bold font-spline text-slate-800">{title}</div>
+          <div className=" text-lg font-semi-bold font-spline text-slate-800">
+            {title}
+          </div>
         </div>
         <div className="shrink-0 mt-3.5 h-px border border-solid bg-black bg-opacity-10 border-black border-opacity-10 max-md:max-w-full" />
         <div className="flex flex-col my-5 px-4 lg:flex-row">
@@ -93,12 +150,19 @@ const UnResponse=2
                 </div>
                 <div className="mt-3 w-full text-lg font-medium leading-6 text-slate-800">
                   <div className="my-3 flex gap-5">
-                  <div>
-                    {start_date}
+                    <div>
+                      <div>Start Date</div>
+                      <div>Date: <span className="text-neutral-500">{startDate}</span></div>
+                      <div>Time: <span className="text-neutral-500">{startTime}</span></div>
+                    </div>
+                    <div>
+                      <div>End Date</div>
+                      <div>Date: <span className="text-neutral-500">{endDate}</span></div>
+                      <div>Time: <span className="text-neutral-500">{endTime}</span></div>
+                    </div>
+                
                   </div>
-                  <div>{end_date}</div>
-                  </div>
-                 
+
                   <span className="text-xs">
                     (Link automatically expired after 24 Hours)
                   </span>
@@ -144,7 +208,7 @@ const UnResponse=2
                   Status
                 </div>
                 <div className="mt-3 w-full text-lg font-medium leading-6 text-emerald-600">
-                <p> {status === 1 ? "Hiring" : "Closed"}</p>
+                  <p> {status === 1 ? "Hiring" : "Closed"}</p>
                 </div>
               </div>
             </div>
@@ -162,7 +226,10 @@ const UnResponse=2
                 </div>
               </div>
             </button>
-            <button className="flex justify-center items-center mx-auto self-stretch px-4 py-5 my-10 text-red-500 bg-white rounded-md border border-gray-400 w-full sm:w-2/3 max-md:px-5" onClick={()=>navigate("/dashboard")}>
+            <button
+              className="flex justify-center items-center mx-auto self-stretch px-4 py-5 my-10 text-red-500 bg-white rounded-md border border-gray-400 w-full sm:w-2/3 max-md:px-5"
+              onClick={() => navigate("/dashboard")}
+            >
               <div className="flex gap-2.5">
                 <div>Back</div>
               </div>
@@ -172,7 +239,10 @@ const UnResponse=2
             <div className="px-4 py-4">
               <div>
                 <div className="relative w-full h-64">
-                  <svg className="absolute top-0 left-0 w-full h-full" viewBox="0 0 36 36">
+                  <svg
+                    className="absolute top-0 left-0 w-full h-full"
+                    viewBox="0 0 36 36"
+                  >
                     <circle
                       className="text-sky-500"
                       stroke="currentColor"

@@ -92,9 +92,9 @@ const HelpSupport: React.FC = () => {
       </div>
       <div className="lg:w-10/12 mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {relatedTopics.map(topic => (
-          <Link
+          <div
             key={topic.id}
-            to={`/help-support/${topic.id}`}
+            onClick={() => navigate(`/dashboard/help&support/${topic.id}`)}
             className="bg-sky-100 text-white p-4 rounded-lg hover:bg-sky-200 transition duration-300"
           >
             <div className='flex justify-center h-24'>
@@ -108,7 +108,7 @@ const HelpSupport: React.FC = () => {
                 {topic.description}
               </div>
             </div>
-          </Link>
+          </div>
         ))}
       </div>
     </div>

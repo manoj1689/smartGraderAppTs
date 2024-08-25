@@ -107,8 +107,37 @@ export const explainChatbotResponse = async (messages: ChatMessage[]): Promise<s
   }
 };
 
+export const handleHelpAndSupport = async (messages: ChatMessage[]): Promise<string> => {
+  console.log('Processing help and support request:', messages);  // Debugging
 
+  try {
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-4o-mini', // Ensure this model is correct for your use case
+      messages: [
+        {
+          role: 'system',
+          content: `You are a highly knowledgeable assistant. Provide a concise and direct answer to the user's query. Focus on delivering the most important information in as few words as possible.`
+        },
+        ...messages,
+      ],
+      max_tokens: 100, // Limit the response length
+    });
 
+    if (!completion.choices || completion.choices.length === 0) {
+      throw new Error('No choices available in completion response');
+    }
+
+    const choice = completion.choices[0];
+    if (!choice.message || !choice.message.content) {
+      throw new Error('No content available in choice message');
+    }
+
+    return choice.message.content.trim();
+  } catch (error) {
+    console.error('Error handling help and support:', error);
+    return 'Sorry, there was an issue processing your help and support request.';
+  }
+};
 
 
 // // Test function to simulate user inputs and log the intent

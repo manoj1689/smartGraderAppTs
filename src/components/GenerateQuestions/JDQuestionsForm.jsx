@@ -11,10 +11,10 @@ const JDQuestionsForm = ({ onGenerate, loading }) => {
   };
 
   return (
-    <form onSubmit={handleGenerate} className="mb-4">
+    <form onSubmit={handleGenerate} >
       <div className="mb-4">
         <textarea
-          className="w-full p-4 border border-gray-300 rounded"
+          className="w-full p-4 border border-gray-300  rounded"
           placeholder="e.g.,Write Your Job Descriptions"
           value={jobDescription}
           onChange={(e) => setJobDescription(e.target.value)}
