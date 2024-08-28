@@ -69,7 +69,10 @@ const AIChat: React.FC<AIChatProps> = ({
 
   const continueListening = () => {
     if (listeningEnabled) {
-      SpeechRecognition.startListening({ continuous: true });
+      SpeechRecognition.startListening({
+        continuous: true,
+        language: 'en-IN'
+      })
     }
   };
 
@@ -255,7 +258,8 @@ const AIChat: React.FC<AIChatProps> = ({
           case "Introduce":
             assistantMessage = {
               role: "assistant",
-              content: "Nice to meet you! We have an AI-developed question set for you. Reply 'Continue' to proceed or 'Leave' to exit the exam.",
+              content: "Nice to meet you! We have an AI-developed question set for you. If you want to proceed with the exam, just let us know. If you prefer to exit, simply indicate that as well."
+,
             };
             
             

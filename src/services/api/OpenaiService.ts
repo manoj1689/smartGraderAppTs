@@ -30,7 +30,7 @@ export const getChatbotResponse = async (messages: ChatMessage[]): Promise<strin
         
           Please analyze the user’s message and determine the most appropriate intent from these categories. If the intent is not clear, respond with "Unclear". Here are the possible intents you should classify the message into:
           - "Introduce": The user is asking for an introduction or initiating conversation.
-          - "Continue": The user’s input is related to the content and is grammatically correct, indicating they want to proceed with the current activity.
+          - "Continue": The user’s input is contextually relevant and grammatically correct, indicating a desire to proceed with the current activity. This includes any input containing technical terms, data structures, or variable names related to the content.
           - "User Not Available": The user indicates they are not available for further interaction.
           - "Leave": The user wants to exit the exam or activity.
           - "Unclear": The user's intent is not clear from the message, or the message does not fit any of the other categories.
@@ -83,6 +83,7 @@ export const getChatbotResponse = async (messages: ChatMessage[]): Promise<strin
     return 'Error';
   }
 };
+
 
 
 export const explainChatbotResponse = async (messages: ChatMessage[]): Promise<string | undefined> => {
@@ -139,22 +140,25 @@ export const handleHelpAndSupport = async (messages: ChatMessage[]): Promise<str
   }
 };
 
+// Test function to simulate user inputs and log the intent
+const testIntentDetermination = async () => {
+  const testMessages: ChatMessage[][] = [
+    [{ role: 'user', content: 'JavaScript variables are containers for storing data values. Variables can be declared using the "var" keyword. Example: var x = 5; In the above code declaration, the value 5 has been assigned to the variable "x".' }],
+    [{ role: 'user', content: 'Yes, I would like to continue.' }],
+    [{ role: 'user', content: 'Can we move on to the next question?' }],
+    [{ role: 'user', content: 'I\'m not sure what to do next.' }],
+    [{ role: 'user', content: 'Could you tell me more about what happens now?' }],
+  ];
 
-// // Test function to simulate user inputs and log the intent
-// const testIntentDetermination = async () => {
-//   const testMessages: ChatMessage[][] = [
-//     [{ role: 'user', content: 'I want to leave the exam.' }],
-//     [{ role: 'user', content: 'Yes, I would like to continue.' }],
-//     [{ role: 'user', content: 'Can we move on to the next question?' }],
-//     [{ role: 'user', content: 'I\'m not sure what to do next.' }],
-//     [{ role: 'user', content: 'Could you tell me more about what happens now?' }],
-//   ];
+  for (const messages of testMessages) {
+    try {
+      const intent = await getChatbotResponse(messages);
+      console.log(`Intent for message "${messages[0].content}": ${intent}`);
+    } catch (error) {
+      console.error('Error determining intent:', error);
+    }
+  }
+};
 
-//   for (const messages of testMessages) {
-//     const intent = await getChatbotResponse(messages);
-//     console.log(`Intent for message "${messages[0].content}": ${intent}`);
-//   }
-// };
-
-// // Run the test
-// testIntentDetermination();
+// Run the test
+testIntentDetermination();
