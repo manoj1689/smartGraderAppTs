@@ -69,11 +69,11 @@ const HelpSupportTopic: React.FC = () => {
   return (
     <div className="flex flex-col w-full min-h-screen mx-auto bg-gradient-to-b from-sky-50 via-sky-50 to-sky-200">
       <NotificationBar />
-      <div className="flex m-4">
+      <div className="flex flex-col lg:flex-row m-4">
         {/* Chat History */}
-        <div className="w-2/3 flex flex-col">
-          <div className="flex flex-row">
-            <div className="w-1/5">
+        <div className="w-full lg:w-2/3 flex  flex-col order-2 lg:order-1">
+          <div className="flex max-sm:flex-col p-4  flex-row">
+            <div className=" md:w-1/5 mx-auto">
               <img
                 src={`/${topic.image_url}`}
                 alt="Topic"
@@ -82,7 +82,7 @@ const HelpSupportTopic: React.FC = () => {
                 className="rounded-md"
               />
             </div>
-            <div className="w-4/5">
+            <div className="w-full md:w-4/5">
               <h1 className="text-2xl font-bold mb-4">{topic.name}</h1>
               <p className="text-lg mb-4">{topic.description}</p>
               <p className="text-md mb-4">{topic.details}</p>
@@ -90,9 +90,11 @@ const HelpSupportTopic: React.FC = () => {
           </div>
 
           <div className="m-4 p-4 border rounded-md bg-sky-100">
-            <div >
-              <div className="font-medium text-lg text-gray-600">Related Questions</div>
-              <div className="flex flex-row justify-start items-start m-4 gap-4">
+            <div>
+              <div className="font-medium text-lg text-gray-600">
+                Related Questions
+              </div>
+              <div className="flex max-sm:flex-col lg:flex-col xl:flex-row justify-start items-start md:m-4 gap-4">
                 {topic.questions.map((question, index) => (
                   <div
                     key={index}
@@ -107,12 +109,12 @@ const HelpSupportTopic: React.FC = () => {
                 ))}
               </div>
             </div>
-            <div className="flex-1 overflow-y-auto p-4 max-h-[400px]">
+            <div className="flex-1 overflow-y-auto py-4 sm:p-4 max-h-[400px]">
               {messages.map((message, index) => (
                 <div key={index}>
                   {message.role === "user" ? (
                     <div className="flex justify-end">
-                      <div className="relative text-white bg-sky-400 p-4 rounded-md shadow-[-4px_4px_8px_0px_rgba(0,0,0,0.2)] ml-12 rounded-tr-none">
+                      <div className="relative text-white bg-sky-400 p-4 rounded-md shadow-[-4px_4px_8px_0px_rgba(0,0,0,0.2)] ml-4 sm:ml-12 rounded-tr-none">
                         {message.content}
                       </div>
                       <div className="w-0 h-0 border-t-[0px] border-t-transparent border-l-[20px] border-l-sky-400 border-b-[20px] border-b-transparent"></div>
@@ -120,7 +122,7 @@ const HelpSupportTopic: React.FC = () => {
                   ) : (
                     <div className="flex my-4">
                       <div className="w-0 h-0 border-t-[0px] border-t-transparent border-r-[20px] border-r-slate-200 border-b-[20px] border-b-transparent"></div>
-                      <div className="text-slate-800 bg-slate-200 p-4 rounded-tl-none rounded-md mr-12 shadow-[4px_4px_8px_0px_rgba(0,0,0,0.2)]">
+                      <div className="text-slate-800 bg-slate-200 p-4 rounded-tl-none rounded-md mr-4 sm:mr-12 shadow-[4px_4px_8px_0px_rgba(0,0,0,0.2)]">
                         <ReactMarkdown>{message.content}</ReactMarkdown>
                       </div>
                     </div>
@@ -140,14 +142,14 @@ const HelpSupportTopic: React.FC = () => {
             </div>
 
             <div className="flex gap-4 items-center mt-4">
-            <input
-  type="text"
-  className="w-full px-3 py-2 border bg-yellow-50 rounded-md focus:outline-none focus:border-sky-300 focus:ring-0"
-  placeholder="Ask a question..."
-  value={userInput}
-  onChange={(e) => setUserInput(e.target.value)}
-  onKeyDown={(e) => e.key === "Enter" && handleChatSubmit()}
-/>
+              <input
+                type="text"
+                className="w-full px-3 py-2 border bg-yellow-50 rounded-md focus:outline-none focus:border-sky-300 focus:ring-0"
+                placeholder="Ask a question..."
+                value={userInput}
+                onChange={(e) => setUserInput(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleChatSubmit()}
+              />
 
               <button
                 onClick={handleChatSubmit}
@@ -159,8 +161,8 @@ const HelpSupportTopic: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="w-1/2 p-4 rounded-xl">
-          <div className="w-5/6 mx-auto">
+        <div className="w-full max-sm:hidden lg:w-1/2 p-4 rounded-xl order-1 lg:order-2">
+          <div className="w-full xl:w-5/6 mx-auto">
             <img
               src={topic.background_img_url}
               alt="Background"
