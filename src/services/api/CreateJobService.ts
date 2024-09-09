@@ -43,20 +43,20 @@ const handleSaveAndPublish = async () => {
         console.log('Job Details:', jobDetails, "emailList", emailList);
   
         // Call addJob and await the response
-        const response = await addJob(jobDetails, navigate, toast);
+        const response = await addJob(jobDetails, toast);
   
         // Check if the job was successfully published
         if (response?.job_id) {
           console.log("Job published with ID:", response.job_id);
   
           // Send job invites
-          const inviteResponse = await JobInvites(emailList, response.job_id, toast);
+          const inviteResponse = await JobInvites(emailList, response.job_id, navigate, toast );
   
           console.log("Job invitation response:", inviteResponse);
   
           // If job invites were successful, navigate to the homepage
           toast.success("Job published and invites sent successfully!");
-          //navigate("/");
+          
   
         } else {
           toast.error("Failed to publish the job. Please try again.");

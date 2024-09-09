@@ -7,7 +7,6 @@ import { AddJobData,JobList,JobDetail } from "../../types/interfaces/interface";
 
 export const addJob = async (
     AddJobData: AddJobData,
-    navigate: (path: string) => void,
     toast: { error: (msg: string) => void }
   ) => {
     const token = getToken();
@@ -49,6 +48,7 @@ export const addJob = async (
   export const JobInvites = async (
     Emails: string[], // Array of email addresses
     jobId: number,    // Job ID to be included in the payload
+    navigate: (path: string) => void,
     toast: { success: (msg: string) => void; error: (msg: string) => void }
   ) => {
     const token = getToken(); // Get the token
@@ -70,6 +70,7 @@ export const addJob = async (
             "Content-Type": "application/json",
             token: token,
           },
+          timeout: 30000
         }
       );
   
@@ -77,6 +78,7 @@ export const addJob = async (
   
       if (response.data.status === 1 && response.data.msg === "success") {
         toast.success("Job invites sent successfully.");
+        navigate("/dashboard")
       } else {
         toast.error("Failed to send job invites.");
       }
