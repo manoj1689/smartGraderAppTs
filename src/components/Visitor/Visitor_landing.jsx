@@ -1,38 +1,39 @@
-import * as React from "react";
+import React,{useState,useEffect} from "react";
 import { FaArrowRight } from "react-icons/fa"; // Importing icon from react-icons
 import { motion } from "framer-motion"; // Importing framer-motion for animations
-import { Link } from "react-router-dom"; // Importing Link from react-router-dom
-import Visitor_dummy from "./Visitor_dummy";
-import Subscribe from "../Visitor/Subscribe";
-import Footer from "../Visitor/Footer";
-import { useState } from "react";
-import Visitor_header from "./Visitor_header";
+
 import logo from "../../assets/images/Landing/logo.png";
 import banner from "../../assets/images/Landing/banner.png";
-import Testimonials from "../Visitor/Testimonials";
+
 import Rectangle from "../../assets/images/Landing/Rectangle 70.png";
 import BlueLine from "../../assets/images/Visitor/blueLine.png"
 import { CiLock } from "react-icons/ci";
 import { MdArrowOutward } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-function Visitor_landing() {
+
+//service
+import {GuestLogin} from "../../services/api/GuestLoginService"
+
+function Visitor_landing({decryptedData}) {
   const navigate=useNavigate();
   const [inputValue, setInputValue] = useState("");
   const [value, setValue] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-
+  const [guestDecryptedData,setGuestDecryptedData]=useState([])
+  
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
+  useEffect(() => {
+   
+    setGuestDecryptedData(decryptedData)
+  }, [decryptedData]);
 
-  const handleClick = () => {
-    console.log("Input value:", inputValue); // Debugging line to check input value
-    if (inputValue === "12345") {
-      setValue(true);
-    } else {
-      setErrorMessage("Please enter the correct password"); // Show error message
-    }
-  };
+  console.log("Decrypted Data Visitor_Landing:", guestDecryptedData);
+  const handleLogin=()=>{
+     const response=GuestLogin(guestDecryptedData.email,navigate,inputValue,guestDecryptedData.job_id)
+     console.log(response)
+ }
 
   return (
     <div >
@@ -77,9 +78,9 @@ function Visitor_landing() {
                 </div>
                 <div
                   className="flex justify-center items-center px-4 py-5 mt-3 w-full font-medium text-white bg-sky-500 rounded-md border border-sky-500 border-solid max-md:px-5 cursor-pointer"
-                  onClick={handleClick}
+                  
                 >
-                  <button className="flex items-center gap-2.5">
+                  <button className="flex items-center gap-2.5" onClick={handleLogin}>
                     <div>Start Your Assessment</div>
                    <div>
                     <FaArrowRight size={15}/>
@@ -131,21 +132,7 @@ function Visitor_landing() {
      
       )}
        
-      {value && (
-        <>
-         <div className="w-full h-screen ">
-          <div className="container mx-auto">
-          <Visitor_header />
-          <Visitor_dummy />
-          <Testimonials />
-          <Subscribe /> 
-          </div>
-          <Footer />
-         </div>
-       
-       
-        </>
-      )}
+     
     </div>
   );
 }

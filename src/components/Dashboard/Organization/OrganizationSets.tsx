@@ -65,13 +65,12 @@ const OrganizationSets: React.FC = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const continueWithSet = (card: Card) => {
-    setSelectedSetId(card.id.toString());
-    console.log("Selected Question Set ID:", card.id);
-    navigate("/dashboard/createjobs", {
-      state: { selectedSetId: card.id.toString() },
+  const handleCardClick = (interview: Card) => {
+    navigate(`/dashboard/question/${interview.id}/instructions`, {
+      state: { interview },
     });
   };
+
 
   const offset = currentPage * itemsPerPage;
   const currentItems = matchingQuestionSets.slice(
@@ -156,7 +155,10 @@ const OrganizationSets: React.FC = () => {
               
                 <button
                   className="flex items-center justify-center px-4 py-3 mt-5 text-sm text-white bg-sky-500 rounded shadow hover:bg-sky-800 transition"
-                  onClick={() => continueWithSet(card)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleCardClick(card);
+                  }}
                 >
                   <span>Take a Test</span>
                   <FiArrowUpRight size={18} className="ml-2" />

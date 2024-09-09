@@ -23,6 +23,10 @@ import CandidateResultPage from "../pages/CandidateResultPage";
 import CreateSetPage from "../pages/CreateSetPage";
 import ViewJobs from "../components/Dashboard/Organization/ViewJobs";
 import HelpSupportTopic from "../components/Help&Support/HelpSupportTopic";
+//@ts-ignore
+import Visitorhome from "../components/Visitor/visitor_home"
+//@ts-ignore
+import CodingSection from "../components/codeCompiler/CodeInterview.jsx";
 // import SelectQuestion from "../components/dashboards/organizationDashBoard/SelectQuestion";
 
 
@@ -39,12 +43,18 @@ const PrivateRoutes: React.FC = () => {
         <Route path="question/:questionSetId" element={<ProtectedRoute />}>
           <Route index element={<InterviewPage />} />
         </Route>
+        <Route path="codingSet/:questionSetId" element={<ProtectedRoute />}>
+          <Route index element={<CodingSection />} />
+        </Route>
         <Route path="question/:questionSetId/instructions" element={<InterviewInstructions />} />
         <Route path="question/exam-end" element={<InterviewEndPage />} />
         <Route path="createset" element={<CreateSetPage />} />
         <Route path="generatequestion" element={<GenerateQuestionsPage />} />
         <Route path="result" element={<ResultPage />} />
+
+        
         <Route path="settings" element={<SettingPage />} /> 
+        {/* <Route path="settings" element={<CodingSection/>} />  */}
         <Route path="editsettings" element={<EditSettingsPage />} /> 
         <Route path="help&support" element={<HelpSupportPage />} /> 
         <Route path="/help&support/:id" element={<HelpSupportTopic />} />
@@ -54,7 +64,7 @@ const PrivateRoutes: React.FC = () => {
         <Route path="createjobs/selectset" element={<SelectSetPage />} />
         <Route path="candidateresult" element={<CandidateResultPage/>} /> 
         <Route path="candidateinvitation" element={<CandidateInvitationPage />} /> 
-
+        <Route path="job/guesthome" element={<Visitorhome />} />
         {/*  <Route path="result" element={<ResultPage />} />
         <Route path="interviewscreen" element={<InterviewScreen />} />
       

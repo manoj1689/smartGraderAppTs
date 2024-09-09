@@ -18,12 +18,12 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 
 // imported components
 
-import BrowserInstructions from "../components/Interview/BrowserInstructions";
-import ErrorBoundary from "../components/common/Error/ErrorBoundary";
-import Checklist from "../components/Interview/Checklist";
-import CameraFeed from "../components/Interview/CameraFeed";
-import NotificationBar from "../components/common/Notification/NotificationBar";
-import AIChat from "../components/Interview/AIChat";
+import BrowserInstructions from "../../components/Interview/BrowserInstructions";
+import ErrorBoundary from "../../components/common/Error/ErrorBoundary";
+import Checklist from "../../components/Interview/Checklist";
+import CameraFeed from "../../components/Interview/CameraFeed";
+import NotificationBar from "../../components/common/Notification/NotificationBar";
+import CodingSection from "../codeCompiler/CodingSection"
 
 // imported Services
 import {
@@ -31,15 +31,15 @@ import {
   examStart,
   fetchSetQuestions,
   uploadScreenshot,
-} from "../services/api/InterviewService";
-import { fetchSetDetail } from "../services/api/SetService";
+} from "../../services/api/InterviewService";
+import { fetchSetDetail } from "../../services/api/SetService";
 // imported Endpoints
 
-import { MESSAGES } from "../constants/Constants";
+import { MESSAGES } from "../../constants/Constants";
 
 // import images
 
-import SmartGrader from "../assets/logos/smartGrader.png";
+import SmartGrader from "../../assets/logos/smartGrader.png";
 import { Button } from "@mui/material";
 
 const InterviewScreen = () => {
@@ -113,7 +113,8 @@ const InterviewScreen = () => {
 
     fetchSetData();
   }, []);
-  // console.log("set Detail at interview Page", setDetail);
+
+  // console.log("set Detail at coding interview Page", setDetail);
   // exam start
   const handleExamStart = async () => {
     setLoading(true);
@@ -361,8 +362,8 @@ const InterviewScreen = () => {
             <ErrorBoundary>
               <div ref={fullscreenRef}>
                 <div className="flex flex-col md:flex-row gap-5 p-4 rounded-md border border-solid bg-white ">
-                  <div className="w-full  md:w-1/2 lg:w-3/5 bg-gray-200 rounded-md p-4">
-                    <div className="px-4 flex justify-between">
+                  <div className="w-full py-4 md:w-1/3 ">
+                    <div className="p-4 flex bg-gray-200 rounded-lg  mb-4 justify-between">
                       <div>
                         <div className="text-xl font-spline font-bold text-slate-800">
                           {setDetail.title}
@@ -381,7 +382,7 @@ const InterviewScreen = () => {
                       </div>
                     </div>
                     <div className="flex relative  mx-auto ">
-                      <div className="bg-black bg-opacity-50 w-40 h-24 text-sm  lg:w-48 lg:h-28  lg:text-md p-4 lg:gap-2 flex  flex-col absolute z-10 ml-4 lg:ml-20 rounded-md shadow-md mt-4">
+                      <div className="bg-black bg-opacity-50 w-40 h-24 text-sm  lg:w-48 lg:h-28  lg:text-md p-4 lg:gap-2 flex  flex-col absolute z-10 ml-4 rounded-md shadow-md mt-4">
                         <div className="font-spline font-light">
                           {/* Face Verification Result */}
                           <div
@@ -413,38 +414,26 @@ const InterviewScreen = () => {
                         </div>
                       </div> 
 
-                      <div className="relative w-full lg:w-5/6   mx-auto">
+                      <div className="  w-full ">
                         <CameraFeed
                           onFacesDetected={handleFacesDetected}
                           examStarted={permissions.camera && permissions.microphone}
                           examEnd={examEnd}
                         />
                       </div>
+                        
                     </div>
-                    <div className="border border-gray-300 bg-white bg-opacity-70 shadow-lg rounded-lg mt-4 p-4">
-                      <p>
-                        <span className="font-semibold text-sky-400">
-                          Speech Text -
-                        </span>{" "}
-                        {transcript}
-                      </p>
-                    </div>
+                 
+                    <div className="bg-gray-200 mt-4 rounded-lg">
+                      <div className="text-lg bold p-4">Assigment Questions</div>
+                   
+                           
+                          </div>
                   </div>
 
-                  <div className="w-full md:w-1/2 lg:w-2/5">
+                  <div className="w-full md:w-2/3">
                     {examStarted ? (
-                      <div>
-                        <AIChat
-                          questionList={questionsData}
-                          handleExamEnd={handleExamEnd}
-                          examID={examId}
-                          onTranscriptChange={handleTranscriptChange}
-                        />
-                        {error && (
-                          <div className="error mt-4 text-red-500">{error}</div>
-                        )}
-                        <ToastContainer />
-                      </div>
+                     <CodingSection/>
                     ) : (
                       <>
                         <div className="space-y-8 w-full flex  flex-col bg-white p-4 ">

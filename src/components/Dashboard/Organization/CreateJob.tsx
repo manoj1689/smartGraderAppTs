@@ -64,7 +64,7 @@ const CreateJobs: React.FC = () => {
   const handleDateRangeChange = (ranges: any) => {
     setDateRange(ranges.selection);
   };
-  console.log(dateRange);
+ 
   const startDate = dateRange.startDate;
   const endDate = dateRange.endDate;
   const handleChange = (experience: Option | null) => {

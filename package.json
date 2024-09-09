@@ -13,12 +13,17 @@
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
     "@idui/react-popover": "^3.1.0",
+    "@monaco-editor/react": "^4.6.0",
     "@mui/material": "^5.16.0",
     "@mui/x-date-pickers": "^7.9.0",
     "@smastrom/react-rating": "^1.5.0",
-    "axios": "^1.7.2",
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/react": "^16.0.1",
+    "@testing-library/user-event": "^14.5.2",
+    "axios": "^1.7.7",
     "chart.js": "^4.4.3",
     "cors": "^2.8.5",
+    "crypto-js": "^4.2.0",
     "date-fns": "^3.6.0",
     "express": "^4.19.2",
     "face-api.js": "^0.22.2",
@@ -72,7 +77,8 @@
     "regenerator-runtime": "^0.14.1",
     "slick-carousel": "^1.8.1",
     "speak-tts": "^2.0.8",
-    "use-react-screenshot": "^4.0.0"
+    "use-react-screenshot": "^4.0.0",
+    "web-vitals": "^4.2.3"
   },
   "devDependencies": {
     "@types/bowser": "^1.1.1",

@@ -6,12 +6,11 @@ import CreateAccountPage from "../pages/CreateAccountPage";
 import PasswordPage from "../pages/PasswordPage";
 import SelectInterestPage from "../pages/SelectInterestPage";
 import VisitorLandingPage from "../pages/VisitorLandingPage";
-import { getToken } from "../utils/tokenUtils";
-import { getEmail } from "../utils/tokenUtils";
 import AIDemo from "../components/Demo/AIDemo";
+//@ts-ignore
+import Visitorhome from "../components/Visitor/visitor_home"
 const PublicRoutes: React.FC = () => {
-  const userEmail = getEmail();
-  const shouldRenderVisitorLanding = userEmail === getEmail();
+
   return (
     <>
       <Routes>
@@ -29,8 +28,9 @@ const PublicRoutes: React.FC = () => {
         {/* To run this route run from terminal : 
         cd src
         node server.js  */}
-        <Route path="/visitorlanding" element={<VisitorLandingPage />} />
+        <Route path="/job/*" element={<VisitorLandingPage />} />
 
+         {/* <Route path="job/guesthome" element={<Visitorhome />} /> */}
         <Route path="/createAccount" element={<CreateAccountPage />} />
         <Route path="/signIn/password" element={<PasswordPage />} />
 

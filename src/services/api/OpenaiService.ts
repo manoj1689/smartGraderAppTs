@@ -140,25 +140,25 @@ export const handleHelpAndSupport = async (messages: ChatMessage[]): Promise<str
   }
 };
 
-// Test function to simulate user inputs and log the intent
-const testIntentDetermination = async () => {
-  const testMessages: ChatMessage[][] = [
-    [{ role: 'user', content: 'JavaScript variables are containers for storing data values. Variables can be declared using the "var" keyword. Example: var x = 5; In the above code declaration, the value 5 has been assigned to the variable "x".' }],
-    [{ role: 'user', content: 'Yes, I would like to continue.' }],
-    [{ role: 'user', content: 'Can we move on to the next question?' }],
-    [{ role: 'user', content: 'I\'m not sure what to do next.' }],
-    [{ role: 'user', content: 'Could you tell me more about what happens now?' }],
-  ];
+// // Test function to simulate user inputs and log the intent
+// const testIntentDetermination = async () => {
+//   const testMessages: ChatMessage[][] = [
+//     [{ role: 'user', content: 'JavaScript variables are containers for storing data values. Variables can be declared using the "var" keyword. Example: var x = 5; In the above code declaration, the value 5 has been assigned to the variable "x".' }],
+//     [{ role: 'user', content: 'Yes, I would like to continue.' }],
+//     [{ role: 'user', content: 'Can we move on to the next question?' }],
+//     [{ role: 'user', content: 'I\'m not sure what to do next.' }],
+//     [{ role: 'user', content: 'Could you tell me more about what happens now?' }],
+//   ];
 
-  for (const messages of testMessages) {
-    try {
-      const intent = await getChatbotResponse(messages);
-      console.log(`Intent for message "${messages[0].content}": ${intent}`);
-    } catch (error) {
-      console.error('Error determining intent:', error);
-    }
-  }
-};
+//   for (const messages of testMessages) {
+//     try {
+//       const intent = await getChatbotResponse(messages);
+//       console.log(`Intent for message "${messages[0].content}": ${intent}`);
+//     } catch (error) {
+//       console.error('Error determining intent:', error);
+//     }
+//   }
+// };
 
-// Run the test
-testIntentDetermination();
+// // Run the test
+// testIntentDetermination();

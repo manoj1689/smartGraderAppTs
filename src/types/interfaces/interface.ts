@@ -241,3 +241,18 @@ export interface IndividualDashboardProps {
   individualData: any; // Replace `any` with the actual type if known
 }
 // Add more models as needed for other services and API requests/responses
+export interface LanguageOption {
+  label: string;
+  value: string;
+}
+
+export interface PistonResponse {
+  language: string;
+  version: string;
+  run: {
+    stdout: string;
+    stderr: string;
+    output: string;
+    code: number;
+  };
+}

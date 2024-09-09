@@ -34,9 +34,9 @@ export const addJob = async (
      // console.log("Response from API:", response.data.set_id); // Log response from API
       if (response.data.status === 1 && response.data.msg === "success") {
         // Navigate to the dashboard and pass the setId in state
-        navigate("/dashboard");
+        // navigate("/dashboard");
   
-       // return response.data.set_id;
+        return response.data;
       } else {
         toast.error("Failed to save selected sets.");
       }
@@ -46,6 +46,45 @@ export const addJob = async (
     }
   };
 
+  export const JobInvites = async (
+    Emails: string[], // Array of email addresses
+    jobId: number,    // Job ID to be included in the payload
+    toast: { success: (msg: string) => void; error: (msg: string) => void }
+  ) => {
+    const token = getToken(); // Get the token
+  
+    // Log emails and jobId before making the POST request
+    console.log("Email payload before POST:", Emails);
+    console.log("Job ID:", jobId);
+  
+    try {
+      const response = await axiosInstance.post(
+        `${API_BASE_URL}/jobs/invite`,
+        {
+          email: Emails,  // Array of email addresses
+          job_id: jobId   // Job ID
+        },
+        {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+            token: token,
+          },
+        }
+      );
+  
+      console.log("Response from API:", response.data); // Log response from API
+  
+      if (response.data.status === 1 && response.data.msg === "success") {
+        toast.success("Job invites sent successfully.");
+      } else {
+        toast.error("Failed to send job invites.");
+      }
+    } catch (error) {
+      console.error("Error submitting data:", error);
+      toast.error("An error occurred while sending job invites.");
+    }
+  };
 
   export const fetchJobList = async (): Promise<JobList[]> => {
     const token = getToken();

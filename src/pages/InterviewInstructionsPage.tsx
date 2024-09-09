@@ -13,21 +13,31 @@ const InterviewInstructions: React.FC = () => {
   const location = useLocation();
   const { interview } = location.state || {};
   const [isChecked, setIsChecked] = useState(false);
+  
+  console.log("interview value on intrusction page",interview)
 
   const handleCheckboxChange = () => {
     setIsChecked(!isChecked);
   };
-
   const handleStartInterviewClick = () => {
     if (isChecked) {
-      navigate(`/dashboard/question/${interview?.id}`, {
-        state: { interview }
-      });
-
+      // Navigate based on interview id
+      if (interview?.id === 308) {
+        navigate(`/dashboard/codingSet/${interview?.id}`, {
+          state: { interview }
+        });
+      } else {
+        navigate(`/dashboard/question/${interview?.id}`, {
+          state: { interview }
+        });
+      }
+  
+      // Request fullscreen mode
       document.documentElement.requestFullscreen().catch((err) => {
         console.error(`Failed to enter fullscreen mode: ${err.message}`);
       });
     } else {
+      // Show error toast if terms are not accepted
       toast.error("Please accept the terms and conditions before proceeding.", {
         position: "top-right",
         autoClose: 5000,
@@ -40,7 +50,7 @@ const InterviewInstructions: React.FC = () => {
       } as ToastOptions);
     }
   };
-
+  
   return (
     <div className="bg-gray-100 min-h-screen">
       <div className="flex items-center justify-between border-b border-slate-200 bg-sky-100 shadow-md p-4">
