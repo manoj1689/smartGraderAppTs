@@ -41,7 +41,7 @@ const Password: React.FC = () => {
       setConfirmPassword(value);
     }
   };
-
+ console.log(password,confirmPassword)
   const enteredOtp = otp.join("");
 
   const handleOtp = (element: HTMLInputElement, index: number): void => {

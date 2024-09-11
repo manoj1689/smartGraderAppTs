@@ -423,13 +423,18 @@ const InterviewScreen = () => {
                       </div>
                         
                     </div>
-                 
-                    <div className="bg-gray-200 mt-4 rounded-lg">
-                      <div className="text-lg bold p-4">Assigment Questions</div>
-                   
+                 {examStarted ?(<>
+                  <div className="bg-gray-200 mt-4 rounded-lg">
+                      <div className="text-xl font-spline font-bold p-4">Assigment Questions</div>
+                      <div className="text-lg font-spline font-medium p-4">
+                      {questionsData[0].title}
+                      </div>
+                      
                            
                           </div>
-                  </div>
+                
+                 </>):""}
+                   </div>
 
                   <div className="w-full md:w-2/3">
                     {examStarted ? (
