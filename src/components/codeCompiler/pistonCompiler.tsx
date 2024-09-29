@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Editor from '@monaco-editor/react';
 import axios from 'axios';
+import Select from 'react-select';
 import { LanguageOption, PistonResponse } from "../../types/interfaces/interface";
 
 const languageOptions: LanguageOption[] = [
@@ -21,6 +22,9 @@ interface CodeEditorProps {
 
 const CodeEditor: React.FC<CodeEditorProps> = ({ language, setLanguage, code, setCode, onSubmitCode }) => {
   const [output, setOutput] = useState<string>('');
+  const [selectedOption, setSelectedOption] = useState<LanguageOption | null>(
+    languageOptions.find((option) => option.value === language) || null
+  );
 
   const handleRunCode = async () => {
     try {
@@ -49,20 +53,27 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ language, setLanguage, code, se
     }
   };
 
+  const handleLanguageChange = (selected: LanguageOption | null) => {
+    setSelectedOption(selected);
+    setLanguage(selected?.value || ''); // Update language in the parent component
+  };
+
   return (
-    <div className="flex flex-col items-center w-full">
-      {/* Language Selector */}
-      <div className="flex space-x-2 mb-4">
-        {languageOptions.map((option) => (
-          <button
-            key={option.value}
-            className={`px-4 py-2 rounded ${language === option.value ? 'bg-blue-500 text-white' : 'bg-gray-300'}`}
-            onClick={() => setLanguage(option.value)}
-          >
-            {option.label}
-          </button>
-        ))}
-      </div>
+    <div className="flex flex-col w-full  ">
+      {/* Language Selector Dropdown */}
+      <div className="mb-4">
+  <div className='flex w-full justify-end pr-4'>
+    <div className='flex lg:w-1/3'>
+      <Select
+        value={selectedOption}
+        onChange={handleLanguageChange}
+        options={languageOptions}
+        className="w-full"  // Ensures it takes up the full 1/3 width of the parent div
+      />
+    </div>
+  </div>
+</div>
+
 
       {/* Monaco Editor */}
       <Editor
@@ -74,16 +85,28 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ language, setLanguage, code, se
         theme="vs-dark"
       />
 
-      {/* Run Code Button */}
-      <button
-        onClick={handleRunCode}
-        className="mt-4 px-6 py-2 bg-green-500 text-white rounded"
-      >
-        Run Code
-      </button>
-
+      {/* Run Code and Next Question Buttons */}
+      <div className='flex w-5/6 mx-auto gap-5'>
+        <div className='flex w-full'>
+          <button
+            onClick={handleRunCode}
+            className="flex mt-4 px-6 py-4 bg-green-500 text-white w-full justify-center items-center rounded"
+          >
+            Run Code
+          </button>
+        </div>
+        <div className='flex w-full'>
+          <button
+            onClick={handleRunCode}
+            className="flex mt-4 px-6 py-4 bg-sky-500 w-full text-white justify-center items-center rounded"
+          >
+            Next Question
+          </button>
+        </div>
+      </div>
+   
       {/* Output Section */}
-      <div className="w-full mt-4 p-4 bg-gray-900 text-white rounded">
+      <div className="w-full mt-4 mb-8 p-4 bg-gray-900 text-white rounded">
         <h3 className="text-lg font-semibold">Output:</h3>
         <pre>{output}</pre>
       </div>
@@ -92,4 +115,6 @@ const CodeEditor: React.FC<CodeEditorProps> = ({ language, setLanguage, code, se
 };
 
 export default CodeEditor;
+
+
 

@@ -176,17 +176,15 @@ const MySets: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="flex justify-between items-center ">
+                  <div className="flex justify-between mt-4 items-center ">
                     <div className="flex items-center  gap-2">
-                      <img
-                        loading="lazy"
-                        alt="grader"
-                        src={graderLogo}
-                        className="w-10 h-10 rounded-md border border-gray-300  shadow-sm"
-                      />
-                      <div className="text-md font-medium text-gray-500 bg-sky-200 p-2 rounded">
-                        SmartGrader
-                      </div>
+                    <img
+                  loading="lazy"
+                  alt="grader"
+                  src={graderLogo}
+                  className="w-10 h-8 rounded-md border border-gray-300 bg-sky-300 p-1  shadow-sm"
+                />
+                <div className="text-md font-medium text-gray-500">SmartGrader</div>
                     </div>
                     <div className="">
                       <img

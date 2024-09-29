@@ -47,6 +47,7 @@ const PrivateRoutes: React.FC = () => {
           <Route index element={<CodingSection />} />
         </Route>
         <Route path="question/:questionSetId/instructions" element={<InterviewInstructions />} />
+        <Route path="question/codingsection/:questionSetId" element={<CodingSection/>} /> 
         <Route path="question/exam-end" element={<InterviewEndPage />} />
         <Route path="createset" element={<CreateSetPage />} />
         <Route path="generatequestion" element={<GenerateQuestionsPage />} />

@@ -122,7 +122,7 @@ const CameraFeed = ({ onFacesDetected, examStarted, examEnd }) => {
     }, [examStarted]);
 
     return (
-        <div className='flex'>
+        <div className='flex '>
             <ToastContainer />
             <video ref={videoRef} autoPlay muted style={{ width: '100%', borderRadius: '1%' }} />
         </div>

@@ -86,7 +86,7 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
   };
 
   return (
-    <div className="p-2 w-full h-full ">
+    <div className="p-2 w-full h-full max-md:pt-24 ">
       <NotificationBar />
 
       <div>

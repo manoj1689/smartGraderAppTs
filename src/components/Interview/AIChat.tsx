@@ -400,7 +400,7 @@ const AIChat: React.FC<AIChatProps> = ({
           <div className="ml-2 font-bold">SmartGrader AI Assistant</div>
         </div>
       </div>
-      <div className="flex-1 overflow-y-auto p-4">
+      <div className="flex-1  overflow-y-auto p-4">
         {messages.map((message, index) => (
           <div key={index}>
             {message.role === "user" ? (
@@ -413,7 +413,7 @@ const AIChat: React.FC<AIChatProps> = ({
                 ></div>
               </div>
             ) : (
-              <div className="flex my-4">
+              <div className="flex my-4 ">
                 <div
                   className="w-0 h-0 border-t-[0px] border-t-transparent border-r-[20px] border-r-slate-200 border-b-[20px] border-b-transparent"
                 ></div>

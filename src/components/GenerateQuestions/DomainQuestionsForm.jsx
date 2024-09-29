@@ -15,7 +15,10 @@ const DomainQuestionsForm = ({ onGenerate, loading, subCatId }) => {
   const [selectedTopics, setSelectedTopics] = useState([]);
   const [numberOfQuestions, setNumberOfQuestions] = useState(4);
   const [subCategoryOptions, setSubCategoryOptions] = useState([]);
-  console.log("subCatId at domain page",subCatId)
+  const [questionType, setQuestionType] = useState(null); // Single value
+
+  const isCodingEnabled = subCatId === 1 || subCatId === 20 || subCatId === 39;
+
   useEffect(() => {
     const fetchSubCat = async () => {
       const subCategories = await fetchSubCategories(subCatId);
@@ -31,9 +34,14 @@ const DomainQuestionsForm = ({ onGenerate, loading, subCatId }) => {
   const handleGenerate = (e) => {
     e.preventDefault();
     onGenerate({
-      topic: selectedTopics.join(","),
+      topic: [...selectedTopics, questionType].filter(Boolean).join(","), // Include selected question type
       number_of_questions: numberOfQuestions,
     });
+  };
+
+  const handleCheckboxChange = (e) => {
+    const value = e.target.name;
+    setQuestionType((prev) => (prev === value ? null : value)); // Toggle selection
   };
 
   return (
@@ -43,19 +51,20 @@ const DomainQuestionsForm = ({ onGenerate, loading, subCatId }) => {
           Type Categories
         </label>
         {subCatId ? (
-        <CreatableSelect
-          isMulti
-          options={[ ...subCategoryOptions]}
-          onChange={(selectedOptions) =>
-            setSelectedTopics(selectedOptions.map((option) => option.label))
-          }
-          value={[...defaultOptions, ...subCategoryOptions].filter((option) =>
-            selectedTopics.includes(option.label)
-          )}
-          className="basic-multi-select"
-          classNamePrefix="select"
-          placeholder="Choose Options"
-        />): (
+          <CreatableSelect
+            isMulti
+            options={[...subCategoryOptions]}
+            onChange={(selectedOptions) =>
+              setSelectedTopics(selectedOptions.map((option) => option.label))
+            }
+            value={[...defaultOptions, ...subCategoryOptions].filter((option) =>
+              selectedTopics.includes(option.label)
+            )}
+            className="basic-multi-select"
+            classNamePrefix="select"
+            placeholder="Choose Options"
+          />
+        ) : (
           <CreatableSelect
             isDisabled
             options={[]}
@@ -65,8 +74,9 @@ const DomainQuestionsForm = ({ onGenerate, loading, subCatId }) => {
           />
         )}
       </div>
+
       <div className="mt-5 sm:mt-10 mb-4">
-        <label className="block text-md font-semibold font-spline text-gray-700  mb-2">
+        <label className="block text-md font-semibold font-spline text-gray-700 mb-2">
           Number of Questions
         </label>
         <input
@@ -81,6 +91,36 @@ const DomainQuestionsForm = ({ onGenerate, loading, subCatId }) => {
           className="w-full p-2 border border-gray-300 rounded"
         />
       </div>
+
+      <div className="mt-5 sm:mt-10 mb-4">
+        <label className="block text-md font-semibold font-spline text-gray-700 mb-2">
+          Choose Question Type
+        </label>
+        <div className="flex items-center space-x-4">
+          <label className="inline-flex items-center">
+            <input
+              type="checkbox"
+              name="general"
+              checked={questionType === 'general'}
+              onChange={handleCheckboxChange}
+              className="form-checkbox h-5 w-5 text-gray-600"
+            />
+            <span className="ml-2">General Round</span>
+          </label>
+          <label className="inline-flex items-center">
+            <input
+              type="checkbox"
+              name="coding"
+              checked={questionType === 'coding'}
+              onChange={handleCheckboxChange}
+              disabled={!isCodingEnabled}
+              className="form-checkbox h-5 w-5 text-gray-600"
+            />
+            <span className="ml-2">Coding Round</span>
+          </label>
+        </div>
+      </div>
+
       <button
         type="submit"
         className={`bg-gray-500 text-white px-4 py-4 sm:w-8/12 justify-center gap-3 mx-auto rounded transition duration-300 hover:bg-gray-700 flex items-center ${
@@ -92,7 +132,7 @@ const DomainQuestionsForm = ({ onGenerate, loading, subCatId }) => {
           <FaSpinner className="animate-spin mr-2" />
         ) : (
           <FaCheck className="mr-2" />
-        )}{" "}
+        )}
         Generate Question
       </button>
     </form>
@@ -100,4 +140,5 @@ const DomainQuestionsForm = ({ onGenerate, loading, subCatId }) => {
 };
 
 export default DomainQuestionsForm;
+
 

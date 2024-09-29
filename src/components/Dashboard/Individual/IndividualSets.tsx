@@ -26,7 +26,7 @@ const IndividualSets: React.FC = () => {
     if (width < 768) return 4; // For md screens
     if (width < 1024) return 6; // For lg screens
     if (width < 1280) return 9; // For xl screens
-    if (width < 1520) return 8; // For 2xl screens
+    if (width < 1600) return 8; // For 2xl screens
    
     return 10; // Default for large screens
   };
@@ -74,7 +74,7 @@ const IndividualSets: React.FC = () => {
       <CategorySearch setListOfAllIds={setListOfAllId} setMatchingQuestionSets={setMatchingQuestionSets} />
       {currentItems.length > 0 ? (
         <div className="mt-8 justify-center ">
-          <div className="px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 lg:gap-10 ">
+          <div className="px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 lg:gap-10 xl:gap-5 ">
             {currentItems.map((card) => (
             <div
             className="flex flex-col my-4 p-4 mx-auto max-lg:w-72 w-full rounded-lg border border-violet-200 hover:border-violet-200 shadow-lg transition-transform transform hover:scale-105 duration-300 bg-white text-neutral-700"
@@ -106,15 +106,15 @@ const IndividualSets: React.FC = () => {
               
             </div>
           
-            <div className="flex justify-between items-center ">
+            <div className="flex justify-between mt-4 items-center ">
               <div className="flex items-center  gap-2">
                 <img
                   loading="lazy"
                   alt="grader"
                   src={graderLogo}
-                  className="w-10 h-10 rounded-md border border-gray-300  shadow-sm"
+                  className="w-10 h-8 rounded-md border border-gray-300 bg-sky-300 p-1  shadow-sm"
                 />
-                <div className="text-md font-medium text-gray-500 bg-sky-200 p-2 rounded">SmartGrader</div>
+                <div className="text-md font-medium text-gray-500">SmartGrader</div>
               </div>
               <div className="">
               <img

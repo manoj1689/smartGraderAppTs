@@ -132,23 +132,23 @@ const CurrentJobs: React.FC = () => {
     <div>
       <div className="rounded-md mx-2 bg-sky-100 border border-solid px-5 my-10 border-black border-opacity-10 shadow-lg">
         <div className="flex flex-col md:flex-row my-3 gap-3 justify-between">
-        <div className="flex flex-row items-center space-x-5 bg-sky-200 p-4 rounded-lg shadow-md">
-  <div className="flex items-center space-x-4">
-    <FaLaptopCode size={34} className="text-sky-500" />
-    <span className="text-lg md:text-xl font-semibold text-slate-800">
-      AI-Optimized Job Listings
-    </span>
-  </div>
-  <div
-  className="relative flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-whitw border border-gray-300 rounded-full shadow-md cursor-pointer transition-colors duration-200 hover:bg-sky-300"
-  onClick={() => navigate("createjobs")}
->
-  <div className="absolute inset-0 bg-gradient-to-t from-sky-400 to-sky-200 rounded-full opacity-75"></div>
-  <span className="text-2xl md:text-3xl font-bold text-sky-600 z-10">+</span>
-</div>
-
-</div>
-
+          <div className="flex flex-row items-center space-x-5 bg-sky-200 p-4 rounded-lg shadow-md">
+            <div className="flex ">
+              <FaLaptopCode size={34} className="text-sky-500" />
+              <span className="text-lg md:text-xl font-semibold pl-4 text-slate-800">
+                AI-Optimized Job Listings
+              </span>
+            </div>
+            <div
+              className="relative flex items-center justify-center w-12 h-12   md:w-12 md:h-12 bg-whitw border border-gray-300 rounded-full shadow-md cursor-pointer transition-colors duration-200 hover:bg-sky-300"
+              onClick={() => navigate("createjobs")}
+            >
+              <div className="absolute inset-0 bg-gradient-to-t from-sky-400 to-sky-200 rounded-full opacity-75"></div>
+              <span className="text-2xl md:text-3xl font-bold text-sky-600 z-10">
+                +
+              </span>
+            </div>
+          </div>
 
           <div className="">
             <div className=" md:w-[350px] max-md:w-full">
@@ -313,44 +313,44 @@ const CurrentJobs: React.FC = () => {
             {currentItems.map((job) => (
               <div
                 key={job.id}
-                className="flex flex-col bg-slate-100  lg:flex-row gap-6 justify-between w-full max-md:flex-wrap mb-4 border border-gray-300 p-5 rounded-lg  shadow-sm hover:bg-sky-200 "
+                className="flex flex-col bg-slate-100  lg:flex-row gap-6 justify-between w-full max-md:flex-wrap mb-4 border border-gray-300 p-4 rounded-lg  shadow-sm hover:bg-sky-200 "
               >
-                <div className="flex lg:w-5/12 gap-4">
-                  <div className="flex flex-col sm:px-6 my-auto">
-                    <div className="text-xl font-bold font-spline leading-7 text-gray-700">
+                <div className="flex w-full lg:w-5/12 gap-4">
+                  <div className="flex flex-col my-auto">
+                    <div className="sm:text-lg text-xl font-bold font-spline leading-7 text-gray-700">
                       {job.title}
                     </div>
-                    <div className="mt-2 text-sm font-normal leading-6 text-gray-600">
+                    <div className="mt-2  text-md font-normal leading-6 text-gray-600">
                       {job.description}
                     </div>
                   </div>
                 </div>
-                <div className="flex flex-row lg:w-6/12 gap-6 justify-between items-start sm:px-6 my-auto">
+                <div className="flex flex-row w-full lg:w-6/12 max-sm:gap-2 gap-6 justify-between items-start sm:px-6 my-auto">
                   <div className="flex flex-col whitespace-nowrap">
-                    <div className="text-lg font-medium leading-6 text-slate-800">
+                    <div className="max-sm:text-sm text-lg font-medium leading-6 text-slate-800">
                       Status
                     </div>
                     <div
-                      className={`mt-3 text-lg font-light leading-7 text-center ${
+                      className={`mt-3 max-sm:text-sm text-lg font-light leading-7 text-center ${
                         job.status === 1 ? "text-green-600" : "text-red-600"
                       }`}
                     >
                       {job.status === 1 ? "Hiring" : "Closed"}
                     </div>
                   </div>
-                  <div className="flex flex-col self-stretch">
-                    <div className="text-lg font-medium leading-6 text-slate-800">
+                  <div className="flex flex-col items-center">
+                    <div className="max-sm:text-sm text-lg font-medium leading-6 text-slate-800">
                       Experience
                     </div>
-                    <div className="mt-3 text-lg font-light leading-7 text-center text-gray-600">
+                    <div className="mt-3 max-sm:text-sm text-lg font-light leading-7 text-center text-gray-600">
                       {job.experience}
                     </div>
                   </div>
                   <div className="flex flex-col whitespace-nowrap">
-                    <div className="text-lg font-medium leading-6 text-gray-600">
+                    <div className=" max-sm:text-sm text-lg font-medium leading-6 text-gray-600">
                       Interview
                     </div>
-                    <div className="mt-3 text-lg font-medium leading-7 text-center text-sky-500">
+                    <div className="mt-3 max-sm:text-sm text-lg font-medium leading-7 text-center text-sky-500">
                       {randomNumberInterviews}
                     </div>
                   </div>

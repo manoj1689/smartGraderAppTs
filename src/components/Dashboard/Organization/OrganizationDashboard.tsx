@@ -12,7 +12,7 @@ const OrganizationDashboard: React.FC<OrganizationDashboardProps> = ({
   organizationData,
 }) => {
   return (
-    <div className="p-4">
+    <div className="p-4 ">
       <div>
         <NotificationBar />
       </div>

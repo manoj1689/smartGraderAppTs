@@ -78,6 +78,8 @@ const GenerateQuestionsPage: React.FC = () => {
     { value: 1, label: "Medium" },
     { value: 2, label: "Hard" },
   ];
+  
+
 
   useEffect(() => {
     setExamTiming(generatedQuestions.length * 2);

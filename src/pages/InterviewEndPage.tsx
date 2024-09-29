@@ -75,30 +75,30 @@ const ExamEndPage = () => {
 
   return (
     <>
-      <div className="flex items-center justify-between border-b bg-sky-100 border-slate-200">
+      <div className="flex items-center justify-between border-b bg-sky-100 fixed w-full top-0 border-slate-200">
         <div className="w-auto p-4">
           <img src={SmartGrader} alt="Smart Grader" width={140} />
         </div>
       </div>
-      <div className="container mx-auto w-full ">
+      <div className="container mx-auto w-full mt-24 ">
         <NotificationBar />
         <div className="bg-sky-100 rounded-md border border-solid  p-4 shadow-lg transition-shadow hover:shadow-xl">
           <div className="text-center ">
             <h2 className="text-4xl font-extrabold text-slate-700 mb-2">
               Exam End
             </h2>
-            <p className="text-lg text-slate-500 mb-4">
+            <p className="text-lg text-slate-500 mb-2">
               Result Based on AI Analysis
             </p>
-            <p className="text-md text-gray-600 mb-6">
+            {/* <p className="text-md text-gray-600 mb-6">
               We will highlight the following areas in your scorecard:
-            </p>
+            </p> */}
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-4">
             {highlights.map((item, index) => (
               <div
                 key={index}
-                className={`flex flex-col p-6 ${item.color} rounded-lg shadow-lg hover:shadow-2xl transition-shadow`}
+                className={`flex flex-col p-4 ${item.color} rounded-lg shadow-lg hover:shadow-2xl transition-shadow`}
               >
                 <div className="flex items-center mb-4">
                   <div className="text-4xl mr-4">{item.icon}</div>
@@ -173,7 +173,7 @@ const ExamEndPage = () => {
 </div>
 
         </div>
-        <div className="flex justify-center mt-4">
+        <div className="flex justify-center my-8">
           <button
             type="button"
             className="px-8 py-4 w-1/2 bg-sky-500 text-white rounded transition-all duration-300 transform hover:bg-sky-700 hover:scale-105"

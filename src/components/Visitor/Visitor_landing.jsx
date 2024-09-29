@@ -1,7 +1,7 @@
 import React,{useState,useEffect} from "react";
 import { FaArrowRight } from "react-icons/fa"; // Importing icon from react-icons
 import { motion } from "framer-motion"; // Importing framer-motion for animations
-
+import {ToastContainer } from "react-toastify";
 import logo from "../../assets/images/Landing/logo.png";
 import banner from "../../assets/images/Landing/banner.png";
 
@@ -37,18 +37,22 @@ function Visitor_landing({decryptedData}) {
 
   return (
     <div >
+      <ToastContainer/>
       {!value && (
         <div className="container mx-auto h-screen px-4 py-4 ">
    <>
-          <div className="flex py-10  flex-row justify-between">
-            <div>
-              <img src={logo} alt="Smart Grader Logo" className="h-11" />
+          <div className="flex py-4 sm:py-12 flex-col sm:flex-row justify-between max-sm:gap-2  ">
+            <div className="flex">
+              <img src={logo} alt="Smart Grader Logo" className="w-30 " />
             </div>
-            <button className="flex gap-2.5 justify-center item-center px-4 py-2 my-auto text-sm text-white bg-sky-500 rounded-md border border-sky-500 border-solid">
+            <div className="flex justify-end">
+            <button className="flex  w-50  gap-2.5 justify-center shadow-xl item-center px-4 py-2 my-auto text-sm text-white bg-sky-500 rounded-md border border-sky-500 border-solid">
               <div onClick={()=>navigate('/dashboard/help&support')}>Contact Support</div>
               <div> <MdArrowOutward size={20}/></div>
 
             </button>
+            </div>
+         
           </div>
         <div>
         <div className="flex flex-col  w-full lg:flex-row">
@@ -63,7 +67,7 @@ function Visitor_landing({decryptedData}) {
                   src={BlueLine}
                   className="mt-1.5 max-w-full aspect-[14.29] w-[307px]"
                 />
-                <div className="mt-2 text-lg leading-6">
+                <div className="mt-2 max-sm:text-sm md:text-md text-lg leading-6">
                   Your Gateway to Professional Growth
                 </div>
                 <div className="flex gap-2.5 justify-between items-center mt-20 whitespace-nowrap rounded-md border border-solid border-neutral-500 leading-[100%] max-md:mt-10 p-[2px]">
@@ -77,7 +81,7 @@ function Visitor_landing({decryptedData}) {
                  <CiLock size={30} className="mr-8"/>
                 </div>
                 <div
-                  className="flex justify-center items-center px-4 py-5 mt-3 w-full font-medium text-white bg-sky-500 rounded-md border border-sky-500 border-solid max-md:px-5 cursor-pointer"
+                  className="flex justify-center items-center px-4 py-5 mt-3 w-full font-medium text-white bg-sky-500 rounded-md border border-sky-500 hover:bg-sky-600 hover:border-sky-600 border-solid max-md:px-5 cursor-pointer"
                   
                 >
                   <button className="flex items-center gap-2.5" onClick={handleLogin}>
@@ -92,7 +96,7 @@ function Visitor_landing({decryptedData}) {
                     {errorMessage}
                   </div>
                 )}
-                <div className="mt-5 leading-5">
+                <div className="mt-5 leading-5 max-sm:text-sm md:text-md text-center">
                   We value your privacy and security. Rest assured, your
                   responses and personal information are encrypted and
                   confidential.
@@ -120,8 +124,8 @@ function Visitor_landing({decryptedData}) {
             </div>
            
           </div>
-          <div className="flex justify-center mt-10 lg:mt-36 items-center ">
-              <div className=" text-neutral-500">
+          <div className="flex justify-center  max-sm:text-xs md:text-sm  lg:mt-36 items-center ">
+              <div className=" text-neutral-500 my-12">
                 © Copyrights 2024 All Rights Reserved Smart Graders
               </div>
             </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useScreenshot } from "use-react-screenshot";
+import CountdownTimer  from "./CountdownTimer"
 // library
 
 import { ToastContainer } from "react-toastify";
@@ -23,7 +24,7 @@ import ErrorBoundary from "../../components/common/Error/ErrorBoundary";
 import Checklist from "../../components/Interview/Checklist";
 import CameraFeed from "../../components/Interview/CameraFeed";
 import NotificationBar from "../../components/common/Notification/NotificationBar";
-import CodingSection from "../codeCompiler/CodingSection"
+import CodingSection from "../codeCompiler/CodingSection";
 
 // imported Services
 import {
@@ -123,7 +124,6 @@ const InterviewScreen = () => {
       console.log("startExam details", response);
       setExamStarted(true);
       if (response.msg === "success") {
-      
         setExamId(response.exam_id);
         // You can handle more logic here based on the response
       } else {
@@ -139,11 +139,11 @@ const InterviewScreen = () => {
   // Exam end
   const handleExamEnd = async () => {
     setLoading(true);
-    setExamStarted(false)
+    setExamStarted(false);
     try {
       //await handleSubmitAnswer();
       await examEnd(examId, token);
-     
+
       setExamId("");
       setIsModalOpen(false);
       navigate(`/dashboard/question/exam-end`);
@@ -198,9 +198,6 @@ const InterviewScreen = () => {
     return () => clearInterval(intervalId);
   }, []); // Empty dependency array to run only once
 
- 
- 
-
   async function requestCameraAndMicrophone() {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
@@ -222,8 +219,6 @@ const InterviewScreen = () => {
       console.error("Error requesting media permissions:", error);
     }
   }
-
-  
 
   const fullScreenExit = useCallback(() => {
     if (document.fullscreenElement) {
@@ -328,18 +323,18 @@ const InterviewScreen = () => {
   return (
     <>
       <div className="h-auto ">
-      <div className="flex items-center justify-between border-b border-slate-200 bg-sky-100">
-        <div className='w-auto p-4 '>
-          <img src={SmartGrader} alt="Smart Grader" width={140} />
+        <div className="flex items-center justify-between border-b fixed top-0 z-10 w-full border-slate-200 bg-sky-100">
+          <div className="w-auto p-4 ">
+            <img src={SmartGrader} alt="Smart Grader" width={140} />
+          </div>
         </div>
-      </div>
-        <Sticky topOffset={80} className="fixed top-10 right-10 z-50">
+        <Sticky topOffset={80} className="fixed top-20 right-5 z-50">
           {isVisible && (
             <button
               className="bg-red-500 text-white rounded-full p-4 transition-transform hover:rotate-90 hover:scale-110 focus:outline-none"
               onClick={handleButtonClick}
             >
-              <AiOutlineClose size={30} />
+              <AiOutlineClose size={20} />
             </button>
           )}
         </Sticky>
@@ -349,21 +344,21 @@ const InterviewScreen = () => {
               className="bg-blue-400 text-white rounded-full p-4 transition-transform hover:rotate-90 hover:scale-110 focus:outline-none"
               onClick={enterFullscreen}
             >
-              <AiOutlineClose size={30} />
+              <AiOutlineClose size={20} />
             </button>
           )}
         </Sticky>
 
-        <div ref={ref} >
-          <div className="container mx-auto">
+        <div ref={ref} className="container mx-auto max-sm:pt-80  " >
+        <div className="max-sm:hidden mt-24">
             <NotificationBar />
           </div>
-          <div className=" container mx-auto  ">
+          <div className=" container mx-auto ">
             <ErrorBoundary>
               <div ref={fullscreenRef}>
-                <div className="flex flex-col md:flex-row gap-5 p-4 rounded-md border border-solid bg-white ">
-                  <div className="w-full py-4 md:w-1/3 ">
-                    <div className="p-4 flex bg-gray-200 rounded-lg  mb-4 justify-between">
+                <div className="flex flex-col lg:flex-row gap-5 p-4 rounded-md border border-solid bg-white ">
+                  <div className="w-full py-4 lg:w-1/3 ">
+                    <div className="p-4 flex flex-col sm:flex-row bg-gray-200 rounded-lg  mb-4 justify-between">
                       <div>
                         <div className="text-xl font-spline font-bold text-slate-800">
                           {setDetail.title}
@@ -372,7 +367,7 @@ const InterviewScreen = () => {
                           {setDetail.description}
                         </div>
                       </div>
-                      <div>
+                      <div className="flex-row sm:flex-col gap-5">
                         <div className="text-md font-spline font-medium text-slate-800">
                           Level:{setDetail.level}
                         </div>
@@ -381,20 +376,20 @@ const InterviewScreen = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="flex relative  mx-auto ">
-                      <div className="bg-black bg-opacity-50 w-40 h-24 text-sm  lg:w-48 lg:h-28  lg:text-md p-4 lg:gap-2 flex  flex-col absolute z-10 ml-4 rounded-md shadow-md mt-4">
+                    <div className="flex relative max-sm:fixed max-sm:top-20 max-sm:left-2 max-sm:max-w-[250px] z-10 mx-auto ">
+                      <div className="bg-black bg-opacity-50 max-sm:w-28 w-40 h-16 text-sm  lg:w-48 lg:h-28  lg:text-md p-4 lg:gap-2 flex  flex-col absolute z-10 ml-4 rounded-md shadow-md mt-4">
                         <div className="font-spline font-light">
                           {/* Face Verification Result */}
                           <div
                             className={`${
                               faceDetectionResults.faceVerified
-                                ? "text-blue-300 font-medium"
-                                : "text-red-500 font-medium"
+                                ? "text-blue-300 font-medium max-sm:text-sm"
+                                : "text-red-500 font-medium max-sm:text-sm"
                             }`}
                           >
                             {faceDetectionResults.faceVerified
-                              ? "Face Verified"
-                              : "Face Not Verified"}
+                              ? "Verified"
+                              : "Not Verified"}
                           </div>
 
                           {/* Face Count Detection, shown only if face is verified */}
@@ -402,43 +397,62 @@ const InterviewScreen = () => {
                             <div
                               className={`${
                                 faceDetectionResults.multiplePeopleDetected
-                                  ? "text-red-500 font-medium"
-                                  : "text-blue-300 font-medium"
+                                  ? "text-red-500 font-medium max-sm:text-sm"
+                                  : "text-blue-300 font-medium max-sm:text-sm"
                               }`}
                             >
                               {faceDetectionResults.multiplePeopleDetected
-                                ? "Multi Faces Detected"
-                                : "Single Face Detected"}
+                                ? "Multi User"
+                                : "Single User"}
                             </div>
                           )}
                         </div>
-                      </div> 
+                      </div>
 
-                      <div className="  w-full ">
+                      <div className="w-full ">
                         <CameraFeed
                           onFacesDetected={handleFacesDetected}
-                          examStarted={permissions.camera && permissions.microphone}
+                          examStarted={
+                            permissions.camera && permissions.microphone
+                          }
                           examEnd={examEnd}
                         />
                       </div>
-                        
                     </div>
-                 {examStarted ?(<>
-                  <div className="bg-gray-200 mt-4 rounded-lg">
-                      <div className="text-xl font-spline font-bold p-4">Assigment Questions</div>
-                      <div className="text-lg font-spline font-medium p-4">
-                      {questionsData[0].title}
-                      </div>
-                      
-                           
-                          </div>
-                
-                 </>):""}
-                   </div>
+                  </div>
 
-                  <div className="w-full md:w-2/3">
+                  <div className="w-full relative z-1 lg:w-2/3">
                     {examStarted ? (
-                     <CodingSection/>
+                      <>
+                        <div className="flex flex-col sm:flex-row w-full  ">
+                          {" "}
+                          <div className="flex bg-gray-200  rounded-lg sm:w-2/3">
+                            <div className="p-4"> 
+                              <div className="text-xl font-spline font-bold ">
+                                Assigment Questions
+                              </div>
+                              <div className="text-lg font-spline font-medium pt-2 ">
+                              {questionsData[0].title}
+                            </div>
+                            </div>
+
+                          
+                          </div>
+                          <div className="flex flex-col  rounded-lg  sm:w-1/3 px-4 justify-around items-center ">
+                            <div className="  text-2xl text-sky-400 font-bold font-mono p-2 ">Time Left</div>
+                            <div>
+                              <CountdownTimer/>
+                       
+                            </div>
+                          
+                          </div>
+                         
+                        </div>
+
+                        <div className="mt-4">
+                            <CodingSection />
+                            </div>
+                      </>
                     ) : (
                       <>
                         <div className="space-y-8 w-full flex  flex-col bg-white p-4 ">
@@ -508,7 +522,7 @@ const InterviewScreen = () => {
                             </div>
                           </>
                         ) : (
-                          <div className="flex w-5/6 mx-auto justify-between gap-5  py-4">
+                          <div className="flex w-5/6 mx-auto max-sm:flex-col justify-between gap-5  py-4">
                             <button
                               className="px-4  w-full text-lg font-spline flex justify-center items-center gap-3  font-medium text-white cursor-pointer bg-gray-500 hover:bg-gray-600  p-4 rounded "
                               onClick={() => {

@@ -20,7 +20,7 @@ function SideBar() {
 
   const handleLogoutClick = () => {
     serviceLogout();
-    window.location.href = 'https://smart-grader-landing-last.vercel.app/';
+    window.location.href = 'https://smartgrader.in/';
   };
 
   return (

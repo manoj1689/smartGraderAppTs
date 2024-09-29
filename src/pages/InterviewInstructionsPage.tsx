@@ -53,18 +53,18 @@ const InterviewInstructions: React.FC = () => {
   
   return (
     <div className="bg-gray-100 min-h-screen">
-      <div className="flex items-center justify-between border-b border-slate-200 bg-sky-100 shadow-md p-4">
+      <div className="flex items-center justify-between border-b fixed w-full top-0 border-slate-200 bg-sky-100 shadow-md p-4">
         <div className='w-auto'>
           <img src={SmartGrader} alt="Smart Grader" width={140} />
         </div>
       </div>
-      <div className='container mx-auto'>
+      <div className='container mx-auto lg:pt-24'>
         <NotificationBar/>
       </div>
       <div className="container lg:w-5/6 mx-auto w-full mt-6">
         <div className="flex rounded-md shadow-lg border border-solid m-4 border-black border-opacity-10 bg-white">
           <div className="w-full p-6">
-            <h1 className="text-3xl font-bold text-center text-slate-800 mb-4">Interview Instructions (Please Read Carefully)</h1>
+            <h1 className="max-sm:text-2xl text-3xl font-bold  text-slate-800 mb-4">Interview Instructions (Please Read Carefully)</h1>
             <div className='flex w-full flex-col md:flex-row gap-6 my-4'>
               <div className="space-y-4 w-full md:w-1/2 rounded-md border border-solid bg-sky-100 border-gray-300 p-6 shadow-sm">
                 <h2 className="text-lg font-semibold text-slate-800">Interview Details</h2>

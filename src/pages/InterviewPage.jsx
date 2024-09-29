@@ -135,6 +135,12 @@ const InterviewScreen = () => {
     }
   };
 
+// const handleCoding=()=>{
+//   navigate(`/dashboard/question/codingsection/${interview?.id}`, {
+//     state: { interview }
+//   });
+// }
+
   // Exam end
   const handleExamEnd = async () => {
     setLoading(true);
@@ -326,41 +332,43 @@ const InterviewScreen = () => {
   };
   return (
     <>
-      <div className="h-auto ">
-      <div className="flex items-center justify-between border-b border-slate-200 bg-sky-100">
+      <div className="flex" >
+      <div className="flex items-center  justify-between border-b  w-full fixed top-0 z-50  border-slate-200 bg-sky-100">
         <div className='w-auto p-4 '>
           <img src={SmartGrader} alt="Smart Grader" width={140} />
         </div>
       </div>
-        <Sticky topOffset={80} className="fixed top-10 right-10 z-50">
+        <Sticky topOffset={80} className="fixed max-sm:top-20 max-sm:right-5 top-20 right-10 z-50">
           {isVisible && (
             <button
               className="bg-red-500 text-white rounded-full p-4 transition-transform hover:rotate-90 hover:scale-110 focus:outline-none"
               onClick={handleButtonClick}
             >
-              <AiOutlineClose size={30} />
+              <AiOutlineClose size={20} />
             </button>
           )}
         </Sticky>
-        <Sticky topOffset={80} className="fixed top-10 right-10 z-50">
+        <Sticky topOffset={80} className="fixed   max-sm:top-20 max-sm:right-5 top-20 right-10 z-50">
           {!isVisible && (
             <button
               className="bg-blue-400 text-white rounded-full p-4 transition-transform hover:rotate-90 hover:scale-110 focus:outline-none"
               onClick={enterFullscreen}
             >
-              <AiOutlineClose size={30} />
+              <AiOutlineClose size={20} />
             </button>
           )}
         </Sticky>
 
-        <div ref={ref} >
-          <div className="container mx-auto">
+        <div ref={ref} className="container mx-auto max-sm:pt-80  " >
+          <div className="max-sm:hidden mt-24">
             <NotificationBar />
           </div>
-          <div className=" container mx-auto  ">
+         
+          <div className="">
             <ErrorBoundary>
               <div ref={fullscreenRef}>
-                <div className="flex flex-col md:flex-row gap-5 p-4 rounded-md border border-solid bg-white ">
+             
+                <div className="flex flex-col md:flex-row gap-5 p-4 m-2 rounded-md border border-solid bg-white ">
                   <div className="w-full  md:w-1/2 lg:w-3/5 bg-gray-200 rounded-md p-4">
                     <div className="px-4 flex justify-between">
                       <div>
@@ -380,7 +388,7 @@ const InterviewScreen = () => {
                         </div>
                       </div>
                     </div>
-                    <div className="flex relative  mx-auto ">
+                    <div className="max-sm:fixed max-sm:top-20 px-4 max-w-xs:w-full max-sm:max-w-[300px] max-sm:z-10  max-sm:left-0 sm:relative mx-auto ">
                       <div className="bg-black bg-opacity-50 w-40 h-24 text-sm  lg:w-48 lg:h-28  lg:text-md p-4 lg:gap-2 flex  flex-col absolute z-10 ml-4 lg:ml-20 rounded-md shadow-md mt-4">
                         <div className="font-spline font-light">
                           {/* Face Verification Result */}
@@ -413,7 +421,7 @@ const InterviewScreen = () => {
                         </div>
                       </div> 
 
-                      <div className="relative w-full lg:w-5/6   mx-auto">
+                      <div className="relative w-full lg:w-5/6 mx-auto">
                         <CameraFeed
                           onFacesDetected={handleFacesDetected}
                           examStarted={permissions.camera && permissions.microphone}
@@ -421,14 +429,16 @@ const InterviewScreen = () => {
                         />
                       </div>
                     </div>
-                    <div className="border border-gray-300 bg-white bg-opacity-70 shadow-lg rounded-lg mt-4 p-4">
+                    {examStarted ?
+                      <div className="border border-gray-300 bg-white bg-opacity-70 shadow-lg rounded-lg mt-4 p-4">
                       <p>
                         <span className="font-semibold text-sky-400">
                           Speech Text -
                         </span>{" "}
                         {transcript}
                       </p>
-                    </div>
+                    </div>:""}
+                  
                   </div>
 
                   <div className="w-full md:w-1/2 lg:w-2/5">
@@ -440,11 +450,16 @@ const InterviewScreen = () => {
                           examID={examId}
                           onTranscriptChange={handleTranscriptChange}
                         />
+                        {/* <div className="flex w-full justify-end ">
+                        <button onClick={handleCoding} className="my-4 py-4 px-8 bg-sky-400 rounded-md hover:bg-sky-600">start Coding Round</button>
+                        </div> */}
+                      
                         {error && (
                           <div className="error mt-4 text-red-500">{error}</div>
                         )}
                         <ToastContainer />
                       </div>
+                      
                     ) : (
                       <>
                         <div className="space-y-8 w-full flex  flex-col bg-white p-4 ">
@@ -483,7 +498,7 @@ const InterviewScreen = () => {
                     )}
                   </div>
                 </div>
-                <div className="flex flex-col">
+                <div className="flex flex-col ">
                   {!examStarted && (
                     <div className="flex flex-col justify-around">
                       <div className="space-y-2 text-center">
@@ -514,7 +529,7 @@ const InterviewScreen = () => {
                             </div>
                           </>
                         ) : (
-                          <div className="flex w-5/6 mx-auto justify-between gap-5  py-4">
+                          <div className="flex w-5/6 mx-auto max-sm:flex-col justify-between gap-5 py-4">
                             <button
                               className="px-4  w-full text-lg font-spline flex justify-center items-center gap-3  font-medium text-white cursor-pointer bg-gray-500 hover:bg-gray-600  p-4 rounded "
                               onClick={() => {

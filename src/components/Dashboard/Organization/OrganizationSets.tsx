@@ -87,7 +87,7 @@ const OrganizationSets: React.FC = () => {
       />
       {currentItems.length > 0 ? (
         <div className="mt-8 justify-center ">
-                   <div className="px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 lg:gap-10 ">
+                   <div className="px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 lg:gap-10 xl:gap-5 ">
             {currentItems.map((card) => (
             
                 <div
@@ -120,15 +120,15 @@ const OrganizationSets: React.FC = () => {
                   
                 </div>
               
-                <div className="flex justify-between items-center ">
+                <div className="flex justify-between mt-4 items-center ">
                   <div className="flex items-center  gap-2">
-                    <img
-                      loading="lazy"
-                      alt="grader"
-                      src={graderLogo}
-                      className="w-10 h-10 rounded-md border border-gray-300  shadow-sm"
-                    />
-                    <div className="text-md font-medium text-gray-500 bg-sky-200 p-2 rounded">SmartGrader</div>
+                  <img
+                  loading="lazy"
+                  alt="grader"
+                  src={graderLogo}
+                  className="w-10 h-8 rounded-md border border-gray-300 bg-sky-300 p-1  shadow-sm"
+                />
+                <div className="text-md font-medium text-gray-500">SmartGrader</div>
                   </div>
                   <div className="">
                   <img

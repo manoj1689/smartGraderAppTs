@@ -17,7 +17,7 @@ const CodingSection: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center w-full h-screen p-4">
+    <div className="flex flex-col items-center w-full p-4">
       {/* Code Editor */}
       <CodeEditor
         language={language}
@@ -27,12 +27,8 @@ const CodingSection: React.FC = () => {
         onSubmitCode={handleSubmitCode}
       />
 
-      {/* Display output message */}
-      {outputMessage && (
-        <div className="mt-4 p-4 bg-gray-200 text-black rounded w-full">
-          <p>{outputMessage}</p>
-        </div>
-      )}
+    
+
     </div>
   );
 };
