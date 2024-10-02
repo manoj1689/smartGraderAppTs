@@ -80,9 +80,9 @@ const ExamEndPage = () => {
           <img src={SmartGrader} alt="Smart Grader" width={140} />
         </div>
       </div>
-      <div className="container mx-auto w-full mt-24 ">
+      <div className="container mx-auto w-full lg:mt-24 ">
         <NotificationBar />
-        <div className="bg-white rounded-md border border-gray-300 p-4 shadow-lg transition-shadow hover:shadow-xl">
+        <div className="bg-white rounded-md border mx-4 border-gray-300 p-4 shadow-lg transition-shadow hover:shadow-xl">
           <div className="text-center ">
             <h2 className="text-4xl font-extrabold text-slate-700 mb-2">
               Exam End

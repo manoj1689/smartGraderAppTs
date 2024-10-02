@@ -236,7 +236,7 @@ const LineScoreCard: React.FC = () => {
                       </div>
                     </div>
 
-                    <div className="flex justify-between items-center ">
+                    <div className="flex flex-col sm:flex-row justify-between gap-2 sm:items-center ">
                      
                       <div>
                         <div

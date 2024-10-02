@@ -69,10 +69,10 @@ const MobileBar: React.FC = () => {
       {isSidebarOpen && (
         <div
           ref={sidebarRef}
-          className="flex fixed z-50 flex-col mt-[72px] w-56 flex-grow shadow-md bg-white "
+          className="flex fixed z-50 flex-col mt-[72px] w-56  flex-grow shadow-md bg-white "
           style={{ height: 'calc(100vh - 72px)', scrollBehavior: 'smooth' }}
         >
-          <div className="flex flex-col w-full p-2 flex-grow overflow-y-auto">
+          <div className="flex flex-col w-full p-2 pb-16 flex-grow overflow-y-auto">
         <div className="flex flex-col flex-grow space-y-8">
           {/* Dashboard */}
           <div
@@ -191,7 +191,7 @@ const MobileBar: React.FC = () => {
             <AiOutlineLogout
               className={`w-6 h-6 ${activeItem === 'Logout' ? 'text-white' : 'text-gray-700'}`}
             />
-            <span className="ml-4">Logout</span>
+            <span className="ml-4 ">Logout</span>
           </div>
         </div>
       </div>
