@@ -52,8 +52,8 @@ const InterviewInstructions: React.FC = () => {
   };
   
   return (
-    <div className="bg-gray-100 min-h-screen">
-      <div className="flex items-center justify-between border-b fixed w-full top-0 border-slate-200 bg-sky-100 shadow-md p-4">
+    <div className=" min-h-screen">
+      <div className="flex items-center justify-between border-b fixed w-full top-0 border-slate-200 bg-white shadow-md p-4">
         <div className='w-auto'>
           <img src={SmartGrader} alt="Smart Grader" width={140} />
         </div>

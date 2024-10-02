@@ -75,14 +75,14 @@ const ExamEndPage = () => {
 
   return (
     <>
-      <div className="flex items-center justify-between border-b bg-sky-100 fixed w-full top-0 border-slate-200">
+      <div className="flex items-center justify-between border-b bg-white fixed w-full top-0 border-slate-200">
         <div className="w-auto p-4">
           <img src={SmartGrader} alt="Smart Grader" width={140} />
         </div>
       </div>
       <div className="container mx-auto w-full mt-24 ">
         <NotificationBar />
-        <div className="bg-sky-100 rounded-md border border-solid  p-4 shadow-lg transition-shadow hover:shadow-xl">
+        <div className="bg-white rounded-md border border-gray-300 p-4 shadow-lg transition-shadow hover:shadow-xl">
           <div className="text-center ">
             <h2 className="text-4xl font-extrabold text-slate-700 mb-2">
               Exam End

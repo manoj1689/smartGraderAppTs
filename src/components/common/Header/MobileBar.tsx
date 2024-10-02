@@ -52,7 +52,7 @@ const MobileBar: React.FC = () => {
 
   return (
     <div className="w-full">
-      <div className="flex flex-row w-full  fixed z-50 items-center justify-between px-4 py-5 border-b bg-sky-100 border-gray-200" >
+      <div className="flex flex-row w-full  fixed z-50 items-center justify-between px-4 py-5 border-b bg-white border-gray-200" >
         <div className='flex items-center gap-4 '>
           <ImMenu
             size={30}
@@ -69,14 +69,14 @@ const MobileBar: React.FC = () => {
       {isSidebarOpen && (
         <div
           ref={sidebarRef}
-          className="flex fixed z-50 flex-col mt-[72px] w-56 flex-grow shadow-md bg-sky-100 "
+          className="flex fixed z-50 flex-col mt-[72px] w-56 flex-grow shadow-md bg-white "
           style={{ height: 'calc(100vh - 72px)', scrollBehavior: 'smooth' }}
         >
-          <div className="flex flex-col w-full py-4 flex-grow overflow-y-auto">
+          <div className="flex flex-col w-full p-2 flex-grow overflow-y-auto">
         <div className="flex flex-col flex-grow space-y-8">
           {/* Dashboard */}
           <div
-            className={`flex items-center w-full p-4 text-base cursor-pointer transition-all duration-300 ${
+            className={`flex items-center w-full p-4 text-base cursor-pointer rounded  transition-all duration-300 ${
               activeItem === 'Dashboard'
                 ? 'bg-sky-700 text-white shadow-md hover:bg-sky-900'
                 : 'text-gray-700 hover:bg-sky-200 hover:text-sky-600 shadow-md hover:shadow-lg'
@@ -93,7 +93,7 @@ const MobileBar: React.FC = () => {
           </div>
           {/* Mock Interviews */}
           <div
-            className={`flex items-center w-full p-4 text-base cursor-pointer transition-all duration-300 ${
+            className={`flex items-center w-full p-4 text-base cursor-pointer rounded  transition-all duration-300 ${
               activeItem === 'Mock Interviews'
                 ? 'bg-sky-700 text-white shadow-md hover:bg-sky-900'
                 : 'text-gray-700 hover:bg-sky-200 hover:text-sky-600 shadow-md hover:shadow-lg'
@@ -110,7 +110,7 @@ const MobileBar: React.FC = () => {
           </div>
           {/* Progress Tracker */}
           <div
-            className={`flex items-center w-full p-4 text-base cursor-pointer transition-all duration-300 ${
+            className={`flex items-center w-full p-4 text-base cursor-pointer rounded  transition-all duration-300 ${
               activeItem === 'Progress Tracker'
                 ? 'bg-sky-700 text-white shadow-md hover:bg-sky-900'
                 : 'text-gray-700 hover:bg-sky-200 hover:text-sky-600 shadow-md hover:shadow-lg'
@@ -127,7 +127,7 @@ const MobileBar: React.FC = () => {
           </div>
           {/* Quick Access */}
           <div
-            className={`flex items-center w-full p-4 text-base cursor-pointer transition-all duration-300 ${
+            className={`flex items-center w-full p-4 text-base cursor-pointer rounded  transition-all duration-300 ${
               activeItem === 'Quick Access'
                 ? 'bg-sky-700 text-white shadow-md hover:bg-sky-900'
                 : 'text-gray-700 hover:bg-sky-200 hover:text-sky-600 shadow-md hover:shadow-lg'
@@ -144,7 +144,7 @@ const MobileBar: React.FC = () => {
           </div>
           {/* Settings */}
           <div
-            className={`flex items-center w-full p-4 text-base cursor-pointer transition-all duration-300 ${
+            className={`flex items-center w-full p-4 text-base cursor-pointer rounded  transition-all duration-300 ${
               activeItem === 'Settings'
                 ? 'bg-sky-700 text-white shadow-md hover:bg-sky-900'
                 : 'text-gray-700 hover:bg-sky-200 hover:text-sky-600 shadow-md hover:shadow-lg'
@@ -164,7 +164,7 @@ const MobileBar: React.FC = () => {
         <div className="flex flex-col space-y-4 mb-4">
           {/* Help & Support */}
           <div
-            className={`flex items-center w-full p-4 text-base cursor-pointer transition-all duration-300 ${
+            className={`flex items-center w-full p-4 text-base cursor-pointer rounded  transition-all duration-300 ${
               activeItem === 'Help & Support'
                 ? 'bg-sky-800 text-white shadow-md hover:bg-sky-800'
                 : 'text-gray-700 hover:bg-sky-200 hover:text-sky-600 shadow-md hover:shadow-lg'
@@ -181,7 +181,7 @@ const MobileBar: React.FC = () => {
           </div>
           {/* Logout */}
           <div
-            className={`flex items-center w-full p-4 text-base cursor-pointer transition-all duration-300 ${
+            className={`flex items-center w-full p-4 text-base cursor-pointer rounded  transition-all duration-300 ${
               activeItem === 'Logout'
                 ? 'bg-sky-800 text-white shadow-md hover:bg-sky-800'
                 : 'text-gray-700 hover:bg-sky-200 hover:text-sky-600 shadow-md hover:shadow-lg'

@@ -124,7 +124,7 @@ const ViewJobs: React.FC = () => {
     <div className="flex flex-col p-4">
       <NotificationBar />
 
-      <div className="bg-sky-100 rounded-md border border-solid border-black border-opacity-10 px-4 py-4">
+      <div className="bg-white rounded-md border border-solid border-black border-opacity-10 px-4 py-4">
         <ToastContainer />
         <div className="flex items-center gap-5">
           <FaLaptopCode size={30} color="#01AFF4" />

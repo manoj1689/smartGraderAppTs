@@ -11,8 +11,8 @@ import Database from "../../../assets/images/Organisation/Database.jpg";
 import codingDev from "../../../assets/images/Individual/codingdeveloper.png";
 import star from "../../../assets/images/Individual/Star.png";
 import java from "../../../assets/images/Individual/javaLogo.png";
-import Coding from "../../../assets/images/Organisation/coding.png";
-import DatePicker from "react-datepicker";
+import { Rating } from "@smastrom/react-rating";
+import "@smastrom/react-rating/style.css";
 import { MdArrowOutward } from "react-icons/md";
 import { CreateJobService } from "../../../services/api/CreateJobService";
 import { fetchSetDetail } from "../../../services/api/SetService";
@@ -64,7 +64,7 @@ const CreateJobs: React.FC = () => {
   const handleDateRangeChange = (ranges: any) => {
     setDateRange(ranges.selection);
   };
- 
+
   const startDate = dateRange.startDate;
   const endDate = dateRange.endDate;
   const handleChange = (experience: Option | null) => {
@@ -108,8 +108,8 @@ const CreateJobs: React.FC = () => {
     <div className="p-4 w-full h-full">
       <NotificationBar />
 
-      <div className="bg-sky-100 my-5 rounded-md border border-solid border-black border-opacity-10 p-4">
-        <div className="flex flex-row items-center max-lg:my-5 space-x-4">
+      <div className="bg-white sm:my-5 rounded-md border border-solid border-black border-opacity-10 p-4">
+        <div className="flex flex-row items-center max-lg:my-5 space-x-4 ">
           <FaLaptopCode size={30} color="#01AFF4" />
           <span className=" text-lg font-semi-bold font-spline text-slate-800">
             Current Job Opening
@@ -118,7 +118,7 @@ const CreateJobs: React.FC = () => {
         <div className="shrink-0 mt-3.5 h-px border border-solid bg-black bg-opacity-10 border-black border-opacity-10 max-md:max-w-full" />
         <div className="flex flex-col lg:flex-row">
           <div className="lg:w-7/12  order-2 lg:order-1 px-4">
-            <div className="bg-sky-100  my-5  rounded-lg">
+            <div className="bg-sky-100 p-2  my-5  rounded-lg">
               <form>
                 <div className=" w-full border-solid max-md:flex-wrap max-md:max-w-full">
                   <div className="flex flex-col gap-3 ">
@@ -172,13 +172,13 @@ const CreateJobs: React.FC = () => {
                   </div>
                   {/* <div>Your Selected Id Of Question Set: {selectedSetId}</div> */}
                   {questionSet && (
-                    <div className="flex flex-wrap max-lg:justify-center max-lg:align-center gap-2 px-5 py-10 cursor-pointer">
+                    <div className="flex max-lg:justify-center max-lg:align-center gap-2 px-5 py-10 cursor-pointer">
                       <div
                         key={questionSet.id}
-                        className="flex justify-between px-3 py-6 font-light rounded-md border border-gray-300 shadow-md text-gray-700  transform transition-transform duration-300 hover:scale-105"
+                        className="flex min-w-72   justify-between px-3 py-6 font-light rounded-md border border-gray-300 shadow-md text-gray-700 hover:bg-sky-200  transform transition-transform duration-300 hover:scale-105"
                       >
-                        <div className="flex flex-col  gap-2">
-                          <div className="flex bg-sky-300 p-4 rounded-md justify-center">
+                        <div className="flex w-full flex-col  gap-2">
+                          <div className="flex bg-white p-2 rounded-md justify-center">
                             <img
                               loading="lazy"
                               src={codingDev}
@@ -186,41 +186,41 @@ const CreateJobs: React.FC = () => {
                               className="w-20 h-20"
                             />
                           </div>
-                          <div className="flex flex-col">
-                            <div className="flex mt-2.5 w-72 text-lg font-medium leading-5 text-gray-800">
-                              <div className="flex w-full justify-around">
-                                <div>
-                                  <div>{questionSet.title}</div>
-                                  <div className="flex gap-1 self-start py-2 text-xs leading-4 text-gray-500">
-                                    <img
-                                      loading="lazy"
-                                      alt="star"
-                                      src={star}
-                                      className="shrink-0 aspect-[1.09] fill-amber-400 w-[17px] h-[17px]"
-                                    />
-                                    <div className="flex-auto">
-                                      {questionSet.rating}/5
-                                    </div>
-                                  </div>
-                                </div>
-                                <div>
-                                  <img
-                                    loading="lazy"
-                                    alt="java"
-                                    src={java}
-                                    className="w-12 h-12"
-                                  />
-                                </div>
+                          <div className="flex w-full  justify-between items-center gap-2  ">
+                            <div className="px-3 py-1 text-sm text-gray-500 border border-gray-500 rounded-md">
+                              Frontend
+                            </div>
+                            <div className="flex  justify-center items-center py-2 gap-2">
+                              <div className="">
+                                <img
+                                  loading="lazy"
+                                  alt="java"
+                                  src={java}
+                                  className="w-12 h-12"
+                                />
                               </div>
                             </div>
+                          </div>
+                          <div className="flex justify-between mt-2 items-center ">
+                            <div className="flex justify-between items-center  gap-5">
+                              <div className="text-md font-medium text-gray-500">
+                                SmartGrader
+                              </div>
+                            </div>
+                            <Rating style={{ maxWidth: 100 }} value={4} />
+                          </div>
+                          <div className="flex flex-col">
+                            <div className="text-lg">{questionSet.title}</div>
 
-                            <div className="flex gap-5 mt-3 justify-around items-start px-0.5 text-sm leading-5">
-                              <div className="flex flex-col gap-1 ">
+                            <div className="flex gap-5 mt-3 justify-between items-start px-0.5 text-sm leading-5">
+                              <div className="flex flex-row gap-1 ">
                                 <div className="flex gap-1">
                                   <div className="flex justify-center items-center">
                                     <CiClock2 size={14} color="#01AFF4" />
                                   </div>
-                                  <div>{questionSet.duration} Min</div>
+                                  <div className="text-md text-gray-500">
+                                    {questionSet.duration} Min
+                                  </div>
                                 </div>
                                 <div className="flex gap-1">
                                   <div className="flex justify-center items-center">
@@ -229,14 +229,9 @@ const CreateJobs: React.FC = () => {
                                       color="#01AFF4"
                                     />
                                   </div>
-                                  <div>
+                                  <div className="text-md text-gray-500">
                                     {questionSet.questions_count} Questions
                                   </div>
-                                </div>
-                              </div>
-                              <div>
-                                <div className="flex justify-center items-center self-stretch px-8 py-1 text-xs whitespace-nowrap bg-sky-300 rounded-md border border-solid border-gray-300">
-                                  Frontend
                                 </div>
                               </div>
 
@@ -349,12 +344,10 @@ const CreateJobs: React.FC = () => {
               {/* Show DateRangePicker for md and above */}
               <div className="hidden   md:block lg:hidden xl:block">
                 <DateRangePicker
-                 
                   ranges={[dateRange]}
                   onChange={handleDateRangeChange}
                   editableDateInputs={true}
                   className="lg:w-[85%] 2xl:w-full ml-10 custom-date-range-picker"
-                  
                 />
               </div>
 
@@ -414,7 +407,7 @@ const CreateJobs: React.FC = () => {
             </button>
           </div>
 
-          <div className="flex bg-sky-100 rounded-md justify-center items-start my-4 py-12 px-8 order-1 lg:order-2 lg:w-5/12  max-sm:max-h-[300px] overflow-y-auto">
+          <div className="flex bg-white rounded-md justify-center items-start my-4 py-12 px-8 order-1 lg:order-2 w-full lg:w-5/12  max-sm:max-h-[300px] overflow-y-auto">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-6 w-full">
               {[
                 {
@@ -456,9 +449,9 @@ const CreateJobs: React.FC = () => {
               ].map((job, index) => (
                 <div
                   key={index}
-                  className={`${job.bgColor} p-6 shadow-lg rounded-lg flex items-center space-x-4 hover:${job.hoverColor} hover:scale-105 transition-transform duration-300`}
+                  className={`${job.bgColor} p-6 shadow-lg rounded-lg flex  max-sm:flex-col gap-2 items-start sm:pace-x-4 hover:${job.hoverColor} hover:scale-105 transition-transform duration-300`}
                 >
-                  <div className="text-4xl">{job.icon}</div>
+                  <div className="text-4xl mt-1">{job.icon}</div>
                   <div>
                     <h3 className="text-xl font-bold text-gray-800">
                       {job.title}

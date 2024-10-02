@@ -130,11 +130,11 @@ const CurrentJobs: React.FC = () => {
 
   return (
     <div>
-      <div className="rounded-md mx-2 bg-sky-100 border border-solid px-5 my-10 border-black border-opacity-10 shadow-lg">
+      <div className="rounded-md mx-2 bg-white border border-solid px-5 my-10 border-black border-opacity-10 shadow-lg">
         <div className="flex flex-col md:flex-row my-3 gap-3 justify-between">
-          <div className="flex flex-row items-center space-x-5 bg-sky-200 p-4 rounded-lg shadow-md">
+          <div className="flex flex-row items-center space-x-5 bg-sky-100 p-4 rounded-lg shadow-md">
             <div className="flex ">
-              <FaLaptopCode size={34} className="text-sky-500" />
+              <FaLaptopCode size={30} className="text-sky-500" />
               <span className="text-lg md:text-xl font-semibold pl-4 text-slate-800">
                 AI-Optimized Job Listings
               </span>

@@ -9,9 +9,10 @@ import { HiDotsVertical } from "react-icons/hi";
 import { FaEdit, FaEye } from "react-icons/fa";
 import { RiDeleteBinFill } from "react-icons/ri";
 import { MdOutlineDataset, MdArrowOutward } from "react-icons/md";
-import graderLogo from "../../../assets/images/Individual/graderIcon.png";
+
 import codingDev from "../../../assets/images/Individual/codingdeveloper.png";
-import star from "../../../assets/images/Individual/Star.png";
+import { Rating } from "@smastrom/react-rating";
+import "@smastrom/react-rating/style.css";
 import java from "../../../assets/images/Individual/javaLogo.png";
 import noRecordFound from "../../../assets/images/Individual/NoRecordFound.png";
 import { Card, updatedSetData } from "../../../types/interfaces/interface";
@@ -115,11 +116,11 @@ const MySets: React.FC = () => {
 
   return (
     <div className="mx-2">
-      <div className="bg-sky-100 p-4 rounded-md shadow-lg">
+      <div className=" p-4 rounded-md shadow-lg">
         <ToastContainer />
         <div className="">
-        <div className="flex flex-col sm:flex-row gap-6 sm:gap-8 ">
-  <div className="flex items-center gap-4 p-4 bg-sky-200 rounded-lg shadow-md">
+        <div className="flex flex-col justify-between sm:flex-row gap-6 sm:gap-8 ">
+  <div className="flex  items-center gap-4 p-4">
     <span>
       <MdOutlineDataset size={32} color="#01AFF4" />
     </span>
@@ -149,52 +150,53 @@ const MySets: React.FC = () => {
                 }`}
               >
                 <div>
-                  <div className="flex flex-col justify-center items-center   rounded-lg shadow-sm">
-                    <div className="flex bg-sky-200 w-full p-2 justify-center rounded ">
-                      <img
-                        loading="lazy"
-                        alt="Coding"
-                        src={codingDev}
-                        className="w-24 h-24 object-cover rounded-md"
-                      />
-                    </div>
-                    <div className="flex w-full  justify-between items-center gap-2  px-3 ">
-                      <div className="flex  justify-center items-center py-2 gap-2">
-                        <img
-                          loading="lazy"
-                          alt="star"
-                          src={star}
-                          className="w-5 h-5 text-yellow-500"
-                        />
-                        <span className="text-base pt-1 font-medium text-gray-800">
-                          {card.rating}/5
-                        </span>
-                      </div>
-                      <div className="px-3 py-1 text-sm text-sky-800 bg-sky-200 rounded-md">
-                        Frontend
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="flex justify-between mt-4 items-center ">
-                    <div className="flex items-center  gap-2">
-                    <img
+                <div className="flex flex-col justify-center items-center   rounded-lg shadow-sm">
+              <div className="flex bg-white w-full p-2 justify-center rounded ">
+                <img
+                  loading="lazy"
+                  alt="Coding"
+                  src={codingDev}
+                  className="w-20 h-20 object-cover rounded-md"
+                />
+              </div>
+              <div className="flex w-full  justify-between items-center gap-2   ">
+              <div className="px-3 py-1 text-sm text-gray-500 border border-gray-500 rounded-md">
+                Frontend
+              </div>
+                <div className='flex  justify-center items-center py-2 gap-2'>
+                {/* <img
+                  loading="lazy"
+                  alt="star"
+                  src={star}
+                  className="w-5 h-5 text-yellow-500"
+                />
+                <span className="text-base pt-1 font-medium text-gray-900">{card.rating}/5</span> */}
+   <div className="">
+              <img
+                  loading="lazy"
+                  alt="java"
+                  src={java}
+                  className="w-12 h-12"
+                />
+              </div>
+                </div> 
+              
+              </div>
+              
+            </div>
+          
+            <div className="flex justify-between mt-2 items-center ">
+              <div className="flex items-center  gap-2">
+                {/* <img
                   loading="lazy"
                   alt="grader"
                   src={graderLogo}
                   className="w-10 h-8 rounded-md border border-gray-300 bg-sky-300 p-1  shadow-sm"
-                />
+                /> */}
                 <div className="text-md font-medium text-gray-500">SmartGrader</div>
-                    </div>
-                    <div className="">
-                      <img
-                        loading="lazy"
-                        alt="java"
-                        src={java}
-                        className="w-12 h-12"
-                      />
-                    </div>
-                  </div>
+              </div>
+              <Rating style={{ maxWidth: 100 }} value={4} />
+            </div>
 
                   <h3 className="py-2 text-lg font-medium font-spline text-slate-700">
                     {card.title}

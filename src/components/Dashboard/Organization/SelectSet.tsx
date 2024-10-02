@@ -11,10 +11,11 @@ import { CiClock2 } from "react-icons/ci";
 import { IoHelpCircleOutline } from "react-icons/io5";
 import { HiDotsVertical, HiDotsHorizontal } from "react-icons/hi";
 import codingDev from "../../../assets/images/Individual/codingdeveloper.png";
-import star from "../../../assets/images/Individual/Star.png";
 import java from "../../../assets/images/Individual/javaLogo.png";
 import noRecordFound from "../../../assets/images/Individual/NoRecordFound.png";
 import { Card } from "../../../types/interfaces/interface";
+import { Rating } from "@smastrom/react-rating";
+import "@smastrom/react-rating/style.css";
 import {
   dropEllipsis,
   dropNav,
@@ -104,7 +105,7 @@ const SelectSet: React.FC = () => {
           setListOfAllIds={setListOfAllId}
           setMatchingQuestionSets={setMatchingQuestionSets}
         />
-      <div className="rounded-md border border-solid m-4 p-4 border-black border-opacity-10 bg-sky-100 shadow-md">
+      <div className="rounded-md border border-solid m-4 p-4 border-black border-opacity-10 bg-white shadow-md">
      
         {currentItems.length > 0 ? (
           <div className="flex w-full self-center ">
@@ -113,62 +114,67 @@ const SelectSet: React.FC = () => {
                 <div
                   key={card.id}
                   onClick={() => handleCardClick(card.id.toString())}
-                  className={`flex flex-col   justify-between  px-3 py-6 font-light rounded-md border cursor-pointer border-sky-200  border-solid text-neutral-500 ${
-                    selectedSetId === card.id.toString() ? "bg-sky-200" : "bg-white"
+                  className={`flex flex-col   justify-between  px-3 py-6 font-light rounded-md border cursor-pointer border-sky-200  hover:border-gray-500  border-solid text-neutral-500 ${
+                    selectedSetId === card.id.toString() ? "border-sky-300 bg-sky-200 scale-105" : "bg-white"
                   }`}
                 >
-                  <div className="flex bg-sky-300 p-4 rounded-md justify-center">
+                  <div className="flex bg-white  p-2 rounded-md justify-center">
                     <img
                       loading="lazy"
                       src={codingDev}
                       alt={card.title}
                       className="w-20 h-20"
                     />
+
                   </div>
+                  <div className="flex w-full  justify-between items-center gap-2  ">
+                            <div className="px-3 py-1 text-sm text-gray-500 border border-gray-500 rounded-md">
+                              Frontend
+                            </div>
+                            <div className="flex  justify-center items-center py-2 gap-2">
+                              <div className="">
+                                <img
+                                  loading="lazy"
+                                  alt="java"
+                                  src={java}
+                                  className="w-12 h-12"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flex justify-between mt-2 items-center ">
+                            <div className="flex justify-between items-center  gap-5">
+                              <div className="text-md font-medium text-gray-500">
+                                SmartGrader
+                              </div>
+                            </div>
+                            <Rating style={{ maxWidth: 100 }} value={4} />
+                          </div>
                   <div className="flex flex-col">
                     <div className="flex mt-2.5 w-72 text-lg font-medium leading-5 text-gray-800">
-                      <div className="flex w-full justify-around">
-                        <div>
-                          <div>{card.title}</div>
-                          <div className="flex gap-1 self-start py-2 text-xs leading-4 text-gray-500">
-                            <img
-                              loading="lazy"
-                              alt="star"
-                              src={star}
-                              className="shrink-0 aspect-[1.09] fill-amber-400 w-[17px] h-[17px]"
-                            />
-                            <div className="flex-auto">{card.rating}/5</div>
-                          </div>
+                      <div className="flex w-full">
+                      {card.title}
                         </div>
-                        <div>
-                          <img
-                            loading="lazy"
-                            alt="java"
-                            src={java}
-                            className="w-12 h-12"
-                          />
-                        </div>
-                      </div>
+                       
+                      
                     </div>
 
-                    <div className="flex gap-5 mt-3 justify-around items-center px-0.5 text-sm leading-5">
-                      <div className="flex flex-col gap-1 lg:flex-row">
+                    <div className="flex gap-5 mt-3 justify-between items-center px-0.5 text-sm leading-5">
+                      <div className="flex gap-5 flex-row">
                         <div className="flex gap-1">
                           <div className="flex justify-center items-center">
                             <CiClock2 size={14} color="#01AFF4" />
                           </div>
-                          <div>{card.duration} Min</div>
+                          <div className="text-md">{card.duration} Min</div>
                         </div>
                         <div className="flex gap-1">
                           <div className="flex justify-center items-center">
                             <IoHelpCircleOutline size={14} color="#01AFF4" />
                           </div>
-                          <div>{card.questions_count} Questions</div>
+                          <div className="text-md">{card.questions_count} Questions</div>
                         </div>
                       </div>
-                      <div className="flex justify-center items-center self-stretch px-2.5 py-1 text-xs leading-4 whitespace-nowrap bg-sky-300 rounded-md border border-solid border-gray-300">
-                        Frontend
-                      </div>
+                    
                     </div>
                   </div>
                 </div>

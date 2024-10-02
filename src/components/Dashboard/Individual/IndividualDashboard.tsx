@@ -106,11 +106,11 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
       />
     </div>
     <div className="flex flex-col lg:basis-2/3 gap-5 order-2 lg:order-1">
-      <div className="flex mt-4 gap-3 text-lg font-semibold text-slate-800">
+      <div className="flex mt-4 gap-3 text-lg  font-extrabold text-slate-800">
         <RiAiGenerate size={24} color="#01AFF4" />
         Set Your Own Questions
       </div>
-      <div className="w-full flex gap-3 bg-sky-100 shadow-md rounded-md p-4 flex-col md:flex-row lg:flex-col xl:flex-row items-center">
+      <div className="w-full flex gap-3  shadow-md rounded-md p-4 flex-col md:flex-row lg:flex-col xl:flex-row items-center">
         <div className="w-full flex flex-col gap-3 justify-center">
           <div className="flex items-center gap-2.5 w-full">
             <IoCheckmark size={28} color="#01AFF4" />

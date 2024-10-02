@@ -24,7 +24,7 @@ function SideBar() {
   };
 
   return (
-    <div className="flex flex-col shadow-lg bg-sky-100 px-4 py-6 border-r border-gray-200 h-full fixed lg:w-56 xl:w-64">
+    <div className="flex flex-col   px-4 py-6 border-r border-gray-200 h-full fixed lg:w-56 xl:w-64">
       <div className="flex flex-col items-center mb-4">
         <img src={SmartGrader} alt="Smart Grader" className="w-36 mb-8" />
         <div className="w-full border-b border-gray-300 mb-4"></div>
@@ -33,7 +33,7 @@ function SideBar() {
         <div className="flex flex-col flex-grow space-y-8">
           {/* Dashboard */}
           <div
-            className={`flex items-center w-full p-4 text-base cursor-pointer transition-all duration-300 ${
+            className={`flex items-center w-full p-4 rounded text-base cursor-pointer transition-all duration-300 ${
               activeItem === 'Dashboard'
                 ? 'bg-sky-700 text-white shadow-md hover:bg-sky-900'
                 : 'text-gray-700 hover:bg-sky-200 hover:text-sky-600 shadow-md hover:shadow-lg'
@@ -46,11 +46,11 @@ function SideBar() {
             <MdOutlineDashboardCustomize
               className={`w-6 h-6 ${activeItem === 'Dashboard' ? 'text-white' : 'text-gray-700'}`}
             />
-            <span className="ml-4">Dashboard</span>
+            <span className="ml-4 ">Dashboard</span>
           </div>
           {/* Mock Interviews */}
           <div
-            className={`flex items-center w-full p-4 text-base cursor-pointer transition-all duration-300 ${
+            className={`flex items-center w-full p-4 text-base rounded cursor-pointer transition-all duration-300 ${
               activeItem === 'Mock Interviews'
                 ? 'bg-sky-700 text-white shadow-md hover:bg-sky-900'
                 : 'text-gray-700 hover:bg-sky-200 hover:text-sky-600 shadow-md hover:shadow-lg'
@@ -67,7 +67,7 @@ function SideBar() {
           </div>
           {/* Progress Tracker */}
           <div
-            className={`flex items-center w-full p-4 text-base cursor-pointer transition-all duration-300 ${
+            className={`flex items-center w-full p-4 text-base rounded cursor-pointer transition-all duration-300 ${
               activeItem === 'Progress Tracker'
                 ? 'bg-sky-700 text-white shadow-md hover:bg-sky-900'
                 : 'text-gray-700 hover:bg-sky-200 hover:text-sky-600 shadow-md hover:shadow-lg'
@@ -84,7 +84,7 @@ function SideBar() {
           </div>
           {/* Quick Access */}
           <div
-            className={`flex items-center w-full p-4 text-base cursor-pointer transition-all duration-300 ${
+            className={`flex items-center w-full p-4 text-base rounded cursor-pointer transition-all duration-300 ${
               activeItem === 'Quick Access'
                 ? 'bg-sky-700 text-white shadow-md hover:bg-sky-900'
                 : 'text-gray-700 hover:bg-sky-200 hover:text-sky-600 shadow-md hover:shadow-lg'
@@ -101,7 +101,7 @@ function SideBar() {
           </div>
           {/* Settings */}
           <div
-            className={`flex items-center w-full p-4 text-base cursor-pointer transition-all duration-300 ${
+            className={`flex items-center w-full p-4 text-base rounded cursor-pointer transition-all duration-300 ${
               activeItem === 'Settings'
                 ? 'bg-sky-700 text-white shadow-md hover:bg-sky-900'
                 : 'text-gray-700 hover:bg-sky-200 hover:text-sky-600 shadow-md hover:shadow-lg'
@@ -121,7 +121,7 @@ function SideBar() {
         <div className="flex flex-col space-y-4 mb-4">
           {/* Help & Support */}
           <div
-            className={`flex items-center w-full p-4 text-base cursor-pointer transition-all duration-300 ${
+            className={`flex items-center w-full p-4 text-base rounded cursor-pointer transition-all duration-300 ${
               activeItem === 'Help & Support'
                 ? 'bg-sky-800 text-white shadow-md hover:bg-sky-800'
                 : 'text-gray-700 hover:bg-sky-200 hover:text-sky-600 shadow-md hover:shadow-lg'
@@ -138,7 +138,7 @@ function SideBar() {
           </div>
           {/* Logout */}
           <div
-            className={`flex items-center w-full p-4 text-base cursor-pointer transition-all duration-300 ${
+            className={`flex items-center w-full p-4 text-base cursor-pointer rounded transition-all duration-300 ${
               activeItem === 'Logout'
                 ? 'bg-sky-800 text-white shadow-md hover:bg-sky-800'
                 : 'text-gray-700 hover:bg-sky-200 hover:text-sky-600 shadow-md hover:shadow-lg'

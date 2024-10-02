@@ -46,7 +46,7 @@ const CreateAccount: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="w-full order-2 lg:order-1 lg:w-1/2">
+      <div className="w-full order-2 lg:order-1 lg:w-3/5 xl:w-1/2">
         <div>
           <div className="flex max-lg:hidden gap-4 items-start text-neutral-500 max-md:flex-wrap">
             <Link to="/">
@@ -59,8 +59,8 @@ const CreateAccount: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col mt-20 md:mt-32 md:w-5/6 w-full">
-          <div className="text-3xl font-medium font-spline md:text-4xl leading-8 text-slate-900 max-md:max-w-full">
+        <div className="flex flex-col mt-20 md:mt-32  w-full">
+          <div className="text-3xl font-medium  md:text-5xl leading-8 text-gray-600 max-md:max-w-full">
             Signup with SmartGrader
           </div>
           <div
@@ -80,7 +80,7 @@ const CreateAccount: React.FC = () => {
                   className="shrink-0 self-start w-8 sm:w-12 aspect-[0.94]"
                 />
                 
-                <div className="block md:hidden  text-2xl md:text-4xl text-slate-800 font-medium font-spline">
+                <div className="block md:hidden  text-2xl md:text-4xl text-slate-800 font-medium ">
                   <div>
                   Individual User
                   </div>
@@ -91,7 +91,7 @@ const CreateAccount: React.FC = () => {
                 </div>
             
                 <div className="flex-col">
-                  <div className=" hidden md:block text-2xl  md:text-3xl text-slate-800 font-medium font-spline">
+                  <div className=" hidden md:block text-2xl  md:text-3xl text-slate-800 font-medium ">
                   Individual User
                   </div>
                   <div className=" font-sans text-md sm:text-lg  font-light text-gray-600 sm:my-1.5 ">
@@ -119,7 +119,7 @@ const CreateAccount: React.FC = () => {
                   className="shrink-0 self-start w-8 sm:w-12 aspect-square"
                 />
                 
-                <div className="block md:hidden  text-2xl md:text-3xl text-slate-800 font-medium font-spline">
+                <div className="block md:hidden  text-2xl md:text-3xl text-slate-800 font-medium ">
                   <div>
                   Organization
                   </div>
@@ -130,7 +130,7 @@ const CreateAccount: React.FC = () => {
              
 
                 <div className=" flex-col">
-                  <div className="  hidden md:block  text-2xl  md:text-3xl text-slate-800 font-medium font-spline">
+                  <div className="  hidden md:block  text-2xl  md:text-3xl text-slate-800 font-medium ">
                     Organization
                   </div>
                   <div className=" font-sans text-md sm:text-lg  font-light text-gray-600 sm:my-1.5 ">
@@ -156,14 +156,14 @@ const CreateAccount: React.FC = () => {
                   className="shrink-0 self-start w-8 sm:w-12 aspect-square"
                 />
                 
-                <div className="block md:hidden  text-2xl md:text-3xl text-slate-800 font-medium font-spline">
+                <div className="block md:hidden  text-2xl md:text-3xl text-slate-800 font-medium ">
                   <div>
                   Educational Institution
                   </div>
                 </div>
                 </div>
                 <div className="flex flex-col">
-                  <div className=" hidden md:block text-2xl sm:text-3xl md:text-3xl text-slate-800 font-medium font-spline">
+                  <div className=" hidden md:block text-2xl  md:text-3xl text-slate-800 font-medium ">
                   Educational Institution
                   </div>
                   <div className=" font-sans txt-md sm:text-lg  font-light text-gray-600 sm:my-1.5 ">
@@ -175,14 +175,14 @@ const CreateAccount: React.FC = () => {
             
           </div>
           <button
-            className={`flex justify-center items-center px-4 py-3 mt-8 text-sm text-white rounded-md border border-sky-500 border-solid max-md:px-5 max-md:max-w-full focus:outline-none ${
+            className={`flex justify-center items-center px-4 py-3 mt-8 text-sm text-white  mx-auto w-full sm:w-3/4 rounded-md border border-sky-500 border-solid max-md:px-5 max-md:max-w-full focus:outline-none ${
               isPressed ? "bg-sky-600" : "bg-sky-500"
             }`}
             onMouseDown={() => handleMouseDown(setIsPressed)}
             onMouseUp={() => handleMouseUp(setIsPressed)}
             onClick={handleButtonClick}
           >
-              <div className="flex gap-2.5 font-spline justify-center items-center  text-sm sm:text-lg">
+              <div className="flex gap-2.5  justify-center items-center   text-sm sm:text-lg">
               <span>Create an Account</span>
               <span>
                 <FiArrowUpRight size={20} />
@@ -191,7 +191,7 @@ const CreateAccount: React.FC = () => {
           </button>
         </div>
       </div>
-      <div className="w-full order-1 lg:order-2 lg:w-1/2 flex justify-center items-end">
+      <div className="w-full order-1 lg:order-2 lg:w-2/5 xl:w-1/2 flex justify-center items-center xl:items-end">
         <div className="mt-10">
           {activeTab === "individual" && (
             <img
