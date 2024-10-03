@@ -205,29 +205,25 @@ const InterviewScreen = () => {
 
  
  
-
   async function requestCameraAndMicrophone() {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: false,
+        video: true,  // Enable video if you need camera permissions
         audio: true,
       });
-      const cameraStatus = await navigator.permissions.query({
-        name: "camera",
-      });
-      const microphoneStatus = await navigator.permissions.query({
-        name: "microphone",
-      });
+  
+     
+  
       setPermissions((prev) => ({
         ...prev,
-        camera: cameraStatus.state === "granted",
-        microphone: microphoneStatus.state === "granted",
+        camera:true,
+        microphone:true,
       }));
     } catch (error) {
       console.error("Error requesting media permissions:", error);
     }
   }
-
+  
   
 
   const fullScreenExit = useCallback(() => {

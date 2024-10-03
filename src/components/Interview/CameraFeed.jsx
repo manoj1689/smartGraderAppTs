@@ -1,70 +1,75 @@
-
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import * as faceapi from 'face-api.js';
 import { toast, ToastContainer } from 'react-toastify';
 import Webcam from 'react-webcam';
 
 const MODEL_URL = '/models';
 
-const loadModels = async () => {
-    try {
-        await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
-        await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
-        await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
-        await faceapi.nets.faceExpressionNet.loadFromUri(MODEL_URL);
-        console.log('Models loaded');
-    } catch (error) {
-        console.error('Error loading models:', error);
-    }
-};
-
-const detectFaces = async (videoElement) => {
-    if (!videoElement) return [];
-    try {
-        return await faceapi.detectAllFaces(videoElement, new faceapi.TinyFaceDetectorOptions())
-            .withFaceLandmarks()
-            .withFaceExpressions();
-    } catch (error) {
-        console.error('Error detecting faces:', error);
-        return [];
-    }
-};
-
 const CameraFeed = ({ onFacesDetected, examStarted }) => {
+    const [modelsLoaded, setModelsLoaded] = useState(false);
     const webcamRef = useRef(null);
     const intervalIdRef = useRef(null);
 
+    const loadModels = async () => {
+        try {
+            console.log('Loading face detection models...');
+            await faceapi.nets.tinyFaceDetector.loadFromUri('/models/tiny_face_detector_model-weights_manifest.json');
+            await faceapi.nets.ssdMobilenetv1.loadFromUri('/models/ssd_mobilenetv1_model-weights_manifest.json');
+            await faceapi.nets.faceLandmark68Net.loadFromUri('/models/face_landmark_68_model-weights_manifest.json');
+            await faceapi.nets.faceRecognitionNet.loadFromUri('/models/face_recognition_model-weights_manifest.json');
+            await faceapi.nets.faceExpressionNet.loadFromUri('/models/face_expression_model-weights_manifest.json'); // Load this model
+            setModelsLoaded(true);
+            console.log('All models loaded successfully');
+        } catch (error) {
+            console.error('Error loading models:', error);
+        }
+    };
+    
+
+    useEffect(() => {
+        loadModels(); // Load models when component mounts
+    }, []);
+
+    // Face detection logic
+    const detectFaces = async (videoElement) => {
+        if (!videoElement) return [];
+        try {
+            return await faceapi.detectAllFaces(videoElement, new faceapi.TinyFaceDetectorOptions())
+                .withFaceLandmarks()
+                .withFaceExpressions(); // Optionally, include landmarks and expressions
+        } catch (error) {
+            console.error('Error detecting faces:', error);
+            return [];
+        }
+    };
+
     const handleVideoPlay = useCallback(() => {
-        intervalIdRef.current = setInterval(async () => {
-            if (webcamRef.current && webcamRef.current.video) {
+        if (modelsLoaded && webcamRef.current && webcamRef.current.video) {
+            intervalIdRef.current = setInterval(async () => {
                 const detections = await detectFaces(webcamRef.current.video);
+                  // Log detections to the console
+            console.log('Face Detections:', detections);
                 const faceVerified = detections.length > 0;
                 const multiplePeopleDetected = detections.length > 1;
 
                 onFacesDetected({
                     faceVerified,
                     multiplePeopleDetected,
+                    detections,  // Optionally pass the face detection details
                 });
-            }
-        }, 500);
-    }, [onFacesDetected]);
+            }, 500);
+        }
+    }, [onFacesDetected, modelsLoaded]);
 
     useEffect(() => {
-        const loadAndStart = async () => {
-            await loadModels();
-            if (examStarted) {
-                handleVideoPlay();
-            }
-        };
-
-        if (examStarted) {
-            loadAndStart();
+        if (examStarted && modelsLoaded) {
+            handleVideoPlay(); // Start detecting faces if exam has started and models are loaded
         }
 
         return () => {
-            if (intervalIdRef.current) clearInterval(intervalIdRef.current);
+            if (intervalIdRef.current) clearInterval(intervalIdRef.current); // Cleanup on unmount
         };
-    }, [examStarted, handleVideoPlay]);
+    }, [examStarted, handleVideoPlay, modelsLoaded]);
 
     return (
         <div className='flex'>
@@ -75,3 +80,4 @@ const CameraFeed = ({ onFacesDetected, examStarted }) => {
 };
 
 export default React.memo(CameraFeed);
+
