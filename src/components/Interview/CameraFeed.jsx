@@ -1,6 +1,8 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+
+import React, { useCallback, useEffect, useRef } from 'react';
 import * as faceapi from 'face-api.js';
 import { toast, ToastContainer } from 'react-toastify';
+import Webcam from 'react-webcam';
 
 const MODEL_URL = '/models';
 
@@ -28,78 +30,30 @@ const detectFaces = async (videoElement) => {
     }
 };
 
-const stopCamera = (videoElement) => {
-    if (videoElement && videoElement.srcObject) {
-        videoElement.srcObject.getTracks().forEach(track => track.stop());
-        videoElement.srcObject = null;
-        console.log('Video stream stopped');
-    }
-};
-
-const CameraFeed = ({ onFacesDetected, examStarted, examEnd }) => {
-    const videoRef = useRef(null);
+const CameraFeed = ({ onFacesDetected, examStarted }) => {
+    const webcamRef = useRef(null);
     const intervalIdRef = useRef(null);
-    const noFaceTimeoutRef = useRef(null);
-    const multipleFaceTimeoutRef = useRef(null);
 
     const handleVideoPlay = useCallback(() => {
         intervalIdRef.current = setInterval(async () => {
-            if (videoRef.current) {
-                const detections = await detectFaces(videoRef.current);
+            if (webcamRef.current && webcamRef.current.video) {
+                const detections = await detectFaces(webcamRef.current.video);
                 const faceVerified = detections.length > 0;
                 const multiplePeopleDetected = detections.length > 1;
 
-                if (!faceVerified) {
-                    if (!noFaceTimeoutRef.current) {
-                        noFaceTimeoutRef.current = setTimeout(() => {
-                            console.log('No face detected for more than 20 seconds.');
-                            toast.warn('No face detected for more than 20 seconds.');
-                            noFaceTimeoutRef.current = null;
-                        }, 20000);
-                    }
-                } else {
-                    if (noFaceTimeoutRef.current) {
-                        clearTimeout(noFaceTimeoutRef.current);
-                        noFaceTimeoutRef.current = null;
-                    }
-                }
-
-                if (multiplePeopleDetected && !multipleFaceTimeoutRef.current) {
-                    multipleFaceTimeoutRef.current = setTimeout(() => {
-                        console.log('Multiple faces detected for more than 20 seconds.');
-                        toast.warn('Multiple faces detected for more than 20 seconds.');
-                    }, 20000);
-                } else if (!multiplePeopleDetected && multipleFaceTimeoutRef.current) {
-                    clearTimeout(multipleFaceTimeoutRef.current);
-                    multipleFaceTimeoutRef.current = null;
-                }
-
                 onFacesDetected({
                     faceVerified,
-                    multiplePeopleDetected
+                    multiplePeopleDetected,
                 });
             }
         }, 500);
     }, [onFacesDetected]);
 
     useEffect(() => {
-        const currentVideoRef = videoRef.current;
-
-        const startVideo = async () => {
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ video: true ,audio:false});
-                videoRef.current.srcObject = stream;
-                console.log('Video stream started');
-                videoRef.current.onplay = handleVideoPlay;
-            } catch (err) {
-                console.error('Error accessing webcam:', err);
-            }
-        };
-
         const loadAndStart = async () => {
             await loadModels();
             if (examStarted) {
-                await startVideo();
+                handleVideoPlay();
             }
         };
 
@@ -109,22 +63,13 @@ const CameraFeed = ({ onFacesDetected, examStarted, examEnd }) => {
 
         return () => {
             if (intervalIdRef.current) clearInterval(intervalIdRef.current);
-            if (noFaceTimeoutRef.current) clearTimeout(noFaceTimeoutRef.current);
-            if (multipleFaceTimeoutRef.current) clearTimeout(multipleFaceTimeoutRef.current);
-            stopCamera(currentVideoRef);
         };
     }, [examStarted, handleVideoPlay]);
 
-    useEffect(() => {
-        if (!examStarted) {
-            stopCamera(videoRef.current);
-        }
-    }, [examStarted]);
-
     return (
-        <div className='flex '>
+        <div className='flex'>
             <ToastContainer />
-            <video ref={videoRef} autoPlay muted style={{ width: '100%', borderRadius: '1%' }} />
+            <Webcam ref={webcamRef} muted autoPlay mirrored="false" style={{ width: '100%', borderRadius: '1%' }} />
         </div>
     );
 };
