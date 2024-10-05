@@ -48,7 +48,7 @@ const CameraFeed = ({ onFacesDetected, examStarted }) => {
             intervalIdRef.current = setInterval(async () => {
                 const detections = await detectFaces(webcamRef.current.video);
                   // Log detections to the console
-            console.log('Face Detections:', detections);
+        //    console.log('Face Detections:', detections);
                 const faceVerified = detections.length > 0;
                 const multiplePeopleDetected = detections.length > 1;
 

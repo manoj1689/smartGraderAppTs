@@ -3,7 +3,7 @@ import React from 'react';
 const DateFormatPage = ({ start_date }) => {
   const timestamp = start_date;
   const dateInUTC = new Date(timestamp);
-console.log("date at date format page",start_date)
+//console.log("date at date format page",start_date)
   // Convert to IST (UTC+5:30)
   const istDate = new Date(dateInUTC.getTime() + 5.5 * 60 * 60 * 1000);
 
