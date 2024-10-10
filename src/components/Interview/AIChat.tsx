@@ -489,18 +489,18 @@ const AIChat: React.FC<AIChatProps> = ({
   }, [transcriptMsg, currentQuestionIndex]);
 
   return (
-    <div className="flex flex-col h-auto min-h-[500px] lg:min-h-[750px] max-h-[700px] ">
-      <div className="bg-[#01AFF4] text-white p-4 flex justify-between items-center rounded-md">
+    <div className="flex flex-col h-auto max-sm:h-[400px]  sm:min-h-[500px] lg:min-h-[750px] max-h-[700px] ">
+      <div className="bg-[#01AFF4] text-white p-2 sm:p-4 flex justify-between items-center rounded-md">
         <div className="flex items-center">
-          <div className="ml-2 font-bold">SmartGrader AI Assistant</div>
+          <div className="ml-2 text-sm sm:text-lg font-bold">SmartGrader AI Assistant</div>
         </div>
       </div>
-      <div className="flex-1  overflow-y-auto p-4">
+      <div className="flex-1  overflow-y-auto p-2 sm:p-4">
         {messages.map((message, index) => (
           <div key={index}>
             {message.role === "user" ? (
               <div className="flex justify-end">
-                <div className="relative text-white bg-sky-400 p-4 rounded-md shadow-[-4px_4px_8px_0px_rgba(0,0,0,0.2)] ml-12 rounded-tr-none">
+                <div className="relative text-white bg-sky-400 text-sm sm:text-md  p-2 sm:p-4 rounded-md shadow-[-4px_4px_8px_0px_rgba(0,0,0,0.2)] ml-12 rounded-tr-none">
                   {message.content}
                 </div>
                 <div className="w-0 h-0 border-t-[0px] border-t-transparent border-l-[20px] border-l-sky-400 border-b-[20px] border-b-transparent"></div>
@@ -508,7 +508,7 @@ const AIChat: React.FC<AIChatProps> = ({
             ) : (
               <div className="flex my-4 ">
                 <div className="w-0 h-0 border-t-[0px] border-t-transparent border-r-[20px] border-r-slate-200 border-b-[20px] border-b-transparent"></div>
-                <div className="text-slate-800 bg-slate-200 p-4 rounded-tl-none rounded-md mr-12 shadow-[4px_4px_8px_0px_rgba(0,0,0,0.2)]">
+                <div className="text-slate-800 bg-slate-200 p-2 sm:p-4 text-sm sm:text-md  rounded-tl-none rounded-md   mr-12 shadow-[4px_4px_8px_0px_rgba(0,0,0,0.2)]">
                   {message.content}
                 </div>
               </div>
@@ -560,14 +560,14 @@ const AIChat: React.FC<AIChatProps> = ({
           </div>
         </div>
       </Modal>
-      {<WaveEffect showWave={showWave} />}
-      {/* <div>
+      {<WaveEffect showWave={showWave} transcript={transcript} />}
+      <div>
       <p>{status}</p>
       <button onClick={startRecording}>Start Recording</button>
       <button onClick={stopRecording}>Stop Recording</button>
       <video src={mediaBlobUrl} controls autoPlay loop />
-      <div>{recordingUrl}</div>
-    </div> */}
+      <div className="text-black">{recordingUrl}</div>
+    </div>
     </div>
   );
 };

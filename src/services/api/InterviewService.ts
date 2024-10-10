@@ -75,7 +75,7 @@ export const uploadScreenshot = async (examId: string, token: string, file: File
   try {
     // const formData = new FormData();
     // formData.append('file', file);
-
+console.log("screenshot Uploaded")
     const response = await axios.post(`${POINTS.MEDIA_UPLOAD}?exam_id=${examId}`, file, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -91,3 +91,5 @@ export const uploadScreenshot = async (examId: string, token: string, file: File
     throw new Error('Error uploading media.');
   }
 };
+
+

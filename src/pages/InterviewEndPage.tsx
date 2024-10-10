@@ -1,7 +1,10 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React,{useState,useEffect} from "react";
+import { useNavigate,useLocation } from "react-router-dom";
 import NotificationBar from "../components/common/Notification/NotificationBar";
 import SmartGrader from "../assets/logos/smartGrader.png";
+import { getToken } from "../utils/tokenUtils";
+import { LineScore } from "../types/interfaces/interface";
+import { fetchexamAttemps } from "../services/api/LineScoreService";
 import {
   FaBook,
   FaClipboard,
@@ -12,6 +15,49 @@ import {
 
 const ExamEndPage = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const examId = location.state || null;
+  
+  console.log("Exam id of conduct exam on exam end page",examId)
+  const [results, setResults] = useState<LineScore[]>([]);
+  const [loading, setLoading] = useState<boolean>(true); 
+  const [result,setResult]=useState<any>([])
+ 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = getToken();
+        if (!token) {
+          console.error("Token not found.");
+          return;
+        }
+        const data = await fetchexamAttemps(token);
+        setResults(data);
+  
+        // Find the specific exam by its examId
+        const matchingExam = data.find((attempt) => attempt.exam_id === examId.examId);
+        if (matchingExam) {
+          setResult(matchingExam); // Store the matching exam data
+        } else {
+          console.log("No matching exam found for examId:", examId.examId);
+        }
+  
+        setLoading(false); // Set loading state to false after data fetch
+      } catch (error) {
+        console.error("Error fetching attempts:", error);
+        setLoading(false); // Set loading state to false on error
+      }
+    };
+  
+    fetchData();
+  }, [examId]);
+  
+  
+  console.log("the result List have set id for each attemptat examEnd page", results);
+  
+
+
 
   const highlights = [
     {
@@ -77,18 +123,18 @@ const ExamEndPage = () => {
     <>
       <div className="flex items-center justify-between border-b bg-white fixed w-full top-0 border-slate-200">
         <div className="w-auto p-4">
-          <img src={SmartGrader} alt="Smart Grader" width={140} />
+          <img src={SmartGrader} alt="Smart Grader" className="max-sm:w-28 sm:w-40" />
         </div>
       </div>
       <div className="container mx-auto w-full lg:mt-24 ">
         <NotificationBar />
         <div className="bg-white rounded-md border mx-4 border-gray-300 p-4 shadow-lg transition-shadow hover:shadow-xl">
           <div className="text-center ">
-            <h2 className="text-4xl font-extrabold text-slate-700 mb-2">
-              Exam End
+            <h2 className="text-4xl font-extrabold text-slate-700 my-8">
+            Thank You for Completing the Exam!
             </h2>
             <p className="text-lg text-slate-500 mb-2">
-              Result Based on AI Analysis
+            Your performance has been assessed based on multiple criteria.
             </p>
             {/* <p className="text-md text-gray-600 mb-6">
               We will highlight the following areas in your scorecard:
@@ -111,75 +157,22 @@ const ExamEndPage = () => {
             ))}
           </div>
 
-          <div className="flex flex-col sm:flex-row items-center justify-between ">
-  <div className="flex-1 text-center p-4 sm:text-left sm:mr-8 w-full sm:w-1/2 mb-4 sm:mb-0">
-    <h3 className="text-2xl font-semibold text-slate-800 mb-2">Performance Level</h3>
-    <p className="text-lg text-gray-700 mb-2">{performanceLevel}</p>
-    <p className="text-md text-gray-600 mb-4">
-      Your performance is categorized based on the following thresholds:
-    </p>
-    <ul className="list-disc list-inside text-gray-600">
-      <li>80% and above: Excellent</li>
-      <li>60% to 79%: Good</li>
-      <li>40% to 59%: Better</li>
-      <li>Below 40%: Poor</li>
-    </ul>
-  </div>
-  <div className="flex-1 flex flex-col items-center justify-center w-full sm:w-1/2">
-  <div className="text-center mb-4">
-    <h3 className="text-2xl font-semibold text-slate-800">Score Preview</h3>
-  </div>
-  
-  <div className="flex flex-col items-center justify-center mb-4">
-    <div className="relative flex items-center justify-center w-32 h-32 bg-white border border-gray-300 rounded-full shadow-md">
-      <div className="absolute inset-0 bg-gradient-to-t from-green-400 to-green-200 rounded-full opacity-75"></div>
-      <span
-        className={`text-5xl font-bold z-10 ${
-          overallScore >= 80
-            ? 'text-green-600'
-            : overallScore >= 60
-            ? 'text-yellow-600'
-            : overallScore >= 40
-            ? 'text-orange-600'
-            : 'text-red-600'
-        }`}
-      >
-        {overallScore}%
-      </span>
-    </div>
-
-    <p
-      className={`mt-2 text-lg font-semibold ${
-        overallScore >= 80
-          ? 'text-green-600'
-          : overallScore >= 60
-          ? 'text-yellow-600'
-          : overallScore >= 40
-          ? 'text-orange-600'
-          : 'text-red-600'
-      }`}
-    >
-      {overallScore >= 80
-        ? 'Excellent'
-        : overallScore >= 60
-        ? 'Good'
-        : overallScore >= 40
-        ? 'Better'
-        : 'Poor'}
-    </p>
-  </div>
-</div>
-
-</div>
 
         </div>
-        <div className="flex justify-center my-8">
+        <div className="flex flex-col md:flex-row justify-center mx-4 my-8 gap-8">
           <button
             type="button"
-            className="px-8 py-4 w-1/2 bg-sky-500 text-white rounded transition-all duration-300 transform hover:bg-sky-700 hover:scale-105"
+            className="px-8 py-4 w-full bg-gray-300  text-gray-600 rounded transition-all duration-300 transform hover:bg-gray-400 hover:scale-105"
             onClick={() => navigate(`/dashboard`)}
           >
             Go to Dashboard
+          </button>
+          <button
+            type="button"
+            className="px-8 py-4 w-full bg-blue-500 text-white rounded transition-all duration-300 transform hover:bg-sky-700 hover:scale-105"
+            onClick={() => navigate("/dashboard/result", { state: { result } })}
+          >
+            Check Score
           </button>
         </div>
       </div>

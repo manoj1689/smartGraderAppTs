@@ -21,7 +21,7 @@ const NotificationBar: React.FC = () => {
   }, []);
 
   return (
-    <div className="max-lg:pt-20">
+    <div className="max-sm:pt-16 max-lg:pt-20">
       <div className="flex  px-2 my-4 sm:mb-8 justify-between">
         <div className="flex flex-col lg:flex-row  lg:gap-4 px-4">
           <div className="flex gap-2 text-sky-500">

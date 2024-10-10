@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import user from "../../assets/user.png"
 
-const App = ({showWave}) => {
+const App = ({showWave,transcript}) => {
 
   const [borderWidth, setBorderWidth] = useState(4); // Default border width
 
@@ -51,10 +51,18 @@ const App = ({showWave}) => {
 
   return (
     <div className=" flex flex-col items-center justify-center bg-gray-200 rounded-sm shadow-md p-4">
-      <div className="relative flex items-center justify-center mb-4">
-        <div className="relative w-40 h-40 flex items-center justify-center">
+      <div className="relative flex w-full  ">
+      <div className='sm:hidden w-full flex flex-col bg-gray-100 rounded-lg mr-2  p-2'>
+        <div className='text-sm text-sky-400 font-bold '>Speech Text -</div>
+        <div className='font-medium text-gray-600 text-md max-h-20 overflow-y-auto'>
+  {transcript}
+</div>
+
+        </div>
+      <div className='flex max-sm:w-32  w-full justify-center items-center '>
+      <div className="relative w-24 h-24 sm:w-40 sm:h-40 flex items-center justify-center">
           <div
-            className={`absolute inset-0 rounded-full border border-gray-500 transition-transform ${showWave ? 'animate-borderGrow' : ''}`}
+            className={`absolute inset-0 rounded-full border  border-gray-500 transition-transform ${showWave ? 'animate-borderGrow' : ''}`}
             style={{
               borderWidth: `${borderWidth}px`,
               borderColor: 'rgba(0, 0, 0, 0.5)',
@@ -62,13 +70,19 @@ const App = ({showWave}) => {
           />
           <div className="absolute inset-0 flex items-center justify-center">
           <button
-      className={`w-28 h-28 rounded-full text-white focus:outline-none flex items-center justify-center ${showWave ? 'bg-blue-500' : 'bg-red-500'}`}
+      className={`w-20 h-20 sm:w-28 sm:h-28 rounded-full text-white focus:outline-none flex items-center justify-center ${showWave ? 'bg-blue-500' : 'bg-red-500'}`}
     >
       {/* {showWave ? 'Stop' : 'Start'} */}
-      <img src={user} alt="user" className='w-24 h-24' />
+      <img src={user} alt="user" className='w-16 h-16 sm:w-24 sm:h-24' />
     </button>
+   
           </div>
+         
         </div>
+     
+      </div>
+
+       
       </div>
      
     </div>

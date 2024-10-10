@@ -23,6 +23,7 @@ import ErrorBoundary from "../components/common/Error/ErrorBoundary";
 import Checklist from "../components/Interview/Checklist";
 import CameraFeed from "../components/Interview/CameraFeed";
 import NotificationBar from "../components/common/Notification/NotificationBar";
+import { FaBell } from "react-icons/fa";
 import AIChat from "../components/Interview/AIChat";
 
 // imported Services
@@ -151,7 +152,7 @@ const InterviewScreen = () => {
      
       setExamId("");
       setIsModalOpen(false);
-      navigate(`/dashboard/question/exam-end`);
+      navigate(`/dashboard/question/exam-end`,{state:{examId}});
     } catch (error) {
       setError(MESSAGES.EXAM_END_ERROR);
     } finally {
@@ -167,21 +168,22 @@ const InterviewScreen = () => {
   // Capture the screenshot and update the state
   const captureScreenshot = async () => {
     const img = await takeScreenshot(ref.current);
+    console.log("image captured")
     setCapturedImage(img);
   };
 
   useEffect(() => {
     const saveAndUploadScreenshot = async () => {
-      if (capturedImage && !examId) {
-        // Convert the image to a Blob
-        const blob = await fetch(capturedImage).then((res) => res.blob());
-
-        // Create a FormData object
-        const file = new FormData();
-        file.append("file", blob, "screenshot.png");
-
-        // Upload the image to your API
+      if (capturedImage && examId) { // Ensure examId is available
         try {
+          // Convert the image to a Blob
+          const blob = await fetch(capturedImage).then((res) => res.blob());
+  
+          // Create a FormData object
+          const file = new FormData();
+          file.append("file", blob, "screenshot.png");
+  
+          // Upload the image to your API
           const response = await uploadScreenshot(examId, token, file);
           console.log(response);
           console.log("Screenshot uploaded successfully");
@@ -190,20 +192,19 @@ const InterviewScreen = () => {
         }
       }
     };
-
+  
     saveAndUploadScreenshot();
-  }, [capturedImage]);
-
+  }, [capturedImage, examId]); // Add examId to dependency array to watch for changes
+  
   useEffect(() => {
     const intervalId = setInterval(() => {
-      captureScreenshot();
-    }, 60000); // 60 seconds
-
-    // Cleanup the interval on component unmount
+      captureScreenshot(); // Capture screenshot every 40 seconds
+    }, 40000); // 40 seconds
+  
+    // Cleanup interval on component unmount
     return () => clearInterval(intervalId);
   }, []); // Empty dependency array to run only once
-
- 
+  
  
   async function requestCameraAndMicrophone() {
     try {
@@ -329,62 +330,70 @@ const InterviewScreen = () => {
   return (
     <>
       <div className="flex" >
-      <div className="flex items-center  justify-between border-b  w-full fixed top-0 z-50  border-slate-200 bg-white">
-        <div className='w-auto p-4 '>
-          <img src={SmartGrader} alt="Smart Grader" width={140} />
+      <div className="flex items-center  justify-between border-b  w-full fixed top-0 z-50  border-slate-300 bg-white">
+        <div className='w-full flex justify-between p-4 '>
+          <img src={SmartGrader} alt="Smart Grader" className="max-sm:w-28 sm:w-40" />
+          <div className="sm:hidden mr-8">
+          <FaBell size={30} color="#01AFF4" />
+        </div>
         </div>
       </div>
-        <Sticky topOffset={80} className="fixed max-sm:top-20 max-sm:right-5 top-20 right-10 z-50">
+        <Sticky topOffset={80} className="fixed max-sm:top-12 max-sm:right-5 top-20 right-10 z-50">
           {isVisible && (
             <button
-              className="bg-red-500 text-white rounded-full p-4 transition-transform hover:rotate-90 hover:scale-110 focus:outline-none"
+              className="bg-red-500 text-white rounded-full p-2 sm:p-4 transition-transform hover:rotate-90 hover:scale-110 focus:outline-none"
               onClick={handleButtonClick}
             >
               <AiOutlineClose size={20} />
             </button>
           )}
         </Sticky>
-        <Sticky topOffset={80} className="fixed   max-sm:top-20 max-sm:right-5 top-20 right-10 z-50">
+        <Sticky topOffset={80} className="fixed   max-sm:top-12 max-sm:right-5 top-20 right-10 z-50">
           {!isVisible && (
             <button
-              className="bg-blue-400 text-white rounded-full p-4 transition-transform hover:rotate-90 hover:scale-110 focus:outline-none"
+              className="bg-blue-400 text-white rounded-full p-2 sm:p-4 transition-transform hover:rotate-90 hover:scale-110 focus:outline-none"
               onClick={enterFullscreen}
             >
               <AiOutlineClose size={20} />
             </button>
           )}
         </Sticky>
+<div>
+  {/* {image &&<>
+    <img width={400} height={400} src={image} alt={'Screenshot'} />
+  </>} */}
 
-        <div ref={ref} className="container mx-auto max-sm:pt-80  " >
-          <div className="max-sm:hidden mt-24">
+</div>
+        <div ref={ref} className="container mx-auto" >
+          <div className="max-sm:hidden block">
             <NotificationBar />
           </div>
          
-          <div className="">
+          <div className="max-sm:mt-20">
             <ErrorBoundary>
               <div ref={fullscreenRef}>
              
                 <div className="flex flex-col md:flex-row gap-5 p-4 m-2 rounded-md border border-solid bg-white ">
-                  <div className="w-full  md:w-1/2 lg:w-3/5 bg-gray-200 rounded-md p-4">
-                    <div className="px-4 flex justify-between">
-                      <div>
-                        <div className="text-xl font-spline font-bold text-slate-800">
+                  <div className="w-full  md:w-1/2 lg:w-3/5 bg-gray-200 rounded-md p-2 sm:p-4">
+                    <div className="max-sm:px-2 sm:px-4 flex justify-between">
+                      <div className="flex flex-col gap-1">
+                        <div className="max-sm:text-sm text-xl font-spline font-bold text-slate-800">
                           {setDetail.title}
                         </div>
-                        <div className="text-md font-spline font-medium text-gray-500">
+                        <div className="max-sm:text-sm text-md font-spline font-medium text-gray-500">
                           {setDetail.description}
                         </div>
                       </div>
-                      <div>
-                        <div className="text-md font-spline font-medium text-slate-800">
+                      <div className="flex flex-col gap-1">
+                        <div className="max-sm:text-sm text-md font-spline font-medium text-slate-800">
                           Level:{setDetail.level}
                         </div>
-                        <div className="text-md font-spline font-medium text-blue-400">
+                        <div className="max-sm:text-sm text-md font-spline font-medium text-blue-400">
                           No of Questions:{setDetail.questions_count}
                         </div>
                       </div>
                     </div>
-                    <div className="max-sm:fixed max-sm:top-20 px-4 max-w-xs:w-full max-sm:max-w-[300px] max-sm:z-10  max-sm:left-0 sm:relative mx-auto ">
+                    <div className="flex relative mx-auto ">
                       <div className="bg-black bg-opacity-50 w-40 h-24 text-sm  lg:w-48 lg:h-28  lg:text-md p-4 lg:gap-2 flex  flex-col absolute z-10 ml-4 lg:ml-20 rounded-md shadow-md mt-4">
                         <div className="font-spline font-light">
                           {/* Face Verification Result */}
@@ -426,7 +435,7 @@ const InterviewScreen = () => {
                       </div>
                     </div>
                     {examStarted ?
-                      <div className="border border-gray-300 bg-white bg-opacity-70 shadow-lg rounded-lg mt-4 p-4">
+                      <div className="max-sm:hidden border border-gray-300 bg-white bg-opacity-70 shadow-lg rounded-lg mt-4 p-4">
                       <p>
                         <span className="font-semibold text-sky-400">
                           Speech Text -
@@ -449,7 +458,11 @@ const InterviewScreen = () => {
                         {/* <div className="flex w-full justify-end ">
                         <button onClick={handleCoding} className="my-4 py-4 px-8 bg-sky-400 rounded-md hover:bg-sky-600">start Coding Round</button>
                         </div> */}
-                      
+                        {/* <button style={{ marginBottom: '10px' }} onClick={getImage}>
+          Take screenshot
+        </button> */}
+        
+
                         {error && (
                           <div className="error mt-4 text-red-500">{error}</div>
                         )}
@@ -458,16 +471,16 @@ const InterviewScreen = () => {
                       
                     ) : (
                       <>
-                        <div className="space-y-8 w-full flex  flex-col bg-white p-4 ">
+                        <div className=" sm:space-y-8 w-full flex  flex-col bg-white px-2 sm:px-4 ">
                           <div>
                             <BrowserInstructions />
                           </div>
-                          <div>
+                          <div className="py-2 max-sm:hidden text-sm sm:text-lg">
                             <p>
                               Please check every box on the left before starting
                               your interview
                             </p>
-                            <div></div>
+                       
                           </div>
                         </div>
                         <Checklist
@@ -503,7 +516,7 @@ const InterviewScreen = () => {
                             <div className="flex p-4 w-5/6 mx-auto gap-5 items-center">
                               <div className="w-1/2">
                                 <button
-                                  className="px-4  w-full text-lg font-spline flex justify-center items-center gap-3  font-medium text-white cursor-pointer bg-gray-500 hover:bg-gray-600  p-4 rounded "
+                                  className="px-4  w-full  max-sm:text-sm text-lg font-spline flex justify-center items-center gap-3  font-medium text-white cursor-pointer bg-gray-500 hover:bg-gray-600 p-2 sm:p-4 rounded "
                                   onClick={() => {
                                     navigate(`/dashboard`), fullScreenExit();
                                   }}
@@ -515,7 +528,7 @@ const InterviewScreen = () => {
                                 </button>
                               </div>
 
-                              <div className="w-1/2">
+                              <div className="w-1/2 max-sm:text-sm">
                                 <p className="text-red-500 font-semibold">
                                   The selected question set does not have
                                   questions in it, please contact the
@@ -527,7 +540,7 @@ const InterviewScreen = () => {
                         ) : (
                           <div className="flex w-5/6 mx-auto max-sm:flex-col justify-between gap-5 py-4">
                             <button
-                              className="px-4  w-full text-lg font-spline flex justify-center items-center gap-3  font-medium text-white cursor-pointer bg-gray-500 hover:bg-gray-600  p-4 rounded "
+                              className="px-4  w-full max-sm:text-sm text-lg font-spline flex justify-center items-center gap-3  font-medium text-white cursor-pointer bg-gray-500 hover:bg-gray-600 p-4 rounded "
                               onClick={() => {
                                 navigate(`/dashboard`), fullScreenExit();
                               }}
@@ -540,7 +553,7 @@ const InterviewScreen = () => {
                             <button
                               onClick={handleExamStart}
                               disabled={!areAllPermissionsGranted}
-                              className="px-4  w-full text-lg font-spline flex justify-center items-center gap-3  font-medium text-white cursor-pointer bg-sky-500 hover:bg-sky-600  p-4 rounded  "
+                              className="px-4  w-full  max-sm:text-sm text-lg font-spline flex justify-center items-center gap-3  font-medium text-white cursor-pointer bg-sky-500 hover:bg-sky-600 p-4 rounded  "
                             >
                               <span>Start Exam</span>{" "}
                               <span>

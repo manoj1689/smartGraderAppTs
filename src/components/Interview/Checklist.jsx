@@ -5,8 +5,8 @@ import { GiCheckMark } from "react-icons/gi";
 
 const Checklist = ({ items }) => {
   return (
-    <div className="p-4 ">
-      <ul className="space-y-3">
+    <div className="p-2 sm:p-4 ">
+      <ul className="space-y-1 sm:space-y-3">
         {items.map((item, index) => (
           <li
             key={index}

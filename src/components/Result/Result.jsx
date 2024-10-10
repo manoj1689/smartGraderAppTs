@@ -24,7 +24,7 @@ import ResultCard from "../../assets/images/Result/ResultCard.jpg";
 import calander from "../../assets/images/Result/calander.png";
 import interview from "../../assets/images/Result/interview.png";
 import result from "../../assets/images/Result/result.png";
-import clock from "../../assets/images/Result/clock.png";
+import userImg from "../../assets/images/Result/user.webp";
 import { fetchSetDetail } from "../../services/api/SetService";
 import { fetchUserData } from "../../services/api/NotificationBarService";
 import { getToken } from "../../utils/tokenUtils";
@@ -109,7 +109,7 @@ const Result = () => {
           console.log(`set Details of attempted Exam ${setId}`, data);
         } catch (error) {
           setError(true);
-          // toast.error("Failed to fetch data.");
+          toast.error("Failed to fetch data.");
         }
       };
 
@@ -202,62 +202,58 @@ const Result = () => {
 
       <ToastContainer />
       <div ref={targetRef} className="px-4">
-        <div className="flex my-5 gap-3 flex-col lg:flex-row">
-          <div className="flex flex-col lg:flex-row w-full lg:w-2/3 rounded-lg border border-gray-200 overflow-hidden shadow-lg bg-white">
+        <div className="flex my-5 gap-3 flex-col xl:flex-row  ">
+          <div className="flex flex-col lg:flex-row w-full xl:w-2/3 gap-3 rounded-lg border border-gray-200 overflow-hidden shadow-lg px-2">
             {/* Left Section: User Information */}
-            <div className="flex flex-col w-full  lg:w-1/3 bg-gradient-to-b from-blue-500 to-blue-300 text-white p-6 text-left">
-              <div className="text-5xl font-extrabold mb-2 uppercase">
-                {username}
-              </div>
-
-              <div className="text-2xl font-light mb-4">{setDetail.title}</div>
-              <div className="text-lg">
-                <strong>Date:</strong> {date}
-              </div>
-              <div className="text-lg">
-                <strong>Time:</strong> {time}
+            <div className="flex flex-col w-full lg:w-1/3 p-4  my-2  bg-gray-200 rounded-lg border-2  text-white ">
+              <div className="flex justify-center ">
+                <img src={userImg} alt="user" className="w-2/3 sm:w-1/3 lg:w-full "   />
               </div>
             </div>
 
             {/* Right Section: Assessment Summary */}
-            <div className="flex flex-col lg:w-2/3 p-8 space-y-8 bg-blue-50">
+            <div className="flex flex-col lg:w-2/3  p-8 space-y-8 bg-blue-50">
               {/* Header */}
               <div className="text-3xl font-semibold text-gray-700 border-b border-gray-300 pb-2">
-                Assessment Summary
-              </div>
-
-              {/* Score Indicator */}
-              <div className="flex justify-between items-center">
-                <div className="text-xl font-medium text-gray-600">
-                  Overall Score
-                </div>
-                <div className="relative flex items-center justify-center w-24 h-24 bg-white border border-gray-300 rounded-full shadow-md">
-                  <div className="absolute inset-0 bg-gradient-to-t from-green-400 to-green-200 rounded-full opacity-75"></div>
-                  <span className="text-4xl font-bold text-green-600 z-10">
-                    75%
-                  </span>
+                {/* exam info  and timing  */}
+                <div className="text-3xl text-gray-700 font-extrabold mb-2 uppercase">
+                {setDetail.title}
                 </div>
               </div>
-
+              <div className="flex flex-col md:flex-row gap-6">
+                <div className="flex flex-col   w-full justify-center p-2 bg-white border border-gray-300 rounded-md shadow-sm">
+                 <div className="text-gray-600 font-medium text-lg text-center">
+                  No of Questions
+                  </div> 
+                  <div className="text-md font-bold text-center text-sky-600">
+                  {setDetail.questions_count}
+                    </div>
+                </div>
+                <div className="flex w-full flex-col items-center p-2 bg-white border border-gray-300 rounded-md shadow-sm">
+                <div className="text-gray-600 font-medium text-lg">Result</div>
+                <div
+                  className={`text-md font-bold mt-2 ${
+                    result === "Pass" ? "text-green-500" : "text-red-500"
+                  }`}
+                >
+                  NO
+                </div>
+              </div>
+              </div>
+            
               {/* Result and Time Spent */}
-              <div className="grid grid-cols-2 gap-6">
-                {/* Result Card */}
-                <div className="flex flex-col items-center p-4 bg-white border border-gray-300 rounded-md shadow-sm">
-                  <div className="text-gray-600 font-medium text-lg">
-                    Result
+              <div className="flex flex-col md:flex-row gap-6">
+                {/* Time and Date Card */}
+                <div className="flex flex-col w-full justify-center items-center p-2 bg-white border border-gray-300 rounded-md shadow-sm">
+                  <div className="text-lg text-gray-700">
+                    <strong>Date:</strong> {date}
                   </div>
-                  <div
-                    className={`text-2xl font-bold mt-2 ${
-                      result === "Pass" ? "text-green-500" : "text-red-500"
-                    }`}
-                  >
-                  
-                   NO
+                  <div className="text-lg text-gray-700">
+                    <strong>Time:</strong> {time}
                   </div>
                 </div>
-
                 {/* Time Spent Card */}
-                <div className="flex flex-col items-center p-4 bg-white border border-gray-300 rounded-md shadow-sm">
+                <div className="flex  w-full flex-col items-center p-2 bg-white border border-gray-300 rounded-md shadow-sm">
                   <div className="text-gray-600 font-medium text-lg">
                     Time Spent
                   </div>
@@ -266,54 +262,20 @@ const Result = () => {
                   </div>
                 </div>
               </div>
-
-              {/* Additional Notes Section */}
-              <div className="p-4 bg-yellow-50 border border-gray-300 rounded-md shadow-sm">
-                <div className="text-gray-600 font-medium text-lg">
-                  Additional Notes
-                </div>
-                <div className="text-base text-slate-800  font-mono mt-2">
-                  The candidate demonstrated strong problem-solving skills and a
-                  good understanding of algorithms. They struggled with time
-                  management, so additional practice on time-bound tasks might
-                  be beneficial.
-                </div>
-              </div>
             </div>
           </div>
 
           {/* New Section: Performance and Rating */}
-          <div className="flex flex-col lg:flex-col w-full lg:w-1/3 justify-center items-center rounded-lg border border-gray-200 shadow-lg p-6 bg-white">
-            {/* Candidate Performance */}
-            <div className="w-full mb-8">
-              <div className="text-xl font-semibold text-slate-800 mb-4 border-b border-gray-300 pb-2">
-                Candidate Performance
-              </div>
-              <div className="relative">
-                <GaugeChart
-                  id="gauge-chart6"
-                  animate={true}
-                  nrOfLevels={420}
-                  arcsLength={[0.3, 0.5, 0.2]}
-                 
-                  arcPadding={0.02}
-                  cornerRadius={2}
-                  colors={["#87CEEB", "#6495ED", "#0047AB"]}
-                  needleColor="#00BFFF"
-                  needleBaseColor="#4169E1"
-                  textColor="#008B8B"
-                  fontSize="40"
-                  className="w-full"
-                />
-              </div>
-            </div>
+          <div className="flex flex-col lg:flex-col w-full lg:w-2/3 xl:w-1/3 rounded-lg border border-gray-200 shadow-lg px-6 ">
+  
+     
 
             {/* Candidate Rating */}
-            <div className="w-full">
-              <div className="text-xl font-semibold text-slate-800 mb-4 border-b border-gray-300 pb-2">
+            <div className=" xl:w-full p-4 ">
+              <div className="text-xl font-semibold text-slate-800  py-4">
                 Candidate Rating
               </div>
-              <div className="flex justify-around items-center">
+              <div className="flex justify-around items-center border-t border-gray-300">
                 <div className="flex flex-col items-center">
                   <PieChart score={2} />
                   <div className="text-neutral-600 font-semibold mt-2">1-2</div>

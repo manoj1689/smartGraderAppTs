@@ -45,4 +45,5 @@ export const ENDPOINTS = {
     EXAM_RESULT: "/question_answer_evaluations", 
     MEDIA_UPLOAD: '/media/upload',
     EXAM_MEDIA:'/media/exam'
+  
 };
