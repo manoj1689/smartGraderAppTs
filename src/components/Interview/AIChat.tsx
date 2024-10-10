@@ -561,13 +561,13 @@ const AIChat: React.FC<AIChatProps> = ({
         </div>
       </Modal>
       {<WaveEffect showWave={showWave} transcript={transcript} />}
-      <div>
+      {/* <div>
       <p>{status}</p>
       <button onClick={startRecording}>Start Recording</button>
       <button onClick={stopRecording}>Stop Recording</button>
       <video src={mediaBlobUrl} controls autoPlay loop />
       <div className="text-black">{recordingUrl}</div>
-    </div>
+    </div> */}
     </div>
   );
 };
