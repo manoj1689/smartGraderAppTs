@@ -72,7 +72,7 @@ const CameraFeed = ({ onFacesDetected, examStarted }) => {
     }, [examStarted, handleVideoPlay, modelsLoaded]);
 
     return (
-        <div className='flex'>
+        <div className='flex '>
             <ToastContainer />
             <Webcam ref={webcamRef} muted autoPlay mirrored="false" style={{ width: '100%', borderRadius: '1%' }} />
         </div>

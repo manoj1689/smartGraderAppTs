@@ -16,7 +16,7 @@ interface Category {
 }
 interface CategorySearchProps {
   setListOfAllIds: (ids: number[]) => void;
-  setMatchingQuestionSets: (cards: Card[]) => void;
+  setMatchingQuestionSets: (cards: Card[]) => void; 
 }
 const CategorySearch: React.FC<CategorySearchProps> = ({
   setListOfAllIds,
@@ -38,7 +38,7 @@ const CategorySearch: React.FC<CategorySearchProps> = ({
     const fetchData = async () => {
       const categories = await fetchCategories();
       setCategoriesData(categories);
-      console.log("Fetched and transformed categories:", categories);
+     // console.log("Fetched and transformed categories:", categories);
     };
 
     fetchData();
@@ -59,15 +59,17 @@ const CategorySearch: React.FC<CategorySearchProps> = ({
 
   useEffect(() => {
     const loadMatchingQuestionSetsIds = async () => {
-      const ListOfAllIds: any = await fetchSelectedItemId(selectedItems);
-      console.log("list of all ids next to fetch data of all", ListOfAllIds);
-      setListOfAllIds(ListOfAllIds);
+      if (selectedItems && selectedItems.length > 0) {
+        const ListOfAllIds: any = await fetchSelectedItemId(selectedItems);
+        setListOfAllIds(ListOfAllIds);
+      }
     };
-
+  
     loadMatchingQuestionSetsIds();
   }, [selectedItems]);
+  
 
-  console.log("the search term is", searchTerm);
+ // console.log("the search term is", searchTerm);
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const term = event.target.value.toLowerCase();
@@ -99,7 +101,7 @@ const CategorySearch: React.FC<CategorySearchProps> = ({
     }
   };
 
-  console.log("The Selected Item from searchBar", selectedItems);
+ // console.log("The Selected Item from searchBar", selectedItems);
 
   const findCategory = (
     categories: Record<string, Category>,

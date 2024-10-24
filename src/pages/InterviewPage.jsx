@@ -15,16 +15,32 @@ import { BiSolidError } from "react-icons/bi";
 import { AiOutlineClose } from "react-icons/ai";
 import { IoMdArrowRoundForward } from "react-icons/io";
 import { IoMdArrowRoundBack } from "react-icons/io";
-
+import { RiFullscreenExitLine } from "react-icons/ri";
+import { RiFullscreenLine } from "react-icons/ri";
+import { MdCallEnd } from "react-icons/md";
+import { PiChatSlashFill } from "react-icons/pi";
+import { PiChatFill } from "react-icons/pi";
+import { HiMiniSpeakerXMark } from "react-icons/hi2";
+import { IoMdArrowDropleft } from "react-icons/io";
+import { IoMdArrowDropright } from "react-icons/io";
+import { HiMiniSpeakerWave } from "react-icons/hi2";
+import { FaBell } from "react-icons/fa";
 // imported components
 
 import BrowserInstructions from "../components/Interview/BrowserInstructions";
 import ErrorBoundary from "../components/common/Error/ErrorBoundary";
 import Checklist from "../components/Interview/Checklist";
 import CameraFeed from "../components/Interview/CameraFeed";
-import NotificationBar from "../components/common/Notification/NotificationBar";
-import { FaBell } from "react-icons/fa";
+import { fetchUserData } from "../services/api/NotificationBarService";
+import { getToken } from "../utils/tokenUtils";
+
 import AIChat from "../components/Interview/AIChat";
+
+//Avatar images
+import FemaleAvatar from "../assets/images/Avatar/femaleAi.jpeg";
+import AiFemaleAssistant from "../assets/images/Avatar/AiFemaleAssistant.webp";
+import FemaleUsAvatar from "../assets/images/Avatar/femaleUsAi.jpeg";
+import MaleUsAvatar from "../assets/images/Avatar/MaleUsAi.jpeg";
 
 // imported Services
 import {
@@ -48,7 +64,7 @@ const InterviewScreen = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { interview } = location.state || {};
-
+  const [username, setUsername] = useState(null);
   const [questionsData, setQuestionsData] = useState([]);
   const [setDetail, setSetDetails] = useState([]);
   const [questionsLength, setQuestionsLength] = useState([]);
@@ -57,6 +73,7 @@ const InterviewScreen = () => {
   const [isVisible, setIsVisible] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isFullscreenOpen, setIsFullscreenOpen] = useState(false);
+  const [showAvatarList, setShowAvatarList] = useState(true);
   const ref = useRef(null);
   const [image, takeScreenshot] = useScreenshot();
   const getImage = () => takeScreenshot(ref.current);
@@ -77,7 +94,60 @@ const InterviewScreen = () => {
   const { questionSetId } = useParams();
 
   const [transcript, setTranscript] = useState("");
+  const [showTranscript, setShowTranscript] = useState(true);
+  const [disableSpeech, setDisableSpeech] = useState(false);
+  const avatarListRef = useRef(null);
+  const [selectedAvatar, setSelectedAvatar] = useState("Ava");
+  const [capturedImage, setCapturedImage] = useState(null);
+  const avatars = [
+    { name: "Ava", src: FemaleAvatar },
+    { name: "Jack", src: MaleUsAvatar },
+    { name: "Luna", src: FemaleUsAvatar },
+    { name: "Zara", src: AiFemaleAssistant },
+  ];
+  useEffect(() => {
+    const accessToken = getToken();
 
+    if (accessToken) {
+      fetchUserData(accessToken).then((data) => {
+        if (data && data.is_verified === 1) {
+          setUsername(data.name);
+          //console.log(data)
+        }
+      });
+    } else {
+      console.error("Access token not found in local storage");
+    }
+  }, []);
+
+
+  useEffect(() => {
+    // Set default avatar on component mount
+    setSelectedAvatar("Ava");
+  }, []); // Empty dependency array to run only once on mount
+
+  const handleAvatarSelect = (avatarName) => {
+    if (!examStarted) {
+      setSelectedAvatar(avatarName); // Only allow selection if exam hasn't started
+    }
+  };
+
+  // console.log(selectedAvatar)
+
+  const handleAvatarShow = () => {
+    setShowAvatarList(!showAvatarList);
+
+    // Scroll to the right on button click when the list is shown
+    if (!showAvatarList) {
+      setTimeout(() => {
+        avatarListRef.current?.scrollIntoView({
+          behavior: "smooth",
+          block: "nearest",
+          inline: "end",
+        });
+      }, 100); // Timeout to ensure that the list is rendered before scrolling
+    }
+  };
   // Callback function to receive data from the child
   const handleTranscriptChange = (newTranscript) => {
     setTranscript(newTranscript);
@@ -123,7 +193,6 @@ const InterviewScreen = () => {
       console.log("startExam details", response);
       setExamStarted(true);
       if (response.msg === "success") {
-      
         setExamId(response.exam_id);
         // You can handle more logic here based on the response
       } else {
@@ -136,53 +205,63 @@ const InterviewScreen = () => {
     }
   };
 
-// const handleCoding=()=>{
-//   navigate(`/dashboard/question/codingsection/${interview?.id}`, {
-//     state: { interview }
-//   });
-// }
+  // const handleCoding=()=>{
+  //   navigate(`/dashboard/question/codingsection/${interview?.id}`, {
+  //     state: { interview }
+  //   });
+  // }
 
   // Exam end
-  const handleExamEnd = async () => {
-    setLoading(true);
-    setExamStarted(false)
-    try {
-      //await handleSubmitAnswer();
-      await examEnd(examId, token);
-     
-      setExamId("");
-      setIsModalOpen(false);
-      navigate(`/dashboard/question/exam-end`,{state:{examId}});
-    } catch (error) {
-      setError(MESSAGES.EXAM_END_ERROR);
-    } finally {
-      setLoading(false);
+const handleExamEnd = async () => {
+  setLoading(true);
+  setExamStarted(false);
+
+  try {
+    //await handleSubmitAnswer();
+    await examEnd(examId, token);
+
+    setExamId("");
+    setIsModalOpen(false);
+
+    // Conditional navigation based on the username
+    if (username === "guest") {
+      navigate("/dashboard/question/exam-end");
+    } else {
+      navigate(`/dashboard/result`, { state: { exam_id: examId } });
     }
 
-    fullScreenExit();
-  };
+  } catch (error) {
+    setError(MESSAGES.EXAM_END_ERROR);
+  } finally {
+    setLoading(false);
+  }
+
+  fullScreenExit();
+};
+
   //console.log("The Face Detection Result at interview Page",faceDetectionResults)
   // console.log("currentQuestion Id at interview Page",currentQuestion?.id)
-  const [capturedImage, setCapturedImage] = useState(null);
+ 
 
   // Capture the screenshot and update the state
   const captureScreenshot = async () => {
     const img = await takeScreenshot(ref.current);
-    console.log("image captured")
+    console.log("image captured");
     setCapturedImage(img);
   };
 
   useEffect(() => {
     const saveAndUploadScreenshot = async () => {
-      if (capturedImage && examId) { // Ensure examId is available
+      if (capturedImage && examId) {
+        // Ensure examId is available
         try {
           // Convert the image to a Blob
           const blob = await fetch(capturedImage).then((res) => res.blob());
-  
+
           // Create a FormData object
           const file = new FormData();
           file.append("file", blob, "screenshot.png");
-  
+
           // Upload the image to your API
           const response = await uploadScreenshot(examId, token, file);
           console.log(response);
@@ -192,40 +271,35 @@ const InterviewScreen = () => {
         }
       }
     };
-  
+
     saveAndUploadScreenshot();
   }, [capturedImage, examId]); // Add examId to dependency array to watch for changes
-  
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       captureScreenshot(); // Capture screenshot every 40 seconds
     }, 40000); // 40 seconds
-  
+
     // Cleanup interval on component unmount
     return () => clearInterval(intervalId);
   }, []); // Empty dependency array to run only once
-  
- 
+
   async function requestCameraAndMicrophone() {
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
-        video: true,  // Enable video if you need camera permissions
+        video: true, // Enable video if you need camera permissions
         audio: true,
       });
-  
-     
-  
+
       setPermissions((prev) => ({
         ...prev,
-        camera:true,
-        microphone:true,
+        camera: true,
+        microphone: true,
       }));
     } catch (error) {
       console.error("Error requesting media permissions:", error);
     }
   }
-  
-  
 
   const fullScreenExit = useCallback(() => {
     if (document.fullscreenElement) {
@@ -329,72 +403,51 @@ const InterviewScreen = () => {
   };
   return (
     <>
-      <div className="flex" >
-      <div className="flex items-center  justify-between border-b  w-full fixed top-0 z-50  border-slate-300 bg-white">
-        <div className='w-full flex justify-between p-4 '>
-          <img src={SmartGrader} alt="Smart Grader" className="max-sm:w-28 sm:w-40" />
-          <div className="sm:hidden mr-8">
-          <FaBell size={30} color="#01AFF4" />
+      <div className="flex">
+        <div className="flex items-center  justify-between border-b  w-full fixed top-0 z-50  border-slate-300 bg-white">
+          <div className="w-full flex justify-between p-4 ">
+            <img
+              src={SmartGrader}
+              alt="Smart Grader"
+              className="max-sm:w-28 sm:w-40"
+            />
+            <div className="sm:hidden mr-8">
+              <FaBell size={30} color="#01AFF4" />
+            </div>
+          </div>
         </div>
-        </div>
-      </div>
-        <Sticky topOffset={80} className="fixed max-sm:top-12 max-sm:right-5 top-20 right-10 z-50">
-          {isVisible && (
-            <button
-              className="bg-red-500 text-white rounded-full p-2 sm:p-4 transition-transform hover:rotate-90 hover:scale-110 focus:outline-none"
-              onClick={handleButtonClick}
-            >
-              <AiOutlineClose size={20} />
-            </button>
-          )}
-        </Sticky>
-        <Sticky topOffset={80} className="fixed   max-sm:top-12 max-sm:right-5 top-20 right-10 z-50">
-          {!isVisible && (
-            <button
-              className="bg-blue-400 text-white rounded-full p-2 sm:p-4 transition-transform hover:rotate-90 hover:scale-110 focus:outline-none"
-              onClick={enterFullscreen}
-            >
-              <AiOutlineClose size={20} />
-            </button>
-          )}
-        </Sticky>
-<div>
-  {/* {image &&<>
+
+        <div>
+          {/* {image &&<>
     <img width={400} height={400} src={image} alt={'Screenshot'} />
   </>} */}
-
-</div>
-        <div ref={ref} className="container mx-auto" >
-          <div className="max-sm:hidden block">
-            <NotificationBar />
-          </div>
-         
-          <div className="max-sm:mt-20">
+        </div>
+        <div ref={ref} className="container mx-auto">
+          <div className="mt-12 sm:mt-16 md:mt-20">
             <ErrorBoundary>
               <div ref={fullscreenRef}>
-             
-                <div className="flex flex-col md:flex-row gap-5 p-4 m-2 rounded-md border border-solid bg-white ">
-                  <div className="w-full  md:w-1/2 lg:w-3/5 bg-gray-200 rounded-md p-2 sm:p-4">
-                    <div className="max-sm:px-2 sm:px-4 flex justify-between">
-                      <div className="flex flex-col gap-1">
-                        <div className="max-sm:text-sm text-xl font-spline font-bold text-slate-800">
+                <div className="flex flex-col lg:flex-row gap-5 p-4  bg-white ">
+                  <div className="w-full  lg:w-3/5 rounded-md  ">
+                    <div className="max-sm:px-2 sm:px-4 flex w-full p-2">
+                      <div className="flex flex-col w-full gap-1">
+                        <div className="max-sm:text-sm text-xl font-spline font-bold text-sky-500">
                           {setDetail.title}
                         </div>
                         <div className="max-sm:text-sm text-md font-spline font-medium text-gray-500">
                           {setDetail.description}
                         </div>
                       </div>
-                      <div className="flex flex-col gap-1">
-                        <div className="max-sm:text-sm text-md font-spline font-medium text-slate-800">
-                          Level:{setDetail.level}
+                      <div className="flex flex-row gap-1 w-full ">
+                        <div className="flex w-full justify-center items-center  bg-sky-400 flex-row   sm:flex-col p-2 rounded-lg ">
+                         <div className="max-sm:text-sm text-lg   font-medium text-white "> Level</div> <div className="text-xl font-extralight text-white">{setDetail.level}</div>
                         </div>
-                        <div className="max-sm:text-sm text-md font-spline font-medium text-blue-400">
-                          No of Questions:{setDetail.questions_count}
+                        <div className="flex w-full justify-center items-center flex-row sm:flex-col bg-gray-200 p-2 rounded-lg">
+                        <div className="max-sm:text-xs text-lg font-bold text-sky-500">Questions</div> <div className="text-2xl text-green-500 font-bold" >{setDetail.questions_count}</div>  
                         </div>
                       </div>
                     </div>
-                    <div className="flex relative mx-auto ">
-                      <div className="bg-black bg-opacity-50 w-40 h-24 text-sm  lg:w-48 lg:h-28  lg:text-md p-4 lg:gap-2 flex  flex-col absolute z-10 ml-4 lg:ml-20 rounded-md shadow-md mt-4">
+                    <div className="flex relative  ">
+                      <div className="bg-black bg-opacity-50 w-40 h-24 text-sm  lg:w-48 lg:h-28  lg:text-md p-4 lg:gap-2 flex  flex-col absolute z-10 ml-4 lg:ml-12  rounded-md shadow-md mt-4">
                         <div className="font-spline font-light">
                           {/* Face Verification Result */}
                           <div
@@ -424,29 +477,158 @@ const InterviewScreen = () => {
                             </div>
                           )}
                         </div>
-                      </div> 
+                      </div>
+                      <div className="flex bg-opacity-50 w-40  text-sm h-full right-0 lg:text-md absolute z-10 justify-end">
+                        {showAvatarList && (
+                          <div className="flex flex-col my-auto gap-4 max-sm:h-60 h-80 lg:h-full overflow-y-auto p-2 mr-4 rounded-lg bg-gray-300 bg-opacity-50">
+                            <div className="text-slate-700 flex justify-center">
+                              Ai Interviewer
+                            </div>
 
-                      <div className="relative w-full lg:w-5/6 mx-auto">
+                            {/* Avatar Options */}
+                            {avatars.map((avatar) => (
+                              <div
+                                key={avatar.name}
+                                onClick={() => handleAvatarSelect(avatar.name)}
+                                className={`flex flex-col items-center ${
+                                  examStarted
+                                    ? " cursor-not-allowed"
+                                    : "cursor-pointer"
+                                } ${
+                                  selectedAvatar === avatar.name ||
+                                  (avatar.name === "Ava" &&
+                                    selectedAvatar === "Ava")
+                                    ? "bg-gray-200"
+                                    : ""
+                                } p-2 rounded-xl`}
+                              >
+                                <img
+                                  src={avatar.src}
+                                  alt={avatar.name}
+                                  className="rounded-xl shadow-lg"
+                                />
+                                <div className="mt-2 text-center">
+                                  {avatar.name}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                        <div className="flex justify-center items-center">
+                          <button
+                            onClick={handleAvatarShow}
+                            className="py-8 bg-white shadow-lg rounded-full"
+                          >
+                            {showAvatarList ? (
+                              <IoMdArrowDropright size={20} />
+                            ) : (
+                              <IoMdArrowDropleft size={20} />
+                            )}
+                          </button>
+                        </div>
+                      </div>
+
+                      <div className="relative mx-auto w-full px-2  ">
                         <CameraFeed
                           onFacesDetected={handleFacesDetected}
-                          examStarted={permissions.camera && permissions.microphone}
+                          examStarted={
+                            permissions.camera && permissions.microphone
+                          }
                           examEnd={examEnd}
                         />
                       </div>
                     </div>
-                    {examStarted ?
+                    {examStarted && showTranscript ? (
                       <div className="max-sm:hidden border border-gray-300 bg-white bg-opacity-70 shadow-lg rounded-lg mt-4 p-4">
-                      <p>
-                        <span className="font-semibold text-sky-400">
-                          Speech Text -
-                        </span>{" "}
-                        {transcript}
-                      </p>
-                    </div>:""}
-                  
+                        <p>
+                          <span className="font-semibold text-sky-400">
+                            Speech Text -
+                          </span>{" "}
+                          {transcript}
+                        </p>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    <div className="flex w-full h-auto gap-8 justify-center items-center pt-8">
+               
+
+                      <div className="flex flex-col gap-2 justify-center items-center ">
+                        <div>
+                          <button
+                            className="p-2 md:p-4  bg-red-500 rounded-full"
+                            onClick={() => setShowTranscript(!showTranscript)}
+                          >
+                            {!showTranscript ? (
+                              <PiChatFill
+                                className="text-xl sm:text-2xl md:text-4xl"
+                                color="white"
+                              />
+                            ) : (
+                              <PiChatSlashFill
+                                className="text-xl sm:text-2xl md:text-4xl"
+                                color="white"
+                              />
+                            )}
+                          </button>
+                        </div>
+                        <div className="flex text-gray-600 max-md:text-sm md:text-md  text-center">
+                          {!showTranscript ? "Transcript" : "Hide Transcript "}
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col gap-2 justify-center items-center">
+                        <div>
+                          {!isVisible ? (
+                            <button
+                              className="p-2 md:p-4 bg-gray-500 text-gray-200 rounded-full"
+                              disabled
+                            >
+                              <RiFullscreenLine
+                                className="text-xl sm:text-2xl md:text-4xl"
+                                color="white"
+                              />
+                            </button>
+                          ) : (
+                            <button
+                              className="p-2 md:p-4 bg-sky-400 rounded-full cursor-pointer"
+                              onClick={enterFullscreen}
+                            >
+                              <RiFullscreenExitLine
+                                className="text-xl sm:text-2xl md:text-4xl"
+                                color="white"
+                              />
+                            </button>
+                          )}
+                        </div>
+                        <div className="text-gray-600  max-md:text-sm md:text-md text-center">
+                          {!isVisible ? "Full Screen" : "Exit Fullscreen"}
+                        </div>
+                      </div>
+
+                      <div className="flex flex-col gap-2 justify-center items-center">
+                        <div>
+                          <button
+                            className="p-2 md:p-4  bg-red-500 rounded-full"
+                            onClick={handleButtonClick}
+                          >
+                            <MdCallEnd
+                              className="text-xl sm:text-2xl md:text-4xl"
+                              color="white"
+                            />
+                          </button>
+                        </div>
+                        <div className="text-gray-600 max-md:text-sm md:text-md text-center">
+                          End Exam
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="w-full md:w-1/2 lg:w-2/5">
+                  <div
+                    className="w-full  lg:w-2/5 flex flex-col p-4  shadow-gray-200 rounded-2xl"
+                    style={{ boxShadow: "-6px 6px 12px rgba(0, 0, 0, 0.3)" }}
+                  >
                     {examStarted ? (
                       <div>
                         <AIChat
@@ -454,6 +636,7 @@ const InterviewScreen = () => {
                           handleExamEnd={handleExamEnd}
                           examID={examId}
                           onTranscriptChange={handleTranscriptChange}
+                          selectedAvatar={selectedAvatar}
                         />
                         {/* <div className="flex w-full justify-end ">
                         <button onClick={handleCoding} className="my-4 py-4 px-8 bg-sky-400 rounded-md hover:bg-sky-600">start Coding Round</button>
@@ -461,26 +644,26 @@ const InterviewScreen = () => {
                         {/* <button style={{ marginBottom: '10px' }} onClick={getImage}>
           Take screenshot
         </button> */}
-        
 
                         {error && (
                           <div className="error mt-4 text-red-500">{error}</div>
                         )}
                         <ToastContainer />
                       </div>
-                      
                     ) : (
                       <>
-                        <div className=" sm:space-y-8 w-full flex  flex-col bg-white px-2 sm:px-4 ">
+                        <div className=" w-full flex  flex-col bg-white  ">
+                          <div className="flex w-full text-lg lg:text-2xl text-[#01AFF4] font-bold justify-center items-center">
+                            Smart Grader Ai Assistant
+                          </div>
                           <div>
                             <BrowserInstructions />
                           </div>
-                          <div className="py-2 max-sm:hidden text-sm sm:text-lg">
+                          <div className="p-4 max-sm:hidden text-sm sm:text-lg text-[#01AFF4] font-sans">
                             <p>
                               Please check every box on the left before starting
                               your interview
                             </p>
-                       
                           </div>
                         </div>
                         <Checklist
@@ -505,18 +688,55 @@ const InterviewScreen = () => {
                         />
                       </>
                     )}
-                  </div>
-                </div>
-                <div className="flex flex-col ">
-                  {!examStarted && (
-                    <div className="flex flex-col justify-around">
-                      <div className="space-y-2 text-center">
-                        {questionsData.length === 0 ? (
-                          <>
-                            <div className="flex p-4 w-5/6 mx-auto gap-5 items-center">
-                              <div className="w-1/2">
+
+                    <div className="flex flex-col ">
+                      {!examStarted && (
+                        <div className="flex flex-col justify-around">
+                          <div className="space-y-2 text-center">
+                            {questionsData.length === 0 ? (
+                              <>
+                                <div className="flex p-4 w-5/6 mx-auto gap-5 items-center">
+                                  <div className="w-1/2">
+                                    <button
+                                      className="px-4  w-full  max-sm:text-sm text-lg font-spline flex justify-center items-center gap-3  font-medium text-white cursor-pointer bg-gray-500 hover:bg-gray-600 p-2 sm:p-4 rounded "
+                                      onClick={() => {
+                                        navigate(`/dashboard`),
+                                          fullScreenExit();
+                                      }}
+                                    >
+                                      <span>
+                                        <IoMdArrowRoundBack />
+                                      </span>{" "}
+                                      <span>DashBoard</span>
+                                    </button>
+                                  </div>
+
+                                  <div className="w-1/2 max-sm:text-sm">
+                                    <p className="text-red-500 font-semibold">
+                                      The selected question set does not have
+                                      questions in it, please contact the
+                                      interviewer !
+                                    </p>
+                                  </div>
+                                </div>
+                              </>
+                            ) : (
+                              <div className="flex w-5/6 mx-auto flex-col justify-center items-center gap-5 py-4">
+                                <div>
+                                  <button
+                                    onClick={handleExamStart}
+                                    disabled={!areAllPermissionsGranted}
+                                    className="px-8 py-4 max-sm:text-sm text-lg font-spline flex justify-center items-center gap-3  font-medium text-white cursor-pointer bg-sky-500 hover:bg-sky-600  rounded-full  "
+                                  >
+                                    <span>Start Exam</span>{" "}
+                                    <span>
+                                      <IoMdArrowRoundForward />
+                                    </span>
+                                  </button>
+                                </div>
+
                                 <button
-                                  className="px-4  w-full  max-sm:text-sm text-lg font-spline flex justify-center items-center gap-3  font-medium text-white cursor-pointer bg-gray-500 hover:bg-gray-600 p-2 sm:p-4 rounded "
+                                  className="px-4  w-full max-sm:text-sm text-lg font-spline flex justify-center items-center gap-3  font-semibold text-sky-400 cursor-pointer bg-white hover:text-sky-500  "
                                   onClick={() => {
                                     navigate(`/dashboard`), fullScreenExit();
                                   }}
@@ -524,47 +744,15 @@ const InterviewScreen = () => {
                                   <span>
                                     <IoMdArrowRoundBack />
                                   </span>{" "}
-                                  <span>DashBoard</span>
+                                  <span>Go back</span>
                                 </button>
                               </div>
-
-                              <div className="w-1/2 max-sm:text-sm">
-                                <p className="text-red-500 font-semibold">
-                                  The selected question set does not have
-                                  questions in it, please contact the
-                                  interviewer !
-                                </p>
-                              </div>
-                            </div>
-                          </>
-                        ) : (
-                          <div className="flex w-5/6 mx-auto max-sm:flex-col justify-between gap-5 py-4">
-                            <button
-                              className="px-4  w-full max-sm:text-sm text-lg font-spline flex justify-center items-center gap-3  font-medium text-white cursor-pointer bg-gray-500 hover:bg-gray-600 p-4 rounded "
-                              onClick={() => {
-                                navigate(`/dashboard`), fullScreenExit();
-                              }}
-                            >
-                              <span>
-                                <IoMdArrowRoundBack />
-                              </span>{" "}
-                              <span>Go back</span>
-                            </button>
-                            <button
-                              onClick={handleExamStart}
-                              disabled={!areAllPermissionsGranted}
-                              className="px-4  w-full  max-sm:text-sm text-lg font-spline flex justify-center items-center gap-3  font-medium text-white cursor-pointer bg-sky-500 hover:bg-sky-600 p-4 rounded  "
-                            >
-                              <span>Start Exam</span>{" "}
-                              <span>
-                                <IoMdArrowRoundForward />
-                              </span>
-                            </button>
+                            )}
                           </div>
-                        )}
-                      </div>
+                        </div>
+                      )}
                     </div>
-                  )}
+                  </div>
                 </div>
               </div>
             </ErrorBoundary>

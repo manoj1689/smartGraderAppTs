@@ -80,7 +80,7 @@ export const fetchQuestionSets = async (subCategoryId:number,limitStart:number,l
 
     const questionSets = response.data.data;
     
-    console.log('Fetched question sets:', questionSets);
+   // console.log('Fetched question sets:', questionSets);
     return questionSets;
   } catch (error) {
     console.error('Error fetching question sets', error);
@@ -92,7 +92,7 @@ export const fetchSelectedItemId = async (selectedItems: string[]) => {
   try {
     const token = getToken();
     const termToSearch=selectedItems[selectedItems.length-1];
-    console.log("we need to find the term",termToSearch)
+   // console.log("we need to find the term",termToSearch)
     const response = await axiosInstance.get(`/categories/search?term=${termToSearch}`, {
       headers: {
         Accept: "application/json",

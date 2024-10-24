@@ -28,11 +28,11 @@ import userImg from "../../assets/images/Result/user.webp";
 import { fetchSetDetail } from "../../services/api/SetService";
 import { fetchUserData } from "../../services/api/NotificationBarService";
 import { getToken } from "../../utils/tokenUtils";
-
+import { fetchexamAttemps } from "../../services/api/LineScoreService";
 const Result = () => {
   const location = useLocation();
   const targetRef = useRef();
-  console.log("Set Attempt SetId and Data at result page", location.state);
+
   const [username, setUsername] = useState(null);
   const [user, setUser] = useState([]);
   const [error, setError] = useState(false);
@@ -40,11 +40,12 @@ const Result = () => {
   const [setDetail, setSetDetails] = useState([]);
   const [setId, setSetId] = useState();
   const [examData, setExamData] = useState({});
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(true); 
   const [examScreenshots, setExamScreenShots] = useState([]);
-  const [examId, setExamId] = useState("");
-  const setData = location.state;
-  // First useEffect to handle setting exam data and id
-  console.log("set Data at result PAge", setData);
+  // const [examId, setExamId] = useState("");
+  const examId = location.state;
+   console.log("exam id at result page",examId)
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
 
@@ -63,6 +64,101 @@ const Result = () => {
     }
   }, []);
 
+
+  // Fetch Set Details by ExamId
+  useEffect(() => {
+    // Only fetch data if setId is valid
+    if (setId) {
+      const setDetail = async () => {
+        try {
+          const data = await fetchSetDetail(setId);
+          setSetDetails(data);
+          console.log(`set Details of attempted Exam ${setId}`, data);
+        } catch (error) {
+          setError(true);
+          toast.error("Failed to fetch data.");
+        }
+      };
+
+      setDetail();
+    }
+  }, [examId]); // Dependency on examId
+ 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = getToken();
+        if (!token) {
+          console.error("Token not found.");
+          return;
+        }
+        const data = await fetchexamAttemps(token);
+        setResults(data);
+  
+        // Find the specific exam by its examId
+        const matchingExam = data.find((attempt) => attempt.exam_id === examId.exam_id);
+     
+        if (matchingExam) {
+          setExamData(matchingExam); // Store the matching exam data
+          const id = examData.set_id;
+          setSetId(id);
+        } else {
+          console.log("No matching exam found for examId:", examId.examId);
+        }
+  
+        setLoading(false); // Set loading state to false after data fetch
+      } catch (error) {
+        console.error("Error fetching attempts:", error);
+        setLoading(false); // Set loading state to false on error
+      }
+    };
+  
+    fetchData();
+  }, [examId]);
+  
+
+
+
+  // Second useEffect to fetch Details of Exam Result
+  useEffect(() => {
+    // Only fetch data if setId is valid
+    if (examId) {
+      const ExamResult = async () => {
+        try {
+          const data = await fetchExamResult(examId.exam_id);
+          setUser(data);
+          console.log(`Result of Exam Attempt of ExamId ${setId}`, data);
+        } catch (error) {
+          setError(true);
+          // toast.error("Failed to fetch data.");
+        }
+      };
+
+      ExamResult();
+    }
+  }, [examId]); // Dependency on examId
+
+  // To Fetch The ScreenShots
+
+  useEffect(() => {
+    // Only fetch data if setId is valid
+    if (examId) {
+      const ExamScreenshots = async () => {
+        try {
+          const data = await fetchExamScreenshots(examId.exam_id);
+          setExamScreenShots(data);
+          console.log(`Result of Exam ScreenShots of ExamId ${setId}`, data);
+        } catch (error) {
+          setError(true);
+          // toast.error("Failed to fetch data.");
+        }
+      };
+
+      ExamScreenshots();
+    }
+  }, [examId]); // Dependency on examId
+
+  //console.log("The Screenshot list in array",examScreenshots)
   useEffect(() => {
     if (examData?.start_date) {
       const timestamp = examData.start_date;
@@ -98,80 +194,7 @@ const Result = () => {
       setTime("Time not available");
     }
   }, [examData]);
-  // Fetch Set Details by ExamId
-  useEffect(() => {
-    // Only fetch data if setId is valid
-    if (setId) {
-      const setDetail = async () => {
-        try {
-          const data = await fetchSetDetail(setId);
-          setSetDetails(data);
-          console.log(`set Details of attempted Exam ${setId}`, data);
-        } catch (error) {
-          setError(true);
-          toast.error("Failed to fetch data.");
-        }
-      };
 
-      setDetail();
-    }
-  }, [examId]); // Dependency on examId
-
-  // Fetch exam Result of Attempted Exam
-  useEffect(() => {
-    if (setData) {
-      setExamData(setData.result);
-      const id = setData.result.set_id;
-      setSetId(id);
-      const examId = setData.result.exam_id;
-      setExamId(examId);
-      console.log("Detail of set of SetId:", id);
-      console.log("set_id", id, "Type of setId:", typeof id);
-    } else {
-      console.log("No state data available");
-    }
-  }, [setData]);
-
-  // Second useEffect to fetch Details of Exam Result
-  useEffect(() => {
-    // Only fetch data if setId is valid
-    if (examId) {
-      const ExamResult = async () => {
-        try {
-          const data = await fetchExamResult(examId);
-          setUser(data);
-          console.log(`Result of Exam Attempt of ExamId ${setId}`, data);
-        } catch (error) {
-          setError(true);
-          // toast.error("Failed to fetch data.");
-        }
-      };
-
-      ExamResult();
-    }
-  }, [examId]); // Dependency on examId
-
-  // To Fetch The ScreenShots
-
-  useEffect(() => {
-    // Only fetch data if setId is valid
-    if (examId) {
-      const ExamScreenshots = async () => {
-        try {
-          const data = await fetchExamScreenshots(examId);
-          setExamScreenShots(data);
-          console.log(`Result of Exam ScreenShots of ExamId ${setId}`, data);
-        } catch (error) {
-          setError(true);
-          // toast.error("Failed to fetch data.");
-        }
-      };
-
-      ExamScreenshots();
-    }
-  }, [examId]); // Dependency on examId
-
-  //console.log("The Screenshot list in array",examScreenshots)
 
   const calculateTotalTime = (start, end) => {
     const startTime = new Date(start);

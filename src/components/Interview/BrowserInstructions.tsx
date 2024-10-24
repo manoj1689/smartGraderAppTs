@@ -44,8 +44,8 @@ const BrowserInstructions = () => {
             </div>
         ),
         "default": (
-            <div className="space-y-2 w-5/6">
-                <h4 className="w-full text-lg  sm:text-xl font-bold sm:leading-6 text-slate-800">Browser Instructions</h4>
+            <div className="space-y-2  p-4">
+                <h4 className="w-full text-md  sm:text-xl font-bold  text-[#01AFF4]">Browser Instructions</h4>
                 <div className='space-y-2 w-full text-md sm:text-lg leading-5 text-neutral-500 font-spline '>
                 <p>Check the settings in your browser to allow camera and microphone access.</p>
                 <p className='max-sm:hidden'>Usually, this is done by clicking a camera or microphone icon in the address bar, or by going into the browser's privacy settings.</p>

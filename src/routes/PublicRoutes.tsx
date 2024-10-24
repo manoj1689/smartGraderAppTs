@@ -8,6 +8,8 @@ import SelectInterestPage from "../pages/SelectInterestPage";
 import VisitorLandingPage from "../pages/VisitorLandingPage";
 import AIDemo from "../components/Demo/AIDemo";
 //@ts-ignore
+import WaveEffects from '../components/Interview/WaveEffect'
+//@ts-ignore
 import Visitorhome from "../components/Visitor/visitor_home"
 const PublicRoutes: React.FC = () => {
 

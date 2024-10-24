@@ -91,7 +91,7 @@ function SideBar() {
             }`}
             onClick={() => {
               handleItemClick('Quick Access');
-              navigate('result');
+              navigate('quickaccess');
             }}
           >
             <BsGraphUpArrow

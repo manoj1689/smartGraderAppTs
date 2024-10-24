@@ -14,47 +14,47 @@ import {
 } from "react-icons/fa";
 
 const ExamEndPage = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
+  // const navigate = useNavigate();
+  // const location = useLocation();
 
-  const examId = location.state || null;
+  // const examId = location.state || null;
   
-  console.log("Exam id of conduct exam on exam end page",examId)
-  const [results, setResults] = useState<LineScore[]>([]);
-  const [loading, setLoading] = useState<boolean>(true); 
-  const [result,setResult]=useState<any>([])
+  // console.log("Exam id of conduct exam on exam end page",examId)
+  // const [results, setResults] = useState<LineScore[]>([]);
+  // const [loading, setLoading] = useState<boolean>(true); 
+  // const [result,setResult]=useState<any>([])
  
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = getToken();
-        if (!token) {
-          console.error("Token not found.");
-          return;
-        }
-        const data = await fetchexamAttemps(token);
-        setResults(data);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const token = getToken();
+  //       if (!token) {
+  //         console.error("Token not found.");
+  //         return;
+  //       }
+  //       const data = await fetchexamAttemps(token);
+  //       setResults(data);
   
-        // Find the specific exam by its examId
-        const matchingExam = data.find((attempt) => attempt.exam_id === examId.examId);
-        if (matchingExam) {
-          setResult(matchingExam); // Store the matching exam data
-        } else {
-          console.log("No matching exam found for examId:", examId.examId);
-        }
+  //       // Find the specific exam by its examId
+  //       const matchingExam = data.find((attempt) => attempt.exam_id === examId.examId);
+  //       if (matchingExam) {
+  //         setResult(matchingExam); // Store the matching exam data
+  //       } else {
+  //         console.log("No matching exam found for examId:", examId.examId);
+  //       }
   
-        setLoading(false); // Set loading state to false after data fetch
-      } catch (error) {
-        console.error("Error fetching attempts:", error);
-        setLoading(false); // Set loading state to false on error
-      }
-    };
+  //       setLoading(false); // Set loading state to false after data fetch
+  //     } catch (error) {
+  //       console.error("Error fetching attempts:", error);
+  //       setLoading(false); // Set loading state to false on error
+  //     }
+  //   };
   
-    fetchData();
-  }, [examId]);
+  //   fetchData();
+  // }, [examId]);
   
   
-  console.log("the result List have set id for each attemptat examEnd page", results);
+  // console.log("the result List have set id for each attemptat examEnd page", results);
   
 
 
@@ -159,7 +159,7 @@ const ExamEndPage = () => {
 
 
         </div>
-        <div className="flex flex-col md:flex-row justify-center mx-4 my-8 gap-8">
+        {/* <div className="flex flex-col md:flex-row justify-center mx-4 my-8 gap-8">
           <button
             type="button"
             className="px-8 py-4 w-full bg-gray-300  text-gray-600 rounded transition-all duration-300 transform hover:bg-gray-400 hover:scale-105"
@@ -174,7 +174,7 @@ const ExamEndPage = () => {
           >
             Check Score
           </button>
-        </div>
+        </div> */}
       </div>
     </>
   );

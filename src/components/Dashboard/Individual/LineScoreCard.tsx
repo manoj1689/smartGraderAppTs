@@ -26,7 +26,7 @@ const LineScoreCard: React.FC = () => {
         }
         const data = await fetchexamAttemps(token);
         //setResults([]);
-
+        console.log("data at line score",data)
         setResults(data);
         setLoading(false); // Set loading state to false after data fetch
       } catch (error) {
@@ -38,7 +38,11 @@ const LineScoreCard: React.FC = () => {
     fetchData();
   }, []);
 
-  console.log("the result List have set id for each attempt ", results);
+  // useEffect(() => {
+  //   if (results.length > 0) {
+  //     console.log("The result list has set an ID for each attempt:", results);
+  //   }
+  // }, [results]);
 
   const sampleResult = [
     {
@@ -221,7 +225,7 @@ const LineScoreCard: React.FC = () => {
               <div
                 key={result.exam_id}
                 className="my-4 cursor-pointer p-4 rounded-lg bg-sky-100 shadow-md hover:shadow-lg transition-shadow duration-300"
-                onClick={() => navigate("result", { state: { result } })}
+                onClick={() => navigate("result", { state: { exam_id: result.exam_id } })}
               >
                 <div className="flex flex-col lg:flex-row ">
                   <div className="flex-1">

@@ -134,7 +134,7 @@ const MobileBar: React.FC = () => {
             }`}
             onClick={() => {
               handleItemClick('Quick Access');
-              navigate('result');
+              navigate('quickaccess');
             }}
           >
             <BsGraphUpArrow

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import bowser from "bowser";
+import bowser from 'bowser';
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
@@ -40,7 +40,7 @@ interface AIChatProps {
   handleExamEnd: () => void;
   examID: string;
   onTranscriptChange: (transcript: string) => void;
-  selectedAvatar: string;
+  selectedAvatar:string;
 }
 
 type MessageRole = "system" | "user" | "assistant";
@@ -55,7 +55,7 @@ const AIChat: React.FC<AIChatProps> = ({
   handleExamEnd,
   examID,
   onTranscriptChange,
-  selectedAvatar,
+  selectedAvatar
 }) => {
   const [assistantAI, setAssistantAI] = useState<Message[]>([]);
   const [userResponse, setUserResponse] = useState<Message[]>([]);
@@ -69,7 +69,7 @@ const AIChat: React.FC<AIChatProps> = ({
   const [questionNumber, setquestionNumber] = useState(0);
   const [listeningEnabled, setListeningEnabled] = useState(true);
   const [showWave, setShowWave] = useState(false);
-  const [selectedAvatarlogo, setSelectedAvatarlogo] = useState<any>("");
+  const [selectedAvatarlogo,setSelectedAvatarlogo]=useState<any>("")
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const { selectedUserId } = useUserId();
   const userId = selectedUserId;
@@ -77,9 +77,9 @@ const AIChat: React.FC<AIChatProps> = ({
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [speechData, setSpeechData] = useState<any>(null);
   const [open, setOpen] = useState(false);
-  const [whichBrowser, setWhichBrowser] = useState("");
-  const [enableChrome, setEnableChrome] = useState(false);
 
+  const visualizerRef = useRef<HTMLCanvasElement>(null);
+  console.log("selected Avatar",selectedAvatar)
   // Initialize OpenAI client
   const openai = new OpenAI({
     apiKey: import.meta.env.VITE_OPENAI_API_KEY, // Use environment variable
@@ -103,13 +103,7 @@ const AIChat: React.FC<AIChatProps> = ({
     mediaRecorder,
   } = useAudioRecorder();
   if (!browserSupportsSpeechRecognition) {
-    return (
-      <div className="flex justify-center items-center ">
-        <div className="text-lg">
-          Browser doesn't support speech recognition.
-        </div>{" "}
-      </div>
-    );
+    return <span>Browser doesn't support speech recognition.</span>;
   }
   //  console.log("recorded blob direct",recordingBlob)
   const continueListening = () => {
@@ -124,66 +118,66 @@ const AIChat: React.FC<AIChatProps> = ({
   const questionId = questionList[currentQuestionIndex]?.id;
   const browser = bowser.getParser(window.navigator.userAgent);
   const browserName = browser.getBrowserName();
-
   //  // Initialize Speech
   const speech = new Speech();
   const avatars = [
     {
       name: "Ava",
-      src: FemaleAvatar,
+      src: FemaleAvatar ,
       voice: {
-        chrome: "Google UK English Female",
-        safari: "com.apple.speech.synthesis.voice.daniel", // English (UK)
-        edge: "Microsoft Libby Online (Natural) - English (United Kingdom)", // Edge (US English Female)
+        chrome: 'Google UK English Female',
+        safari: 'com.apple.speech.synthesis.voice.daniel', // English (UK)
+        edge: 'Microsoft Libby Online (Natural) - English (United Kingdom)', // Edge (US English Female)
       },
     },
     {
       name: "Jack",
-      src: MaleUsAvatar,
+      src: MaleUsAvatar, 
       voice: {
-        chrome: "Google UK English Male",
-        safari: "com.apple.speech.synthesis.voice.daniel", // English (UK)
-        edge: "Microsoft Ryan Online (Natural) - English (United Kingdom)", // Edge (US English Male)
+        chrome: 'Google UK English Male',
+        safari: 'com.apple.speech.synthesis.voice.daniel', // English (UK)
+        edge: 'Microsoft Ryan Online (Natural) - English (United Kingdom)', // Edge (US English Male)
       },
     },
     {
       name: "Luna",
       src: FemaleUsAvatar,
       voice: {
-        chrome: "Google US English",
-        safari: "com.apple.speech.synthesis.voice.siri", // English (US)
-        edge: "Microsoft Sonia Online (Natural) - English (United Kingdom)", // Edge (US English Female)
+        chrome: 'Google US English',
+        safari: 'com.apple.speech.synthesis.voice.siri', // English (US)
+        edge: 'Microsoft Sonia Online (Natural) - English (United Kingdom)', // Edge (US English Female)
       },
     },
     {
       name: "Zara",
       src: AiFemaleAssistant,
       voice: {
-        chrome: "Google Deutsch",
-        safari: "com.apple.speech.synthesis.voice.jorge", // Spanish (Spain)
-        edge: "Microsoft Jenny Online (Natural) - English (United States)", //Microsoft Eric Online (Natural) - English (United States)
+        chrome: 'Google Deutsch',
+        safari: 'com.apple.speech.synthesis.voice.jorge', // Spanish (Spain)
+        edge: 'Microsoft Jenny Online (Natural) - English (United States)'//Microsoft Eric Online (Natural) - English (United States) 
+       
       },
     },
   ];
-  console.log("whichbrowser", whichBrowser);
+  
   useEffect(() => {
-    setWhichBrowser(browserName);
     // Initialize Speech with configuration
     const avatar = avatars.find((av) => av.name === selectedAvatar); // Find the selected avatar
-    setSelectedAvatarlogo(avatar?.src);
+     setSelectedAvatarlogo(avatar?.src)
     if (!avatar) {
       console.error("Selected avatar not found");
       return;
     }
-
+    
     let selectedVoice = avatar.voice.chrome; // Default to Chrome voice
-
+    
+    
     if (browserName === "Safari") {
       selectedVoice = avatar.voice.safari;
     } else if (browserName === "Microsoft Edge") {
       selectedVoice = avatar.voice.edge;
     }
-
+  
     speech
       .init({
         volume: 1,
@@ -200,8 +194,8 @@ const AIChat: React.FC<AIChatProps> = ({
       .catch((e) => {
         console.error("An error occurred while initializing:", e);
       });
-  }, [browserName]); // Add selectedAvatar and browserName to the dependency array
-
+  }, [ browserName]); // Add selectedAvatar and browserName to the dependency array
+  
   useEffect(() => {
     const initialMessage: Message = {
       role: "assistant",
@@ -227,7 +221,7 @@ const AIChat: React.FC<AIChatProps> = ({
 
       try {
         // Step 1: Transcribe the audio using Whisper
-        const formData: any = new FormData();
+        const formData = new FormData();
         formData.append("file", recordingBlob, "recording.webm");
 
         const transcriptionResponse = await openai.audio.transcriptions.create({
@@ -397,7 +391,7 @@ const AIChat: React.FC<AIChatProps> = ({
       .then(() => {
         console.log("Text spoken successfully");
         continueListening();
-        setEnableChrome(true);
+    
         if (!isRecording) {
           startRecording();
           console.log("Starting recording after text speech stop");
@@ -547,7 +541,7 @@ const AIChat: React.FC<AIChatProps> = ({
           case "Explain":
             if (assistantAI.length > 0) {
               try {
-                const explainByChatBot: any = await explainChatbotResponse([
+                const explainByChatBot = await explainChatbotResponse([
                   {
                     role: "system",
                     content: `Could you rephrase this in a simpler way to make it easier to understand: "${assistantAI[0].content}"?`,
@@ -602,90 +596,81 @@ const AIChat: React.FC<AIChatProps> = ({
   }, [audioTranscript, currentQuestionIndex]);
 
   return (
-    <div>
+    <div >
       <div className="p-2  flex flex-col rounded-md">
-        <div >
-          <div className="flex w-full text-sm sm:text-lg lg:text-2xl text-[#01AFF4] font-bold justify-center items-center">
-            Smart Grader Ai Assistant
-          </div>
-          <div className="flex w-full text-slate-800 justify-center items-center text-lg py-2 font-semibold ">
-            No of Question: {questionNumber}/10
-          </div>
-          <div className="flex gap-3 items-center ">
-            <div>
-              <img
-                src={selectedAvatarlogo}
-                alt="Assitant"
-                className=" w-16 sm:w-24 md:w-28 lg:w-40 rounded-lg"
-              />
-            </div>
-            <div className="flex flex-col ">
-              <div className="text-slate-800 text-md font-bold">
-                {selectedAvatar}
-              </div>
-              <div className="text-sky-500 text-sm font-light font-mono">
-                Ai Senior Developer
-              </div>
-            </div>
-          </div>
+      <div >
+      <div className="flex w-full text-sm sm:text-lg lg:text-2xl text-[#01AFF4] font-bold justify-center items-center">
+          Smart Grader Ai Assistant
         </div>
-
-        <div className="flex flex-col min-h-40 sm:min-h-96 overflow-y-auto p-2 sm:p-4">
-          <div ref={messagesEndRef}></div>
-          {loading && (
-            <div className="p-2 my-2 rounded-md bg-white self-end">
-              <div className="flex space-x-2">
-                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-              </div>
-            </div>
-          )}
-          <div>
-            {/* Loop through user responses */}
-            {userResponse.map((message, index) => (
-              <div key={`user-${index}`} className="flex w-full my-4">
-                <div className=" bg-red-200 p-4 w-full text-lg rounded-xl ">
-                  <div className="text-slate-800 text-sm  sm:text-xl font-bold">
-                    User Response
-                  </div>
-                  <div className="text-slate-800 text-xs  sm:text-lg ">
-                    {message.content}
-                  </div>
-                </div>
-              </div>
-            ))}
-            {/* Loop through assistant messages */}
-            {assistantAI.map((message, index) => (
-              <div key={`assistant-${index}`} className="flex w-full my-4">
-                <div className="relative  bg-sky-200  p-4 rounded-xl">
-                  <div className="text-slate-800 font-bold text-sm  sm:text-xl ">
-                    Question:{questionNumber}
-                  </div>
-                  <div className="text-slate-800 text-xs  sm:text-lg ">
-                    {message.content}
-                  </div>
-                </div>
-              </div>
-            ))}
-            {/* Loop through Assistant Alert responses */}
-            {assistantAlert.map((message, index) => (
-              <div key={`user-${index}`} className="flex my-4">
-                <div className=" bg-gray-200 p-4 text-lg rounded-xl">
-                  <div className="text-slate-800 text-sm  sm:text-xl  font-bold">
-                    Assistant AI
-                  </div>
-                  <div className="text-slate-800 text-xs  sm:text-lg ">
-                    {message.content}
-                  </div>
-                </div>
-              </div>
-            ))}
+        <div className="flex w-full text-slate-800 justify-center items-center text-lg py-2 font-semibold ">
+          No of Question: {questionNumber}/10
+        </div>
+        <div className="flex gap-3 items-center ">
+        {/* <div>
+          <img src={selectedAvatarlogo} alt="Assitant" className=" w-16 sm:w-24 md:w-28 lg:w-40 rounded-lg" />
+        </div> */}
+        <div className="flex flex-col ">
+          <div className="text-slate-800 text-md font-bold">{selectedAvatar}</div>
+          <div className="text-sky-500 text-sm font-light font-mono">
+            Ai Senior Developer
           </div>
         </div>
       </div>
+      </div>
+      
+    
+      <div className="flex flex-col  min-h-96 overflow-y-auto p-2 sm:p-4">
+      <div ref={messagesEndRef}></div>
+        {loading && (
+          <div className="p-2 my-2 rounded-md bg-white self-end">
+            <div className="flex space-x-2">
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+              <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+            </div>
+          </div>
+        )}
+        <div>
+          {/* Loop through user responses */}
+          {userResponse.map((message, index) => (
+            <div key={`user-${index}`} className="flex w-full my-4">
+              <div className=" bg-red-200 p-4 w-full text-lg rounded-xl ">
+                <div className="text-slate-800 text-lg font-bold">
+                  User Response
+                </div>
+                <div className="text-slate-800 text-lg">{message.content}</div>
+              </div>
+            </div>
+          ))}
+          {/* Loop through assistant messages */}
+          {assistantAI.map((message, index) => (
+            <div key={`assistant-${index}`} className="flex w-full my-4">
+              <div className="relative  bg-sky-200  p-4 rounded-xl">
+                <div className="text-slate-800 font-bold text-lg">
+                  Question:{questionNumber}
+                </div>
+                <div className="text-slate-800 text-lg">{message.content}</div>
+              </div>
+            </div>
+          ))}
+          {/* Loop through Assistant Alert responses */}
+          {assistantAlert.map((message, index) => (
+            <div key={`user-${index}`} className="flex my-4">
+              <div className=" bg-gray-200 p-4 text-lg rounded-xl">
+                <div className="text-slate-800 text-lg font-bold">Assistant AI</div>
+                <div className="text-slate-800 text-lg">{message.content}</div>
+              </div>
+            </div>
+          ))}
+        </div>
 
-      <div className="flex flex-col justify-center">
+     
+      </div>
+      </div>
+      
+    
+   
+      <div className="flex flex-col justify-center  ">
         <div className="flex w-ful flex-col xl:flex-row  justify-center p-4  items-center">
           {showWave && mediaRecorder && (
             <>
@@ -704,7 +689,6 @@ const AIChat: React.FC<AIChatProps> = ({
             </>
           )}
         </div>
-
         {!showWave && (
           <div className="flex  flex-col xl:flex-row justify-center  items-center ">
             <div className="flex w-full  lg:w-1/4 justify-center items-center">
@@ -718,20 +702,6 @@ const AIChat: React.FC<AIChatProps> = ({
           </div>
         )}
       </div>
-      <div className="flex w-full justify-center items-center">
-        {!enableChrome && whichBrowser === "Chrome" && (
-          <button
-            onClick={() =>
-              speakText(assistantAlert[0].content, continueListening)
-            }
-            className="px-8 py-4 bg-sky-400 rounded-full hover:bg-sky-500 shadow-lg text-white"
-          >
-            {" "}
-            Start{" "}
-          </button>
-        )}
-      </div>
-
       <Modal
         open={open}
         onClose={() => setOpen(false)}
