@@ -80,7 +80,7 @@
     "reactjs-popup": "^2.0.6",
     "regenerator-runtime": "^0.14.1",
     "slick-carousel": "^1.8.1",
-    
+    "speak-tts": "^2.0.8",
     "text-to-speech-js": "^1.1.10",
     "use-react-screenshot": "^4.0.0",
     "wavesurfer.js": "^7.8.7",
