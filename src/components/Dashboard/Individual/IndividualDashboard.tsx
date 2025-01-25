@@ -110,7 +110,7 @@ const IndividualDashBoard: React.FC<IndividualDashboardProps> = () => {
         <RiAiGenerate size={24} color="#01AFF4" />
         Set Your Own Questions
       </div>
-      <div className="w-full flex gap-3  shadow-md rounded-md p-4 flex-col md:flex-row lg:flex-col xl:flex-row items-center">
+      <div className="w-full flex gap-3 bg-neutral-50  shadow-md rounded-md p-4 flex-col md:flex-row lg:flex-col xl:flex-row items-center">
         <div className="w-full flex flex-col gap-3 justify-center">
           <div className="flex items-center gap-2.5 w-full">
             <IoCheckmark size={28} color="#01AFF4" />

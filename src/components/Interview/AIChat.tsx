@@ -718,7 +718,7 @@ const AIChat: React.FC<AIChatProps> = ({
           </div>
         )}
       </div>
-      <div className="flex w-full justify-center items-center">
+      {/* <div className="flex w-full justify-center items-center">
         {!enableChrome && whichBrowser === "Chrome" && (
           <button
             onClick={() =>
@@ -730,7 +730,7 @@ const AIChat: React.FC<AIChatProps> = ({
             Start{" "}
           </button>
         )}
-      </div>
+      </div> */}
 
       <Modal
         open={open}

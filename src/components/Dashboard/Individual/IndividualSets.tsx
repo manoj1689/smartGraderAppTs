@@ -71,10 +71,10 @@ const IndividualSets: React.FC = () => {
   const pageCount = Math.ceil(matchingQuestionSets.length / itemsPerPage);
   
   return (
-    <div>
+    <div className='container mx-auto'>
       <CategorySearch setListOfAllIds={setListOfAllId} setMatchingQuestionSets={setMatchingQuestionSets} />
       {currentItems.length > 0 ? (
-        <div className="mt-8 justify-center ">
+        <div className=" mt-8 justify-center ">
           <div className="px-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-5 lg:gap-10 xl:gap-5 ">
             {currentItems.map((card) => (
             <div

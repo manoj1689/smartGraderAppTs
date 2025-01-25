@@ -24,7 +24,7 @@ function SideBar() {
   };
 
   return (
-    <div className="flex flex-col   px-4 py-6 border-r border-gray-200 h-full fixed lg:w-56 xl:w-64">
+    <div className="flex flex-col   px-4 py-6 border-r bg-neutral-50 h-full fixed lg:w-56 xl:w-64">
       <div className="flex flex-col items-center mb-4">
         <img src={SmartGrader} alt="Smart Grader" className="w-36 mb-8" />
         <div className="w-full border-b border-gray-300 mb-4"></div>

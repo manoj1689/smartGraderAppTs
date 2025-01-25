@@ -5,6 +5,9 @@ import { SignUpService } from "../../services/api/SignUpService";
 import { handleMouseDown, handleMouseUp } from "../common/Mouse/HandleMouse";
 import { SignupRequest } from "../../types/interfaces/interface";
 import smartLogo from "../../assets/logos/smartGrader.png";
+import individualPerson from "../../assets/images/Account/individual-person.png";
+import organizationPerson from "../../assets/images/Account/organization-person.png";
+import educationalPerson from "../../assets/images/Account/educational-person.png";
 import educationSticker from "../../assets/stickers/persons/education-sticker.png";
 import organisationSticker from "../../assets/stickers/persons/organisation-sticker.png";
 import individualSticker from "../../assets/stickers/persons/individul-sticker.png";
@@ -54,86 +57,111 @@ const SignUp: React.FC = () => {
         </div>
         <div className="w-full lg:w-1/2 flex flex-col justify-center py-5 items-start">
           {(activeTab === undefined || activeTab === "individual") && (
-            <div className="flex flex-col justify-center p-4 mt-5 sm:mt-10 bg-white rounded-md">
-              <div className="flex flex-row gap-5 max-md:flex-wrap ">
-                <div className="flex gap-5 justify-center items-center">
-                  <img
-                    loading="lazy"
-                    alt="individual"
-                    src={individualSticker}
-                    className="shrink-0 self-start w-8 sm:w-12 aspect-[0.94]"
-                  />
+            <div>
 
-                  <div className="block md:hidden  text-2xl md:text-4xl text-slate-800 font-medium ">
-                    <div>Individual User</div>
-                  </div>
-                </div>
+              <div className="flex max-sm:hidden  w-full justify-center">
+                <img src={individualPerson} alt="individual Person" className="w-96 rounded-lg" />
+              </div>
 
-                <div className="flex-col">
-                  <div className=" hidden md:block text-2xl  md:text-3xl text-slate-800 font-medium ">
-                    Individual User
+              <div className="flex flex-col justify-center p-4 mt-5 sm:mt-10 bg-gray-100 rounded-md">
+                <div className="flex flex-row gap-5 max-md:flex-wrap ">
+                  <div className="flex gap-5 justify-center items-center">
+                    <img
+                      loading="lazy"
+                      alt="individual"
+                      src={individualSticker}
+                      className="shrink-0 self-start w-8 sm:w-12 aspect-[0.94]"
+                    />
+
+                    <div className="block md:hidden  text-2xl md:text-4xl text-slate-800 font-medium ">
+                      <div>Individual User</div>
+                    </div>
                   </div>
-                  <div className=" font-sans text-md sm:text-lg  font-light text-gray-600 sm:my-1.5 ">
-                    I am a candidate and want to test my skills through mock
-                    interviews.
+
+                  <div className="flex-col">
+                    <div className=" hidden md:block text-2xl  md:text-3xl text-slate-800 font-medium ">
+                      Individual User
+                    </div>
+                    <div className=" font-sans text-md sm:text-lg  font-light text-gray-600 sm:my-1.5 ">
+                      I am a candidate and want to test my skills through mock
+                      interviews.
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+
           )}
           {(activeTab === undefined || activeTab === "organization") && (
-            <div className="flex flex-col justify-center p-4  mt-5 bg-white rounded-md">
-              <div className="flex gap-5 max-md:flex-wrap">
-                <div className="flex gap-5 justify-center items-center">
-                  <img
-                    loading="lazy"
-                    alt="organisation"
-                    src={organisationSticker}
-                    className="shrink-0 self-start w-8 sm:w-12 aspect-square"
-                  />
+            <div>
+              <div className="flex max-sm:hidden  w-full justify-center">
+                <img src={organizationPerson} alt="organisation Person" className="w-96 rounded-lg" />
+              </div>
+              <div className="flex flex-col justify-center p-4  mt-5 bg-gray-100 rounded-md">
+                <div className="flex gap-5 max-md:flex-wrap">
+                  <div className="flex gap-5 justify-center items-center">
+                    <img
+                      loading="lazy"
+                      alt="organisation"
+                      src={organisationSticker}
+                      className="shrink-0 self-start w-8 sm:w-12 aspect-square"
+                    />
 
-                  <div className="block md:hidden  text-2xl md:text-3xl text-slate-800 font-medium ">
-                    <div>Organization</div>
+                    <div className="block md:hidden  text-2xl md:text-3xl text-slate-800 font-medium ">
+                      <div>Organization</div>
+                    </div>
                   </div>
-                </div>
 
-                <div className=" flex-col">
-                  <div className="  hidden md:block  text-2xl  md:text-3xl text-slate-800 font-medium ">
-                    Organization
-                  </div>
-                  <div className=" font-sans text-md sm:text-lg  font-light text-gray-600 sm:my-1.5 ">
-                    I am an organization and want to outsource my interviews
+                  <div className=" flex-col">
+                    <div className="  hidden md:block  text-2xl  md:text-3xl text-slate-800 font-medium ">
+                      Organization
+                    </div>
+                    <div className=" font-sans text-md sm:text-lg  font-light text-gray-600 sm:my-1.5 ">
+                      I am an organization and want to outsource my interviews
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+
           )}
           {(activeTab === undefined || activeTab === "educational") && (
-            <div className="flex flex-col justify-center p-4 mt-5 bg-white rounded-md">
-              <div className="flex gap-5 max-md:flex-wrap">
-                <div className="flex gap-5 justify-center items-center">
-                  <img
-                    loading="lazy"
-                    alt="eductional"
-                    src={educationSticker}
-                    className="shrink-0 self-start w-8 sm:w-12 aspect-square"
-                  />
+            <div>
 
-                  <div className="block md:hidden  text-2xl md:text-3xl text-slate-800 font-medium ">
-                    <div>Educational Institution</div>
-                  </div>
-                </div>
-                <div className="flex flex-col">
-                  <div className=" hidden md:block text-2xl sm:text-3xl md:text-3xl text-slate-800 font-medium ">
-                    Educational Institution
-                  </div>
-                  <div className=" font-sans txt-md sm:text-lg  font-light text-gray-600 sm:my-1.5 ">
-                    I am a candidate and want to test my skills through mock
-                    interviews.
+              <div className="flex max-sm:hidden w-full justify-center">
+                <img src={educationalPerson} alt="education Person" className="w-96 rounded-lg" />
+              </div>
+
+
+              <div>
+                <div className="flex flex-col justify-center p-4 mt-5 bg-gray-100 rounded-md">
+                  <div className="flex gap-5 max-md:flex-wrap">
+                    <div className="flex gap-5 justify-center items-center">
+                      <img
+                        loading="lazy"
+                        alt="eductional"
+                        src={educationSticker}
+                        className="shrink-0 self-start w-8 sm:w-12 aspect-square"
+                      />
+
+                      <div className="block md:hidden  text-2xl md:text-3xl text-slate-800 font-medium ">
+                        <div>Educational Institution</div>
+                      </div>
+                    </div>
+                    <div className="flex flex-col">
+                      <div className=" hidden md:block text-2xl sm:text-3xl md:text-3xl text-slate-800 font-medium ">
+                        Educational Institution
+                      </div>
+                      <div className=" font-sans txt-md sm:text-lg  font-light text-gray-600 sm:my-1.5 ">
+                        I am a candidate and want to test my skills through mock
+                        interviews.
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
+
           )}
         </div>
         <div className="w-full lg:w-1/2">
@@ -215,17 +243,16 @@ const SignUp: React.FC = () => {
                 <span className="text-gray-600">
                   By signing up you agree to SmartGrade{" "}
                   <span className="text-sky-500 mx-2">Privacy Policy</span>{" "}
-                   and 
+                  and
                   <span className="text-sky-500 mx-2"> Terms of Service</span>
                 </span>
               </div>
 
               <button
-                className={`flex justify-center items-center px-4 py-3 mt-8 text-white bg-sky-500 rounded border border-sky-500 border-solid w-full ${
-                  loading || !termsAccepted
-                    ? "opacity-50 cursor-not-allowed"
-                    : "hover:bg-sky-600"
-                }`}
+                className={`flex justify-center items-center px-4 py-3 mt-8 text-white bg-sky-500 rounded border border-sky-500 border-solid w-full ${loading || !termsAccepted
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:bg-sky-600"
+                  }`}
                 onMouseDown={() => handleMouseDown(setIsPressed)}
                 onMouseUp={() => handleMouseUp(setIsPressed)}
                 disabled={loading || !termsAccepted}

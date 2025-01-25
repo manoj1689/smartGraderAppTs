@@ -189,6 +189,7 @@ const Password: React.FC = () => {
                         type="text"
                         name="otp"
                         placeholder="*"
+                        required
                         maxLength={1}
                         className="text-center mt-5 max-sm:w-12 sm:w-16 rounded-md border border-solid border-neutral-400 focus:border-neutral-500 focus:ring-neutral-500 focus:outline-none max-sm:h-12 sm:h-16"
                         key={index}

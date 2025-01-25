@@ -240,7 +240,7 @@ const CategorySearch: React.FC<CategorySearchProps> = ({
   };
 
   return (
-    <div className="mx-2 p-4 border rounded-md bg-sky-100" ref={menuRef}>
+    <div className="mx-2 p-4 border rounded-md bg-neutral-50" ref={menuRef}>
      
       <div className="flex flex-col lg:flex-row justify-between ">
         
@@ -250,7 +250,7 @@ const CategorySearch: React.FC<CategorySearchProps> = ({
           {" "}
           <FaList size={24} color="#01AFF4" />
         </span>
-        <span className=" text-md md:text-lg font-semi-bold font-spline text-slate-800">AI-Generated Question Sets</span>
+        <span className=" text-md md:text-xl font-semibold font-spline text-slate-800">AI-Generated Question Sets</span>
         </div>
         <div className=" flex justify-end m-2 ">
             <button
@@ -289,12 +289,12 @@ const CategorySearch: React.FC<CategorySearchProps> = ({
             onKeyDown={handleKeyDown}
           />
           {filteredSuggestions.length > 0 && (
-            <div className="absolute bg-blue-100 shadow-lg  overflow-y-scroll scroll-smooth rounded-md w-4/5 md:w-2/3 lg:w-96 mt-4 z-10">
+            <div className="absolute bg-gray-100 shadow-lg  overflow-y-scroll scroll-smooth rounded-md w-4/5 md:w-2/3 lg:w-96 mt-4 z-10">
               <ul className="py-3">
                 {filteredSuggestions.map((suggestion, index) => (
                   <li
                     key={index}
-                    className="p-2 cursor-pointer hover:bg-blue-200"
+                    className="p-2 cursor-pointer hover:bg-sky-100"
                     onClick={() => handleSuggestionClick(suggestion)}
                   >
                     {suggestion}

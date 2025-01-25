@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import smartLogo from "../../assets/logos/smartGrader.png";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Carousel } from 'react-responsive-carousel';
+import signInBanner from "../../assets/images/Landing/learning.avif"
 import educationSticker from "../../assets/stickers/persons/education-sticker.png";
 import organisationSticker from "../../assets/stickers/persons/organisation-sticker.png";
 import individualSticker from "../../assets/stickers/persons/individul-sticker.png";
-import socialIcon from "../../assets/logos/social-icon.png";
+import educationPerson from "../../assets/images/Account/educational-person.png"
+import organisationPerson from "../../assets/images/Account/organization-person.png"
+import individualPerson from "../../assets/images/Account/individual-person.png"
+import facebookIcon from "../../assets/images/social/facebook.png";
+import instagramIcon from "../../assets/images/social/instagram.png";
+import youtubeIcon from "../../assets/images/social/youtube.png";
+import LinkedInIcon from "../../assets/images/social/linkedIn.png";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { LoginService } from "../../services/api/LoginService.ts";
@@ -52,97 +61,145 @@ const SignIn: React.FC = () => {
 
   return (
     <>
-      <div className="container mx-auto min-h-screen p-4  flex flex-col lg:flex-row ">
+      <div className="container flex flex-col lg:flex-row mx-auto min-h-screen p-4   ">
         <div className="lg:hidden w-full">
           <Link to="/">
-            <img width={179} height={43} src={smartLogo} alt="smart Grader" />
+            <img width={140} height={43} src={smartLogo} alt="smart Grader" />
           </Link>
         </div>
-        <div className="w-full lg:w-1/2 flex flex-col justify-center bg-transparent items-start">
-          {(activeTab === undefined || activeTab === "individual") && (
-            <div className="flex flex-col w-full justify-center px-4 sm:px-8 py-4 mt-5 sm:mt-10 bg-white rounded-md">
-              <div className="flex flex-row gap-5 max-md:flex-wrap ">
-                <div className="flex gap-5 justify-center items-center">
-                  <img
-                    loading="lazy"
-                    alt="individual"
-                    src={individualSticker}
-                    className="shrink-0 self-start w-8 sm:w-12 aspect-[0.94]"
-                  />
+        <div className="w-full lg:w-1/2  flex flex-col justify-center  p-4 items-start">
+          {/* Left Section with Carousel */}
+            <Carousel
+              autoPlay
+              infiniteLoop
+              showArrows={false}
+              showIndicators={false}
 
-                  <div className="block md:hidden  text-2xl md:text-4xl text-slate-800 font-medium font-spline">
-                    <div>Individual User</div>
-                  </div>
+              showThumbs={false}
+              showStatus={false}
+              className="w-full"
+            >
+              <div className="flex w-full flex-col items-center">
+                <div className="flex max-sm:hidden">
+                  <img src={individualPerson} alt="Individual User" className="w-96" />
+                </div>
+                <div className="flex w-full">
+                  {(activeTab === undefined || activeTab === "individual") && (
+                    <div className="flex flex-col w-full justify-center px-4 sm:px-8 py-4 mt-5 sm:mt-10 bg-gray-100 rounded-md">
+                      <div className="flex flex-row gap-5 max-md:flex-wrap ">
+                        <div className="flex gap-5 justify-center items-center">
+                          <div>
+                          <img
+                            loading="lazy"
+                            alt="individual"
+                            src={individualSticker}
+                            className="shrink-0 self-start w-8 sm:w-12 aspect-[0.94]"
+                          />
+                          </div>
+                       
+
+                          <div className="block md:hidden  text-2xl md:text-4xl text-slate-800 font-medium font-spline">
+                            <div>Individual User</div>
+                          </div>
+                        </div>
+
+                        <div className="flex-col">
+                          <div className=" hidden md:block text-2xl  md:text-3xl text-slate-800 font-medium font-spline">
+                            Individual User
+                          </div>
+                          <div className=" font-sans text-md sm:text-lg  font-light text-gray-600 sm:my-1.5 ">
+                            I am a candidate and want to test my skills through mock
+                            interviews.
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
-                <div className="flex-col">
-                  <div className=" hidden md:block text-2xl  md:text-3xl text-slate-800 font-medium font-spline">
-                    Individual User
-                  </div>
-                  <div className=" font-sans text-md sm:text-lg  font-light text-gray-600 sm:my-1.5 ">
-                    I am a candidate and want to test my skills through mock
-                    interviews.
-                  </div>
-                </div>
               </div>
-            </div>
-          )}
-          {(activeTab === undefined || activeTab === "organization") && (
-            <div className="flex w-full flex-col justify-center px-4 sm:px-8 py-4 mt-5 bg-white rounded-md">
-              <div className="flex gap-5 max-md:flex-wrap">
-                <div className="flex gap-5 justify-center items-center">
-                  <img
-                    loading="lazy"
-                    alt="organisation"
-                    src={organisationSticker}
-                    className="shrink-0 self-start w-8 sm:w-12 aspect-square"
-                  />
-
-                  <div className="block md:hidden  text-2xl md:text-3xl text-slate-800 font-medium font-spline">
-                    <div>Organization</div>
-                  </div>
+              <div className="flex flex-col items-center">
+              <div className="flex max-sm:hidden">
+                  <img src={organisationPerson} alt="Organization" className="w-96" />
                 </div>
 
-                <div className=" flex-col">
-                  <div className="  hidden md:block  text-2xl  md:text-3xl text-slate-800 font-medium font-spline">
-                    Organization
+                {(activeTab === undefined || activeTab === "organization") && (
+                  <div className="flex w-full flex-col justify-center px-4 md:px-8 py-4 mt-5 bg-gray-100 rounded-md">
+                    <div className="flex gap-5 max-md:flex-wrap">
+                      <div className="flex gap-5 justify-center items-center">
+                        <div>
+                        <img
+                          loading="lazy"
+                          alt="organisation"
+                          src={organisationSticker}
+                          className="shrink-0 self-start w-8  aspect-square"
+                        />
+                        </div>
+                      
+
+                        <div className="block md:hidden  text-2xl md:text-3xl text-slate-800 font-medium font-spline">
+                          <div>Organization</div>
+                        </div>
+                      </div>
+
+                      <div className=" flex-col">
+                        <div className="  hidden md:block  text-2xl  md:text-3xl text-slate-800 font-medium font-spline">
+                          Organization
+                        </div>
+                        <div className=" font-sans text-md sm:text-lg  font-light text-gray-600 sm:my-1.5 ">
+                          I am an organization and want to outsource my interviews
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className=" font-sans text-md sm:text-lg  font-light text-gray-600 sm:my-1.5 ">
-                    I am an organization and want to outsource my interviews
-                  </div>
-                </div>
+                )}
               </div>
-            </div>
-          )}
-          {(activeTab === undefined || activeTab === "educational") && (
-            <div className="flex flex-col w-full justify-center px-4 sm:px-8 py-4 mt-5 bg-white rounded-md">
-              <div className="flex gap-5 max-md:flex-wrap">
-                <div className="flex gap-5 justify-center items-center">
-                  <img
-                    loading="lazy"
-                    alt="eductional"
-                    src={educationSticker}
-                    className="shrink-0 self-start w-8 sm:w-12 aspect-square"
-                  />
+              <div className="flex flex-col items-center">
+              <div className="flex max-sm:hidden">
+                  <img src={educationPerson} alt="Educational Institution" className="w-96" />
+                </div>
+                <div>
 
-                  <div className="block md:hidden  text-2xl md:text-3xl text-slate-800 font-medium font-spline">
-                    <div>Educational Institution</div>
-                  </div>
                 </div>
-                <div className="flex flex-col">
-                  <div className=" hidden md:block text-2xl sm:text-3xl md:text-3xl text-slate-800 font-medium font-spline">
-                    Educational Institution
+                {(activeTab === undefined || activeTab === "educational") && (
+                  <div className="flex flex-col w-full justify-center px-4 sm:px-8 py-4 mt-5 bg-gray-100 rounded-md">
+                    <div className="flex gap-5 max-md:flex-wrap">
+                      <div className="flex gap-5 justify-center items-center">
+                        <div>
+                        <img
+                          loading="lazy"
+                          alt="eductional"
+                          src={educationSticker}
+                          className="shrink-0 self-start w-8 sm:w-12 aspect-square"
+                        />
+                        </div>
+                       
+
+                        <div className="block md:hidden  text-2xl md:text-3xl text-slate-800 font-medium font-spline">
+                          <div>Educational Institution</div>
+                        </div>
+                      </div>
+                      <div className="flex flex-col ">
+                        <div className=" hidden md:block text-2xl sm:text-3xl md:text-3xl text-slate-800 font-medium font-spline">
+                          Educational Institution
+                        </div>
+                        <div className=" font-sans txt-md sm:text-lg  font-light text-gray-600 sm:my-1.5 ">
+                          I am a candidate and want to test my skills through mock
+                          interviews.
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className=" font-sans txt-md sm:text-lg  font-light text-gray-600 sm:my-1.5 ">
-                    I am a candidate and want to test my skills through mock
-                    interviews.
-                  </div>
-                </div>
+                )}
               </div>
-            </div>
-          )}
+            </Carousel>
+         
+
+
+
+
         </div>
-        <div className="w-full  lg:w-1/2">
+        <div className="w-full  rounded-lg lg:w-1/2">
           <ToastContainer />
           <div className="flex flex-col h-full text-sm max-md:max-w-full justify-center items-center">
             <div className="max-lg:hidden  ">
@@ -154,6 +211,11 @@ const SignIn: React.FC = () => {
                   alt="smart Grader"
                 />
               </Link>
+            </div>
+            <div className="flex w-full justify-center">
+              <div className="text-2xl text-stone-700 font-semibold mt-4">
+                Login
+              </div>
             </div>
             {activeTab === "individual" && (
               <div className="self-center font-spline  mt-5 text-xl sm:text-2xl text-slate-800">
@@ -213,15 +275,14 @@ const SignIn: React.FC = () => {
                   <div className="text-gray-600 font-spline ">Remember Me </div>
                 </div>
                 <div>
-                  <div className="text-cyan-600 font-spline cursor-pointer " onClick={()=>navigate("/signIn/password")}>
+                  <div className="text-cyan-600 font-spline cursor-pointer " onClick={() => navigate("/signIn/password")}>
                     Forget Password?
                   </div>
                 </div>
               </div>
               <button
-                className={`flex justify-center items-center px-4 py-3 mt-8 text-white bg-sky-500 rounded border border-sky-500 border-solid w-full ${
-                  isPressed ? "bg-sky-600" : "bg-sky-500"
-                }`}
+                className={`flex justify-center items-center px-4 py-3 mt-8 text-white bg-sky-500 rounded border border-sky-500 border-solid w-full ${isPressed ? "bg-sky-600" : "bg-sky-500"
+                  }`}
                 onMouseDown={() => handleMouseDown(setIsPressed)}
                 onMouseUp={() => handleMouseUp(setIsPressed)}
                 type="submit"
@@ -250,26 +311,52 @@ const SignIn: React.FC = () => {
               </div>
             </form>
             <div className="flex  px-5 md:mt-20  text-sm  font-light leading-5 justify-center text-center text-neutral-500">
-            <div className="flex flex-col sm:flex-row">
-              <div className="flex mx-5 ">
-                <div className="flex px-2 sm:px-4 md:gap-5 font-spline max-sm:text-[12px]  ">
-                  Legal information
+              <div className="flex flex-col ">
+                <div className="flex mx-5 ">
+                  <div className="flex px-2 sm:px-4 md:gap-5 font-spline text-sm  ">
+                    Legal information
+                  </div>
+                  <div className="flex px-2 sm:px-4 md:gap-5 font-spline text-sm text-sky-400  ">
+                    Help Resources
+                  </div>
                 </div>
-                <div className="flex px-2 sm:px-4 md:gap-5 font-spline max-sm:text-[12px]  ">
-                  Help Resources
+
+                <div className="flex w-full justify-center gap-4 items-center mt-4">
+                  <img
+                    loading="lazy"
+                    alt="youtubeIcon"
+                    src={youtubeIcon}
+                    className="w-8"
+
+                  />
+
+                  <img
+                    loading="lazy"
+                    alt="instagramIcon"
+                    src={instagramIcon}
+                    className="w-8"
+
+                  />
+                  <img
+                    loading="lazy"
+                    alt="linkedIn"
+                    src={LinkedInIcon}
+                    className="w-8"
+
+                  />
+                  <img
+                    loading="lazy"
+                    alt="facebookIcon"
+                    src={facebookIcon}
+                    className="w-8"
+                  />
+
+
                 </div>
               </div>
-              <img
-                loading="lazy"
-                alt="socialIcon"
-                src={socialIcon}
-                className="shrink-0 self-center mx-5  aspect-[4.35] w-[93px]"
-              />
-              <div></div>
             </div>
           </div>
-          </div>
-         
+
         </div>
       </div>
     </>
