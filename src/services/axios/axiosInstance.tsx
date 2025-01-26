@@ -5,7 +5,7 @@ import { getToken, removeToken } from '../../utils/tokenUtils';
 import { handleError } from '../../utils/ErrorUtils';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://api.smartgrader.in', // Replace with your API base URL
+  baseURL: 'https://api.smartgrader.in', // Replace with your API base URL
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
